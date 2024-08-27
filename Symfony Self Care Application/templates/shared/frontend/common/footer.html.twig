@@ -1,0 +1,107 @@
+{% set footerLinks = menuService.menuItems(locale, 'footer-menu') %}
+{% set getArticles = settingService.getArticles(5) %}
+
+{# Settings data #}
+{% set phone = settingService.getService('phone') %}
+{% set email = settingService.getService('email') %}
+{% set twitterLink = settingService.getService('twitterLink') %}
+{% set facebookLink = settingService.getService('facebookLink') %}
+{% set linkedinLink = settingService.getService('linkedinLink') %}
+{% set footerLogo = settingService.getService('footerLogo') %}
+<div class="footer">
+    <div class="top-section">
+        <div class="inner">
+            <div class="text-section">
+                <p>{{ 'newsletter.title'|trans }}</p>
+            </div>
+            <div class="subscribe-section form-wrapper has-loader">
+                <form class="newsletter" id="newsletterForm">
+                    <div class="form-group">
+                        <label for="emailAddress">
+                            {{ 'newsletter.label'|trans }}
+                        </label>
+                        <input type="email"
+                               id="emailAddress"
+                               name="emailAddress"
+                               autocomplete="off"
+                               placeholder="Ex. mirceapopescu@gmail.com"
+                               class="form-email"
+                        >
+                    </div>
+                    <div class="button-wrapper">
+                        <input type="submit" id="edit-submit" class="submit-btn" value="">
+                    </div>
+                </form>
+                <!--begin::Form message-->
+                <div class="form-message"></div>
+                <!--end::Form message-->
+            </div>
+        </div>
+    </div>
+    <div class="bottom-section">
+        <div class="inner">
+            {% if footerLogo is not null %}
+                <div class="section logo">
+                    <img src="{{ asset(app_setting_path ~ footerLogo) }}" alt="{{ app_name }}">
+                </div>
+            {% endif %}
+            <div class="section services">
+                <ul>
+                    {% for item in footerLinks %}
+                        <li>
+                            <a href="{{ item['link'] }}">
+                                {{ item['linkText'] }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if getArticles is not null %}
+                <div class="section advices">
+                    <p>{{ 'footer.article_title'|trans }}</p>
+                    <ul>
+                        {% for item in getArticles %}
+                            <li>
+                                <a href="{{ path('app_blog_single', {'slug': item.slug}) }}">
+                                    {{ item.translation(locale).title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="section contact-info">
+                <ul class="contacts">
+                    <li>
+                        <p>{{ 'menu.phone_link'|trans }}</p>
+                        <a href="tel:{{ phone }}">{{ phone }}</a>
+                    </li>
+                    <li>
+                        <p>{{ 'menu.email_link'|trans }}</p>
+                        <a href="mailto:{{ email }}">{{ email }}</a>
+                    </li>
+                </ul>
+                <ul class="social-media-icons">
+                    <li>
+                        <a href="{{ twitterLink }}" target="_blank">
+                            <img src="{{ asset('assets/frontend/images/common/twitter.png') }}" alt="twitter">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ facebookLink }}" target="_blank">
+                            <img src="{{ asset('assets/frontend/images/common/facebook.png') }}" alt="facebook">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ linkedinLink }}" target="_blank">
+                            <img src="{{ asset('assets/frontend/images/common/linkedin.png') }}" alt="linkedin">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="section copyright inner">
+            <p>© {{ "now"|date('Y') }} - {{ app_name }} - {{ 'footer.copyright'|trans }}.</p>
+        </div>
+    </div>
+</div>

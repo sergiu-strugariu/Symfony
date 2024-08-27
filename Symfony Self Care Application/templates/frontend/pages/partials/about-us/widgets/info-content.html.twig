@@ -1,0 +1,13 @@
+<div class="big-logo">
+    {% if widget.fileName %}
+        <div class="big-logo__left">
+            <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" alt="{{ widget.fileName }}"/>
+            {% if translation.description %}
+                {{ translation.description|sanitize_html('app.editor') }}
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if widget.fileNameMob %}
+        <div class="big-logo__right data-image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileNameMob) }}"></div>
+    {% endif %}
+</div>

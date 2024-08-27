@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'form_register.payment_confirmation.title'|trans }} {{ parent() }} {% endblock %}
+
+{% block content %}
+    <main class="payment-confirmation">
+        <div class="common-intro-v2">
+            <div class="inner">
+                <div class="image" data-image="{{ asset(app_education_path ~ education.imageName) }}"></div>
+                <h1>{{ education.translation(locale).title }}</h1>
+            </div>
+        </div>
+        <div class="content">
+            <div class="inner">
+                <h2>{% if not error %}<span></span>{% endif %}{{ title }}</h2>
+                <p>{{ message }}</p>
+                {% if not error %}
+                    <div>
+                        <a href="{{ path('app_education_registration_invoice', {'slug': slug, 'uuid': uuid}) }}" target="_blank">{{ 'form_register.payment_confirmation.download_invoice'|trans }}</a>
+                        <a href="{{ path('app_education_registration_contract', {'slug': slug, 'uuid': uuid}) }}" target="_blank">{{ 'form_register.payment_confirmation.download_contract'|trans }}</a>
+                    </div>
+                {% endif %}
+                <a href="{{ path('app_index') }}">&#60; {{ 'form_register.back_to_main_page'|trans }}</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}

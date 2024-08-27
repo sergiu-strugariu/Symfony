@@ -1,0 +1,31 @@
+<div class="educational-structure">
+    <div class="inner">
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+
+            {% if widget.classes == 'top' %}
+                <h2>{{ translation.title }}</h2>
+                {{ translation.description|raw }}
+            {% endif %}
+        {% endfor %}
+
+
+        <div>
+            {% for widget in section.pageWidgets %}
+                {% set translation = widget.translation(locale) %}
+
+                {% include 'frontend/default/partials/widgets/certification/' ~ widget.template ignore missing %}
+            {% endfor %}
+        </div>
+
+
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+
+            {% if widget.classes == 'bottom' %}
+                {{ translation.description|raw }}
+                <a href="{{ translation.link }}">{{ translation.linkText }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

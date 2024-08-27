@@ -1,0 +1,5 @@
+{% for widget in section.pageWidgets %}
+    {% set translation = widget.translation(locale) %}
+
+    {% include 'frontend/default/partials/widgets/certification/' ~ widget.template ignore missing %}
+{% endfor %}

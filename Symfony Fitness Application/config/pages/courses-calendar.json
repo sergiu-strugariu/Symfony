@@ -1,0 +1,179 @@
+{
+  "entity": "Page",
+  "name": "Calendar Cursuri",
+  "machineName": "courses-calendar",
+  "url": "/",
+  "classes": "courses-calendar",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Calendar Cursuri",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/home",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Courses Calendar sections",
+      "machineName": "calendar_concursuri_section_1",
+      "template": "intro.html.twig",
+      "classes": "",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "calendar_concursuri_section_1_widget_1",
+          "template": "section_1_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Slider Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Slider Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Courses Calendar sections",
+      "machineName": "calendar_concursuri_section_2",
+      "template": "cta.html.twig",
+      "classes": "",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "calendar_concursuri_section_2_widget_1",
+          "template": "",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Widget Link Text",
+              "placeholder": "Widget Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Widget Link",
+              "placeholder": "Widget Link",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

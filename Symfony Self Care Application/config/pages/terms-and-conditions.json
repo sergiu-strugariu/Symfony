@@ -1,0 +1,83 @@
+{
+  "entity": "Page",
+  "name": "Terms and conditions",
+  "machineName": "terms-and-conditions",
+  "url": "/termeni-si-conditii",
+  "classes": "legal privacy-policy",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "/termeni-si-conditii",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Terms content",
+      "machineName": "terms_section_content",
+      "template": "content.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "terms_widget_content",
+          "template": "full-html.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

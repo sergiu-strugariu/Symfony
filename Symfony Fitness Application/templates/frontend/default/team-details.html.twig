@@ -1,0 +1,12 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ 'team.title'|trans }} {{ parent() }} {% endblock %}
+
+{% block content %}
+
+<main class="team-details">
+    {% include "frontend/default/partials/team-details/content.html.twig" %}
+</main>
+
+
+{% endblock %}

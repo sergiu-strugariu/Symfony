@@ -1,0 +1,31 @@
+<div class="modal preview-image-modal" id="previewImageModal" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close" />
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title"> {{ 'dashboard.edit_profile.change_profile_image'|trans }}</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-container">
+                    <img src="{{ asset('assets/dashboard/media/dashboard/default.png') }}" alt="avatar" class="" id="image"/>
+                </div>
+                <div class="img-preview"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="docs-buttons">
+                    <a href="#" class="zoom-out" data-method="zoom" data-option="-0.1"></a>
+                    <a href="#" class="zoom-in" data-method="zoom" data-option="0.1"></a>
+                </div>
+                <div class="docs-buttons">
+                    <a href="#" class="cancel">{{ 'auth.cancel'|trans }}</a>
+                    <a href="#" class="save-photo" id="download" data-method="getCroppedCanvas">
+                        {{ 'auth.save'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

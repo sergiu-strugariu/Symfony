@@ -1,0 +1,14 @@
+<div class="benefits">
+    <div class="inner">
+        <div class="content">
+            <div class="cards-button">
+                <!-- Start: Page widget  -->
+                {% for widget in section.pageWidgets %}
+                    {% set translation = widget.translation(locale) %}
+                    {% include 'frontend/pages/partials/benefits/widgets/' ~ widget.template ignore missing %}
+                {% endfor %}
+                <!-- End: Page widget  -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block content %}
+    <main class="send-review">
+        <div class="inner">
+            <h1>{{ 'review.review_btn'|trans }}</h1>
+            <div class="search-area">
+                <div class="buttons">
+                    <a href="#" class="active" data-search="location">
+                        {{ 'search.search_location'|trans }}
+                    </a>
+                    <a href="#" data-search="name">
+                        {{ 'search.search_for_name'|trans }}
+                    </a>
+                </div>
+                <div class="search-section">
+                    <div class="search">
+                        <div class="search-container">
+                            <label for="searchInput" class="label-search">
+                                {{ 'form.placeholder.search_care'|trans }}
+                            </label>
+                            <input type="text"
+                                   id="searchInput"
+                                   class="search-input"
+                                   name="searchInput"
+                                   autocomplete="off"
+                            />
+                            <span class="close-search-dropdown"></span>
+                            <p>{{ 'form.placeholder.search_min_length'|trans }}</p>
+                        </div>
+                    </div>
+                    <div id="dropdown" class="dropdown-list hidden">
+                        <ul></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

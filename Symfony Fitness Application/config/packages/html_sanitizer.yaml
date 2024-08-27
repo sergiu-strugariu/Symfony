@@ -1,0 +1,15 @@
+framework:
+  html_sanitizer:
+    sanitizers:
+      app.editor:
+        allow_elements:
+          h1: 'class'
+          h2: 'class'
+          h3: 'class'
+          p: 'class'
+          span: 'class'
+          div: 'class'
+          a: [ 'href', 'title', 'class', 'rel' ]
+        force_https_urls: true
+        allowed_link_schemes: [ 'http', 'https', 'mailto','tel' ]
+        allow_relative_links: true

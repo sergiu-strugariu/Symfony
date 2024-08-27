@@ -1,0 +1,19 @@
+<div class="recognition">
+    <div class="inner">
+        <h2>{{ "common.recognition.title"|trans }}</h2>
+
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+
+            {% if widget.classes == 'item' %}
+                <div>
+                    {{ translation.description|raw }}
+                </div>
+            {% else %}
+                {{ translation.description|raw }}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% include "frontend/default/partials/certification/certifications.html.twig" %}

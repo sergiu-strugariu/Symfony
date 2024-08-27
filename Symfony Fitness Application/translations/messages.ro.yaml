@@ -1,0 +1,288 @@
+authentication:
+  exists: "Utilizatorul există deja."
+  success: "Utilizatorul a fost înregistrat cu succes."
+  user_not_exists: "Utilizatorul nu există."
+  user_not_logged: "Nu esti logat."
+
+  deleted_account: "Acest cont a fost sters"
+  not_enabled_account: "Acest cont nu este activat."
+
+  account:
+    confirmed: "Adresa de email a fost confirmata, te poti loga acum."
+    not_verified: "Adresa de email nu a fost verificata."
+    already_confirmed: "Adresa de email a fost deja verificata, te poti loga."
+    not_exists: "Acest cont nu exista."
+    incorrect_password: "Parola curenta este incorecta."
+    password_not_match: "Parolele nu coincid."
+    user_already_exists: "Aceasta adresa de email este deja folosita."
+    default_password_error: "A intervenit o eroare te rugam sa incerci mai tarziu."
+    success: "Datele contului au fost salvate cu success."
+
+  login:
+    title: "Ai participat la evenimente MOVE ON?"
+    description: "În cazul în care te-ai mai înscris la workshopuri, o dată cu confirmarea înregistrării ţi s-a activat şi contul tău. Completează mai jos adresa de e-mail cu care te-ai înregistrat şi parola asociată pentru a folosi datele tale salvate deja."
+
+  register:
+    title: "Nu ai participat încă la evenimente MOVE ON?"
+    description: "Nu ai participat încă la evenimente MOVE ON? Dacă nu ai mai participat la evenimentele MOVE ON, completează datele tale mai jos pentru înregistrare. După confirmarea plăţii taxei de participare contul tău va fi activat şi vei putea accesa materialele de curs."
+    gdpr: 'Am citit și sunt de acord cu <a href="%terms_url%">Termenii și condițiile</a> și cu <a href="%privacy_url%">Politica de confidențialitate</a> Move On.'
+    newsletter: "Sunt de acord sa primesc noutăți și informații comerciale (newsletter) din partea Move On."
+
+  forgot_password:
+    title: "Aţi uitat parola"
+    page_title: "Resetează parola"
+    description: "Introdu e-mailul tău mai jos și îți vom trimite o nouă parolă."
+
+  reset_password:
+    title: "Resetează parola"
+    page_title: "Setează o parolă nouă"
+    description: "Introdu o parolă nouă"
+
+  buttons:
+    login: "intră în cont"
+    register: "înregistrează-te"
+    reset_password: "Resetează parola"
+    send: "Trimite"
+    submit: "Trimite"
+    faq: "întrebări frecvente"
+    cancel: "Anulează"
+
+  mail:
+    success: "Mesajul a fost trimis cu succes."
+    fail: "Mesajul nu s-a putut trimite. Incearca mai tarziu."
+
+article:
+  title: "Articol"
+  next_article: "Următorul articol"
+  prev_article: "Articolul precedent"
+  read_more: "Citește mai mult"
+
+certifications:
+  europeactive:
+    title: "Certificări Move On recunoscute de EuropeActive"
+    description: "Move On deține certificate de acreditare European Standards by EuropeActive pentru cursurile de instructor de group fitness, antrenor personal șiinstructor de pilates. Aceste certificări care atestă faptul că programele de formare a profesioniștilor în fitness, oferite de Move On Fitness Education, sunt conforme cu standardele europene în vigoare."
+  accredited:
+    title: "Certificări Move On acreditate de Ministerul Muncii și Solidarității Sociale și Ministerul Educației"
+
+multimedia:
+  title: "Multimedia"
+  description: "Entuziasm, pasiune, determinare. <br> Intră și tu în atmosfera evenimentelor și cursurilor MOVE ON!"
+  subtitle: "Galerie"
+  results: "rezultate"
+
+common:
+  gdpr: 'Am citit si sunt de acord cu <a href="%terms_url%">Terms and Conditions</a> și <a href="%privacy_url%">Privacy Policy</a> Move On.'
+  newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
+  contract: "Generate Contract"
+  media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"
+  no_result: "Nu a fost gasit nici un rezultat pentru "
+
+  not_blank: "Camp obligatoriu necompletat."
+  not_valid:
+    email: "Email invalid."
+    phone: "Numar de telefon invalid."
+    gdpr: "Trebuie sa accepti politica GDPR."
+    password_not_match: "Parolele nu coincid."
+  min_message: "Acest câmp trebuie să aibe cel putin {{ limit }} caractere."
+  max_message: "Acest câmp trebuie să aibă cel mult {{ limit }} caractere."
+
+  custom:
+    min_message: "Mesaj invalid."
+    name: "Nume invalid."
+    first_name: "Nume invalid."
+    last_name: "Prenume invalid."
+
+  form_labels:
+    first_name: "Nume"
+    last_name: "Prenume"
+    full_name: "Nume"
+    email: "Email"
+    sign_up: "Înscrie-te"
+    phone: "Telefon"
+    password:
+      first_options: "Parola"
+      second_options: "Repetă parola"
+      default: "Parola"
+
+  buttons:
+    view_courses: "Vezi cursurile"
+    view_details: "Vezi detalii"
+    view_more: "Vezi mai mult"
+
+  search:
+    title: "Caută"
+    text: "Caută Cursuri"
+  recognition:
+    title: "Recunoaștere națională și internațională"
+
+contact:
+  title: "Formular de contact"
+  description: "Completează formularul de mai jos și îți vom răspunde cât de curând posibil! Ne dorim să fim parte din călătoria ta în lumea fitness-ului."
+  name: "Nume și prenume"
+  message: "Mesaj"
+  sendButton: "Trimite"
+
+sitemap:
+  title: "Sitemap"
+
+course_calendar:
+  type: "TIP EDUCAȚIE"
+  location: "LOCAȚIE"
+  search: "CAUTĂ"
+  all: "Toate"
+  course_details:
+    about: "Despre curs"
+    program: "Programul cursului"
+    trainers: "Master trainers"
+    certification: "Certificare"
+    learn: "Ce vei învăța"
+    price: "Preț"
+    info_extra: "Acest curs face parte din pachetul obligatoriu pentru a obține certificarea de antrenor personal nivel 4 EREPS &#40;European Register of Exercise Professionals&#41;"
+    info_important: "Informații importante"
+    info_warning: "*Din motive logistice, pot apărea anumite modificări în programul cursului. Acestea vor fi anunţate în timp util pentru o bună desfăşurare a cursului."
+    sign_up: "Înscrie-te acum"
+
+educational:
+  title: "Structura Educațională Move On"
+  topDescription: "Îți punem la dispoziție o gamă largă de cursuri și workshopuri, în funcție de nevoile și obiectivele tale."
+  bottomDescription: "Vino la Move On și transformă-ți pasiunea pentru fitness într-o carieră de succes!"
+  linkText: "ÎntreabĂ un consultant"
+
+newsletter:
+  title: "Abonează-te la newsletter!"
+  description: "Fii printre primii care află despre cursurile viitoare Move On, articole motivaționale și sfaturi utile de la experții noștri."
+  errors:
+      success: "Te-ai inregistrat cu success."
+      user_exists: "Aceasta adresa de email este deja inscrisa in newsletter."
+      email_not_valid: "Te rugam sa introduci o adresa de email valida."
+      default: "A intervenit o erroare, te rugam sa incerci mai tarziu."
+  
+form_register:
+  title: "Înregistrare curs"
+  location: "Locație"
+  course_type: "Tipul cursului"
+  price: "Preț"
+  payment_method: "Selectați metoda de plată:"
+  card: "Card online"
+  bank: "Transfer bancar"
+  invoice: "Doresc facturarea pe persoană juridică"
+  buy: "CUMpĂRĂ"
+  back_to_main_page: "Întoarce-te la pagina principală"
+  payment_confirmation:
+    title: "Confirmare plată"
+    download_invoice: "Descarcă FACTURA"
+    download_contract: "Descarcă contractul"
+  bank_transfer:
+    title: "Transfer bancar"
+    description: "Date transfer bancar"
+
+account:
+  my_account: "Contul meu"
+  logout: "Ieși din cont"
+
+  contracts:
+    download: "Descarcă contractul"
+    no_contracts: "Nu ai nici un contract."
+
+  invoices:
+    download: "Descarcă factura"
+    no_invoices: "Nu ai nici o factura."
+
+  dashboard:
+    new: "Noi"
+    old: "Vechi"
+    cancelled: "Anulate"
+    details: "Vezi detalii"
+    add_new_course: "Adaugă un curs nou +"
+    events_text: "Evenimente la care ai participat"
+    calendar_text: "Calendarul meu"
+    no_events: "Nu ai participat la nici un eveniment."
+    no_calendar: "Calendarul este gol."
+
+  certifications:
+    credits: "credite"
+    download: "Descarcă diploma"
+    no_certifications: "Nu ai nici un certificat."
+
+  details:
+    edit: "Editează"
+    save: "Salvează"
+    validate: "Validează"
+    change_password: "Schimbă parola"
+    old_password: "Parola veche"
+    new_password: "Parola nouă"
+    repeat_password: "Repetă parola nouă"
+    data_company: "Date companie"
+    company_name: "Nume campanie"
+    address: "Adresa"
+    cui: "CUI"
+    registration_number: "Număr înregistrare (J)"
+    bank_name: "Nume bancă"
+    bank_account: "Cont bancar"
+    iban: "IBAN"
+    confirm_email_update: "Vă rugăm să vă verificați e-mailul pentru a confirma actualizarea adresei de email"
+    proforma_invoice_disclaimer: "Mențiune plată"
+
+  sidebar:
+    account_details: "Detalii Cont"
+    certificates: "Certificari & Credite"
+    contracts: "Contracte"
+    invoices: "Facturi"
+    calendar: "Calendarul meu"
+
+mails:
+  salute: "Bună"
+  greetings: "Toate cele bune, <br />
+              Echipa Move On"
+  follow_us: "Urmărește-ne și pe"
+
+  resetting:
+    title: "Resetare parola"
+    description: "Dacă ți-ai pierdut parola sau dorești să o resetezi, folosește linkul de mai jos pentru resetare:"
+    reset_password_text: "Dacă nu ai solicitat resetarea parolei, poți ignora acest email în siguranță. Doar o persoană cu acces la emailul tău poate reseta parola contului."
+
+  email_notifications:
+    title: "Notificare"
+    notification_text: "Ai primit o nouă notificare pe"
+    verify: "Verifică detaliile mai jos:"
+    informations: "Pentru mai multe informații, accesează contul tău pe"
+    already_sent: "Ai facut deja o cerere pentru resetarea parolei, incearca mai tarziu."
+
+  email_account_confirmation:
+    confirm_button: "Confirmă adresa de email"
+    confirm_account: "Confirmare cont"
+    description: "Mulțumim că ți-ai creat un cont Move On! <br />
+                  Pentru a-ți activa contul, te rugăm să confirmi adresa ta de email făcând clic pe linkul de mai jos:"
+    security: "Dacă nu ai creat tu acest cont, poți ignora acest email în siguranță."
+
+  email_update:
+    title: "Confirmă actualizarea adresei de email"
+    description: "Vă rugăm să apăsați pe butonul de mai jos pentru a vă actualiza adresa de email."
+    confirm_button: "Actualizează adresa de email"
+    disclaimer: "Dacă nu ați solicitat o actualizare a adresei de e-mail, puteți ignora acest email."
+    
+  wire_transfer:
+    title: "Date transfer bancar"
+    intro: "Mulțumim pentru înscrierea la cursul %title%. Te anunțăm că s-a emis factura proforma numărul %proformaInvoiceNumber%."
+    details: "Conform modalității de plată pe care ai ales-o, te rugăm să trimiți suma de %price% RON prin transfer bancar, în contul indicat mai jos:"
+    disclaimer_1: "De reținut: când efectuezi plata prin transfer bancar, te rugăm să menționezi la detalii de plată numărul facturii proforme menționat mai sus."
+    disclaimer_2: "De îndată ce plata va fi confirmată în sistem, vei primi pe e-mail factura fiscală."
+
+feedback:
+  title: "Feedback"
+
+team:
+  title: "Membru"
+  member:
+    not_exists: "Acest membru al echipei nu exista."
+  button_meet: "Hai să ne cunoaștem"
+  button_team: "Echipa noastră"
+
+education:
+    success:
+        title: "Plata a fost efectuată cu succes."
+        message: "Ai primit pe e-mail un mesaj de confirmare."
+    failed:
+        title: "Eroare plată."
+    pending:
+        title: Plata este în curs de procesare."

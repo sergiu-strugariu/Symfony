@@ -1,0 +1,58 @@
+{% set phone = settingService.getService('phone') %}
+{% set email = settingService.getService('email') %}
+
+{% set twitterLink = settingService.getService('twitterLink') %}
+{% set facebookLink = settingService.getService('facebookLink') %}
+{% set linkedinLink = settingService.getService('linkedinLink') %}
+<tr>
+    <td style="background-color: #1b3a51; padding: 30px;">
+        <table>
+            <tbody style="padding-bottom: 15px; width: 50%; margin: auto; max-width: 156px;">
+            <tr>
+                <td style="width: 45px; margin: 0 5px; display: inline-block;">
+                    <a href="{{ twitterLink }}" target="_blank" style="display: block;width: 45px; margin: 0;">
+                        <img src="{{ absolute_url(asset('assets/frontend/images/common/twitter.png')) }}"
+                             alt="twitter"
+                             width="45"
+                             height="45"
+                             style="max-width: 45px; height: auto; display: block;"
+                        />
+                    </a>
+                </td>
+                <td style="width: 45px; margin: 0 5px; display: inline-block;">
+                    <a href="{{ facebookLink }}" target="_blank" style="display: block;width: 45px;  margin: 0;">
+                        <img src="{{ absolute_url(asset('assets/frontend/images/common/facebook.png')) }}"
+                             alt="facebook"
+                             width="45"
+                             height="45"
+                             style="max-width: 45px; height: auto; display: block;"
+                        />
+                    </a>
+                </td>
+                <td style="width: 45px; margin: 0 5px; display: inline-block;">
+                    <a href="{{ linkedinLink }}" target="_blank" style="display: block;width: 45px;  margin: 0;">
+                        <img src="{{ absolute_url(asset('assets/frontend/images/common/linkedin.png')) }}"
+                             alt="linkedin"
+                             width="45"
+                             height="45"
+                             style="max-width: 45px; height: auto; display: block;"
+                        />
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="tel:{{ phone }}" target="_blank" style="color: #ffffff; text-decoration: none; display: block; padding-bottom: 10px; padding-top: 20px; font-size: 13px;">
+            <strong>{{ 'menu.phone_link'|trans }}</strong> {{ phone }}
+        </a>
+        <a href="mailto:{{ email }}" target="_blank" style="color: #ffffff;text-decoration: none;display: block; padding-bottom: 20px;font-size: 13px;">
+            <strong>{{ 'menu.email_link'|trans }}</strong> {{ email }}
+        </a>
+        <p style="color: #ffffff; display: block; padding-bottom: 5px;font-size: 13px;">
+            {{ 'footer.copyright'|trans }} © {{ app_name }}
+        </p>
+        <p style="color: #ffffff; display: block;font-size: 13px;">
+            {{ 'email.common.footer_generated_no_reply'|trans }}
+        </p>
+    </td>
+</tr>

@@ -1,0 +1,117 @@
+<h3>{{ 'account.my_account'|trans }}</h3>
+
+{% include "shared/frontend/alert.html.twig" %}
+
+<form class="accountDetailsForm">
+    <div class="group has-loader">
+        <label for="email">{{ 'common.form_labels.email'|trans }}</label>
+        <input class="disabled" type="text" id="email" name="email" title="E-mail" value="{{ user.email }}" />
+        <span class="user-message"></span>
+        <div>
+            <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            <a class="close-btn d-none" href="#">&times;</a>
+            <a class="save-btn d-none" href="#">{{ 'account.details.save'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="group has-loader">
+        <label for="name">{{ 'common.form_labels.first_name'|trans }}</label>
+        <input class="disabled" type="text" id="name" name="firstName" title="Nume" value="{{ user.firstName }}" />
+        <span class="user-message"></span>
+        <div>
+            <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            <a class="close-btn d-none" href="#">&times;</a>
+            <a class="save-btn d-none" href="#">{{ 'account.details.save'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="group has-loader">
+        <label for="name">{{ 'common.form_labels.last_name'|trans }}</label>
+        <input class="disabled" type="text" id="name" name="lastName" title="Nume" value="{{ user.lastName }}" />
+        <span class="user-message"></span>
+        <div>
+            <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            <a class="close-btn d-none" href="#">&times;</a>
+            <a class="save-btn d-none" href="#">{{ 'account.details.save'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="group has-loader">
+        <label for="phoneNumber">{{ 'common.form_labels.phone'|trans }}</label>
+        <input class="disabled" type="text" id="phoneNumber" name="phoneNumber" title="Telefon" value="{{ user.phoneNumber }}" />
+        <span class="user-message"></span>
+        <div>
+            <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            <a class="close-btn d-none" href="#">&times;</a>
+            <a class="save-btn d-none" href="#">{{ 'account.details.save'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="accordion" id="accordionPassword">
+        <div class="group" data-toggle="collapse" data-target="#collapseOne">
+            <label for="name">{{ 'common.form_labels.password.first_options'|trans }}</label>
+            <input class="disabled" type="text" id="password" name="password" title="Parola" placeholder="*******" value="" />
+            <div>
+                <a class="edit-btn" href="#">{{ 'account.details.change_password'|trans }}</a>
+            </div>
+        </div>
+        <div class="collapse has-loader" id="collapseOne" data-parent="#accordionPassword">
+            <span class="user-message"></span>
+            <div class="group">
+                <label for="currentPassword">{{ 'account.details.old_password'|trans }}</label>
+                <input type="password" id="oldPassword" name="currentPassword" title="Parola veche" placeholder="Pass!@#456" value="" />
+            </div>
+            <div class="group">
+                <label for="newPassword">{{ 'account.details.new_password'|trans }}</label>
+                <input type="password" id="newPassword" name="newPassword[first]" title="Parola nouă" placeholder="NewPass!234" value="" />
+            </div>
+            <div class="group">
+                <label for="confirmPassword">{{ 'account.details.repeat_password'|trans }}</label>
+                <input type="password" id="repeatPassword" name="newPassword[second]" title="Repetă parola nouă" placeholder="NewPass!234" value="" />
+                <div>
+                    <a class="validate-btn" href="#">{{ 'account.details.validate'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion" id="accordionCompany">
+        <div class="group" data-toggle="collapse" data-target="#collapseTwo">
+            <label for="companyNamePreview">{{ 'account.details.data_company'|trans }}</label>
+            <input class="disabled" placeholder="{{ 'account.details.data_company'|trans }}" type="text" id="companyNamePreview" name="companyNamePreview" title="" value="{{ user.companyName }}" />
+            <div>
+                <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            </div>
+        </div>
+        <div class="collapse has-loader" id="collapseTwo" data-parent="#accordionCompany">
+            <div class="group">
+                <label for="companyName">{{ 'account.details.data_company'|trans }}</label>
+                <input type="text" placeholder="{{ 'account.details.data_company'|trans }}" id="companyName" name="companyName" title="Parola" value="{{ user.companyName }}" />
+            </div>
+            <div class="group">
+                <label for="companyAddress" class="hidden-label">{{ 'account.details.address'|trans }}</label>
+                <input type="text" placeholder="{{ 'account.details.address'|trans }}" id="companyAddress" name="companyAddress" title="Adresa" value="{{ user.companyAddress }}" />
+            </div>
+            <div class="group">
+                <label for="cui" class="hidden-label">{{ 'account.details.cui'|trans }}</label>
+                <input type="text" placeholder="{{ 'account.details.cui'|trans }}" id="companyCUI" name="cui" title="Cui" value="{{ user.cui }}" />
+            </div>
+            <div class="group">
+                <label for="registrationNumber" class="hidden-label">{{ 'account.details.registration_number'|trans }}</label>
+                <input type="text" placeholder="{{ 'account.details.registration_number'|trans }}" id="companyRegisterNumber" name="registrationNumber" title="Număr înregistrare (J)" value="{{ user.registrationNumber }}" />
+            </div>
+            <div class="group">
+                <label for="bankName" class="hidden-label">{{ 'account.details.bank_name'|trans }}</label>
+                <input type="text" placeholder="{{ 'account.details.bank_name'|trans }}" id="bankName" name="bankName" title="Nume bancă" value="{{ user.bankName }}" />
+            </div>
+            <div class="group">
+                <label for="bankAccount" class="hidden-label">{{ 'account.details.bank_account'|trans }}</label>
+                <input type="text" placeholder="{{ 'account.details.bank_account'|trans }}" id="bankAccount" name="bankAccount" title="Cont bancar" value="{{ user.bankAccount }}" />
+                <div>
+                    <a class="company-edit" href="#">{{ 'account.details.validate'|trans }}</a>
+                </div>
+            </div>
+            <span class="user-message"></span>
+        </div>
+    </div>
+</form>

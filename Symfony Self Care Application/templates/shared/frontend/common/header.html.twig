@@ -1,0 +1,135 @@
+{% import 'shared/frontend/common/macro-submenu.html.twig' as menuMacro %}
+
+{% set topMenu = menuService.menuItems(locale, 'top-menu') %}
+{% set primaryMenu = menuService.menuItems(locale, 'primary-menu') %}
+
+{% set helpLine = settingService.getService('helpLine') %}
+{% set logo = settingService.getService('logo') %}
+<div class="header">
+    <div class="menu-header mobile-header-menu d-md-none">
+        {% if logo is not null %}
+            <a class="header-logo" href="{{ path('app_homepage') }}">
+                <img
+                        width="120"
+                        height="45"
+                        data-category="Meniu"
+                        src="{{ asset(app_setting_path ~ logo) }}"
+                        alt="{{ app_name }}"
+                >
+            </a>
+        {% endif %}
+        <div class="hamburger-menu hamburger-menu--close"></div>
+    </div>
+    <nav class="nav-menu">
+        <div class="container-wrapper">
+            <div class="top-links header-links">
+                <nav class="top-links__container inner">
+                    <ul class="menu-list">
+                        {% for item in topMenu %}
+                            <li>
+                                <a href="{{ item['link'] }}">
+                                    {{ item['linkText']|upper }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href="tel:{{ helpLine }}">
+                                <img src="{{ asset('assets/frontend/images/common/header-phone.png') }}"
+                                     alt="header-phone">
+                                {{ 'menu.help_link'|trans }}
+                            </a>
+                        </li>
+                        {% if app.user %}
+                            <li>
+                                <div class="dropdown">
+                                    <a class="top-link">
+                                        <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/frontend/images/common/user-profile-img.webp') }}"
+                                             alt="logo"
+                                        />
+                                        <span>{{ app.user.fullName }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('dashboard_my_account') }}">
+                                                <img src="{{ asset('assets/frontend/images/common/user.svg') }}"
+                                                     width="15"
+                                                     alt="user-profile"/>
+                                                Vezi profil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#todo">
+                                                <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon-bookmarked.svg') }}"
+                                                     width="15"
+                                                     alt="favorites"/>
+                                                Pagini favorite
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('dashboard_logout') }}">
+                                                <img src="{{ asset('assets/frontend/images/common/log-out.svg') }}"
+                                                     width="20"
+                                                     alt="logout"/>
+                                                Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ path('dashboard_login') }}">
+                                    <img src="{{ asset('assets/frontend/images/common/user-login.png') }}"
+                                         alt="user login">
+                                    {{ 'menu.login_link'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="bottom-links header-links inner">
+                <div class="menu-header d-none d-md-block">
+                    {% if logo is not null %}
+                        <a class="header-logo" href="{{ path('app_homepage') }}">
+                            <img width="130"
+                                 height="55"
+                                 data-category="Meniu"
+                                 src="{{ asset(app_setting_path ~ logo) }}"
+                                 alt="{{ app_name }}"
+                            >
+                        </a>
+                    {% endif %}
+                </div>
+                <nav class="bottom-links__container">
+                    <div class="left-links">
+                        <ul>
+                            {% for item in primaryMenu %}
+                                {% if item['children'] is not empty %}
+                                    {{ menuMacro.render_submenu(item['children'], item['linkText']) }}
+                                {% else %}
+                                    <li>
+                                        <a href="{{ item['link'] }}">
+                                            {{ item['linkText'] }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="right-link">
+                        <ul>
+                            <li>
+                                <a href="{{ path('app_send_review') }}">
+                                    {{ 'menu.review_link'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </nav>
+</div>

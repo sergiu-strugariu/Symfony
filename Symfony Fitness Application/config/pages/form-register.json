@@ -1,0 +1,71 @@
+{
+  "entity": "Page",
+  "name": "Inregistrare Curs",
+  "machineName": "form-register",
+  "url": "/inregistrare-curs",
+  "classes": "form-register",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Inregistrare Curs",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/inregistrare-curs",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Inregistrare Curs",
+      "machineName": "form_register_section_1",
+      "template": "intro.html.twig",
+      "classes": "",
+      "variables": [
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Section Image",
+          "placeholder": "Widget Image",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": []
+    }
+  ]
+}

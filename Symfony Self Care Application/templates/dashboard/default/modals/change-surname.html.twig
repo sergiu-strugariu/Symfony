@@ -1,0 +1,43 @@
+<div class="modal fade" id="modalChangeSurname" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close" />
+            </div>
+            <div class="modal-body">
+                <form id="modalChangeSurnameForm">
+                    <h3>{{ 'dashboard.edit_profile.change_profile_surname'|trans }}</h3>
+                    <p>{{ 'dashboard.edit_profile.current_profile_surname'|trans }}: <span class="current-user-surname">{{ app.user.surname }}</span></p>
+                    <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <div class="board">
+                        <label for="currentSurname">{{ 'dashboard.edit_profile.current_profile_surname'|trans }}</label>
+                        <input type="text"
+                               name="currentSurname"
+                               id="currentSurname"
+                               value="{{ app.user.surname }}"
+                               disabled
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="surname">{{ 'dashboard.edit_profile.new_profile_surname'|trans }}</label>
+                        <input type="text"
+                               name="surname"
+                               id="surname"
+                               placeholder="ex. Popescu"
+                        />
+                    </div>
+                    <ul>
+                        <li>
+                            <input type="submit" class="submit-btn" value="{{ 'dashboard.edit_profile.change_profile_surname'|trans }}"/>
+                        </li>
+                        <li>
+                            <a href="#" data-bs-dismiss="modal" aria-label="Close">{{ 'auth.cancel'|trans }}</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

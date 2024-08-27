@@ -1,0 +1,23 @@
+{% extends 'layout_email.html.twig' %}
+
+{% block content %}
+    <tr>
+        <td style="font-family: 'Helvetica Neue LT Pro', sans-serif; font-size: 16pt; letter-spacing:0.525px; color: #465686; padding: 40px 50px 15px 50px ; font-weight:700;">{{ 'mails.salute'|trans }} {{ educationRegistration.firstName }},</td>
+    </tr>
+    <tr>
+        <td style="padding: 0px 50px 20px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            <p>{{ 'mails.wire_transfer.intro'|trans({'%title%': education.translation(default_locale).title, '%proformaInvoiceNumber%': educationRegistration.proformaInvoiceNumber}) }}</p>
+            <p>{{ 'mails.wire_transfer.details'|trans({'%price%': educationRegistration.paymentWithVAT}) }}</p>
+            <p>SC MOVE ON SRL<br/>
+                RO31RZBR0000060018162697<br/>
+                Raiffeisen Bank</p>
+            <p>{{ 'mails.wire_transfer.disclaimer_1'|trans }}</p>
+            <p>{{ 'mails.wire_transfer.disclaimer_2'|trans }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0px 50px 40px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ 'mails.greetings'|trans|raw }}
+        </td>
+    </tr>
+{% endblock %}

@@ -1,0 +1,34 @@
+<div class="slider-filter-anchor slick-shelters-anchor">
+    <div class="inner">
+        <h2>{{ 'company.other_hostels'|trans }} {{ company.county.name }}</h2>
+        <div class="list-wrapper recommended-resources">
+            <div class="slick-shelters has-loader">
+                {% for item in otherCompanies %}
+                    <div class="shelter">
+                        <div class="shelter-overlay"></div>
+                        <div class="image" style="background-image: url('{{ asset(item.fileName is not null ? app_company_path ~ item.fileName : app_company_path ~ app_default_image) }}');">
+                            <a href="{{ path('app_company_single', {'slug': item.slug}) }}" class="details-link">
+                                {{ 'common.view_more'|trans }}
+                            </a>
+                        </div>
+                        <div class="image-content">
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.city.name }}, {{ item.county.name }}</p>
+                            {% if item.averageRating is not null %}
+                                <span>
+                                    {{ item.averageRating }}
+                                    <img src="{{ asset('assets/frontend/images/common/star.png') }}" alt="rating-star">
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="cta-resources">
+            <a href="{{ path('app_company') }}?county={{ company.county.code }}">
+                {{ 'common.view_more_hostels'|trans }}
+            </a>
+        </div>
+    </div>
+</div>

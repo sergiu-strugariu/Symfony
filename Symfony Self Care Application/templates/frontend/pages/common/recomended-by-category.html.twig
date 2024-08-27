@@ -1,0 +1,27 @@
+{% if (recommended is not empty) %}
+    <div class="recommended-resources">
+        <div class="inner">
+            <h2>{{ 'homepage.recommended_by_category'|trans }} "{{ categoryName }}"</h2>
+            <div class="list">
+                {% for item in recommended %}
+                    <a href="{{ url }}/{{ item.slug }}" class="card">
+                        <div class="card-inner">
+                            <div class="image" style="background-image: url('{{ asset(app_company_path ~ item.fileName) }}')"></div>
+                            <div class="image-content">
+                                <div class="card-overlay"></div>
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.county.name }}, {{ item.city.name }}</p>
+                                {% if item.averageRating is not null %}
+                                    <span>
+                                    {{ item.averageRating }}
+                                    <img src="{{ asset('assets/frontend/images/common/star.png') }}" alt="rating-star">
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,29 @@
+<div class="slider-filter slider-filter-main recommended-resources">
+    <div class="inner">
+        <h2>
+            {{ 'homepage.recommended_service'|trans }}
+        </h2>
+        <ul class="category-filters">
+            <li>
+                <a class="active" href="#" data-category="">
+                    {{ 'blog.filter_all'|trans }}
+                </a>
+            </li>
+            {% for category in categoriesService %}
+                <li>
+                    <a href="#" data-category="{{ category.slug }}">
+                        {{ category.translation(locale).title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="list-wrapper">
+            <div class="slick-shelters slick-shelters-main"></div>
+        </div>
+        <div class="cta-resources">
+            <a href="{{ path('app_provider') }}">
+                {{ 'homepage.service_view_more'|trans }}
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ 'account.my_account'|trans }} {{ parent() }} {% endblock %}
+
+
+{% block content %}
+
+<main class="account">
+    {% set route = app.request.attributes.get('_route') %}
+    {% include "frontend/default/partials/account/intro.html.twig" %}
+    
+    <div class="inner">
+        <div class="content-wrapper">
+            <h2>{{ user.fullName }}</h2>
+            {% include "frontend/default/partials/account/sidebar.html.twig" %}
+
+            <div class="content">
+{#                <h3>{{ 'account.my_account'|trans }}</h3>#}
+
+                {% if route == "app_my_account_contracts" %}
+                    <div class="contracts">
+                        {% include "frontend/default/partials/account/contracts.html.twig" %}
+                    </div>
+                {% endif %}
+
+                {% if route == "app_my_account_invoices" %}
+                    <div class="invoices">
+                        {% include "frontend/default/partials/account/invoices.html.twig" %}
+                    </div>
+                {% endif %}
+
+                {% if route == "app_my_account_certifications" %}
+                    <div class="certifications">
+                        {% include "frontend/default/partials/account/certifications.html.twig" %}
+                    </div>
+                {% endif %}
+
+                {% if route == "app_my_account_details" %}
+                    <div class="details">
+                        {% include "frontend/default/partials/account/details.html.twig" %}
+                    </div>
+                {% endif %}
+
+                {% if route == "app_my_account_calendar" %}
+                    <div class="dashboard">
+                        {% include "frontend/default/partials/account/dashboard.html.twig" %}
+                    </div>
+                {% endif %}
+
+                {% if route not in ['app_my_account_contracts', 'app_my_account_invoices', 'app_my_account_certifications', 'app_my_account_calendar'] %}
+                    <a href="{{ path('app_logout') }}">{{ 'account.logout'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

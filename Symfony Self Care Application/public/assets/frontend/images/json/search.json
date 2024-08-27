@@ -1,0 +1,77 @@
+{
+  "search":[
+    {
+      "query": "camin, centre de kineto, ingrijire, spa",
+      "category": "Centre de ingrijire",
+      "name": "Azil Privat",
+      "url": "http://example.com/centrul-x"
+    },
+    {
+      "query": "camin, centre, ingrijire, spital",
+      "category": "Centre de ingrijire",
+      "name": "Casa Del Santos",
+      "url": "http://example.com/resursa-y"
+    },
+    {
+      "query": "camin, centre, ingrijire",
+      "category": "Centre de ingrijire",
+      "name": "Casa Fabian",
+      "url": "http://example.com/job-z"
+    },
+    {
+      "query": "camin, centre, spital",
+      "category": "Centre de ingrijire",
+      "name": "Casa Lenalia",
+      "url": "http://example.com/curs-a"
+    },
+    {
+      "query": "camin, centre, ingrijire",
+        "category": "Centre de ingrijire",
+        "name": "Căminul Povești Cu Bunici",
+        "url": "http://example.com/resursa-y"
+    },
+    {
+      "query": "camin",
+      "category": "Resurse de ingrijire",
+      "name": "Resursa Y",
+      "url": "http://example.com/resursa-y"
+    },
+    {
+      "query": "joburi, ",
+      "category": "Joburi",
+      "name": "Asistent Medical",
+      "url": "http://example.com/job-z"
+    },
+    {
+      "query": "centre, camin, joburi, serviciu, functie, post",
+      "category": "Joburi",
+      "name": "Electrician",
+      "url": "http://example.com/job-z"
+    },
+    {
+      "query": "centre, camin, joburi, serviciu, functie, post",
+      "category": "Joburi",
+      "name": "Sofer",
+      "url": "http://example.com/job-z"
+    },
+    {
+      "query": "centre, cursuri, udemy",
+      "category": "Cursuri",
+      "name": "Curs de Frizer",
+      "url": "http://example.com/curs-a"
+    },
+    {
+      "query": "centre, cursuri, udemy",
+      "category": "Cursuri",
+      "name": "Curs de kinetoterapeut",
+      "url": "http://example.com/curs-a"
+    },
+    {
+      "query": "cursuri, udemy",
+      "category": "Cursuri",
+      "name": "Curs de bucatar",
+      "url": "http://example.com/curs-a"
+    }
+  ]
+
+}

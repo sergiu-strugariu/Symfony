@@ -1,0 +1,34 @@
+<div class="inner">
+    {% if translation.description %}
+        {{ translation.description|sanitize_html }}
+    {% endif %}
+    <form id="searchForm">
+        <div class="search-box">
+            <label for="nursingSearch" class="search-label">
+                {{ 'search.location'|trans }}
+            </label>
+            <select id="nursingSearch" class="nursing-search" name="nursingSearch">
+                <option value="">{{ 'search.county'|trans }}</option>
+            </select>
+            <div id="nursing-list" class="nursing-suggestions"></div>
+        </div>
+        <div class="search-container">
+            <label for="searchInput" class="label-search">
+                {{ 'search.title'|trans }}
+            </label>
+            <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    name="searchInput"
+                    placeholder="{{ 'search.placeholder'|trans }}"
+                    autocomplete="off"
+            >
+            <span class="close-search-dropdown"></span>
+            <div id="dropdown" class="dropdown hidden"></div>
+        </div>
+        <a class="submit" href="#">
+            {{ 'search.btn_search'|trans }}
+        </a>
+    </form>
+</div>

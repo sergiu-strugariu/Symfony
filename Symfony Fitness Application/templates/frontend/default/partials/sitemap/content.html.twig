@@ -1,0 +1,16 @@
+{% import 'frontend/macros/macro-sitemap.html.twig' as menuMacro %}
+{% set item = menu_helper.menuItems(locale, 'sitemap') %}
+
+<div class="content">
+    <div class="inner">
+        <ul>
+            {% for item in item %}
+                {% if item['children'] is not empty %}
+                    {{ menuMacro.render_submenu(item['children'], item['linkText'] ~ " >>", true) }}
+                {% else %}
+                    <li><a href="{{ item['link'] }}">{{ item['linkText'] }} >></a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}Education registration management  {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        {% include 'dashboard/education-registrations/_form.html.twig' %}
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
+{% endblock %}

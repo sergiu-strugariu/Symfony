@@ -1,0 +1,48 @@
+<div class="modal fade" id="modalChangeDelete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close" />
+            </div>
+            <div class="modal-body">
+                <form id="modalChangeDeleteForm">
+                    <h3>{{ 'dashboard.edit_profile.delete_account'|trans }}</h3>
+                    <p>{{ 'dashboard.edit_profile.delete_account_all_data_lost'|trans }}</p>
+                     <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <hr>
+                    <div class="radio-btn-group">
+                        <div class="radio-group">
+                            <input type="radio" id="tooManyEmails" name="option" value="Receiving too many emails from Seniorhelp" required checked>
+                            <label for="tooManyEmails">{{ 'dashboard.edit_profile.too_many_emails'|trans }}</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="notRelevantInfo" name="option" value="Not finding relevant information" required>
+                            <label for="notRelevantInfo">{{ 'dashboard.edit_profile.irelevant_info'|trans }}</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="notResponseFromJobs" name="option" value="No response to applied jobs" required>
+                            <label for="notResponseFromJobs">{{ 'dashboard.edit_profile.applied_job_no_response'|trans }}</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="otherReason" name="option" value="other" required>
+                            <label for="otherReason">{{ 'dashboard.edit_profile.other_reason'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="add-review">
+                            <textarea placeholder="{{ 'dashboard.edit_profile.enter_reason'|trans }}" name="shortMessage" id="shortMessage"></textarea>
+                        </div>
+                    </div>
+                    <h4>{{ 'dashboard.edit_profile.summary'|trans }}</h4>
+                    <p>{{ 'dashboard.edit_profile.delete_no_return'|trans }}</p>
+                    <ul>
+                        <li><input type="submit" class="submit-btn" value="{{ 'dashboard.edit_profile.delete_account'|trans }}"></li>
+                        <li><a href="#" data-bs-dismiss="modal" aria-label="Close">{{ 'auth.cancel'|trans }}</a></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

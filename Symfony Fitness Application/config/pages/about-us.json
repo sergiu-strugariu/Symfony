@@ -1,0 +1,346 @@
+{
+  "entity": "Page",
+  "name": "About Us",
+  "machineName": "about-us",
+  "url": "/",
+  "classes": "about-us",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "About Us",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/home",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "About Us sections",
+      "machineName": "about-us_section_1",
+      "template": "intro.html.twig",
+      "classes": "",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about-us_section_1_widget_1",
+          "template": "section_1_widget.html.twig",
+          "variables": [
+
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget Image Mobile",
+              "placeholder": "Widget Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "About Us sections",
+      "machineName": "about-us_section_2",
+      "template": "our-mission_who-we-are.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "classes",
+          "type": "text",
+          "label": "Section Class",
+          "placeholder": "Section Class",
+          "value": "",
+          "isTranslated": false,
+          "required": false,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about-us_section_2_widget_1",
+          "classes": "ltr",
+          "template": "section_2_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget Image Mobile",
+              "placeholder": "Widget Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "classes",
+              "type": "text",
+              "label": "Widget Class",
+              "placeholder": "Widget Class",
+              "value": "",
+              "isTranslated": false,
+              "required": false,
+              "editable": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about-us_section_2_widget_2",
+          "classes": "rtl",
+          "template": "section_2_widget.html.twig",
+          "variables": [
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget Image Mobile",
+              "placeholder": "Widget Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "classes",
+              "type": "text",
+              "label": "Widget Class",
+              "placeholder": "Widget Class",
+              "value": "",
+              "isTranslated": false,
+              "required": false,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "About Us sections",
+      "machineName": "about-us_section_4",
+      "classes": "",
+      "template": "our-expertise.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about-us_section_3_widget_1",
+          "template": "section_3_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about-us_section_3_widget_2",
+          "template": "section_3_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

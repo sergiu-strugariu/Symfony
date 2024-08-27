@@ -1,0 +1,274 @@
+<div class="card mb-5 mb-lg-3 card-flush">
+    <!--begin::Form content-->
+    {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data', 'novalidate': 'novalidate'}}) }}
+    <!--begin::Card body-->
+    <div class="card-body p-9 pb-lg-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.title, 'dashboard.table.title'|trans , {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.title, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.title) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.company, 'dashboard.form.care_or_provider'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.company, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0', 'data-control': 'select2', 'data-placeholder':  'common.select'|trans }}) }}
+                                {{ form_errors(form.company) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.categoryCourses, 'common.filter_category'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.categoryCourses, {'attr': {'class': 'only-one-category form-select form-select-solid form-select-lg rounded-0', 'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                                {{ form_errors(form.categoryCourses) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.startCourseDate, 'common.start_date'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.startCourseDate, {'attr': {'class': 'flatpickr-init form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.startCourseDate) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.county, 'dashboard.form.county'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.county, {'attr': {'class': 'counties form-select form-select-solid form-select-lg rounded-0', 'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                                {{ form_errors(form.county) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.city, 'dashboard.form.city'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.city, {'attr': {'class': 'cities form-select form-select-solid form-select-lg rounded-0', 'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                                {{ form_errors(form.city) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.address, 'dashboard.form.address'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.address, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.price, 'common.filter_price'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.price, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.price) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.duration, 'courses.duration'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.duration, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.duration) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.format, 'courses.format'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.format, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.format) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.level, 'courses.level'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.level, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.level) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.certificate, 'courses.certificates'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.certificate, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.certificate) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.minParticipant, 'courses.min_participants'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.minParticipant, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.minParticipant) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.maxParticipant, 'courses.max_participants'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.maxParticipant, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.maxParticipant) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.shortDescription, 'dashboard.form.short_description'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.shortDescription, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0', 'rows': '3'}}) }}
+                        {{ form_errors(form.shortDescription) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.body, 'dashboard.form.description'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.body, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0 tinymce-editor', 'rows': '6'}}) }}
+                        {{ form_errors(form.body) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.status, 'dashboard.table.status'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.status, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                        {{ form_errors(form.status) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.fileName, 'dashboard.form.share_file'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.fileName, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.fileName) }}
+                        {% if image is defined %}
+                            <div class="form-text">{{ 'dashboard.form.image_uploaded'|trans }}:
+                                <a href="{{ asset(app_course_path ~ image) }}" target="_blank">{{ image }}</a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">{{ 'dashboard.form.image_format'|trans }}</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card body-->
+    <!--begin::Card footer-->
+    <div class="card-footer py-6 pt-lg-0 border-top-0 pb-lg-9 px-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                    {{ form_widget(form._token) }}
+                    <a href="{{ path('dashboard_training_index') }}"
+                       class="btn text-uppercase fw-bolder">
+                        {{ 'dashboard.form.cancel'|trans }}
+                    </a>
+                    <button type="submit" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">{{ 'dashboard.form.submit'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card footer-->
+    {{ form_end(form) }}
+    <!--end::Form content-->
+</div>

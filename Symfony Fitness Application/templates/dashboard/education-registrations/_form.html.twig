@@ -1,0 +1,162 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<!--begin::Card body-->
+<div class="card-body p-9">
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.paymentStatus, 'Payment Status', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.paymentStatus, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.paymentStatus) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.paymentMethod, 'Payment Status', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.paymentMethod, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.paymentMethod) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.phone, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.phone) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.bankName, 'Bank Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.bankName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.bankName) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.bankAccount, 'Bank Account', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.bankAccount, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.bankAccount) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.companyName, 'Company Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.companyName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.companyName) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.companyAddress, 'Company Address', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.companyAddress, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.companyAddress) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.cui, 'CUI', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.cui, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.cui) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.registrationNumber, 'Registration Number', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.registrationNumber, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.registrationNumber) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.paymentVat, 'Payment VAT', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.paymentVat, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.paymentVat) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.paymentAmount, 'Payment Amount', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.paymentAmount, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.paymentAmount) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.paymentMessage, 'Payment Message', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.paymentMessage, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '5'}}) }}
+            {{ form_errors(form.paymentMessage) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.payuPaymentReference, 'Payment Reference', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.payuPaymentReference, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '5'}}) }}
+            {{ form_errors(form.payuPaymentReference) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.invoicingPerLegalEntity, 'Invoice per legal Entity', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.invoicingPerLegalEntity, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.accordGDPR, 'Accord GDPR', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.contract, 'Contract', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.contract, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.accordMedia, 'Accord Media', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.accordMedia, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+        </div>
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        {{ form_label(form.certificateFileName, 'Diploma/Certification', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+        {{ form_widget(form.certificateFileName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+        {{ form_errors(form.certificateFileName) }}
+
+        {% if editMode and entity.certificateFileName %}
+            <div class="form-text">File uploaded:
+                <a href="{{ asset(app_diploma_path ~ entity.certificateFileName) }}" target="_blank">
+                    {{ asset(app_diploma_path ~ entity.certificateFileName) }}
+                </a>
+            </div>
+        {% endif %}
+        <div class="form-text">(format acceptat: jpg, jpeg, png, pdf, max. 3M)</div>
+    </div>
+</div>
+
+<!--begin::Card footer-->
+<div class="card-footer py-6 px-9">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-end">
+                {{ form_widget(form._token) }}
+                <a href="#" class="btn btn-light btn-active-light-primary me-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Card footer-->
+<!--end::Card body-->
+{{ form_end(form) }}

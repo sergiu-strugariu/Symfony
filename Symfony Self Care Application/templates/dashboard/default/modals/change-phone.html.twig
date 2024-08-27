@@ -1,0 +1,43 @@
+<div class="modal fade" id="modalChangePhoneNumber" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close" />
+            </div>
+            <div class="modal-body">
+                <form id="modalChangePhoneForm">
+                    <h3>Modifică telefon</h3>
+                    <p>Numărul actual este <span id="currentUserPhone">{{ app.user.phone }}</span></p>
+                    <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <div class="board">
+                        <label for="currentPhone">Telefon actual</label>
+                        <input type="tel"
+                               name="currentPhone"
+                               id="currentPhone"
+                               value="{{ app.user.phone }}"
+                               disabled
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="phone">Telefon nou</label>
+                        <input type="tel"
+                               name="phone"
+                               id="phone"
+                               placeholder="ex. 9876 543 210"
+                        />
+                    </div>
+                    <ul>
+                        <li>
+                            <input type="submit" class="submit-btn" value="Modifică telefon"/>
+                        </li>
+                        <li>
+                            <a href="#" data-bs-dismiss="modal" aria-label="Close">Anulează</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

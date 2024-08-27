@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card-inner">
+        {% if widget.fileName %}
+            <div class="card-image">
+                <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" width="51" height="51" alt="icon-eficienta">
+            </div>
+        {% endif %}
+        {% if translation.description %}
+            <div class="card-info">
+                {{ translation.description|sanitize_html('app.editor') }}
+            </div>
+        {% endif %}
+    </div>
+</div>

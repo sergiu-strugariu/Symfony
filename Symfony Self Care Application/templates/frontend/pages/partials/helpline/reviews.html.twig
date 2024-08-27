@@ -1,0 +1,20 @@
+<div class="content-wrapper">
+    <div class="inner">
+        <div class="home-details-reviews-container">
+            <div class="inner">
+                <div class="list-wrapper">
+                    <div class="common-arrow swiper-button-prev prev-review"></div>
+                    <div class="home-details-reviews slick-shelters">
+                        <!-- start: Page widget  -->
+                        {% for widget in section.pageWidgets %}
+                            {% set translation = widget.translation(locale) %}
+                            {% include 'frontend/pages/partials/helpline/widgets/' ~ widget.template ignore missing %}
+                        {% endfor %}
+                        <!-- end: Page widget  -->
+                    </div>
+                    <div class="common-arrow swiper-button-next next-review"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

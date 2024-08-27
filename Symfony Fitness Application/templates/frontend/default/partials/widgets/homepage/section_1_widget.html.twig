@@ -1,0 +1,11 @@
+<div class="inner">
+    <div>
+        <div class="item">
+            <h4>{{ translation.title }}</h4>
+            {{ translation.description|raw }}
+            {% if translation.link and translation.linkText %}
+                <a href="{{ translation.link }}">{{ translation.linkText }}</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

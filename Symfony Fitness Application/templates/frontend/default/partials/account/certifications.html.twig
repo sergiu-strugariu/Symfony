@@ -1,0 +1,16 @@
+<h3>{{ 'account.my_account'|trans }}</h3>
+
+<div class="items-wrapper">
+    {% for certification in certifications %}
+        {% set education = certification.education %}
+        <div class="item">
+            <h4>{{ education.translation(locale).title }}</h4>
+            <p>24 {{ 'account.certifications.credits'|trans }}</p>
+            {% if certification.certificateFileName is not empty %}
+                <a href="{{ asset(app_diploma_path ~ certification.certificateFileName) }}" target="_blank">{{ 'account.certifications.download'|trans }}</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <h3>{{ 'account.certifications.no_certifications'|trans }}</h3>
+    {% endfor %}
+</div>

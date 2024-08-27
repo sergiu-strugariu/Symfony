@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/frontend/styles/style.min.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <!-- Start: Header-->
+    {% include "shared/frontend/common/header-auth.html.twig" %}
+    <!-- End: Header -->
+
+    <!-- Start: Content-->
+    {% block content %}{% endblock %}
+    <!-- End: Content -->
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/frontend/scripts/bundle.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="{{ asset('assets/frontend/scripts/main.min.js') }}"></script>
+{% endblock %}

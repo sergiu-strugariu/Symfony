@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+
+{% set locale = languageHelper.getLocaleFromRequest %}
+
+{% block title %}{{ education.translation(locale).title  }} {{ parent() }} {% endblock %}
+
+{% block content %}
+    <main class="course-details">
+        {% include "frontend/default/partials/course-details/intro.html.twig" %}
+        {% include "frontend/default/partials/course-details/details.html.twig" %}
+
+        <div class="inner">
+            <div class="content">
+                {% include "frontend/default/partials/course-details/about-course.html.twig" %}
+                {% include "frontend/default/partials/course-details/learn.html.twig" %}
+                {% include "frontend/default/partials/course-details/course-schedule.html.twig" %}
+                {% include "frontend/default/partials/course-details/important-info.html.twig" %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

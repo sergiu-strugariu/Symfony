@@ -1,0 +1,129 @@
+{
+  "entity": "Page",
+  "name": "Locuri de muncă",
+  "machineName": "jobs",
+  "url": "/joburi",
+  "classes": "jobs",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "/joburi",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Job section intro",
+      "machineName": "job_section_intro",
+      "template": "intro.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "job_section_intro_widget",
+          "template": "intro-content.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Intro Title",
+              "placeholder": "Intro Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Intro Image",
+              "placeholder": "Intro Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Job section search",
+      "machineName": "job_section_search",
+      "template": "search.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "job_section_search_widget",
+          "template": "search-content.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

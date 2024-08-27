@@ -1,0 +1,17 @@
+{
+  "rows": [
+    {"name": "Azil Privat",  "image": "../images/homepage/slider-filter/results_one.webp", "category": "Produse"},
+    {"name": "Casa Del Santos", "image": "../images/homepage/slider-filter/results_two.webp", "category": "Produse" },
+    {"name": "Casa Fabian",  "image": "../images/homepage/slider-filter/results_three.webp", "category": "Produse" },
+    {"name": "Casa Lenalia",  "image": "../images/homepage/slider-filter/results_four.webp", "category": "Produse"},
+
+    {"name": "2Azil Privat",  "image": "../images/homepage/slider-filter/results_one.webp", "category": "Servicii"},
+    {"name": "2Casa Del Santos", "image": "../images/homepage/slider-filter/results_two.webp", "category": "Servicii" },
+    {"name": "2Casa Fabian",  "image": "../images/homepage/slider-filter/results_three.webp", "category": "Servicii" },
+    {"name": "2Casa Lenalia",  "image": "../images/homepage/slider-filter/results_four.webp", "category": "Servicii"}
+
+  ],
+  "total": 100,
+  "skip": 0,
+  "limit": 4
+}

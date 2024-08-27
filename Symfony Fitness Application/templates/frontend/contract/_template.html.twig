@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>CONTRACT DE FORMARE PROFESIONALĂ</title>
+        <style>
+            body {
+                font-family: "DejaVu Sans", sans-serif;
+            }
+            p, ul, li, a {
+                font-size: 13px;
+            }
+        </style>
+    </head>
+    <body>
+        <h4 style="text-align: center; font-weight: bold;">CONTRACT DE FORMARE PROFESIONALĂ</h4>
+        <h5 style="text-align: center; font-weight: bold;">Nr. {{ educationRegistration.contractNumber }} din data {{ education.formattedDate(default_locale) }} </h5>
+        <br/>
+        <p>Prezentul Contract de formare profesională ("Contractul") a fost încheiat între:</p>
+        <p>A) SC MOVE ON SRL, persoană juridică română, cu sediul social în str. Ion Brezoianu nr. 27, parter, camera 5, 8 si 9, sector 1, București, înregistrata la Oficiul Registrului Comerțului sub nr. J40/3820/2012, Cod Unic de Înregistrare RO 30019625, având contul nr. RO31 RZBR 0000 0600 1816 2697, deschis la RAIFFEISEN BANK, deținătoarea autorizațiilor de furnizor de formare profesională seria B nr. B 0012907 (pentru ocupaţia INSTRUCTOR DE FITNESS – COR 342302), seria B nr. B 0012906 (pentru ocupația INSTRUCTOR DE AEROBIC-FITNESS – COR 342304) si respectiv,  pentru ocupația de INSTRUCTOR SPORTIV – cod COR 342202), seria B 0013950 avand nr. de ordine 40/1913/11.03.2021, 40/1912/11.03.2021 și respectiv 40/3466/19.05.2023 în Registrul naţional al furnizorilor de formare profesională a adulţilor, reprezentată legal prin dl. Vasilescu-Hnyatek Gabriel, în calitate de Administrator, denumită în continuare Furnizor</p>
+        <p>B) Dl/D-na {{ educationRegistration.fullName }}, cetățean român, cu domiciliul în ............................................, str. ............................................................, nr. ..........., sector/judeţ ......................................., identificat cu CI seria ... nr. ............, eliberată de ........................................, la data de ......................., CNP ......................................, denumit în continuare Beneficiar.</p>
+
+        <p style="font-weight: bold;">Art. 1: Obiectul Contractului</p>
+        <p>(1) Obiectul Contractului îl constituie efectuarea de către Furnizor, în folosul Beneficiarului, a unor servicii de formare profesională, ocupația {{ education.contractOccupation }}.</p>
+        <p>(2) Astfel, în baza Contractului, va fi asigurat Beneficiarului suportul de curs și, totodată, vor fi efectuate serviciile de formare profesională prin intermediul unor formatori, urmând ca Beneficiarul să fie evaluat de către Furnizor.</p>
+        <p>(3) Cursurile de formare se vor desfășura la locații special amenajate, puse la dispoziție de către Furnizor.</p>
+
+        <p style="font-weight: bold;">Art. 2: Durata Contractului</p>
+        {{ education.contractDuration|raw }}
+
+        <p style="font-weight: bold;">Art. 3: Valoarea serviciilor</p>
+        <p>(1) Valoarea serviciilor care vor fi efectuate de Furnizor în folosul Beneficiarului este de conform facturii emise.</p>
+        <p>(2) Beneficiarul va achita contravaloarea serviciilor pe baza facturii emise de Furnizor, în una sau mai multe tranșe, la termenele agreate de părți. Plata se va putea efectua online sau prin transfer bancar, în contul indicat de Furnizor în preambulul prezentului Contract.</p>
+        <p>(3) În cazul în care Beneficiarul nu va achita contravaloarea serviciilor în termenele agreate de părți, Furnizorul este îndreptățit să solicite acestuia plata unor penalități, în cuantum de 0,15% din suma datorată, calculate pentru fiecare zi de întârziere.</p>
+        <p>(4) Valoarea serviciilor precum şi modalităţile de plată pot fi modificate ulterior, cu acordul părţilor, prin acte adiţionale la prezentul Contract.</p>
+
+        <p style="font-weight: bold;">Art. 4: Obligaţiile părţilor</p>
+        <p>(1) Furnizorul se obligă:</p>
+        <p>a) să presteze serviciile de formare profesională, cu respectarea normelor legale şi a metodologiilor în materie, punând accent pe calitatea formării profesionale;</p>
+        <p>b) să asigure resursele umane, materiale, tehnice sau altele asemenea, necesare desfăşurării în bune condiții a activităţii de formare profesională;</p>
+        <p>c) să asigure finalizarea procesului de formare profesională precum şi susţinerea examenelor de absolvire la terminarea stagiilor de pregătire teoretică şi practică;</p>
+        <p>d) să asigure instructajul privind protecţia muncii, pe perioada desfășurării cursurilor de formare;</p>
+        <p>e) să nu impună Beneficiarului să participe la alte activităţi decât cele prevăzute în programul de formare profesională, conform prezentului Contract;</p>
+        <p>f) să emită factura și să o comunice Beneficiarului.</p>
+        <p>(2) Beneficiarul se obligă:</p>
+        <p>a) să frecventeze programul de formare profesională, pe întreaga perioadă a derulării acestuia. Înregistrarea a mai mult de 10% absenţe nemotivate sau 25% absenţe motivate din durata totală a programului va conduce la pierderea dreptului Beneficiarului de a susţine examenul de absolvire;</p>
+        <p>b) să utilizeze resursele materiale, tehnice şi altele asemenea, aparținând Furnizorului, potrivit scopului şi destinaţiei acestora şi numai în cadrul procesului de formare profesională, evitând degradarea, deteriorarea sau distrugerea acestora;</p>
+        <p>c) să păstreze ordinea, curăţenia şi disciplina pe parcursul frecventării cursurilor de formare profesională;</p>
+        <p>d) să respecte normele privind protecţia muncii, pe parcursul frecventării cursurilor de formare profesională;</p>
+        <p>e) sa achite contravaloarea serviciilor efectuate de Furnizor în folosul Beneficiarului, în cuantumul și la termenele prevăzute în Contract.</p>
+        <p>f) sa consulte un medic înainte de a participa la activitatea fizică aferentă serviciilor furnizate de SC MOVE ON SRL și sa obțină avizul prealabil al medicului pentru activitatea fizică ce urmează a fi desfașurată în cadrul formării profesionale, în caz contrar urmând să utilizeze serviciile exclusiv pe răspundere proprie.</p>
+
+        <p style="font-weight: bold;">Art. 5: Forţa majoră</p>
+        <p>(1) Forţa majoră este exoneratoare de răspundere pentru oricare dintre părți, în cazul în care evenimentul de forță majoră este dovedit în condiţiile legii.</p>
+        <p>(2) Partea care, din cauză de forţă majoră, nu îşi poate respectă obligaţiile contractuale, va înştiinţa în scris cealaltă parte contractantă, în termen de cel mult 5 zile de la data apariței și respectiv încetării evenimentului de forţă majoră.</p>
+
+        <p style="font-weight: bold;">Art. 6: Soluţionarea litigiilor</p>
+        <p>(1) Părţile contractante vor depune toate diligenţele pentru rezolvarea pe cale amiabilă a neînţelegerilor ce se pot ivi între acestea, pe perioada executării contractului.</p>
+        <p>(2) Dacă rezolvarea pe cale amiabilă a litigiului nu este posibilă, părţile se vor adresa instanţei de judecată de drept comun de la sediul Furnizorului.</p>
+
+        <p style="font-weight: bold;">Art.7: Modificarea Contractului</p>
+        <p>(1) Contractul poate fi modificat numai prin acordul de voinţă al părţilor, exprimat prin act adiţional la prezentul Contract.</p>
+        <p>(2) Nicio modificare, schimbare sau adăugare la prezentul Contract nu va fi valabilă sau nu va fi opozabilă oricareia dintre părți, cu excepția cazului în care este făcută în scris și semnată de către părți.</p>
+
+        <p style="font-weight: bold;">Art.8: Incetarea Contractului</p>
+        <p>(1) Contractul încetează de drept la data menționată la art. 2 alin. (2) din Contract.</p>
+        <p>(2) Prezentul Contract poate înceta și în următoarele condiţii:</p>
+        <p>a) prin acordul părţilor;</p>
+        <p>b) prin rezilierea acestuia de către oricare din părți, în cazul în care cealaltă parte nu își îndeplinește obligațiile asumate prin semnarea Contractului.</p>
+
+        <p style="font-weight: bold;">Art. 9: Alte clauze</p>
+        <p>(1) Prevederile prezentului Contract se completează cu dispozițiile legislației române în vigoare. Prezentul Contract, împreună cu modificările și anexele sale, reprezintă voința părților și înlătură orice înțelegere scrisă sau verbală dintre acestea, anterioară încheierii lui.</p>
+        <p>(2) În cazul încălcării de către una din părți a obligației(ilor) sale, neexercitarea de către partea prejudiciată a dreptului de a cere executarea întocmai sau prin echivalent a respectivei obligații nu înseamnă că partea prejudiciată a renunțat la acest drept.</p>
+        <p>(3) În cazul în care orice dispoziție a prezentului Contract va fi considerată invalidă sau ilegală sau neaplicabilă în baza oricărei legi, toate celelalte dispoziții ale acestui Contract vor rămâne pe deplin în vigoare și vor produce efecte. Dacă oricare astfel de dispoziție este considerată invalidă, ilegală sau neaplicabilă, părțile vor negocia cu bună credință modificarea respectivei clauze a Contractului, în cea mai mare măsură posibilă, astfel încât respectiva clauza să fie legală, validă și aplicabilă și/sau să păstreze pe cât posibil intenția inițială a părților.</p>
+        <p>(4) Renunțarea la oricare dintre prevederile acestui Contract nu va fi interpretată ca o renunțare la oricare altă prevedere contractuală. Nicio renunțare nu va fi considerată valabilă decât în cazul în care este facută în scris și semnată de către partea care poate renunța la dreptul relevant. Nicio prelungire a termenului de îndeplinire a unei obligații din acest Contract nu va fi interpretată ca o prelungire a termenului de îndeplinire a oricărei alte obligații.</p>
+        <p>(5) Fiecare Parte confirmă faptul că a înțeles și acceptă fiecare și toate prevederile din cuprinsul Contractului.</p>
+        <br/>
+        <p>Prezentul Contract a fost încheiat la sediul Furnizorului, în (2) două exemplare originale, din care unul pentru Furnizor şi unul pentru Beneficiar.</p>
+        <br/>
+        <table style="width: 100%; border: none;" border="0">
+            <tr>
+                <td style="width: 50%;" valign="top">
+                    <p>Furnizor,</p>
+                    <p>SC MOVE ON SRL</p>
+                    <p>Prin Administrator</p>
+                    <p>Vasilescu-Hnyatek Gabriel</p>
+                </td>
+                <td style="width: 50%;" valign="top">
+                    <p>Beneficiar<sup>1</sup>:</p>
+                    <p>{{ educationRegistration.fullName }}</p>
+                </td>
+            </tr>
+        </table>
+        <br/><br/><br/><br/><br/>
+        <p><sup>1</sup>Prin semnarea Contractului, vă daţi consimţământul ca datele personale să fie utilizate pentru completarea certificatelor de absolvire şi pentru transmiterea ofertei de programe de formare profesională catre dvs. Datele respective vor fi securizate în baza de date a SC Move On  SRL. Conform Legii nr. 677/2001, beneficiaţi de dreptul de acces, de intervenţie asupra datelor, dreptul de a nu fi supus unei decizii individuale. Totodată, aveţi dreptul să vă opuneţi prelucrării datelor personale care vă privesc şi să solicitaţi ştergerea datelor. Pentru exercitarea acestor drepturi, vă puteţi adresa cu o cerere scrisă, datată şi semnată catre SC Move On SRL. De asemenea, vă este recunoscut dreptul de a vă adresa justiţiei.</p>
+    </body>
+</html>

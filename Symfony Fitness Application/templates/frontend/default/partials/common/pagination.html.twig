@@ -1,0 +1,13 @@
+<div class="pagination-wrapper">
+    <div class="inner">
+        <nav class="py-2 w-100">
+            <ul class="pagination justify-content-center">
+                {% for page in 1..totalPages %}
+                    <li class="page-item">
+                        <a class="page-link {% if page == currentPage %}active {% endif %}" href="#" data-page="{{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="card h-100">
+    <div class="card-header p-9">
+        <h2 class="page-heading d-flex fw-bolder fs-6 flex-column justify-content-center my-0 text-uppercase color-1A394E">
+            {{ 'dashboard.table.add_new_link'|trans }}
+        </h2>
+    </div>
+    <!--begin::Form content-->
+    {{ form_start(form, {'attr': {'class': 'form', 'id': 'menu-items-form', 'enctype': 'multipart/form-data'}}) }}
+    {{ form_widget(form.parentId, {'attr': {'class': 'menu-item-id'}}) }}
+    <!--begin::Card body-->
+    <div class="card-body p-9 pb-lg-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.linkText, 'dashboard.table.title'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.linkText, {'attr': {'class': 'link-text form-control form-control-solid form-control-lg rounded-0'}}) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.link, 'dashboard.form.url'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.link, {'attr': {'class': 'link form-control form-control-solid form-control-lg rounded-0'}}) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.cssClass, 'CSS class', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.cssClass, {'attr': {'class': 'css-class form-control form-control-solid form-control-lg rounded-0'}}) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.description, 'company.content_section_title'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.description, {'attr': {'class': 'description form-control form-control-solid form-control-lg rounded-0', 'rows': '3'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.icon, 'dashboard.form.icon'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-preview"></div>
+                            {{ form_widget(form.icon, {'attr': {'class': 'menu-icon form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        </div>
+                        <div class="form-text">{{ 'dashboard.form.image_format'|trans }}</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <label for="menu-item-parent" class="col-lg-2 col-form-label fw-semibold fs-6">
+                        {{ 'dashboard.form.parent_link'|trans }}
+                    </label>
+                    <div class="col-lg-10 fv-row">
+                        <select name="menu-item-parent" class="menu-item-parent form-select form-select-solid form-select-lg rounded-0">
+                            <option value="0" selected>{{ 'dashboard.form.link_without_parent'|trans }}</option>
+                            <optgroup label="Items"></optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card body-->
+    <!--begin::Card footer-->
+    <div class="card-footer">
+        <div class="btn-group add-menu-item-buttons">
+            <button class="btn btn-brand" id="add-menu-item-save">
+                {{ 'dashboard.actions.create'|trans }}
+            </button>
+        </div>
+        <div class="btn-group edit-menu-item-buttons d-none">
+            <button class="btn btn-brand" id="edit-menu-item-save">
+                {{ 'dashboard.actions.update'|trans }}
+            </button>
+            <button class="btn btn-danger" id="edit-menu-item-delete">
+                {{ 'dashboard.actions.remove'|trans }}
+            </button>
+        </div>
+    </div>
+    <!--end::Card footer-->
+    {{ form_widget(form._token) }}
+    {{ form_end(form) }}
+    <!--end::Form content-->
+</div>

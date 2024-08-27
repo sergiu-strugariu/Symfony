@@ -1,0 +1,58 @@
+{% extends 'layout_dashboard.html.twig' %}
+{% block title %}{{ parent() }} {{ 'dashboard.favorites.title'|trans }}{% endblock %}
+{% block content %}
+    <div class="px-0 mt-5 favorites">
+        <div class="filters">
+            <h1 class="favorite-text pb-4">{{ 'dashboard.favorites.favorite'|trans }}</h1>
+            <form id="favoriteFilter" class="mb-4">
+                <div class="agenda-filter-sort row align-items-center">
+                    <div class="agenda-filter form-group col-md-6 ">
+                        <p class="favorite-text pb-5">{{ 'common.filter_for'|trans }}:</p>
+                        <div class="filter-box">
+                            <select data-control="select2" id="contractFilter" class="contract-filter"
+                                    name="contractFilter">
+                                <option value="all">
+                                    {{ 'blog.filter_all'|trans }}
+                                </option>
+                                <option value="{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}">
+                                    {{ 'common.care_centers'|trans }}
+                                </option>
+                                <option value="{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}">
+                                    {{ 'breadcrumb.provider_title'|trans }}
+                                </option>
+                                <option value="{{ constant('App\\Entity\\Favorite::COURSE_FAVORITE') }}">
+                                    {{ 'common.courses'|trans }}
+                                </option>
+                                <option value="{{ constant('App\\Entity\\Favorite::JOB_FAVORITE') }}">
+                                    {{ 'common.jobs'|trans }}
+                                </option>
+                            </select>
+                            <div id="contract-list" class="contract-suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="catalogue-sort form-group col-md-6s">
+                        <p class="favorite-text pt-9 pb-5">{{ 'dashboard.favorites.sort_for'|trans }}</p>
+                        <ul class="sorting-buttons list-inline mb-0 ps-2 ps-md-0 pe-md-3">
+                            <li class="list-inline-item">
+                                <h3 data-sort="asc" class="sort-date" data-name="createdAt">
+                                    {{ 'dashboard.common.date'|trans }}  <span>&#9660;</span> <span>&#9650;</span>
+                                </h3>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="error-message"></div>
+        <div class="listing has-loader"></div>
+        <div class="load-more text-center">
+            <a href="#" class="favorite-button">{{ 'dashboard.actions.load_more'|trans }}</a>
+        </div>
+        <div class="no-items-message" style="display: none;">
+            {{ 'dashboard.favorites.no_items'|trans }}
+        </div>
+    </div>
+{% endblock %}
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/profile/favorites.js') }}"></script>
+{% endblock %}

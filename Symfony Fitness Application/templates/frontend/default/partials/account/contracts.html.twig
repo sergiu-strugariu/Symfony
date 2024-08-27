@@ -1,0 +1,15 @@
+
+<h3>{{ 'account.my_account'|trans }}</h3>
+
+<div class="items-wrapper">
+    {% for contract in contracts %}
+        {% set education = contract.education %}
+        <div class="item">
+            <h4>NR {{ contract.contractNumber }} / {{ education.formattedDate(default_locale) }}</h4>
+            <p>{{ education.translation(locale).title }}</p>
+            <a href="{{ path('app_education_registration_contract', {'slug': education.slug, 'uuid': contract.uuid}) }}" target="_blank">{{ 'account.contracts.download'|trans }}</a>
+        </div>
+    {% else %}
+        <h3>{{ 'account.contracts.no_contracts'|trans }}</h3>
+    {% endfor %}
+</div>

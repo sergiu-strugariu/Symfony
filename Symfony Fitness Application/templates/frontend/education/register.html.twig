@@ -1,0 +1,134 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'form_register.title'|trans }} {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/frontend_form_errors.html.twig' %}
+
+{% block content %}
+    <main class="form-register">
+        <div class="common-intro-v2">
+            <div class="inner">
+                <div class="image" data-image="{{ asset(app_education_path ~ education.imageName) }}"></div>
+                <h1>{{ education.translation(locale).title }}</h1>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="location">
+                <div class="inner">
+                    {% include "shared/frontend/alert.html.twig" %}
+                    <p>{{ 'form_register.location'|trans }}:</p>
+                    <p><b>{{ education.city.name }} {{ education.county.name }}</b>,</p>
+                    <p>{{ education.location }}</p>
+                    <span>{{ education.formattedDate(default_locale) }}</span>
+                    <div>
+                        {% for schedule in education.schedules %}
+                            <div class="item">
+                                <p>{{ schedule.startDate|date('l') }}</p>
+                                <p>{{ schedule.startDate|date('H:i') }} - {{ schedule.endDate|date('H:i') }}</p>
+                                {{ schedule.translation(default_locale).description|raw }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="inner">
+                {{ form_start(form, {'attr': {'class': 'registerForm has-loader', novalidate: 'novalidate'}}) }}
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.firstName, 'common.form_labels.first_name'|trans ~ '*') }}
+                        {{ form_widget(form.firstName, {'attr': {'class': form_errors(form.firstName)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.firstName) }}
+                    </div>
+                    <div class="group">
+                        {{ form_label(form.lastName, 'common.form_labels.last_name'|trans ~ '*') }}
+                        {{ form_widget(form.lastName, {'attr': {'class': form_errors(form.lastName)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.lastName) }}
+                    </div>
+                </div>
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.email, 'common.form_labels.email'|trans ~ '*') }}
+                        {{ form_widget(form.email, {'attr': {'class': form_errors(form.email)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="group">
+                        {{ form_label(form.phone, 'common.form_labels.phone'|trans ~ '*') }}
+                        {{ form_widget(form.phone, {'attr': {'class': form_errors(form.phone)|trim is not empty ? 'error' : '' }}) }}
+                        <label class="error">{{ form_errors(form.phone) }}</label>
+                    </div>
+                </div>
+                <div class="group group-checkbox-invoicePJ">
+                    {{ form_widget(form.invoicingPerLegalEntity, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                    {{ form_label(form.invoicingPerLegalEntity, 'form_register.invoice'|trans) }}
+                </div>
+
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.companyName, 'account.details.company_name'|trans) }}
+                        {{ form_widget(form.companyName, {'attr': {'class': form_errors(form.companyName)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.companyName) }}
+                    </div>
+                    <div class="group">
+                        {{ form_label(form.companyAddress, 'account.details.address'|trans) }}
+                        {{ form_widget(form.companyAddress, {'attr': {'class': form_errors(form.companyAddress)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.companyAddress) }}
+                    </div>
+                </div>
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.cui, 'account.details.cui'|trans) }}
+                        {{ form_widget(form.cui, {'attr': {'class': form_errors(form.cui)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.cui) }}
+                    </div>
+
+                    <div class="group">
+                        {{ form_label(form.registrationNumber, 'account.details.registration_number'|trans) }}
+                        {{ form_widget(form.registrationNumber, {'attr': {'class': form_errors(form.registrationNumber)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.registrationNumber) }}
+                    </div>
+                </div>
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.bankName, 'account.details.bank_name'|trans) }}
+                        {{ form_widget(form.bankName, {'attr': {'class': form_errors(form.bankName)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.bankName) }}
+                    </div>
+                    <div class="group">
+                        {{ form_label(form.bankAccount, 'account.details.bank_account'|trans) }}
+                        {{ form_widget(form.bankAccount, {'attr': {'class': form_errors(form.bankAccount)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.bankAccount) }}
+                    </div>
+                </div>
+                <div class="group-details">
+                    <p>{{ 'form_register.course_type'|trans }}: <span>{{ education.type|capitalize }}</span></p>
+                    <p>{{ 'form_register.price'|trans }}: <span><strong>{{ education.priceWithVAT }} RON</strong></span></p>
+                </div>
+                <div class="radio-wrapper">
+                    <p>{{ form_label(form.paymentMethod, 'form_register.payment_method'|trans) }}</p>
+                    {% for child in form.paymentMethod %}
+                        <div class="group group-radio">
+                            {{ form_widget(child) }}
+                            {{ form_label(child) }}
+                        </div>
+                    {% endfor %}
+                    {{ form_errors(form.paymentMethod) }}
+                </div>
+
+                <div class="group group-checkbox {% if form_errors(form.accordGDPR)|trim is not empty %} error {% endif %}">
+                    {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                    {{ form_label(form.accordGDPR, 'common.newsletter'|trans) }}
+                    {{ form_errors(form.accordGDPR) }}
+                </div>
+                <div class="group group-checkbox {% if form_errors(form.accordMedia)|trim is not empty %} error {% endif %}">
+                    {{ form_widget(form.accordMedia, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                    {{ form_label(form.accordMedia, "common.media"|trans) }}
+                    {{ form_errors(form.accordMedia) }}
+                </div>
+                <div class="group-submit">
+                    <input type="submit" value="{{ 'form_register.buy'|trans }}"/>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </main>
+{% endblock %}

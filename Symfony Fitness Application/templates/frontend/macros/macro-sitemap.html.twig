@@ -1,0 +1,14 @@
+{% macro render_submenu(submenu, parent) %}
+    <li>
+        <span>{{ parent }}</span>
+        <ul class="dropdown-wrapper">
+            {% for child in submenu %}
+                {% if child['children'] is not empty %}
+                    {{ _self.render_submenu(child['children'], child['linkText']) }}
+                 {% else %}
+                    <li><a href="{{ child['link'] }}">{{ child['linkText']}} >></a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </li>
+{% endmacro %}

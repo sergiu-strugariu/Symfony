@@ -1,0 +1,15 @@
+<div class="cards-button-homepage">
+    <h2>{{ 'homepage.benefit_title'|trans }}</h2>
+    <h4>{{ 'homepage.benefit_subtitle'|trans }}</h4>
+    <div class="cards-button">
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+            {% include 'frontend/pages/partials/homepage/widgets/' ~ widget.template ignore missing %}
+        {% endfor %}
+    </div>
+    <div class="link-button">
+        <a href="{{ path('app_benefits') }}">
+            {{ 'homepage.view_more'|trans }}
+        </a>
+    </div>
+</div>

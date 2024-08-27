@@ -1,0 +1,21 @@
+<div class="articles-filter">
+    <div class="inner">
+        <div class="content">
+            <h2>{{ 'blog.filter_title'|trans }}</h2>
+            <ul class="category-filters">
+                <li>
+                    <a href="#" data-category="">
+                        {{ 'blog.filter_all'|trans }}
+                    </a>
+                </li>
+                {% for category in categories %}
+                    <li>
+                        <a href="#" data-category="{{ category.slug }}">
+                            {{ category.translation(locale).title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

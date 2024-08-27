@@ -1,0 +1,99 @@
+{
+  "data": [
+    {
+      "name": "Andreea M.",
+      "image": "../images/homepage/cards-reviews/femail.svg",
+      "blockquote": "Am contactat echipa SeniorHelp pentru ajutor în găsirea unui cămin de îngrijire pentru tatăl meu vitreg, deoarece ne străduiam să găsim o casă potrivită pentru el. Tatăl meu vitreg se instalează acum într-o casă nouă şi foarte frumoasă."
+    },
+    {
+      "name": "Casa Lenalia",
+      "image": "../images/homepage/cards-reviews/home.svg",
+      "blockquote": "Numărul de utilizatori unici care au accesat site-ul nostru a crescut cu peste 70% în primele 6 luni de la listarea pe platforma SeniorHelp.ro iar acum de abia mai putem face față solicitărilor."
+    },
+    {
+      "name": "Radu T.",
+      "image": "../images/homepage/cards-reviews/men.svg",
+      "blockquote": "Echipa SeniorHelp a fost excelentă. Au ascultat cerinţele noastre şi au promis să-mi trimită prin e-mail o listă de sugestii, care a ajuns în câteva minute. Echipa de asistenţă a fost de 5 stele. Multemesc SeniorHelp!"
+    },
+    {
+      "name": "Simona C.",
+      "image": "../images/homepage/cards-reviews/femail.svg",
+      "blockquote": "O comunicare promptă şi personală din partea ISeniorhelp m-a liniştit cu adevărat, deoarece eram nerăbdătoare să pot găsi centrul potrivit pentru îngrijirea mamei mele. Ea mi-a oferit câteva opțiuni pe care să le iau în considerare, unde pur şi simplu nu aş fi ştiut să caut."
+    },
+    {
+      "name": "Casa Del Santos",
+      "image": "../images/homepage/cards-reviews/home.svg",
+      "blockquote": "Am investit foarte mult în infrastructura centrului nostru de îngrijiri, pentru a putea oferi rezidenţilor noştri condiţii optime de îngrijire. Ne lipsea însă vizibilitatea şi cu ajutorul echipei Senior Help am reuşit să ne promovăm serviciile."
+    },
+    {
+      "name": "Mircea D.",
+      "image": "../images/homepage/cards-reviews/men.svg",
+      "blockquote": "Încercarea de a găsi o casă de îngrijire este stresantă şi ocupă mult timp, dar când am găsit Seniorhelp.ro, toate grijile au dispărut, deoarece au fost atât de utili, întrebându-mă care sunt cerințele mele în ceea ce priveşte nevoile cumnatei mele."
+    },
+
+    {
+      "name": "2Andreea M.",
+      "image": "../images/homepage/cards-reviews/femail.svg",
+      "blockquote": "2Am contactat echipa SeniorHelp pentru ajutor în găsirea unui cămin de îngrijire pentru tatăl meu vitreg, deoarece ne străduiam să găsim o casă potrivită pentru el. Tatăl meu vitreg se instalează acum într-o casă nouă şi foarte frumoasă."
+    },
+    {
+      "name": "2Casa Lenalia",
+      "image": "../images/homepage/cards-reviews/home.svg",
+      "blockquote": "2Numărul de utilizatori unici care au accesat site-ul nostru a crescut cu peste 70% în primele 6 luni de la listarea pe platforma SeniorHelp.ro iar acum de abia mai putem face față solicitărilor."
+    },
+    {
+      "name": "2Radu T.",
+      "image": "../images/homepage/cards-reviews/men.svg",
+      "blockquote": "2Echipa SeniorHelp a fost excelentă. Au ascultat cerinţele noastre şi au promis să-mi trimită prin e-mail o listă de sugestii, care a ajuns în câteva minute. Echipa de asistenţă a fost de 5 stele. Multemesc SeniorHelp!"
+    },
+    {
+      "name": "2Simona C.",
+      "image": "../images/homepage/cards-reviews/femail.svg",
+      "blockquote": "2O comunicare promptă şi personală din partea ISeniorhelp m-a liniştit cu adevărat, deoarece eram nerăbdătoare să pot găsi centrul potrivit pentru îngrijirea mamei mele. Ea mi-a oferit câteva opțiuni pe care să le iau în considerare, unde pur şi simplu nu aş fi ştiut să caut."
+    },
+    {
+      "name": "2Casa Del Santos",
+      "image": "../images/homepage/cards-reviews/home.svg",
+      "blockquote": "2Am investit foarte mult în infrastructura centrului nostru de îngrijiri, pentru a putea oferi rezidenţilor noştri condiţii optime de îngrijire. Ne lipsea însă vizibilitatea şi cu ajutorul echipei Senior Help am reuşit să ne promovăm serviciile."
+    },
+    {
+      "name": "2Mircea D.",
+      "image": "../images/homepage/cards-reviews/men.svg",
+      "blockquote": "2Încercarea de a găsi o casă de îngrijire este stresantă şi ocupă mult timp, dar când am găsit Seniorhelp.ro, toate grijile au dispărut, deoarece au fost atât de utili, întrebându-mă care sunt cerințele mele în ceea ce priveşte nevoile cumnatei mele."
+    },
+
+    {
+      "name": "\"3Andreea M.\"",
+      "image": "../images/homepage/cards-reviews/femail.svg",
+      "blockquote": "\"3Am contactat echipa SeniorHelp pentru ajutor în găsirea unui cămin de îngrijire pentru tatăl meu vitreg, deoarece ne străduiam să găsim o casă potrivită pentru el. Tatăl meu vitreg se instalează acum într-o casă nouă şi foarte frumoasă.\""
+    },
+    {
+      "name": "\"3Casa Lenalia\"",
+      "image": "../images/homepage/cards-reviews/home.svg",
+      "blockquote": "\"3Numărul de utilizatori unici care au accesat site-ul nostru a crescut cu peste 70% în primele 6 luni de la listarea pe platforma SeniorHelp.ro iar acum de abia mai putem face față solicitărilor.\""
+    },
+    {
+      "name": "\"3Radu T.\"",
+      "image": "../images/homepage/cards-reviews/men.svg",
+      "blockquote": "\"3Echipa SeniorHelp a fost excelentă. Au ascultat cerinţele noastre şi au promis să-mi trimită prin e-mail o listă de sugestii, care a ajuns în câteva minute. Echipa de asistenţă a fost de 5 stele. Multemesc SeniorHelp!\""
+    },
+    {
+      "name": "\"3Simona C.\"",
+      "image": "../images/homepage/cards-reviews/femail.svg",
+      "blockquote": "\"3O comunicare promptă şi personală din partea ISeniorhelp m-a liniştit cu adevărat, deoarece eram nerăbdătoare să pot găsi centrul potrivit pentru îngrijirea mamei mele. Ea mi-a oferit câteva opțiuni pe care să le iau în considerare, unde pur şi simplu nu aş fi ştiut să caut.\""
+    },
+    {
+      "name": "\"3Casa Del Santos\"",
+      "image": "../images/homepage/cards-reviews/home.svg",
+      "blockquote": "\"3Am investit foarte mult în infrastructura centrului nostru de îngrijiri, pentru a putea oferi rezidenţilor noştri condiţii optime de îngrijire. Ne lipsea însă vizibilitatea şi cu ajutorul echipei Senior Help am reuşit să ne promovăm serviciile.\""
+    },
+    {
+      "name": "\"3Mircea D.\"",
+      "image": "../images/homepage/cards-reviews/men.svg",
+      "blockquote": "\"3Încercarea de a găsi o casă de îngrijire este stresantă şi ocupă mult timp, dar când am găsit Seniorhelp.ro, toate grijile au dispărut, deoarece au fost atât de utili, întrebându-mă care sunt cerințele mele în ceea ce priveşte nevoile cumnatei mele.\""
+    }
+  ],
+  "total": 545,
+  "skip": 0,
+  "limit": 6
+}

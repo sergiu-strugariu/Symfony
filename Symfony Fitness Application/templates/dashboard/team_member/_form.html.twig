@@ -1,0 +1,50 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+    <div class="card-body p-9">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.name, 'Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.slug, 'Slug', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.slug, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.slug) }}
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mb-5">
+                {{ form_label(form.specialization, 'Specialization', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                {{ form_widget(form.specialization, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                {{ form_errors(form.specialization) }}
+            </div>
+            <div class="col-lg-6 mb-5">
+                {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                {{ form_widget(form.image, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                {{ form_errors(form.image) }}
+            </div>
+        </div>
+
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }} <span class="text-danger form-label fw-semibold fs-6">*</span>
+            {{ form_widget(form.description, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+
+    <!--begin::Card footer-->
+    <div class="card-footer py-6 px-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                    {{ form_widget(form._token) }}
+                    <a href="{{ path('dashboard_team_member_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--end::Card footer-->
+<!--end::Card body-->
+{{ form_end(form) }}

@@ -1,0 +1,282 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<!--begin::Card body-->
+<div class="card-body p-9">
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.certification, 'Certification', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.certification, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.certification) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.slug, 'Slug', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.slug, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.slug) }}
+            <div class="form-text">Auto generated SEO friendly URL from title - please leave empty when adding a new
+                education.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.location, 'Location', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.location, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.location) }}
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="row">
+                {{ form_label(form.county, 'County', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                <div class="col-lg-8 fv-row">
+                    {{ form_widget(form.county, {'attr': {'class': 'counties form-select form-select-solid form-select-lg', 'data-control': 'select2', 'data-placeholder': 'Select city'}}) }}
+                    {{ form_errors(form.county) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                {{ form_label(form.city, 'City', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                <div class="col-lg-8 fv-row">
+                    {{ form_widget(form.city, {'attr': {'class': 'cities form-select form-select-solid form-select-lg', 'data-control': 'select2', 'data-placeholder': 'Select city'}}) }}
+                    {{ form_errors(form.city) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.price, 'Price', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.price, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.price) }}
+        </div>
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.vat, 'VAT', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.vat, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.vat) }}
+        </div>
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.finalPrice, 'Final price', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.finalPrice, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.finalPrice) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.discount, 'Discount', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.discount, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.discount) }}
+        </div>
+
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.discountStartDate, 'Discount start date', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.discountStartDate, {'attr': {'class': 'form-control form-control-solid form-control-lg datetimepicker'}}) }}
+            {{ form_errors(form.discountStartDate) }}
+        </div>
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.discountEndDate, 'Discount end data', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.discountEndDate, {'attr': {'class': 'form-control form-control-solid form-control-lg datetimepicker'}}) }}
+            {{ form_errors(form.discountEndDate) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.startDate, 'Start date', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.startDate, {'attr': {'class': 'form-control form-control-solid form-control-lg datetimepicker'}}) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.endDate, 'End date', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.endDate, {'attr': {'class': 'form-control form-control-solid form-control-lg datetimepicker'}}) }}
+            {{ form_errors(form.endDate) }}
+        </div>
+
+        <div class="alert-error">
+            <p>{{ form_errors(form) }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            <div class="form-check form-switch form-check-custom form-check-solid">
+                {{ form_widget(form.allowRegistrations, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.allowRegistrations, 'Allow registrations?', {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
+            {{ form_errors(form.allowRegistrations) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.shortDescription, 'Short Description', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }} <span class="text-danger form-label fw-semibold fs-6">*</span>
+            {{ form_widget(form.shortDescription, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce', 'rows': '5'}}) }}
+            {{ form_errors(form.shortDescription) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }} <span class="text-danger form-label fw-semibold fs-6">*</span>
+            {{ form_widget(form.description, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce', 'rows': '5'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.additionalInfo, 'Additional info', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.additionalInfo, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce', 'rows': '5'}}) }}
+            {{ form_errors(form.additionalInfo) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.importantInfo, 'Important info', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.importantInfo, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce', 'rows': '5'}}) }}
+            {{ form_errors(form.importantInfo) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.contractOccupation, 'Contract occupation', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.contractOccupation, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.contractOccupation) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.teamMembers, 'Trainers', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.teamMembers, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'data-control': 'select2', 'data-placeholder': 'Select one or more trainers'}}) }}
+            {{ form_errors(form.teamMembers) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.contractDuration, 'Contract duration', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.contractDuration, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce', 'rows': '5'}}) }}
+            {{ form_errors(form.contractDuration) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.invoiceServiceName, 'Services name (for invoices)', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.invoiceServiceName, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '3'}}) }}
+            {{ form_errors(form.invoiceServiceName) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.omcCode, 'OMC code', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.omcCode, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.omcCode) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.image) }}
+
+            {% if editMode %}
+                <div class="form-text">File uploaded:
+                    <a href="{{ asset('assets/files/education/' ~ entity.imageName) }}" target="_blank">
+                        {{ asset('assets/files/education/' ~ entity.imageName) }}
+                    </a>
+                </div>
+            {% endif %}
+            <div class="form-text">(format acceptat: jpg, jpeg, png max. 3M)</div>
+        </div>
+    </div>
+
+    {% if editMode %}
+        <div class="row">
+            <div class="col-lg-12 mb-5">
+                {% for schedule in entity.schedules %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div>
+                                <label class="form-label fw-semibold fs-6 mb-4" for="education_schedules_{{ schedule.id }}_description">Description</label>
+                                <textarea id="education_schedules_{{ schedule.id }}_description"
+                                          name="schedules[{{ schedule.id }}][description]"
+                                          class="form-control form-control-solid form-control-lg tinymce">{{ schedule.translation(locale) ? schedule.translation(locale).description : '' }}</textarea>
+                            </div>
+                            <div>
+                                <label class="form-label fw-semibold fs-6 mb-4" for="education_schedules_{{ schedule.id }}_startDate">Start date</label>
+                                <input type="text" value="{{ schedule.startDate|date('Y-m-d H:i:s') }}"
+                                       id="education_schedules_{{ schedule.id }}_startDate" name="schedules[{{ schedule.id }}][startDate]"
+                                       class="form-control form-control-solid form-control-lg datetimepicker flatpickr-input"
+                                       readonly="readonly">
+                            </div>
+                            <div>
+                                <label class="form-label fw-semibold fs-6 mb-4" for="education_schedules_{{ schedule.id }}_endDate">End date</label>
+                                <input type="text" value="{{ schedule.endDate|date('Y-m-d H:i:s') }}"
+                                       id="education_schedules_{{ schedule.id }}_endDate" name="schedules[{{ schedule.id }}][endDate]"
+                                       class="form-control form-control-solid form-control-lg datetimepicker flatpickr-input"
+                                       readonly="readonly">
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-danger btn-sm mt-4 delete-education-schedule" data-id="{{ schedule.id }}" type="button">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="repeater card card-body">
+        <div class="card-title">
+            <h1>Add schedules</h1>
+        </div>
+        <div data-repeater-list="newSchedule" class="mb-4">
+            <div data-repeater-item>
+                <div class="card card-body mb-5">
+                    <div class="d-flex justify-content-between align-items-center card-title">
+                        <h3>Schedule</h3>
+                        <input data-repeater-delete type="button" class="btn btn-danger btn-sm mt-2 mb-2"
+                               value="Delete"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 mb-5">
+                            <label class="form-label fw-semibold fs-6">Description</label>
+                            <textarea type="text" name="description"
+                                      class="form-control form-control-solid form-control-lg editor"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 mb-5">
+                            <label class="form-label fw-semibold fs-6">Start Date</label>
+                            <input type="text" name="startDate"
+                                   class="form-control form-control-solid form-control-lg datetimepicker">
+                        </div>
+                        <div class="col-lg-6 mb-5">
+                            <label class="form-label fw-semibold fs-6">End Date</label>
+                            <input type="text" name="endDate"
+                                   class="form-control form-control-solid form-control-lg datetimepicker">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-start">
+            <input data-repeater-create type="button" value="Add" class="btn btn-primary btn-sm w-"/>
+        </div>
+    </div>
+</div>
+<!--begin::Card footer-->
+<div class="card-footer py-6 px-9">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-end">
+                {{ form_widget(form._token) }}
+                <a href="{{ path(listing_route) }}" class="btn btn-light btn-active-light-primary me-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Card footer-->
+<!--end::Card body-->
+{{ form_end(form) }}

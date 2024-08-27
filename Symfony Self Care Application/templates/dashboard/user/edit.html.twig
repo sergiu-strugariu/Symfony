@@ -1,0 +1,102 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}Edit user {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+        <!--begin::Card body-->
+        <div class="card-body p-9 pb-lg-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--start::name & email-->
+                    <div class="row mb-6">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <!--begin::Label-->
+                                {{ form_label(form.name, 'common.filter_name'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <!--end::Label-->
+
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    {{ form_widget(form.name, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                    {{ form_errors(form.name) }}
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                 <!--begin::Label-->
+                                {{ form_label(form.email, 'menu.email_link'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <!--end::Label-->
+
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                    {{ form_errors(form.email) }}
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::name & email-->
+
+                    <!--start::password-->
+                    <div class="row mb-6">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <!--begin::Label-->
+                                {{ form_label(form.plainPassword.first, 'form.placeholder.password'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <!--end::Label-->
+
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                    {{ form_errors(form.plainPassword.first) }}
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <!--begin::Label-->
+                                {{ form_label(form.plainPassword.second, 'form.placeholder.password_repeat'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <!--end::Label-->
+
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                    {{ form_errors(form.plainPassword.second) }}
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::password-->
+                </div>
+            </div>
+        </div>
+        <!--begin::Card footer-->
+        <div class="card-footer py-6 pt-lg-0 border-top-0 pb-lg-9 px-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="d-flex justify-content-end">
+                        {{ form_widget(form._token) }}
+                        <a href="{{ path('dashboard_user_index') }}" class="btn text-uppercase fw-bolder">
+                            {{ 'dashboard.form.cancel'|trans }}
+                        </a>
+                        <button type="submit" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">{{ 'dashboard.form.submit'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card footer-->
+        <!--end::Card body-->
+        {{ form_end(form) }}
+    </div>
+    <!--end::Card-->
+{% endblock %}

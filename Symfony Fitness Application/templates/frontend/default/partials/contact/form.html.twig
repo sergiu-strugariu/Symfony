@@ -1,0 +1,62 @@
+<div class="form-wrapper">
+    <div class="inner">
+        <div class="content">
+            <h2>
+                {{ 'contact.title'|trans }}
+            </h2>
+            <p>
+                {{ 'contact.description'|trans }}
+            </p>
+
+            {% include "shared/frontend/alert.html.twig" %}
+
+            {{ form_start(form, {'attr': {'class': 'contact-form has-loader', novalidate: 'novalidate', 'id': 'contactFrom'}}) }}
+            <div class="group {% if (form_errors(form.name)) %} error {% endif %}">
+                {{ form_label(form.name, 'contact.name'|trans) }}
+                {{ form_widget(form.name) }}
+                <span class="error">
+                    {{ form_errors(form.name) }}
+                </span>
+            </div>
+            <div class="row">
+                <div class="group {% if (form_errors(form.emailAddress)) %} error {% endif %}">
+                    {{ form_label(form.emailAddress, 'common.form_labels.email'|trans) }}
+                    {{ form_widget(form.emailAddress) }}
+                    <span class="error">
+                        {{ form_errors(form.emailAddress) }}
+                    </span>
+                </div>
+                <div class="group {% if (form_errors(form.phone)) %} error {% endif %}">
+                    {{ form_label(form.phone, 'common.form_labels.phone'|trans) }}
+                    {{ form_widget(form.phone) }}
+                    <span class="error">
+                        {{ form_errors(form.phone) }}
+                    </span>
+                </div>
+            </div>
+            <div class="group group-textarea {% if (form_errors(form.message)) %} error {% endif %}">
+                {{ form_label(form.message, 'contact.message'|trans) }}
+                {{ form_widget(form.message) }}
+                <span class="error">
+                    {{ form_errors(form.message) }}
+                </span>
+            </div>
+            <div class="group group-checkbox {% if (form_errors(form.accordGDPR)) %} error {% endif %}">
+                {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                <label for="contact_accordGDPR">
+                    {{ 'common.gdpr'|trans({
+                        '%terms_url%': path('app_terms'),
+                        '%privacy_url%': path('app_privacy_policy')
+                    })|raw }}
+                </label>
+                <span class="error">
+                    {{ form_errors(form.accordGDPR) }}
+                </span>
+            </div>
+            <div class="group group-submit">
+                <input type="submit" value="{{ 'contact.sendButton'|trans }}">
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

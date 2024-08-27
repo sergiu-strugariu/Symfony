@@ -1,0 +1,20 @@
+<h3>{{ 'account.my_account'|trans }}</h3>
+
+<div class="items-wrapper">
+    {% for invoice in invoices %}
+        {% set education = invoice.education %}
+        <div class="item">
+            <h4>
+                {% if invoice.proformaInvoiceSeriesName is not empty and invoice.proformaInvoiceNumber is not empty %}
+                    {{ invoice.proformaInvoiceSeriesName }} / {{ invoice.proformaInvoiceNumber }}
+                {% else %}
+                    {{ invoice.invoiceSeriesName }} / {{ invoice.invoiceNumber }}
+                {% endif %}
+            </h4>
+            <p>{{ education.translation(locale).title }}</p>
+            <a href="{{ path('app_education_registration_invoice', {'slug': education.slug, 'uuid': invoice.uuid}) }}" target="_blank">{{ 'account.invoices.download'|trans }}</a>
+        </div>
+    {% else %}
+        <h3>{{ 'account.invoices.no_invoices'|trans }}</h3>
+    {% endfor %}
+</div>

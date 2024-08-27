@@ -1,0 +1,42 @@
+<div class="job-details__type">
+    <div class="item">
+        <div class="item__container">
+            <p>{{ 'jobs.job_title'|trans }}</p>
+            <p><strong>{{ job.translation(locale).title }}</strong></p>
+        </div>
+    </div>
+    <div class="item">
+        <div class="item__container">
+            <p>{{ 'common.filter_category'|trans }}</p>
+            {% set category = job.categoryJobs.first %}
+            <p><strong>{{ category.translation(locale).title }}</strong></p>
+        </div>
+    </div>
+    <div class="item">
+        <div class="item__container">
+            <p>{{ 'common.filter_contract_type'|trans }}</p>
+            <p><strong>{{ job.jobType }}</strong></p>
+        </div>
+    </div>
+    <div class="item">
+        <div class="item__container">
+            <p>{{ 'jobs.range_salary'|trans }}</p>
+            <p>
+                <strong>
+                    {{ job.startGrossSalary|number_format(0, '.', '.') }} {{ 'company.price_currency'|trans }} / <br>
+                    {{ job.endGrossSalary|number_format(0, '.', '.') }} {{ 'company.price_currency'|trans }}
+                </strong>
+            </p>
+        </div>
+    </div>
+    <div class="item">
+        <div class="item__container">
+            <p>{{ 'search.location'|trans }}</p>
+            <p>
+                <strong>
+                    {{ job.address }}, {{ job.city.name }}, {{ job.county.name }}
+                </strong>
+            </p>
+        </div>
+    </div>
+</div>

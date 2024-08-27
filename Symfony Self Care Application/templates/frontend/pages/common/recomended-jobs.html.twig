@@ -1,0 +1,22 @@
+{% if(recommended is not empty) %}
+    <div class="recommended-jobs">
+        <h2>{{ sectionTitle }}</h2>
+        <div class="jobs">
+            {% for item in recommended %}
+                <div class="job">
+                    <div class="job__wrapper">
+                        <h3>{{ item.companyName }}</h3>
+                        <div class="data-image" data-image="{{ asset(app_company_path ~ item.fileName) }}"></div>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.city }}/{{ item.county }}</p>
+                        <p>{{ item.address }}</p>
+                        <h3>{{ 'common.contract'|trans }} {{ item.jobType }} | {{ item.category }}</h3>
+                        <a href="{{ path('app_job_single', {'slug': item.slug}) }}">
+                            {{ 'common.asc_for_details_jobs'|trans }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,15 @@
+<div class="account-card">
+    <div class="account-inner">
+        {% if widget.fileName %}
+            <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+        {% endif %}
+        {% if translation.description %}
+            {{ translation.description|sanitize_html('app.editor') }}
+        {% endif %}
+        {% if translation.linkText %}
+            <a href="{{ translation.link }}">
+                {{ translation.linkText }}
+            </a>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,32 @@
+framework:
+  html_sanitizer:
+    sanitizers:
+      app.editor:
+        allow_elements:
+          h1: 'class'
+          h2: 'class'
+          h3: 'class'
+          h4: 'class'
+          h5: 'class'
+          h6: 'class'
+          p: 'class'
+          ul: 'class'
+          li: 'class'
+          strong: 'class'
+          blockquote: 'class'
+          span: 'class'
+          div: 'class'
+          br: 'class'
+          b: 'class'
+          table: 'class'
+          thead: 'class'
+          tbody: 'class'
+          tr: 'class'
+          th: 'class'
+          td: 'class'
+          small: 'class'
+          a: ['href', 'title', 'class', 'rel']
+          iframe: ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen']
+        force_https_urls: true
+        allowed_link_schemes: ['http', 'https', 'mailto','tel']
+        allow_relative_links: true

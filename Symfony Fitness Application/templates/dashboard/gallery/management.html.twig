@@ -1,0 +1,13 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}Multimedia {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        {% include 'dashboard/gallery/_form.html.twig' %}
+    </div>
+    <!--end::Card-->
+{% endblock %}

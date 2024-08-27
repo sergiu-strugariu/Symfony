@@ -1,0 +1,147 @@
+fos_elastica:
+  clients:
+    default: { host: '%env(ELASTICSEARCH_URL)%', port: '%env(ELASTICSEARCH_PORT)%' }
+  indexes:
+    company:
+      settings:
+        analysis:
+          filter:
+            ascii_folding:
+              type: asciifolding
+              preserve_original: true
+          analyzer:
+            custom_analyzer:
+              tokenizer: standard
+              filter:
+                - lowercase
+                - ascii_folding
+      properties:
+        name: { type: 'text', analyzer: 'custom_analyzer' }
+        slug: { type: 'text', analyzer: 'custom_analyzer' }
+        description: { type: 'text', analyzer: 'custom_analyzer' }
+        availableServices: { type: 'text', analyzer: 'custom_analyzer' }
+        countyName: { type: 'text', analyzer: 'custom_analyzer' }
+        cityName: { type: 'text', analyzer: 'custom_analyzer' }
+        address: { type: 'text', analyzer: 'custom_analyzer' }
+        locationType: { type: 'keyword' }
+        status: { type: 'keyword' }
+        deletedAt: { type: 'keyword' }
+        county:
+          type: nested
+          properties:
+            code: { type: 'keyword' }
+      persistence:
+        driver: orm
+        model: App\Entity\Company
+        finder: ~
+        listener:
+          insert: true
+          update: true
+          delete: true
+    job:
+      settings:
+        analysis:
+          filter:
+            ascii_folding:
+              type: asciifolding
+              preserve_original: true
+          analyzer:
+            custom_analyzer:
+              tokenizer: standard
+              filter:
+                - lowercase
+                - ascii_folding
+      properties:
+        slug: { type: 'text', analyzer: 'custom_analyzer' }
+        image: { type: 'keyword' }
+        status: { type: 'keyword' }
+        deletedAt: { type: 'keyword' }
+        jobTranslations:
+          type: nested
+          properties:
+            title: { type: 'text', analyzer: 'custom_analyzer' }
+            body: { type: 'text', analyzer: 'custom_analyzer' }
+            shortDescription: { type: 'text', analyzer: 'custom_analyzer' }
+            languageLocale: { type: 'keyword' }
+        county:
+          type: nested
+          properties:
+            code: { type: 'keyword' }
+      persistence:
+        driver: orm
+        model: App\Entity\Job
+        finder: ~
+        listener:
+          insert: true
+          update: true
+          delete: true
+    course:
+      settings:
+        analysis:
+          filter:
+            ascii_folding:
+              type: asciifolding
+              preserve_original: true
+          analyzer:
+            custom_analyzer:
+              tokenizer: standard
+              filter:
+                - lowercase
+                - ascii_folding
+      properties:
+        slug: { type: 'text', analyzer: 'custom_analyzer' }
+        image: { type: 'keyword' }
+        status: { type: 'keyword' }
+        deletedAt: { type: 'keyword' }
+        trainingCourseTranslations:
+          type: nested
+          properties:
+            title: { type: 'text', analyzer: 'custom_analyzer' }
+            body: { type: 'text', analyzer: 'custom_analyzer' }
+            shortDescription: { type: 'text', analyzer: 'custom_analyzer' }
+            languageLocale: { type: 'keyword' }
+        county:
+          type: nested
+          properties:
+            code: { type: 'keyword' }
+      persistence:
+        driver: orm
+        model: App\Entity\TrainingCourse
+        finder: ~
+        listener:
+          insert: true
+          update: true
+          delete: true
+    article:
+      settings:
+        analysis:
+          filter:
+            ascii_folding:
+              type: asciifolding
+              preserve_original: true
+          analyzer:
+            custom_analyzer:
+              tokenizer: standard
+              filter:
+                - lowercase
+                - ascii_folding
+      properties:
+        slug: { type: 'text', analyzer: 'custom_analyzer' }
+        image: { type: 'keyword' }
+        status: { type: 'keyword' }
+        deletedAt: { type: 'keyword' }
+        articleTranslations:
+          type: nested
+          properties:
+            title: { type: 'text', analyzer: 'custom_analyzer' }
+            body: { type: 'text', analyzer: 'custom_analyzer' }
+            shortDescription: { type: 'text', analyzer: 'custom_analyzer' }
+            languageLocale: { type: 'keyword' }
+      persistence:
+        driver: orm
+        model: App\Entity\Article
+        finder: ~
+        listener:
+          insert: true
+          update: true
+          delete: true

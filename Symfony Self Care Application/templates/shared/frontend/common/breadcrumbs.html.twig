@@ -1,0 +1,21 @@
+<div class="breadcrumbs-section">
+    <div class="inner">
+        <nav>
+            <ol class="breadcrumb">
+                {% for item in breadcrumbs %}
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item">
+                        {% if item.route is not empty %}
+                            <a href="{{ path(item.route, item.params) }}">
+                                {{ item.name|trans }}
+                            </a>
+                        {% else %}
+                            {{ item.name|trans }}
+                        {% endif %}
+                    </li>
+                    <!--end::Item-->
+                {% endfor %}
+            </ol>
+        </nav>
+    </div>
+</div>

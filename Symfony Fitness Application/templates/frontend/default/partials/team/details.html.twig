@@ -1,0 +1,13 @@
+<div class="details">
+    <div class="inner">
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+
+            <h1>{{ translation.description|raw }}</h1>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% include 'frontend/default/partials/team/list.html.twig' %}

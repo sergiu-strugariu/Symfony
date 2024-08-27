@@ -1,0 +1,459 @@
+{
+  "articles": [
+    {
+      "title": "Alimentația corectă a persoanelor vârstnice",
+      "description": "De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "Soluţii pentru a combate depresia la bătrâni",
+      "description": "Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "In ce condiții poate fi internat un bătrân la azil",
+      "description": "Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "Incontinenta urinara la batrani",
+      "description": "Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "Cat costa o ambulanta privata?",
+      "description": "Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "Vitamine esenţiale recomandate seniorilor",
+      "description": "Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "Avantajele şedinţelor de kinetoterapie",
+      "description": "Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+
+
+    {
+      "title": "2Alimentația corectă a persoanelor vârstnice",
+      "description": "2De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "2Soluţii pentru a combate depresia la bătrâni",
+      "description": "2Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "2Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "2În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "2Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "2Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "2In ce condiții poate fi internat un bătrân la azil",
+      "description": "2Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "2Incontinenta urinara la batrani",
+      "description": "2Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "2Cat costa o ambulanta privata?",
+      "description": "2Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "2Vitamine esenţiale recomandate seniorilor",
+      "description": "2Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "2Avantajele şedinţelor de kinetoterapie",
+      "description": "2Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+
+
+    {
+      "title": "3Alimentația corectă a persoanelor vârstnice",
+      "description": "3De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "3Soluţii pentru a combate depresia la bătrâni",
+      "description": "3Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "3Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "3În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "3Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "3Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "3In ce condiții poate fi internat un bătrân la azil",
+      "description": "3Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "3Incontinenta urinara la batrani",
+      "description": "3Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "3Cat costa o ambulanta privata?",
+      "description": "3Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "3Vitamine esenţiale recomandate seniorilor",
+      "description": "3Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "3Avantajele şedinţelor de kinetoterapie",
+      "description": "3Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+
+
+    {
+      "title": "4Alimentația corectă a persoanelor vârstnice",
+      "description": "4De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "4Soluţii pentru a combate depresia la bătrâni",
+      "description": "4Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "4Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "4În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "4Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "4Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "4In ce condiții poate fi internat un bătrân la azil",
+      "description": "4Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "4Incontinenta urinara la batrani",
+      "description": "4Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "4Cat costa o ambulanta privata?",
+      "description": "4Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "4Vitamine esenţiale recomandate seniorilor",
+      "description": "4Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "4Avantajele şedinţelor de kinetoterapie",
+      "description": "4Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+
+
+    {
+      "title": "5Alimentația corectă a persoanelor vârstnice",
+      "description": "5De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "5Soluţii pentru a combate depresia la bătrâni",
+      "description": "5Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "5Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "5În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "5Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "5Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "5In ce condiții poate fi internat un bătrân la azil",
+      "description": "5Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "5Incontinenta urinara la batrani",
+      "description": "5Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "5Cat costa o ambulanta privata?",
+      "description": "5Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "5Vitamine esenţiale recomandate seniorilor",
+      "description": "5Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "5Avantajele şedinţelor de kinetoterapie",
+      "description": "5Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+
+
+    {
+      "title": "6Alimentația corectă a persoanelor vârstnice",
+      "description": "6De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "6Soluţii pentru a combate depresia la bătrâni",
+      "description": "6Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "6Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "6În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "6Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "6Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "6In ce condiții poate fi internat un bătrân la azil",
+      "description": "6Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "6Incontinenta urinara la batrani",
+      "description": "6Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "6Cat costa o ambulanta privata?",
+      "description": "6Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "6Vitamine esenţiale recomandate seniorilor",
+      "description": "6Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "6Avantajele şedinţelor de kinetoterapie",
+      "description": "6Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+
+
+    {
+      "title": "7Alimentația corectă a persoanelor vârstnice",
+      "description": "7De cele mai multe ori, bătrânii care locuiesc singuri şi sunt vizitați doar din când în când de către copii sau nepoţi.",
+      "image": "../images/care-tips/card-one.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "7Soluţii pentru a combate depresia la bătrâni",
+      "description": "7Conform unui studiu recent, 12,3% dintre persoanele de peste 65 de ani au depresie.",
+      "image": "../images/care-tips/card-two.webp",
+      "category": "Tipuri de ingrijire"
+    },
+    {
+      "title": "7Decesul în cămine de bătrâni. Ce trebuie să ştim?",
+      "description": "7În acest articol veți găsi paşii ce trebuie urmați pentru ca un pacient în fază terminală să moară în pace.",
+      "image": "../images/care-tips/card-three.webp",
+      "category": "Stiri",
+      "url": "#"
+    },
+    {
+      "title": "7Cum ai grijă de o persoană ce trăiește cu demenţă?",
+      "description": "7Să înţelegem comportamentul lor A avea în grijă pe cineva ce trăieşte cu demenţă poate fi stresant; de multe ori rezultatul",
+      "image": "../images/care-tips/card-four.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "7In ce condiții poate fi internat un bătrân la azil",
+      "description": "7Pentru ca o persoana sa poata fi internata intr-un centru de ingrijire pentru batrani ea trebuie sa indeplineasca mai multe.",
+      "image": "../images/care-tips/card-five.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "7Incontinenta urinara la batrani",
+      "description": "7Incontinenta urinara este una dintre afectiunile cu care se lupta cei mai multi dintre batrani.",
+      "image": "../images/care-tips/card-six.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "7Cat costa o ambulanta privata?",
+      "description": "7Alegeți AmbuMED pentru intervenţii medicale de urgență rapide şi eficiente! Înţelegem cât de importantă este să ai",
+      "image": "../images/care-tips/card-seven.webp",
+      "category": "Evenimente",
+      "url": "#"
+    },
+    {
+      "title": "7Vitamine esenţiale recomandate seniorilor",
+      "description": "7Alimentația unei persoane vârstnice trebuie să asigure organismului acesteia necesarul zilnic de elemente nutritive.",
+      "image": "../images/care-tips/card-eight.webp",
+      "category": "Tipuri de ingrijire",
+      "url": "#"
+    },
+    {
+      "title": "7Avantajele şedinţelor de kinetoterapie",
+      "description": "7Un stil de viață sănătos şi activ trebuie perpetuat pe tot parcursul vieţii pentru menţinerea unei bune stări de sănătate...",
+      "image": "../images/care-tips/card-nine.webp",
+      "category": "Stiri",
+      "url": "#"
+    }
+  ],
+  "total": 100,
+  "skip": 0,
+  "limit": 9
+}

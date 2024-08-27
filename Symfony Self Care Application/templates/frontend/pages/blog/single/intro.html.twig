@@ -1,0 +1,16 @@
+<div class="article-intro-section">
+    <div class="title-section">
+        <span>{{ article.createdAt|date('d M Y') }}</span>
+        <h1>{{ article.translation(locale).title }}</h1>
+    </div>
+    <div class="image-section">
+        <div class="image-section__container" data-image="{{ asset(app_article_path ~ article.image) }}">
+        </div>
+    </div>
+    <div class="text-section">
+        <p>{{ article.translation(locale).shortDescription|sanitize_html('app.editor') }}</p>
+    </div>
+</div>
+<div class="article-container">
+    {{ article.translation(locale).body|sanitize_html('app.editor') }}
+</div>

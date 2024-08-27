@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Kumbh Sans';
+    src: url('KumbhSans-Medium.eot');
+    src: url('KumbhSans-Medium.eot?#iefix') format('embedded-opentype'),
+        url('KumbhSans-Medium.woff2') format('woff2'),
+        url('KumbhSans-Medium.woff') format('woff'),
+        url('KumbhSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

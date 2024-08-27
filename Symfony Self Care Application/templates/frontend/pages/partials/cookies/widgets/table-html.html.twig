@@ -1,0 +1,7 @@
+<div class="privacy-policy">
+    <div class="table-responsive">
+        {% if translation.description %}
+            {{ translation.description|sanitize_html('app.editor') }}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,395 @@
+{
+  "entity": "Page",
+  "name": "Linia de ajutor",
+  "machineName": "helpline",
+  "url": "/linia-de-ajutor",
+  "classes": "help-channel",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/blog",
+      "value": "/blog",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Helpline section intro",
+      "machineName": "helpline_section_intro",
+      "template": "intro.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_intro",
+          "template": "intro-content.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Intro Title",
+              "placeholder": "Intro Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Intro Image",
+              "placeholder": "Intro Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Helpline section cta top",
+      "machineName": "helpline_section_cta",
+      "template": "cta.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_cta",
+          "template": "cta-content.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Helpline section content",
+      "machineName": "helpline_section_content",
+      "template": "content.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_section_content_widget",
+          "template": "content-item.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Helpline section reviews",
+      "machineName": "helpline_section_reviews",
+      "template": "reviews.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_section_review_item_one_widget",
+          "template": "review-item.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_review_item_two",
+          "template": "review-item.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_review_item_three",
+          "template": "review-item.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_review_item_four",
+          "template": "review-item.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Helpline section work",
+      "machineName": "helpline_section_work",
+      "template": "work.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_work",
+          "template": "work-content.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Helpline cards",
+      "machineName": "helpline_section_cards",
+      "template": "cards.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_card_one",
+          "template": "card-item.html.twig",
+          "variables": [
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_card_two",
+          "template": "card-item.html.twig",
+          "variables": [
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Helpline cta bottom",
+      "machineName": "helpline_section_cta_bottom",
+      "template": "cta-bottom.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "helpline_widget_cta_bottom",
+          "template": "cta-bottom-content.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,635 @@
+{
+  "entity": "Page",
+  "name": "Homepage",
+  "machineName": "homepage",
+  "url": "/",
+  "classes": "homepage",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Homepage",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/home",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Homepage sections",
+      "machineName": "homepage_section_1",
+      "template": "intro.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_1_widget_1",
+          "template": "section_3_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Widget Link Text",
+              "placeholder": "Widget Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Widget Link",
+              "placeholder": "Widget Link",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Slider Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Slider Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_1_widget_2",
+          "template": "section_3_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Widget Link Text",
+              "placeholder": "Widget Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Widget Link",
+              "placeholder": "Widget Link",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Slider Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Slider Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_1_widget_3",
+          "template": "section_3_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Widget Link Text",
+              "placeholder": "Widget Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Widget Link",
+              "placeholder": "Widget Link",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Slider Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Slider Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Homepage sections",
+      "machineName": "homepage_section_2",
+      "template": "reasons.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Section Image",
+          "placeholder": "Slider Image",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Section Image Mobile",
+          "placeholder": "Slider Image Mobile",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_2_widget_1",
+          "template": "section_2_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_2_widget_2",
+          "template": "section_2_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_2_widget_3",
+          "template": "section_2_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Slider Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget Image Mobile",
+              "placeholder": "Slider Image Mobile",
+              "value": "",
+              "isTranslated": false,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Homepage sections",
+      "machineName": "homepage_section_3",
+      "template": "why-choose-courses.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Section Image",
+          "placeholder": "Slider Image",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Section Image Mobile",
+          "placeholder": "Slider Image Mobile",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_3_widget_1",
+          "template": "section_1_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Widget Link Text",
+              "placeholder": "Widget Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Widget Link",
+              "placeholder": "Widget Link",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Homepage sections",
+      "machineName": "homepage_section_4",
+      "template": "course-calendar.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Section Image",
+          "placeholder": "Slider Image",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Section Image Mobile",
+          "placeholder": "Slider Image Mobile",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "homepage_section_4_widget_1",
+          "template": "section_1_widget.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Widget Link Text",
+              "placeholder": "Widget Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Widget Link",
+              "placeholder": "Widget Link",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

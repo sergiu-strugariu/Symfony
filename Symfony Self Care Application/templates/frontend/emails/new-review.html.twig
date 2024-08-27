@@ -1,0 +1,164 @@
+{% extends 'layout-email.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block content %}
+    <tr>
+        <td style="padding: 0">
+            <img src="{{ absolute_url(asset('assets/frontend/images/email/email_intro_care.webp')) }}"
+                 alt="intro-img"
+                 style="width: 100%; max-width: 650px; height: auto; display: block;"
+            />
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;padding: 20px 0 0 0;">
+            <h1 style="padding: 20px 0; max-width: 450px;">{{ 'email.new_reviews.title'|trans }}</h1>
+            <p style="    max-width: 580px; font-size: 18px;">
+                {{ 'email.new_reviews.description'|trans }}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 18px 30px;">
+            <table style="    max-width: 550px;    background-color: #FFF9E6;">
+                <tr>
+                    <td style="text-align: center; padding: 42px 10px; background-color: #FFF9E6;">
+                        <p style="line-height: 1.6; padding-bottom: 20px;    max-width: 450px;">{{ review }}</p>
+                        <p style="background-color: #D5D2BF; height: 2px; width: 100%;     max-width: 450px;"></p>
+                        <p style="line-height: 1.6; padding-top: 20px;    max-width: 450px;">{{ name }} {{ surname }}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2 style="padding: 20px 0;">{{ 'email.new_reviews.increase_visibility'|trans }}</h2>
+            <p style="    max-width: 550px;">{{ 'email.new_reviews.info_text'|trans }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="width: 100%; padding-top: 20px; display: block;    border-spacing: 20px;">
+                <tbody style=" display: inline-table;">
+                <tr>
+                    <td style="width: 50%; max-width: 280px; margin:auto;background-color: #ECFDF7;vertical-align: top;">
+                        <div style="max-width: 280px;     padding: 28px 2px;">
+                            <div style="width: 35px; position: relative; padding: 0 10px 0 0; vertical-align: top; display: inline-block;    margin: 0 0 0 auto;">
+                                <img src="{{ absolute_url(asset('assets/frontend/images/email/email_received_home_review_efficiency.webp')) }}"
+                                     alt="intro-img"
+                                     style="width: 35px; height: auto;"
+                                />
+                            </div>
+                            <div style="    display: inline-block;     width: 68%;    max-width: 195px;">
+                                <p style="text-align: left;">{{ 'email.new_reviews.box_one_title'|trans }}</p>
+                                <p style="text-align: left; font-size: 10px;">{{ 'email.new_reviews.box_one_description'|trans }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 50%; max-width: 280px; margin:auto;background-color: #ECFDF7;vertical-align: top;">
+                        <div style="max-width: 280px;     padding: 28px 2px;">
+                            <div style="width: 35px; position: relative; padding: 0 10px 0 0; vertical-align: top; display: inline-block;    margin: 0 0 0 auto;">
+                                <img src="{{ absolute_url(asset('assets/frontend/images/email/email_received_home_review_seo.webp')) }}"
+                                     alt="intro-img"
+                                     style="width: 35px; height: auto;"
+                                />
+                            </div>
+                            <div style="    display: inline-block;     width: 68%;    max-width: 195px;">
+                                <p style="text-align: left;">{{ 'email.new_reviews.box_two_title'|trans }}</p>
+                                <p style="text-align: left;    font-size: 10px;">{{ 'email.new_reviews.box_two_description'|trans }}</p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; background-color: #ECFDF7;vertical-align: top;">
+                        <div style="max-width: 280px;     padding: 28px 2px;">
+                            <div style="width: 35px; position: relative; padding: 0 10px 0 0; vertical-align: top; display: inline-block;    margin: 0 0 0 auto;">
+                                <img src="{{ absolute_url(asset('assets/frontend/images/email/email_received_home_review_medal.webp')) }}"
+                                     alt="intro-img"
+                                     style="width: 35px; height: auto;"
+                                />
+                            </div>
+                            <div style="    display: inline-block;     width: 68%;    max-width: 195px;">
+                                <p style="text-align: left;">{{ 'email.new_reviews.box_three_title'|trans }}</p>
+                                <p style="text-align: left; font-size: 10px;">{{ 'email.new_reviews.box_three_description'|trans }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 50%; background-color: #ECFDF7;vertical-align: top;">
+                        <div style="max-width: 280px;     padding: 28px 2px;">
+                            <div style="width: 35px; position: relative; padding: 0 10px 0 0; vertical-align: top; display: inline-block;    margin: 0 0 0 auto;">
+                                <img src="{{ absolute_url(asset('assets/frontend/images/email/email_received_home_review_services.webp')) }}"
+                                     alt="intro-img" style="width: 35px; height: auto;">
+                            </div>
+                            <div style="    display: inline-block;     width: 68%;    max-width: 195px;">
+                                <p style="text-align: left;">{{ 'email.new_reviews.box_four_title'|trans }}</p>
+                                <p style="text-align: left;    font-size: 10px;">
+                                    {{ 'email.new_reviews.box_four_description'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; background-color: #ECFDF7; vertical-align: top;">
+                        <div style="max-width: 280px;    padding: 28px 2px;">
+                            <div style="width: 35px; position: relative; padding: 0 10px 0 0; vertical-align: top; display: inline-block;    margin: 0 0 0 auto;">
+                                <img src="{{ absolute_url(asset('assets/frontend/images/email/email_received_home_review_analize.webp')) }}"
+                                     alt="intro-img"
+                                     style="width: 35px; height: auto;"
+                                />
+                            </div>
+                            <div style="    display: inline-block;     width: 68%;    max-width: 195px;">
+                                <p style="text-align: left;">{{ 'email.new_reviews.box_five_title'|trans }}</p>
+                                <p style="text-align: left; font-size: 10px;">
+                                    {{ 'email.new_reviews.box_five_description'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 50%; background-color: #ECFDF7;vertical-align: top;">
+                        <div style="max-width: 280px;     padding: 28px 2px;">
+                            <div style="width: 35px; position: relative; padding: 0 10px 0 0; vertical-align: top; display: inline-block;    margin: 0 0 0 auto;">
+                                <img src="{{ absolute_url(asset('assets/frontend/images/email/email_received_home_review_rewards.webp')) }}"
+                                     alt="intro-img"
+                                     style="width: 35px; height: auto;"
+                                />
+                            </div>
+                            <div style="    display: inline-block;     width: 68%;    max-width: 195px;">
+                                <p style="text-align: left;">{{ 'email.new_reviews.box_six_title'|trans }}</p>
+                                <p style="text-align: left;    font-size: 10px;">
+                                    {{ 'email.new_reviews.box_six_description'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2 style="padding: 20px 0 0 0;max-width: 525px;"> {{ 'email.new_reviews.discover_text'|trans }}</h2>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 18px 50px;">
+            <table>
+                <tr>
+                    <td style="text-align: center; padding: 0; display: block;">
+                        <p style="padding: 0; margin: 0; display: block;">
+                            <a href="{{ absolute_url(path('app_homepage')) }}" target="_blank" style="display: block; height: auto; font-size: 16px; line-height: 1.2; padding: 16px 0; text-transform: uppercase;
+                            background-color: #FFBB32; color: #000000; text-decoration: none; font-weight: 700; max-width: 200px;">
+                                {{ 'email.common.contact_us'|trans }}
+                            </a>
+                        </p>
+
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+{% endblock %}

@@ -1,0 +1,76 @@
+<div class="intro">
+    <div class="left-section">
+        <div class="title-section">
+            <h1>{{ company.name }}</h1>
+            <div class="logo-section data-image" data-image="{{ asset(app_company_path ~ company.logo) }}"></div>
+        </div>
+        <div class="address">
+            {{ company.address }} <br>
+            ({{ 'company.price_title'|trans }}
+            <strong>{{ company.price|number_format(0, ',', '.') }} RON/{{ 'common.month'|trans }}</strong>)
+        </div>
+        <div class="links">
+            <ul class="contact-details">
+                <li>
+                    <a href="tel:{{ company.phone }}" target="_blank">
+                        <img src="{{ asset('assets/frontend/images/homepage/slider-filter-anchor/modal-phone.svg') }}"
+                             width="15"
+                             height="15"
+                             alt="modal-phone"
+                        >
+                        {{ 'menu.phone_link'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:{{ company.email }}" target="_blank">
+                        <img src="{{ asset('assets/frontend/images/homepage/slider-filter-anchor/modal-mail.svg') }}"
+                             width="20"
+                             height="20"
+                             alt="modal-mail"
+                        >
+                        {{ 'menu.email_link'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ company.website }}" target="_blank">
+                        {{ 'menu.website_link'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ map_share }}&query={{ company.county.name }}+{{ company.city.name }}+{{ company.address }}"
+                       target="_blank">
+                        {{ 'menu.map_link'|trans }}
+                    </a>
+                </li>
+                <!-- start::Share -->
+                {% include "frontend/pages/common/share.html.twig" with {'title': company.name, 'summary': company.shortDescription} %}
+                <!-- end::Share -->
+            </ul>
+        </div>
+    </div>
+    <div class="right-section">
+        {% if company.averageRating is not null %}
+            <div class="top-section">
+                <img src="https://placehold.co/88x77" alt="rating-homede-detail">
+                <div class="rating">
+                    <div class="rating__value">
+                        <p>{{ company.averageRating }}</p>
+                        <span class="star active"></span>
+                    </div>
+                    <div class="rating__number-reviews">
+                        <p>
+                            {{ 'review.review_from'|trans }}
+                            {{ company.companyReviews.count }}
+                            {{ 'review.reviews'|trans }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="bottom-section">
+            <a href="{{ path('app_company_review', {'slug': company.slug}) }}" class="common-link-btn">
+                {{ 'review.review_btn'|trans }}
+            </a>
+        </div>
+    </div>
+</div>

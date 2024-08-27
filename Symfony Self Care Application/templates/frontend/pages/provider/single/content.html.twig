@@ -1,0 +1,87 @@
+{% set type = constant('App\\Entity\\Favorite::PROVIDER_FAVORITE') %}
+<div class="content-wrapper">
+    <div class="swiper-section">
+        <div class="home-details-swiper-container">
+            <div class="list-wrapper">
+                <div class="common-navigation-btns">
+                    <div class="swiper-list-details">
+                        <span class="image-counter"></span> {{ 'company.images_counter'|trans }} |
+                        <span class="video-counter">{{ provider.videoUrl is not null ? 1 : 0 }}/1 </span> {{ 'company.video_counter'|trans }}
+                    </div>
+                    <div class="common-navigation-btns__container">
+                        <div class="common-arrow swiper-button-prev details-item-prev"></div>
+                        <div class="common-arrow swiper-button-next details-item-next"></div>
+                    </div>
+                </div>
+                <div class="home-details-swiper">
+                    {% if provider.videoUrl is not null %}
+                        <div data-videoid="{{ provider.videoUrl }}"
+                             class="data-image videoOverlayContainer video-item"
+                             data-toggle="modal"
+                             data-target="#videoModal"
+                             data-image="{{ asset(app_company_path ~ provider.videoPlaceholder) }}"
+                             data-title="{{ 'company.video_title'|trans }} {{ provider.name }}">
+                        </div>
+                    {% endif %}
+                    <div class="data-image image videoOverlayContainer"
+                         data-image="{{ asset(app_company_path ~ provider.fileName) }}"
+                         data-title="{{ 'company.image_title'|trans }} {{ provider.name }}"
+                         data-toggle="modal"
+                         data-target="#videoModal">
+                    </div>
+                    {% if provider.companyGalleries %}
+                        {% for item in provider.companyGalleries %}
+                            <div class="data-image image videoOverlayContainer"
+                                 data-image="{{ asset(app_company_gallery_path ~ item.fileName) }}"
+                                 data-title="{{ 'company.image_title'|trans }} {{ provider.name }}"
+                                 data-toggle="modal"
+                                 data-target="#videoModal">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="video-section">
+            <!-- start::Modal -->
+            {% include "frontend/pages/common/modal-video.html.twig" %}
+            <!-- end::Modal -->
+        </div>
+    </div>
+    <div class="content">
+        <div class="content__left">
+            <h2>{{ 'company.content_section_title'|trans }}</h2>
+            <a href="{{ path('dashboard_login') }}"
+               class="bookmark-favorite {{ app.user ? 'bookmark-item' : '' }}"
+               data-id="{{ provider.id }}"
+               data-type="{{ type }}"
+               target="_blank">
+                <div class="bookmark-image">
+                    <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon.svg') }}"
+                         class="not-bookmarked {{ settingService.isFavorite(type, provider.id) ? '' : 'd-none' }}"
+                         alt="bookmark"
+                         width="24"
+                         height="24"
+                    />
+                    <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon-bookmarked.svg') }}"
+                         class="bookmarked {{ settingService.isFavorite(type, provider.id) ? 'd-none' : '' }}"
+                         alt="bookmark"
+                         width="24"
+                         height="24"
+                    />
+                </div>
+                <span>{{ 'common.bookmark_save'|trans }}</span>
+            </a>
+            {{ provider.description|sanitize_html('app.editor') }}
+            <h2>{{ 'company.service_section_title'|trans }}</h2>
+            <ul>
+                {% for item in provider.availableServices %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="content__right">
+            {% include "frontend/pages/common/form/company-details.html.twig" with {'companyType': provider.locationType, 'companyName': provider.name} %}
+        </div>
+    </div>
+</div>

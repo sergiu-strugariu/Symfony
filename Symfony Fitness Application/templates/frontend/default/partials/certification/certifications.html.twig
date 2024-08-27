@@ -1,0 +1,26 @@
+{% set locale = languageHelper.getLocaleFromRequest %}
+
+{% for category in categories %}
+    <div class="{{ category['category'].classes }}">
+        <div class="inner">
+            <h2> {{ category['category'].translation(locale).name }}</h2>
+            <p>{{ category['category'].translation(locale).description }}</p>
+            <div>
+                {% for certification in category['category'].certifications %}
+                    {% if not certification.deletedAt %}
+                        <div class="item">
+                            <div class="image"
+                                 data-image="{{ asset(app_certificate_path ~ certification.imageName) }}"></div>
+                            <div>
+                                <h3>{{ certification.translation(locale).level }}</h3>
+                                <h2>{{ certification.translation(locale).title }}</h2>
+                                {{ certification.translation(locale).description|raw }}
+                                <a href="{{ path('app_educations') }}">{{ 'common.buttons.view_courses'|trans }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endfor %}

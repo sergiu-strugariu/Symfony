@@ -1,0 +1,62 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<div class="card-body p-9">
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.phone, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.phone) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.companyDetails, 'Company Details', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }} <span class="text-danger form-label fw-semibold fs-6">*</span>
+            {{ form_widget(form.companyDetails, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.companyDetails) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.interests, 'Interests', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.interests, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.interests) }}
+        </div>
+    </div>
+</div>
+
+<!--begin::Card footer-->
+<div class="card-footer py-6 px-9">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-end">
+                {{ form_widget(form._token) }}
+                <a href="{{ path('dashboard_lead_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Card footer-->
+<!--end::Card body-->
+{{ form_end(form) }}

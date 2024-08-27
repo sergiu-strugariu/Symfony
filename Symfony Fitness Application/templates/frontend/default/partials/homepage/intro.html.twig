@@ -1,0 +1,32 @@
+<div class="intro">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            {% for widget in section.pageWidgets %}
+                {% set translation = widget.translation(locale) %}
+
+                {% include 'frontend/default/partials/widgets/homepage/' ~ widget.template ignore missing %}
+            {% endfor %}
+        </div>
+
+        <div class="group-action">
+            <div class="inner">
+                <form class="searchCoursesForm" novalidate="novalidate">
+                    <input name="searchCourses" placeholder="{{ "common.search.text"|trans }}" title="{{ "common.search.text"|trans }}" type="text"/>
+                    <input type="submit" value=""/>
+                </form>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="swiper-button-prev-intro">
+                <img src="{{ asset('assets/frontend/images/icon-arrow-left.png') }}" alt="arrow"/>
+            </div>
+
+            <div class="swiper-pagination-intro"></div>
+
+            <div class="swiper-button-next-intro">
+                <img src="{{ asset('assets/frontend/images/icon-arrow-right.png') }}" alt="arrow"/>
+            </div>
+        </div>
+    </div>
+</div>

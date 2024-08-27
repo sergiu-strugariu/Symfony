@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    {% set locale = languageHelper.getLocaleFromRequest() %}
+
+    <main class="search-results">
+        {% include "frontend/default/partials/search-results/intro.html.twig" %}
+        {% include "frontend/default/partials/search-results/results.html.twig" %}
+    </main>
+
+    <script>
+        window.baseUrl = "{{ app.request.getSchemeAndHttpHost() }}"
+        window.imagePath = "{{ asset('assets/files/education/') }}";
+    </script>
+{% endblock %}

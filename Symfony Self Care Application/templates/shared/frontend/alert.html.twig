@@ -1,0 +1,11 @@
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="form-message {{ label }}">
+            <div aria-atomic="true" role="alert" class="{{ label }}-message">
+                <div class="{{ label }} message">
+                    <p>{{ message|raw }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,51 @@
+{% set categorySlug = app.request.query.get('category') %}
+<div class="catalogue-list-wrapper">
+    <div class="inner">
+        <form id="catalogueForm">
+            <div class="catalogue-filter-sort">
+                <div class="catalogue-filter">
+                    <p>{{ 'common.filter_for'|trans }}:</p>
+                    <div class="filter-box">
+                        <select id="shelterFilter" class="shelter-filter" name="shelterFilter">
+                            <option value="all">{{ 'blog.filter_all'|trans }}</option>
+                            {% for category in categories %}
+                                <option value="{{ category.slug }}" {{ category.slug == categorySlug ? 'selected' : '' }}>
+                                    {{ category.translation(locale).title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-box">
+                        <select id="regionFilter" class="region-filter" name="regionFilter">
+                            <option value="all">{{ 'search.county'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="catalogue-sort">
+                    <p>{{ 'common.sort_for'|trans }}:</p>
+                    <ul class="sorting-buttons">
+                        <li>
+                            <h3 class="name-sort" data-name="name" data-sort="desc">
+                                {{ 'common.filter_name'|trans }}
+                                <span>&#9650;</span> <span>&#9660;</span>
+                            </h3>
+                        </li>
+                        <li>
+                            <h3 class="price-sort" data-name="price" data-sort="desc">
+                                {{ 'common.filter_price'|trans }}
+                                <span>&#9650;</span> <span>&#9660;</span>
+                            </h3>
+                        </li>
+                        <li>
+                            <h3 class="rating-sort" data-name="averageRating" data-sort="desc">
+                                {{ 'common.filter_rating'|trans }}
+                                <span>&#9650;</span> <span>&#9660;</span>
+                            </h3>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div class="catalogue-list"></div>
+    </div>
+</div>

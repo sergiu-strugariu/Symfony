@@ -1,0 +1,453 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'review.send_review'|trans }} {{ company.name }}{% endblock %}
+{% block content %}
+    {% set reviewIsDefined = review is defined %}
+    {% set connections = constant('App\\Entity\\CompanyReview::CONNECTIONS') %}
+    <main class="review-form {{ reviewIsDefined ? 'preview-form' : '' }}">
+        {% if review is not defined %}
+            <div class="review-page-intro">
+                <h1>{{ 'review.send_review'|trans }} {{ company.name }}</h1>
+                <p class="subtitle">{{ company.address }}, {{ company.city.name }}, {{ company.county.name }}</p>
+                <div class="premiun-senior">
+                    <a href="{{ path('app_company_single', {'slug': company.slug}) }}">
+                        {{ 'common.view_more'|trans }} {{ company.name }}
+                    </a>
+                </div>
+                <p>
+                    {{ 'review.info_content'|trans }}
+                    <a href="#">{{ 'review.complaint_btn'|trans }}</a>.
+                </p>
+            </div>
+        {% endif %}
+        <div class="form-wrapper has-loader">
+            {% if review is not defined %}
+                <div class="form-title">
+                    <h2>{{ 'review.info_title'|trans }}</h2>
+                </div>
+            {% endif %}
+            <form id="reviewForm" class="not-search">
+                <input type="hidden" name="companySlug" value="{{ company.slug }}"/>
+                <div class="row">
+                    <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <div class="rating-element generalReview">
+                        <div>
+                            <label for="generalReview">{{ 'review.general_star'|trans }}</label>
+                            <input
+                                    class="generalReview"
+                                    type="text"
+                                    placeholder="generalReview"
+                                    name="generalReview"
+                                    id="generalReview"
+                                    data-index="0"
+                            />
+                        </div>
+                        <div class="rating-section">
+                            {% for index in 1..5 %}
+                                <span class="star {{ reviewIsDefined ? review.generalStar >= index ? 'active' : '' : '' }}"
+                                      data-star="{{ index }}"
+                                      data-name="generalReview">
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="search-box">
+                        <div class="tooltip-head">
+                            <label for="houseConnections">{{ 'review.connection_title'|trans }}</label>
+                            <div class="tooltip">
+                                <img src="{{ asset('assets/frontend/images/common/information-button.png') }}"
+                                     alt="info"
+                                     class="info-icon"
+                                />
+                                <span class="tooltip-text">{{ 'review.connection_content'|trans }}</span>
+                            </div>
+                        </div>
+                        <select id="houseConnections" class="houseConnections" name="houseConnections">
+                            <option value="" disabled hidden>{{ 'common.select'|trans }}</option>
+                            {% for item in connections %}
+                                <option value="{{ item }}">{{ item }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="searchbox-custom-select">
+                            {% if reviewIsDefined %}
+                                <p class="select-title">{{ review.connection }}</p>
+                            {% else %}
+                                <p class="select-title">{{ 'common.select'|trans }}</p>
+                            {% endif %}
+                            <div class="option-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="select-date">
+                        <div class="tooltip-head">
+                            <label for="reviewTimeFrame">{{ 'review.time_title'|trans }}</label>
+                            <div class="tooltip">
+                                <img src="{{ asset('assets/frontend/images/common/information-button.png') }}"
+                                     alt="info"
+                                     class="info-icon"
+                                />
+                                <span class="tooltip-text">{{ 'review.connection_content'|trans }}</span>
+                            </div>
+                        </div>
+                        <div class="select-date__fields">
+                            <div id="pageMasthead" class="pageSection"></div>
+                            <div id="pageContentArea" class="pageSection">
+                                <label for="txtDateRange">{{ 'common.select'|trans }}</label>
+                                <input type="text"
+                                       id="txtDateRange"
+                                       name="txtDateRange"
+                                       class="inputField shortInputField dateRangeField"
+                                       placeholder="{{ reviewIsDefined ?  review.startDate|date('Y.m.d') ~' | '~ review.endDate|date('Y.m.d') : 'Selectează perioada' }}"
+                                       data-from-field="txtDateFrom"
+                                       data-to-field="txtDateTo"
+                                       readonly
+                                />
+                                <input type="hidden" id="txtDateFrom" value=""/>
+                                <input type="hidden" id="txtDateTo" value=""/>
+                            </div>
+                            <div id="pageFooter" class="pageSection"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="add-review">
+                        <label for="message">{{ 'form.placeholder.message'|trans }}</label>
+                        <textarea name="message"
+                                  id="message"
+                                  placeholder="{{ 'form.placeholder.feedback_message'|trans }}"
+
+                        >{{ reviewIsDefined ? review.review : '' }}</textarea>
+                    </div>
+                    <div class="short-description">
+                        <p>
+                            <span>{{ reviewIsDefined ? review.review|length : 0 }}</span>
+                            {{ 'form.placeholder.message_length'|trans }}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-title">
+                    <h2>{{ 'review.evaluate_title'|trans }}</h2>
+                </div>
+                <div class="row">
+                    <div class="multiple elements">
+                        <div class="rating-element facilities">
+                            <div class="labeled-input">
+                                <label for="facilities">{{ 'review.facility_star'|trans }}</label>
+                                <input name="facilities"
+                                       class="facilities"
+                                       type="text"
+                                       id="facilities"
+                                       data-index="1"
+                                />
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.facilityStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="facilities">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element maintenanceSupport">
+                            <div class="labeled-input">
+                                <label for="maintenanceSupport">{{ 'review.support_star'|trans }}</label>
+                                <input
+                                        name="maintenanceSupport"
+                                        id="maintenanceSupport"
+                                        class="maintenanceSupport"
+                                        type="text"
+                                        data-index="2"
+                                />
+                            </div>
+                            <div class="rating-section ">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.maintenanceStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="maintenanceSupport">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element cleanliness">
+                            <div class="labeled-input">
+                                <label for="cleanliness">{{ 'review.clean_star'|trans }}</label>
+                                <input class="cleanliness" type="text" name="cleanliness" id="cleanliness"
+                                       data-index="3"/>
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.cleanStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="cleanliness">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element dignity">
+                            <div class="labeled-input">
+                                <label for="dignity">{{ 'review.dignity_star'|trans }}</label>
+                                <input class="dignity" type="text" name="dignity" id="dignity" data-index="4"/>
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.dignityStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="dignity">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element beverages">
+                            <div class="labeled-input">
+                                <label for="beverages">{{ 'review.beverage_star'|trans }}</label>
+                                <input class="beverages" type="text" name="beverages" id="beverages" data-index="5"/>
+                            </div>
+                            <div class="rating-section ">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.beverageStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="beverages">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element personnel">
+                            <div class="labeled-input">
+                                <label for="personnel">{{ 'review.personnel_star'|trans }}</label>
+                                <input class="personnel" type="text" name="personnel" id="personnel" data-index="6"/>
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.personalStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="personnel">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element activities">
+                            <div class="labeled-input">
+                                <label for="activities">{{ 'review.activity_star'|trans }}</label>
+                                <input class="activities" type="text" name="activities" id="activities" data-index="7"/>
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.activityStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="activities">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element security">
+                            <div class="labeled-input">
+                                <label for="security">{{ 'review.security_star'|trans }}</label>
+                                <input class="security" type="text" name="security" id="security" data-index="8"/>
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.securityStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="security">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element management">
+                            <div class="labeled-input">
+                                <label for="management">{{ 'review.management_star'|trans }}</label>
+                                <input class="management" type="text" name="management" id="management" data-index="9"/>
+                            </div>
+                            <div class="rating-section ">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.managementStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="management">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element rooms">
+                            <div class="labeled-input">
+                                <label for="rooms">{{ 'review.room_star'|trans }}</label>
+                                <input class="rooms" type="text" name="rooms" id="rooms" data-index="10"/>
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.managementStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="rooms">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="rating-element priceQualityRatio">
+                            <div class="labeled-input">
+                                <label for="priceQualityRatio">{{ 'review.price_quality_star'|trans }}</label>
+                                <input type="text"
+                                       name="priceQualityRatio"
+                                       class="priceQualityRatio"
+                                       id="priceQualityRatio"
+                                       data-index="11"
+                                />
+                            </div>
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star {{ reviewIsDefined ? review.priceQualityStar >= index ? 'active' : '' : '' }}"
+                                          data-star="{{ index }}"
+                                          data-name="priceQualityRatio">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row-title">
+                        <p>{{ 'review.privacy_content'|trans }}</p>
+                    </div>
+                    <div class="fields">
+                        <div class="row-half">
+                            <label for="name">{{ 'common.filter_name'|trans }}</label>
+                            <input type="text"
+                                   name="name"
+                                   id="name"
+                                   value="{{ reviewIsDefined ? review.name : app.user.name ?? '' }}"
+                                   placeholder="{{ 'form.placeholder.name'|trans }}"
+                            />
+                        </div>
+                        <div class="row-half">
+                            <label for="surname">{{ 'common.filter_surname'|trans }}</label>
+                            <input type="text"
+                                   name="surname"
+                                   id="surname"
+                                   value="{{ reviewIsDefined ? review.surname : app.user.surname ?? '' }}"
+                                   placeholder="{{ 'form.placeholder.surname'|trans }}"
+                            />
+                        </div>
+                        <div class="row-half">
+                            <label for="email">{{ 'menu.email_link'|trans }}</label>
+                            <input type="email"
+                                   name="email"
+                                   id="email"
+                                   value="{{ reviewIsDefined ? review.email : app.user.email ?? '' }}"
+                                   placeholder="{{ 'form.placeholder.email'|trans }}"
+                            />
+                        </div>
+                        <div class="row-half">
+                            <label for="phone">{{ 'menu.phone_link'|trans }}</label>
+                            <input type="tel"
+                                   name="phone"
+                                   id="phone"
+                                   value="{{ reviewIsDefined ? review.phone : app.user.phone ?? '' }}"
+                                   placeholder="{{ 'form.placeholder.phone'|trans }}"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="checkbox nameAgree">
+                        <input type="checkbox"
+                               id="nameAgree"
+                               name="nameAgree"
+                                {{ reviewIsDefined ? 'checked' : '' }}
+                        />
+                        <label for="nameAgree">{{ 'review.name_agree'|trans }}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="single-field">
+                        <label for="displayName">{{ 'review.nickname'|trans }}</label>
+                        <input type="text"
+                               name="displayName"
+                               id="displayName"
+                               value="{{ reviewIsDefined ? review.displayName : '' }}"
+                               placeholder="{{ 'form.placeholder.name'|trans }}"
+                        />
+                    </div>
+                </div>
+                {% if reviewIsDefined %}
+                    <div class="premiun-senior">
+                        <a href="{{ path('dashboard_review_index') }}">
+                            {{ 'review.back_dashboard'|trans }}
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="row preview-section">
+                        <div class="form-title">
+                            <h2>{{ 'review.preview_review'|trans }}</h2>
+                        </div>
+                        <div class="preview-review">
+                            <div class="rating-section">
+                                {% for index in 1..5 %}
+                                    <span class="star" data-star="{{ index }}" data-name=""></span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-text">
+                                <p class="preview-review-desc"></p>
+                                <p class="rating-from d-none">
+                                    <b>{{ 'review.review_for'|trans }}
+                                        <span class="name-to-display"></span>
+                                        (<span class="user-connection"></span>)
+                                    </b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox myRatingAgree">
+                            <input type="checkbox" id="myRatingAgree" name="myRatingAgree"/>
+                            <label for="myRatingAgree">{{ 'review.review_agree'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="recaptcha">
+                        <div id="g-recaptcha" class="g-recaptcha recaptcha"
+                             data-sitekey="{{ recaptcha_site_key }}"></div>
+                    </div>
+                    <div class="form-action">
+                        <input type="submit" class="submit-btn" value="{{ 'review.send_btn'|trans }}"/>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </main>
+{% endblock %}

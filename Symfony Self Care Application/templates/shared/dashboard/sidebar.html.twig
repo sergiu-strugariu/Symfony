@@ -1,0 +1,553 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set type = app.request.get('type') %}
+{% set locationType = app.request.get('locationType') %}
+{% set careType = constant('App\\Entity\\Company::LOCATION_TYPE_CARE') %}
+{% set providerType = constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') %}
+
+{% set isAdmin = is_granted('ROLE_ADMIN') %}
+{% set isCompany = is_granted('ROLE_COMPANY') %}
+{% set isClient = is_granted('ROLE_CLIENT') %}
+
+<div id="kt_app_sidebar"
+     class="app-sidebar flex-column"
+     data-kt-drawer="true"
+     data-kt-drawer-name="app-sidebar"
+     data-kt-drawer-activate="{default: true, lg: false}"
+     data-kt-drawer-overlay="true"
+     data-kt-drawer-width="250px"
+     data-kt-drawer-direction="start"
+     data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle"
+>
+    <!--begin::Wrapper-->
+    <div class="app-sidebar-wrapper">
+        <div id="kt_app_sidebar_wrapper"
+             class="hover-scroll-y my-5 my-lg-2 mx-4"
+             data-kt-scroll="true"
+             data-kt-scroll-activate="{default: false, lg: true}"
+             data-kt-scroll-height="auto"
+             data-kt-scroll-dependencies="#kt_app_header"
+             data-kt-scroll-wrappers="#kt_app_sidebar_wrapper"
+             data-kt-scroll-offset="5px"
+        >
+            <!--begin::Sidebar menu-->
+            <div id="#kt_app_sidebar_menu"
+                 data-kt-menu="true"
+                 data-kt-menu-expand="false"
+                 class="app-sidebar-menu-primary menu menu-column menu-rounded menu-sub-indention px-3 px-lg-7 mb-5"
+            >
+                <!--begin:Menu tab-->
+                <div class="menu-item menu-labels">
+                    <div class="menu-content d-flex flex-stack fw-bold text-gray-600 text-uppercase fs-6 mt-3 mb-1">
+                        <span class="menu-heading ps-1">{{ 'dashboard.common.general'|trans }}</span>
+                    </div>
+                </div>
+                <!--begin:Menu tab-->
+
+                {% if isAdmin or isCompany %}
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ route == 'dashboard_index' ? 'active' : '' }}"
+                           href="{{ path('dashboard_index') }}">
+                        <span class="menu-image-v1">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/dashboard.svg') }}"
+                                 width="28"
+                                 alt="dashboard"
+                            />
+                        </span>
+                            <span class="menu-title ps-12">{{ 'dashboard.common.dashboard'|trans }}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                {% endif %}
+
+
+                <!--begin:Menu items-->
+                <div data-kt-menu-trigger="click"
+                     class="menu-item here menu-accordion {{ route == 'dashboard_my_account' or route == 'dashboard_favorites' ? 'hover show' : '' }}">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-image-v1">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/users.svg') }}"
+                                 width="28"
+                                 alt="courses"
+                            />
+                        </span>
+                        <span class="menu-title text-uppercase ps-12">{{ 'dashboard.my_account.my_account'|trans }}</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a href="{{ path('dashboard_my_account') }}"
+                               class="menu-link {{ route == 'dashboard_my_account' ? 'active' : '' }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                <span class="menu-title">{{ 'dashboard.my_account.my_account'|trans }}</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a href="{{ path('dashboard_favorites') }}"
+                               class="menu-link {{ route == 'dashboard_favorites' ? 'active' : '' }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                <span class="menu-title">{{ 'dashboard.favorites.favorite'|trans }}</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+                <!--end:Menu items-->
+
+                <!--begin:Menu tab-->
+                <div class="menu-item menu-labels">
+                    <div class="menu-content d-flex flex-stack fw-bold text-gray-600 text-uppercase fs-6 mt-3 mb-1">
+                        <span class="menu-heading ps-1">{{ 'dashboard.common.cms'|trans }}</span>
+                    </div>
+                </div>
+                <!--begin:Menu tab-->
+
+                {% if isAdmin %}
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ route == 'dashboard_page_index' ? 'active' : '' }}"
+                           href="{{ path('dashboard_page_index') }}">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-abstract-27 icons-font-size ms-3">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </span>
+                            <span class="menu-title ps-2">{{ 'dashboard.common.pages'|trans }}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                {% endif %}
+
+                {% if isAdmin or isCompany %}
+                    <!--begin:Menu items-->
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ type =='care' or route == 'dashboard_company_index' and locationType == careType or route == 'dashboard_company_create' and locationType == careType or route == 'dashboard_company_edit' and locationType == careType or route == 'dashboard_review_index' ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link ">
+                        <span class="menu-image-v2">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/home.svg') }}" width="50" alt="home">
+                        </span>
+                        <span class="menu-title text-uppercase ps-12">
+                           {{ 'dashboard.common.care_homes'|trans }}
+                        </span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a href="{{ path('dashboard_company_index', {'locationType': careType}) }}"
+                                   class="menu-link {{ route == 'dashboard_company_index' and locationType == careType or route == 'dashboard_company_create' and locationType == careType or route == 'dashboard_company_edit' and locationType == careType ? 'active' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                    <span class="menu-title">{{ 'dashboard.common.listing_care_homes'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        {% if isAdmin %}
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a href="{{ path('dashboard_review_index') }}"
+                                       class="menu-link {{ route == 'dashboard_review_index'  ? 'active' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                        <span class="menu-title">{{ 'dashboard.common.listing_reviews'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link {{ type =='care' ? 'active' : '' }}"
+                                       href="{{ path('dashboard_default_category_index', {'type': careType}) }}">
+                                <span class="menu-bullet">
+                                   <span class="bullet bullet-dot"></span>
+                                </span>
+                                        <span class="menu-title">{{ 'dashboard.form.category_cares'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        {% endif %}
+                    </div>
+                    <!--end:Menu items-->
+
+                    <!--begin:Menu items-->
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ type =='service' or route == 'dashboard_company_index' and locationType == providerType or route == 'dashboard_company_create' and locationType == providerType or route == 'dashboard_company_edit' and locationType == providerType ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                      <span class="menu-image-v1">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/providers.svg') }}" width="28"
+                                 alt="providers">
+                        </span>
+                        <span class="menu-title text-uppercase ps-12">
+                            {{ 'controller.providers'|trans }}
+                        </span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a href="{{ path('dashboard_company_index', {'locationType': providerType}) }}"
+                                   class="menu-link {{ route == 'dashboard_company_index' and locationType == providerType or route == 'dashboard_company_create' and locationType == providerType or route == 'dashboard_company_edit' and locationType == providerType ? 'active' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                    <span class="menu-title">{{ 'dashboard.common.listing_provides'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        {% if isAdmin %}
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link {{ type =='service' ? 'active' : '' }}"
+                                       href="{{ path('dashboard_default_category_index', {'type': providerType}) }}">
+                                <span class="menu-bullet">
+                                   <span class="bullet bullet-dot"></span>
+                                </span>
+                                        <span class="menu-title">{{ 'dashboard.common.provider_categories'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        {% endif %}
+                    </div>
+                    <!--end:Menu items-->
+
+                    <!--begin:Menu items-->
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ type =='article' or route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                        <span class="menu-image-v1">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/articles.svg') }}" width="28"
+                                 alt="articles">
+                        </span>
+                        <span class="menu-title text-uppercase ps-12">
+                            Articles
+                        </span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'active' : '' }}"
+                                   href="{{ path('dashboard_article_index') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                    <span class="menu-title">{{ 'dashboard.common.listing_articles'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        {% if isAdmin %}
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link {{ type =='article' ? 'active' : '' }}"
+                                       href="{{ path('dashboard_default_category_index', {'type': 'article'}) }}">
+                                <span class="menu-bullet">
+                                   <span class="bullet bullet-dot"></span>
+                                </span>
+                                        <span class="menu-title">{{ 'blog.filter_title'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        {% endif %}
+                    </div>
+                    <!--end:Menu items-->
+
+                    <!--begin:Menu items-->
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ type == 'job' or route == 'dashboard_job_index' or route == 'dashboard_job_create' or route == 'dashboard_job_edit' ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-image-v1">
+                                <img src="{{ asset('assets/dashboard/media/dashboard/jobs.svg') }}" width="28"
+                                     alt="jobs">
+                            </span>
+                            <span class="menu-title text-uppercase ps-12">{{ 'breadcrumb.job_title'|trans }}</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a href="{{ path('dashboard_job_index') }}"
+                                   class="menu-link {{ route == 'dashboard_job_index' or route == 'dashboard_job_create' or route == 'dashboard_job_edit' ? 'active' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                    <span class="menu-title">{{ 'dashboard.common.listing_jobs'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        {% if isAdmin %}
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a href="{{ path('dashboard_default_category_index', {'type': 'job'}) }}"
+                                       class="menu-link {{ type == 'job' ? 'active' : '' }}">
+                                <span class="menu-bullet">
+                                  <span class="bullet bullet-dot"></span>
+                                </span>
+                                        <span class="menu-title">{{ 'dashboard.common.job_categories'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        {% endif %}
+                    </div>
+                    <!--end:Menu items-->
+
+                    <!--begin:Menu items-->
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ type == 'training' or route == 'dashboard_training_index' or route == 'dashboard_training_create' or route == 'dashboard_training_edit' ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-image-v1">
+                                 <img src="{{ asset('assets/dashboard/media/dashboard/courses.svg') }}" width="28"
+                                      alt="courses">
+                            </span>
+                            <span class="menu-title text-uppercase ps-12">{{ 'common.courses'|trans }}</span>
+                            <span class="menu-arrow"></span>
+                    </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a href="{{ path('dashboard_training_index') }}"
+                                   class="menu-link {{ route == 'dashboard_training_index' or route == 'dashboard_training_create' or route == 'dashboard_training_edit' ? 'active' : '' }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">{{ 'dashboard.common.listing_courses'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        {% if isAdmin %}
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link {{ type == 'training' ? 'active' : '' }}"
+                                       href="{{ path('dashboard_default_category_index', {'type': 'training'}) }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                        <span class="menu-title">{{ 'dashboard.common.course_categories'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        {% endif %}
+                    </div>
+                    <!--end:Menu items-->
+                {% endif %}
+
+                {% if isAdmin %}
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ route == 'dashboard_menu_index' ? 'active' : '' }}"
+                           href="{{ path('dashboard_menu_index') }}">
+                       <span class="menu-image-v1">
+                           <img src="{{ asset('assets/dashboard/media/dashboard/menus.svg') }}" width="28" alt="menus">
+                        </span>
+                            <span class="menu-title ps-12">{{ 'dashboard.common.menus'|trans }}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+
+                    <!--begin:Menu tab-->
+                    <div class="menu-item menu-labels">
+                        <div class="menu-content d-flex flex-stack fw-bold text-gray-600 text-uppercase fs-6">
+                            <span class="menu-heading ps-1">{{ 'dashboard.common.global'|trans }}</span>
+                        </div>
+                    </div>
+                    <!--begin:Menu tab-->
+
+                    <!--begin:Menu item settings-->
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ route == 'dashboard_lang_index' or route == 'dashboard_lang_create' or route == 'dashboard_lang_edit' or route == 'dashboard_settings_index' ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                        <span class="menu-image-v1">
+                          <img src="{{ asset('assets/dashboard/media/dashboard/settings.svg') }}" width="28"
+                               alt="settings">
+                        </span>
+                        <span class="menu-title text-uppercase ps-12">
+                            {{ 'dashboard.common.settings'|trans }}
+                        </span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a href="{{ path('dashboard_lang_index') }}"
+                                   class="menu-link {{ route == 'dashboard_lang_index' or route == 'dashboard_lang_create' or route == 'dashboard_lang_edit' ? 'active' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                    <span class="menu-title">{{ 'dashboard.common.languages'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ route == 'dashboard_settings_index' ? 'active' : '' }}"
+                                   href="{{ path('dashboard_settings_index') }}">
+                                <span class="menu-bullet">
+                                   <span class="bullet bullet-dot"></span>
+                                </span>
+                                    <span class="menu-title">{{ 'dashboard.common.settings'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                    </div>
+                    <!--end:Menu item settings-->
+
+                    <!--begin:Menu item users-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ route == 'dashboard_user_index' ? 'active' : '' }}"
+                           href="{{ path('dashboard_user_index') }}">
+                        <span class="menu-image-v1">
+                             <img src="{{ asset('assets/dashboard/media/dashboard/users.svg') }}"
+                                  width="28"
+                                  alt="users"
+                             >
+                        </span>
+                            <span class="menu-title ps-12">{{ 'dashboard.common.users'|trans }}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item users-->
+
+                    <!--begin:Menu rebuild search -->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{{ path('dashboard_rebuild_search') }}">
+                        <span class="menu-image-v1">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/rebuild-search.svg') }}" width="28"
+                                 alt="rebuild-search">
+                        </span>
+                            <span class="menu-title ps-12">{{ 'dashboard.common.rebuid_search'|trans }}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu rebuild search -->
+                {% endif %}
+
+                <!--begin:Menu clear cache -->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link" href="{{ path('dashboard_clear_cache') }}">
+                        <span class="menu-image-v1">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/clear-cache.svg') }}" width="28" alt="clear-cache">
+                        </span>
+                        <span class="menu-title ps-12">{{ 'dashboard.common.clear_cache'|trans }}</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu clear cache -->
+            </div>
+            <!--end::Sidebar menu-->
+        </div>
+    </div>
+    <!--end::Wrapper-->
+</div>

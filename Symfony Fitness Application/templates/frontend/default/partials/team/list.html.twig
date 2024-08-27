@@ -1,0 +1,18 @@
+<div class="list">
+    <div class="inner">
+        {% include "shared/frontend/alert.html.twig" %}
+
+        <div>
+            {% for member in teamMembers %}
+                <div class="item">
+                    <img src="{{ asset(app_team_member_path ~ member.imageName) }}" alt="team" />
+                    <div>
+                        <h2>{{ member.name }}</h2>
+                        <h3>{{ member.translation(locale).specialization }}</h3>
+                    </div>
+                    <a href="{{ path('app_team_member', {'slug': member.slug}) }}">{{ 'team.button_meet'|trans }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

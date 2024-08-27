@@ -1,0 +1,12 @@
+<div class="search">
+    {% for widget in section.pageWidgets %}
+        {% set translation = widget.translation(locale) %}
+        {% include 'frontend/pages/partials/courses/widgets/' ~ widget.template ignore missing %}
+    {% endfor %}
+</div>
+
+<!-- Start: Custom templates  -->
+{% include "frontend/pages/partials/courses/custom/recommended.html.twig" %}
+{% include "frontend/pages/partials/courses/custom/items.html.twig" %}
+{% include "frontend/pages/common/pagination.html.twig" %}
+<!-- End: Custom templates  -->

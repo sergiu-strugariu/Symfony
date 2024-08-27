@@ -1,0 +1,7 @@
+<div class="info-card" {% if widget.fileName %} data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" {% endif %}>
+    <div class="info-card-inner">
+        {% if translation.description %}
+            {{ translation.description|sanitize_html('app.editor') }}
+        {% endif %}
+    </div>
+</div>

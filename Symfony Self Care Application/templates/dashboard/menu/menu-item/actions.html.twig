@@ -1,0 +1,60 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+{% set locale = app.request.get('locale') %}
+{% block content %}
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+        <!--begin::Toolbar container-->
+        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack app-container-details">
+            <!--begin::Page title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                <!--begin::Title-->
+                <h1 class="page-heading d-flex fw-bolder fs-6 flex-column justify-content-center my-0 text-uppercase color-1A394E">
+                    {{ pageTitle }}
+                </h1>
+                <!--end::Title-->
+            </div>
+            <!--end::Page title-->
+        </div>
+        <!--end::Toolbar container-->
+    </div>
+    <!--end::Toolbar-->
+
+    <!--begin::Content-->
+    <div id="kt_app_content" class="flex-column-fluid">
+        <!--begin::Content container-->
+        <div id="kt_app_content_container" class="app-container container-fluid app-container-details">
+            <div class="row">
+                <div class="col-md-6">
+                    <!--start::Form-->
+                    {% include 'dashboard/menu/menu-item/_form.html.twig' %}
+                    <!--end::Form-->
+                </div>
+                <div class="col-md-6">
+                    <!--start::Menu-it-->
+                    {% include 'dashboard/menu/menu-item/menu-items.html.twig' %}
+                    <!--end::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Content-->
+{% endblock %}
+{% block page_javascripts %}
+    <script>
+        window.getMenuItemsEndpoint = "{{ path('dashboard_ajax_menu_items', {'uuid': uuid}) ~ '?locale=' ~ locale }}";
+        window.addMenuItemEndpoint = "{{ path('dashboard_menu_item_create', {'uuid': uuid}) }}";
+        window.editMenuItemEndpoint = "{{ path('dashboard_menu_item_edit', {'uuid': uuid}) ~ '?locale=' ~ locale }}";
+        window.editMenuItemParentEndpoint = "{{ path('dashboard_menu_item_update_node', {'uuid': uuid}) }}";
+        window.deleteMenuItemEndpoint = "{{ path('dashboard_menu_item_remove', {'uuid': uuid}) }}";
+        window.menuTitle = "{{ menuTitle }}";
+        window.menuIconPath = "{{ asset('assets/files/menu/') }}";
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+    <script src="{{ asset('assets/dashboard/js/menu-items/menuItems.js') }}"></script>
+{% endblock %}

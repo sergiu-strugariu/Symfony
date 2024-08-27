@@ -1,0 +1,41 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+    {% block share %}
+        <meta property="og:title" content="{{ company.name }}">
+        <meta property="og:description" content="{{ company.shortDescription }}">
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:image" content="{{ asset(app_company_path ~ company.fileName) }}">
+        <meta property="og:image:width" content="1200"/>
+        <meta property="og:image:height" content="630"/>
+    {% endblock %}
+{% block content %}
+    <main class="home-details">
+        <div class="home-details__wrapper inner">
+            <!-- start::Breadcrumb -->
+            {% include "shared/frontend/common/breadcrumbs.html.twig" %}
+            <!-- end::Breadcrumb -->
+
+            <!-- start::Intro -->
+            {% include "frontend/pages/company/single/intro.html.twig" %}
+            <!-- end::Intro -->
+
+            <!-- start::Content -->
+            {% include "frontend/pages/company/single/content.html.twig" %}
+            <!-- end::Content -->
+
+            <!-- start::Reviews -->
+            {% include "frontend/pages/company/single/reviews.html.twig" %}
+            <!-- end::Reviews -->
+
+            <!-- start::Other hostels -->
+            {% include "frontend/pages/company/single/other.html.twig" %}
+            <!-- end::Other hostels -->
+
+            <!-- start::Recommended services -->
+            {% include "frontend/pages/common/recomended-by-category.html.twig" with {'url': path('app_company_single'), 'categoryName': categoryName} %}
+            <!-- end::Recommended services -->
+        </div>
+    </main>
+{% endblock %}

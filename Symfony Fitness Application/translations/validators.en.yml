@@ -1,0 +1,55 @@
+common:
+  not_blank: "This field is required"
+  not_valid_email: "Please enter a valid email"
+  gdpr: 'I have read and agree to <a href="%terms_url%">Terms and Conditions</a> and <a href="%privacy_url%">Privacy Policy</a> of Move On.'
+  newsletter: "I agree to receive news and commercial information (newsletter) from Move On."
+  contract: "Generate Contract."
+  media: "I give my consent for filming/photographing in education."
+  max_message: "This field must be at most {{ limit }} characters long."
+  not_valid:
+    email: "Please enter a valid email."
+    phone: "Invalid phone number."
+    gdpr: "You must accept the GDPR policy."
+    password_not_match: "The passwords do not match"
+  min_message: "This field must be at least {{ limit }} characters long."
+
+  custom:
+    min_message: "Invalid message."
+    name: "Invalid name."
+    first_name: "Invalid first name."
+    last_name: "Invalid last name."
+
+  form_labels:
+    first_name: "First Name"
+    last_name: "Last Name"
+    full_name: "Name"
+    email: "Email"
+    sign_up: "Sign up"
+    phone: "Phone"
+    password:
+      first_options: "Password"
+      second_options: "Repeat Password"
+      default: "Password"
+
+mails:
+  salute: "Hello"
+  greetings: "Best regards, <br /> The Move On Team"
+  follow_us: "Follow us on"
+
+  resetting:
+    title: "Password Reset"
+    description: "If you’ve lost your password or wish to reset it, use the link below to reset it:"
+    reset_password_text: "If you did not request a password reset, you can safely ignore this email. Only someone with access to your email can reset your account password."
+
+  email_notifications:
+    title: "Notification"
+    notification_text: "You have received a new notification on"
+    verify: "Check the details below:"
+    information: "For more information, access your account at"
+    already_sent: "You've already requested a password reset, please try again later."
+
+  email_account_confirmation:
+    confirm_button: "Confirm Email Address"
+    confirm_account: "Account Confirmation"
+    description: "Thank you for creating a Move On account! <br /> To activate your account, please confirm your email address by clicking the link below:"
+    security: "If you did not create this account, you can safely ignore this email."

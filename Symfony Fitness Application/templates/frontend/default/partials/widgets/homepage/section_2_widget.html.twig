@@ -1,0 +1,13 @@
+<div class="item">
+    <div>
+        <h4>{{ translation.title }}</h4>
+
+        {% if widget.fileName %}
+            <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" alt="icon"/>
+        {% endif %}
+    </div>
+    {{ translation.description|raw }}
+    {% if translation.link and translation.linkText %}
+        <a href="{{ translation.link }}">{{ translation.linkText }}</a>
+    {% endif %}
+</div>

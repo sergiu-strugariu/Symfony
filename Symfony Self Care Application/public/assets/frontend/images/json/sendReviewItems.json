@@ -1,0 +1,11 @@
+{
+  "rows": [
+    {"location": "iasi",  "name": "Azil Privat", "slug":  "/private"},
+    {"location": "bacau",  "name": "Azil Privat2", "slug":  "/privat2e"},
+    {"location": "iasi",  "name": "Azil Privat3", "slug":  "/private3"},
+    {"location": "vaslui",  "name": "Azil Privat4", "slug":  "/private4"},
+    {"location": "iasi",  "name": "Azil Privat5", "slug":  "/private5"}
+  ],
+  "total": 100,
+  "limit": 4
+}

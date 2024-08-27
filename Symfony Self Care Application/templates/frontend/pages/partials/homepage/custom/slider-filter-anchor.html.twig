@@ -1,0 +1,22 @@
+<div class="slider-filter-anchor slick-shelters-anchor">
+    <div class="inner">
+        <h2>{{ 'homepage.recommended_care'|trans }}</h2>
+        <ul class="category-filters">
+            <li>
+                <a class="active" href="#" data-category="">
+                    {{ 'blog.filter_all'|trans }}
+                </a>
+            </li>
+            {% for category in categoriesCare %}
+                <li>
+                    <a href="#" data-category="{{ category.slug }}">
+                        {{ category.translation(locale).title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="list-wrapper">
+            <div class="slick-shelters recommended-homes"></div>
+        </div>
+    </div>
+</div>

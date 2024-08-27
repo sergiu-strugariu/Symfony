@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}| MoveOn{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/ico" href="{{ asset('assets/frontend/favicon.ico') }}"/>
+        {% block stylesheets %}{% endblock %}
+        {% block meta_og %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}
+        {% endblock %}
+        {% block javascripts %}
+        {% endblock %}
+        {% block page_javascripts %}
+        {% endblock %}
+    </body>
+</html>

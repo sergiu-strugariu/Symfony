@@ -1,0 +1,19 @@
+<div class="swiper-slide">
+    {% if widget.fileName %}
+        <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+    {% endif %}
+
+    {% if widget.fileNameMob %}
+        <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileNameMob) }}"></div>
+    {% endif %}
+
+    <div class="inner">
+        <div>
+            <h2>{{ translation.title }}</h2>
+            {{ translation.description|raw }}
+            {% if translation.link and translation.linkText %}
+                <a href="{{ translation.link }}">{{ translation.linkText }}</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

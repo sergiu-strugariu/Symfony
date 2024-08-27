@@ -1,0 +1,16 @@
+<div class="cards-reviews">
+    <div class="inner">
+        <h2>{{ 'homepage.review_title'|trans }}</h2>
+        <div class="cards slick-shelters slick-results-speak">
+            {% for widget in section.pageWidgets %}
+                {% set translation = widget.translation(locale) %}
+                {% include 'frontend/pages/partials/homepage/widgets/' ~ widget.template ignore missing %}
+            {% endfor %}
+        </div>
+        <div class="cards-reviews link-button">
+            <a href="{{ path('app_feedback') }}">
+                {{ 'homepage.review_btn'|trans }}
+            </a>
+        </div>
+    </div>
+</div>

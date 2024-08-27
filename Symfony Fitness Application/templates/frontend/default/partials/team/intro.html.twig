@@ -1,0 +1,9 @@
+<div class="common-intro" data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName) }}">
+    <div class="inner">
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+
+            <h1>{{ translation.title }}</h1>
+        {% endfor %}
+    </div>
+</div>

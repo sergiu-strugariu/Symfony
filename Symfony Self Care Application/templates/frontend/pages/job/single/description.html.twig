@@ -1,0 +1,45 @@
+{% set type = constant('App\\Entity\\Favorite::JOB_FAVORITE') %}
+<div class="job-details__description">
+    <div class="head-section">
+        <div class="left-section bookmark-section">
+            <h2>{{ 'jobs.job_description'|trans }}</h2>
+            <a href="{{ path('app_homepage') }}"
+               class="bookmark-favorite {{ app.user ? 'bookmark-item' : '' }}"
+               data-id="{{ job.id }}"
+               data-type="{{ type }}"
+               target="_blank">
+                <div class="bookmark-image">
+                    <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon.svg') }}"
+                         class="not-bookmarked {{ settingService.isFavorite(type, job.id) ? '' : 'd-none' }}"
+                         alt="bookmark"
+                         width="24"
+                         height="24"
+                    />
+                    <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon-bookmarked.svg') }}"
+                         class="bookmarked {{ settingService.isFavorite(type, job.id) ? 'd-none' : '' }}"
+                         alt="bookmark"
+                         width="24"
+                         height="24"
+                    />
+                </div>
+                <span>{{ 'common.bookmark_save'|trans }}</span>
+            </a>
+        </div>
+        <div class="right-section">
+            <span class="post-date">
+                {{ settingService.timeAgo(job.createdAt) }}
+            </span>
+        </div>
+    </div>
+    <!-- start::Content -->
+    {{ job.translation(locale).body|sanitize_html('app.editor') }}
+    <!-- start::Content -->
+    {% if job.translation(locale).benefits is not empty %}
+        <h3>{{ 'jobs.job_benefits'|trans }}:</h3>
+        <ul>
+            {% for item in job.translation(locale).benefits %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

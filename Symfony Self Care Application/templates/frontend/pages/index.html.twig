@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ page.name }}{% endblock %}
+{% block content %}
+    {% if page %}
+        <main class="{{ page.classes }}">
+            {% for section in page.pageSections %}
+                {% include 'frontend/pages/partials/' ~ page.machineName ~ '/' ~ section.template ignore missing %}
+            {% endfor %}
+        </main>
+    {% endif %}
+{% endblock %}

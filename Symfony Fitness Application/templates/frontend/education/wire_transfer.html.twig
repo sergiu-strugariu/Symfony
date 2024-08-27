@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'form_register.bank_transfer.title'|trans }} {{ parent() }} {% endblock %}
+
+{% block content %}
+    <main class="payment-confirmation">
+        <div class="common-intro-v2">
+            <div class="inner">
+                <div class="image" data-image="{{ asset(app_education_path ~ education.imageName) }}"></div>
+                <h1>{{ education.translation(locale).title }}</h1>
+            </div>
+        </div>
+        <div class="content">
+            <div class="inner">
+                <h2>{{ 'form_register.bank_transfer.description'|trans }}</h2>
+                <p>
+                    <strong>{{ 'account.details.company_name'|trans }}:</strong> SC MOVE ON SRL<br/>
+                    <strong>{{ 'account.details.address'|trans }}:</strong> Str. ION BREZOIANU,  Nr. 27, cam 5,8 si 9, Bucureşti, Sectorul 1<br/>
+                    <strong>{{ 'account.details.cui'|trans }}:</strong> RO30019625<br/>
+                    <strong>{{ 'account.details.registration_number'|trans }}:</strong> J40/3820/02.04.2012<br/>
+                    <strong>{{ 'account.details.bank_name'|trans }}:</strong> Raiffeisen Bank<br/>
+                    <strong>{{ 'account.details.iban'|trans }}:</strong> RO31RZBR0000060018162697<br/>
+                    <strong>{{ 'account.details.proforma_invoice_disclaimer'|trans }}:</strong> {{ educationRegistration.proformaInvoiceSeriesName ~ '/' ~ educationRegistration.proformaInvoiceNumber }}
+                </p>
+                <a href="{{ path('app_index') }}">&#60; {{ 'form_register.back_to_main_page'|trans }}</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}

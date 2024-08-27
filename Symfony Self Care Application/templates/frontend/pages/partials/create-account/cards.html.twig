@@ -1,0 +1,16 @@
+<div class="content-wrapper">
+    <div class="inner">
+        <div class="content">
+            <h2>{{ 'auth.create_account_title'|trans }}</h2>
+            <p>{{ 'auth.create_account_description'|trans }}</p>
+            <div class="account-type">
+                <!-- start: Page widget  -->
+                {% for widget in section.pageWidgets %}
+                    {% set translation = widget.translation(locale) %}
+                    {% include 'frontend/pages/partials/create-account/widgets/' ~ widget.template ignore missing %}
+                {% endfor %}
+                <!-- end: Page widget  -->
+            </div>
+        </div>
+    </div>
+</div>

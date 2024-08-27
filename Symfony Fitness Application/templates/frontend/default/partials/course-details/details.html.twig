@@ -1,0 +1,29 @@
+<div class="details">
+    <div class="inner">
+        <div>
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/icon-date.jpg') }}" alt="icon" />
+                <p>{{ education.formattedDate(locale) }}</p>
+            </div>
+
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/icon-location.jpg') }}" alt="icon" />
+                <p>{{ education.location }}, {{ education.city.name }}</p>
+            </div>
+
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/icon-certification.jpg') }}" alt="icon" />
+                <p>{{ 'course_calendar.course_details.certification'|trans }}: {{ education.certification.translation(locale).title }}</p>
+            </div>
+
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/icon-mini-card.jpg') }}" alt="icon" />
+                <p>{{ 'course_calendar.course_details.price'|trans }}: {{ education.priceWithVAT }} Lei</p>
+            </div>
+        </div>
+
+        <p>
+            {{ 'course_calendar.course_details.info_extra'|trans|raw }}
+        </p>
+    </div>
+</div>

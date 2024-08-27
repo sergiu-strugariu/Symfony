@@ -1,0 +1,36 @@
+{% if(recommendedCourses is not empty) %}
+    <div class="other-courses other-courses-common">
+        <h2>{{ sectionTitle }}</h2>
+        <div class="courses">
+            {% for item in recommendedCourses %}
+                <div class="course">
+                    <div class="course__wrapper">
+                        <h3>{{ 'courses.offered_by'|trans }} {{ item.companyName }}.</h3>
+                        <div class="data-image" data-image="{{ asset(app_company_path ~ item.fileName) }}"></div>
+                        <ul>
+                            <li>
+                                {{ 'search.location'|trans }}: {{ item.county }}
+                            </li>
+                            <li>
+                                {{ 'courses.format'|trans }}: {{ item.format }}
+                            </li>
+                            <li>
+                                {{ 'courses.level'|trans }}:
+                                {{ item.level }}
+                            </li>
+                            <li>
+                                {{ 'courses.certificate'|trans }}: {{ item.certificate }}
+                            </li>
+                            <li>
+                                {{ 'common.filter_category'|trans }}: {{ item.category }}
+                            </li>
+                        </ul>
+                        <a href="{{ path('app_course_single', {'slug': item.slug}) }}">
+                            {{ 'common.asc_for_details_jobs'|trans }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

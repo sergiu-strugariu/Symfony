@@ -1,0 +1,14 @@
+{% if widget.fileName %}
+    <div class="intro-section" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}">
+        <div class="inner">
+            {% if translation.title %}
+                <h1>{{ translation.title|raw }}</h1>
+            {% endif %}
+            {% if translation.linkText %}
+                <a href="{{ translation.link }}">
+                    {{ translation.linkText }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

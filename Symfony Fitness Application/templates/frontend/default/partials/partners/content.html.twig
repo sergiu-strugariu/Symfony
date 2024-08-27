@@ -1,0 +1,9 @@
+<div class="content">
+    <div class="inner">
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+
+            {{ translation.description|raw }}
+        {% endfor %}
+    </div>
+</div>

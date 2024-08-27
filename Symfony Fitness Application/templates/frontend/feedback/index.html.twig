@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'feedback.title'|trans }} {{ parent() }} {% endblock %}
+
+{% block content %}
+    <form action="" method="POST" class="feedbackForm has-loader">
+        {% for question in questions %}
+            {% set answerId = "answer" ~ loop.index %}
+            <div>
+                <label for="{{ answerId }}">{{ question.title }}</label>
+                <textarea id="{{ answerId }}" name="answers[{{ question.id }}]" rows="4" required></textarea>
+            </div>
+        {% endfor %}
+        <input type="submit" value="{{ "authentication.buttons.send"|trans }}" />
+    </form>
+{% endblock %}

@@ -1,0 +1,287 @@
+authentication:
+  exists: "User already exists."
+  success: "User registered successfully."
+  user_not_exists: "User does not exist."
+  user_not_logged: "You are not logged in."
+
+  deleted_account: "This account was deleted"
+  not_enabled_account: "This account is not enalbed, check your email."
+
+  account:
+    confirmed: "The email address was confirmed, you can log in now."
+    not_verified: "The email address is not verified."
+    already_confirmed: "The email address was already verified, you can log in."
+    not_exists: "This account does not exists."
+    incorrect_password: "The current password is incorrect."
+    password_not_match: "The new passwords do not match."
+    user_already_exists: "This email address is already taken."
+    default_password_error: "An error occurred please try again later."
+    success: "The account has been updated successfully."
+
+  login:
+    title: "Have you attended MOVE ON events before?"
+    description: "If you have attended workshops before, your account was activated when you confirmed your registration. Please enter the email address you registered with and the associated password to access your saved data."
+
+  register:
+    title: "Haven't attended MOVE ON events yet?"
+    description: "If you haven't attended MOVE ON events before, please fill in your details below to register. After confirming your participation fee payment, your account will be activated and you will be able to access course materials."
+    gdpr: 'I have read and agree to <a href="%terms_url%">Terms and Conditions</a> and <a href="%privacy_url%">Privacy Policy</a> Move On.'
+    newsletter: "I agree to receive news and commercial information (newsletter) from Move On."
+
+  forgot_password:
+    title: "Forgot password"
+    page_title: "Reset Password"
+    description: "Enter your email below and we'll send you a new password."
+
+  reset_password:
+    title: "Reset Password"
+    page_title: "Set a new password"
+    description: "Enter a new password"
+
+  buttons:
+    login: "Log in"
+    register: "Register"
+    reset_password: "Reset Password"
+    send: "Send"
+    submit: "Submit"
+    faq: "Frequent Questions"
+    cancel: "Cancel"
+
+  mail:
+    success: "The message was sent successfully."
+    fail: "The message fas not send. Please try again later"
+
+article:
+  title: "Article"
+  next_article: "Next article"
+  prev_article: "Previous article"
+  read_more: "Read more"
+
+certifications:
+  europeactive:
+    title: "Move On Certifications recognized by EuropeActive"
+    description: "Move On holds accreditation certificates for European Standards by EuropeActive for courses in group fitness instructor, personal trainer, and Pilates instructor. These certifications confirm that the professional fitness training programs offered by Move On Fitness Education comply with current European standards"
+  accredited:
+    title: "Move On Certifications accredited by the Ministry of Labor and Social Solidarity and the Ministry of Education"
+
+multimedia:
+  title: "Multimedia"
+  description: "Enthusiasm, passion, determination. <br> Get into the atmosphere of MOVE ON events and courses!"
+  subtitle: "Gallery"
+  results: "results"
+
+common:
+  gdpr: 'I have read and agree to <a href="%terms_url%">Terms and Conditions</a> and <a href="%privacy_url%">Privacy Policy</a> of Move On.'
+  newsletter: "I agree to receive news and commercial information (newsletter) from Move On."
+  contract: "Generate Contract."
+  media: "I give my consent for filming/photographing in education."
+  no_result: "No results was found for  "
+
+  not_blank: "This field is required"
+  not_valid:
+    email: "Please enter a valid email."
+    phone: "Invalid phone number."
+    gdpr: "You must accept the GDPR policy."
+    password_not_match: "The passwords do not match"
+  min_message: "This field must be at least {{ limit }} characters long."
+  max_message: "This field must be at most {{ limit }} characters long."
+
+  custom:
+    min_message: "Invalid message."
+    name: "Invalid name."
+    first_name: "Invalid first name."
+    last_name: "Invalid last name."
+
+  form_labels:
+    first_name: "First Name"
+    last_name: "Last Name"
+    full_name: "Name"
+    email: "Email"
+    sign_up: "Sign up"
+    phone: "Phone"
+    password:
+      first_options: "Password"
+      second_options: "Repeat Password"
+      default: "Password"
+
+  buttons:
+    view_courses: "View courses"
+    view_details: "View details"
+    view_more: "See more"
+
+  search:
+    title: "Search"
+    text: "Find Courses"
+  recognition:
+    title: "National and International Recognition"
+
+contact:
+  title: "Contact Form"
+  description: "Fill out the form below and we will get back to you as soon as possible! We want to be part of your journey in the world of fitness."
+  name: "Full Name"
+  message: "Message"
+  gdprLabel: 'I have read and agree to <a href="%terms_url%">Terms and Conditions</a> and <a href="%privacy_url%">Privacy Policy</a> of Move On.'
+  sendButton: "Send"
+
+sitemap:
+  title: "Sitemap"
+
+course_calendar:
+  type: "EDUCATION TYPE"
+  location: "LOCATION"
+  search: "SEARCH"
+  all: "All"
+  course_details:
+    about: "About the course"
+    program: "Course schedule"
+    trainers: "Master trainers"
+    certification: "Certification"
+    learn: "What will you learn"
+    price: "Price"
+    info_extra: "This course is part of the mandatory package to obtain the EREPS &#40;European Register of Exercise Professionals&#41; level 4 personal trainer certification"
+    info_important: "Important information"
+    info_warning: "*For logistical reasons, certain changes may occur in the course schedule. They will be announced in good time for the smooth running of the course."
+    sign_up: "Sign up now"
+
+educational:
+  title: "Move On Educational Structure"
+  topDescription: "We offer a wide range of courses and workshops tailored to your needs and objectives."
+  bottomDescription: "Come to Move On and turn your passion for fitness into a successful career!"
+  linkText: "Ask a consultant"
+
+newsletter:
+  title: "Subscribe to Our Newsletter!"
+  description: "Be the first to know about upcoming Move On courses, motivational articles, and expert tips."
+  errors:
+      success: "You have successfully subscribed to our newsletter"
+      user_exists: "This member already subscribed to newsletter."
+      email_not_valid: "Please provide a valid email address."
+      default: "An error occured, please try again later."
+      
+form_register:
+  title: "Course registration"
+  location: "Location"
+  course_type: "Course Type"
+  price: "Price"
+  payment_method: "Select method of paying:"
+  card: "Online Card"
+  invoice: "I want invoice as a juridic person."
+  bank: "Bank Transfer"
+  buy: "Buy"
+  back_to_main_page: "Return to the main page"
+  payment_confirmation:
+    title: "Payment confirmation"
+    download_invoice: "Download INVOICE"
+    download_contract: "Download contract"
+  bank_transfer:
+    title: "Bank transfer"
+    description: "Bank transfer data"
+
+account:
+  my_account: "My Account"
+  logout: "Log off"
+
+  contracts:
+    download: "Download Contract"
+    no_contracts: "You don't have any contract."
+
+  invoices:
+    download: "Download invoice"
+    no_invoices: "You don't have any invoice."
+
+  dashboard:
+    new: "New"
+    old: "Old"
+    cancelled: "Cancelled"
+    details: "See details"
+    add_new_course: "Add a new courses +"
+    events_text: "Event where you participated"
+    calendar_text: "My Calendar"
+    no_events: "You have no events."
+    no_calendar: "The calendar is empty."
+
+  certifications:
+    credits: "credits"
+    download: "Download diploma"
+    no_certifications: "You don't have any certification."
+
+  details:
+    edit: "Edit"
+    save: "Save"
+    validate: "Validate"
+    change_password: "Change password"
+    old_password: "Old password"
+    new_password: "New password"
+    repeat_password: "Repeat password"
+    data_company: "Company Details"
+    company_name: "Company Name"
+    address: "Address"
+    cui: "CUI"
+    registration_number: "Registration Number (J)"
+    bank_name: "Bank Name"
+    bank_account: "Bank Account"
+    iban: "IBAN"
+    confirm_email_update: "Please check your email to confirm the email update"
+    proforma_invoice_disclaimer: "Wire transfer details"
+
+  sidebar:
+    account_details: "Account Details"
+    certificates: "Certifications & Credits"
+    contracts: "Contracts"
+    invoices: "Invoices"
+    calendar: "My Calendar"
+
+mails:
+  salute: "Hello"
+  greetings: "Best regards, <br /> The Move On Team"
+  follow_us: "Follow us on"
+
+  resetting:
+    title: "Password Reset"
+    description: "If you’ve lost your password or wish to reset it, use the link below to reset it:"
+    reset_password_text: "If you did not request a password reset, you can safely ignore this email. Only someone with access to your email can reset your account password."
+
+  email_notifications:
+    title: "Notification"
+    notification_text: "You have received a new notification on"
+    verify: "Check the details below:"
+    information: "For more information, access your account at"
+    already_sent: "You've already requested a password reset, please try again later."
+
+  email_account_confirmation:
+    confirm_button: "Confirm Email Address"
+    confirm_account: "Account Confirmation"
+    description: "Thank you for creating a Move On account! <br /> To activate your account, please confirm your email address by clicking the link below:"
+    security: "If you did not create this account, you can safely ignore this email."
+    
+  email_update:
+    title: "Confirm email update"
+    description: "Please click the button below to update your email address."
+    confirm_button: "Update email"
+    disclaimer: "If you did not request an email address update, you can safely ignore this email."
+    
+  wire_transfer:
+    title: "Wire transfer details"
+    intro: "Thank you for enrolling in %title%. We inform you that proforma invoice number %proformaInvoiceNumber% has been issued."
+    details: "According to the payment method you have chosen, please send the amount of %price% RON by wire transfer, to the account indicated below:"
+    disclaimer_1: "Please note: when paying by wire transfer, please mention the proforma invoice number mentioned above in the payment details."
+    disclaimer_2: "As soon as the payment is confirmed in the system, you will receive the invoice by e-mail."
+
+feedback:
+  title: "Feedback"
+
+team:
+  title: "Member"
+  member:
+    not_exists: "This team member does not exists."
+  button_meet: "Let's meet"
+  button_team: "Our team"
+  
+education:
+  success:
+      title: "The payment was sent successfully."
+      message: "You've received a confirmation email."
+  failed:
+      title: "Payment Error."
+  pending:
+      title: "The payment is in pending."

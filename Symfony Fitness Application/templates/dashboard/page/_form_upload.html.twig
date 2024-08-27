@@ -1,0 +1,41 @@
+<div class="card mb-5 mb-xl-10">
+    <!--begin::Form content-->
+    {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data'}}) }}
+    <!--begin::Card body-->
+    <div class="card-body p-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.file, 'Upload JSON file', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.file, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                        {{ form_errors(form.file) }}
+                        <div class="form-text">(format accepted: .json max. 3M)</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card body-->
+    <!--begin::Card footer-->
+    <div class="card-footer py-6 px-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                    {{ form_widget(form._token) }}
+                    <a href="{{ path('dashboard_page_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card footer-->
+    {{ form_end(form) }}
+    <!--end::Form content-->
+</div>

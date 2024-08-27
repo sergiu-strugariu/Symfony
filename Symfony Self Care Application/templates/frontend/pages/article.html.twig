@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block content %}
+    <main class="article-single">
+        <div class="article-single__wrapper inner">
+            <!-- start::Breadcrumb -->
+            {% include "shared/frontend/common/breadcrumbs.html.twig" %}
+            <!-- end::Breadcrumb -->
+
+            <!-- start::NextPrev -->
+            {% include "frontend/pages/blog/single/intro.html.twig" %}
+            <!-- end::NextPrev -->
+
+            <!-- start::NextPrev -->
+            {% include "frontend/pages/blog/single/next-prev.html.twig" %}
+            <!-- end::NextPrev -->
+
+            <!-- start::Recommended articles -->
+            {% include "frontend/pages/blog/single/recommended.html.twig" %}
+            <!-- end::Recommended articles -->
+        </div>
+    </main>
+{% endblock %}

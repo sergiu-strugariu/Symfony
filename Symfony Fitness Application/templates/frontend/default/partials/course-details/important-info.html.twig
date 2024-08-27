@@ -1,0 +1,13 @@
+<div class="important-info">
+    <h3>{{ 'course_calendar.course_details.info_important'|trans }}</h3>
+
+    {{ education.translation(locale).importantInfo|raw }}
+
+    <div>
+        <img src="{{ asset('assets/frontend/images/icon-card.jpg') }}" alt="icon" />
+        <h3>{{ 'course_calendar.course_details.price'|trans }}: {{ education.priceWithVAT }} Lei</h3>
+        {% if education.allowRegistrations %}
+            <a href="{{ path('app_education_register', {'slug': education.slug}) }}">{{ 'course_calendar.course_details.sign_up'|trans }}</a>
+        {% endif %}
+    </div>
+</div>

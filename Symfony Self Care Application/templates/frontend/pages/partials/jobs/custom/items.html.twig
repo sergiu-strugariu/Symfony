@@ -1,0 +1,47 @@
+{% set categorySlug = app.request.query.get('category') %}
+<div class="jobs-agenda">
+    <div class="inner">
+        <form id="jobsAgendaForm">
+            <div class="agenda-filter-sort">
+                <div class="agenda-filter">
+                    <p>{{ 'common.filter_for'|trans }}:</p>
+                    <div class="filter-box">
+                        <select id="contractFilter" class="contract-filter" name="contractFilter">
+                            <option value="all">{{ 'common.filter_contract_type'|trans }}</option>
+                            {% for item in jobTypes %}
+                                <option value="{{ item }}">{{ item }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-box">
+                        <select id="regionFilter" class="region-filter" name="regionFilter">
+                            <option value="all">{{ 'search.county'|trans }}</option>
+                        </select>
+                    </div>
+                    <div class="filter-box">
+                        <select id="categoryFilter" class="category-filter" name="categoryFilter">
+                            <option value="all">{{ 'common.filter_category'|trans }}</option>
+                            {% for category in categories %}
+                                <option value="{{ category.slug }}" {{ category.slug == categorySlug ? 'selected' : '' }}>
+                                    {{ category.translation(locale).title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="agenda-sort">
+                    <p>{{ 'common.sort_for'|trans }}:</p>
+                    <ul class="sorting-buttons">
+                        <li>
+                            <p data-sort="asc" data-name="createdAt">
+                                {{ 'common.filter_date'|trans }}
+                                <span>&#9650;</span> <span>&#9660;</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div class="agenda-list"></div>
+    </div>
+</div>

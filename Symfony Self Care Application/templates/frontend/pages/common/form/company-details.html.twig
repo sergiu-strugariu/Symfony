@@ -1,0 +1,59 @@
+<form id="homeDetailsRegisterForm" class="common-register-form">
+    <input type="hidden" name="companyType" value="{{ companyType }}"/>
+    <input type="hidden" name="companyName" value="{{ companyName }}"/>
+    <h3>{{ 'common.asc_for_details'|trans }}</h3>
+    <div class="form-message"></div>
+    <div class="row">
+        <label class="label" for="fullName">{{ 'common.filter_name'|trans }}</label>
+        <input type="text"
+               name="fullName"
+               id="fullName"
+               placeholder="{{ 'form.placeholder.fullName'|trans }}"
+               value="{{ app.user.fullName ?? '' }}"
+        />
+    </div>
+    <div class="row">
+        <label class="label" for="phone">{{ 'menu.phone_link'|trans }}</label>
+        <input type="text"
+               name="phone"
+               id="phone"
+               value="{{ app.user.phone ?? '' }}"
+               placeholder="{{ 'form.placeholder.phone'|trans }}"
+        />
+    </div>
+    <div class="row">
+        <label class="label" for="email">{{ 'menu.email_link'|trans }}</label>
+        <input type="email"
+               name="emailAddress"
+               id="emailAddress"
+               value="{{ app.user.email ?? '' }}"
+               placeholder="{{ 'form.placeholder.email'|trans }}"
+        />
+    </div>
+    <p>{{ 'company.form_terms_text'|trans }}</p>
+    <div class="recaptcha">
+        <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+    </div>
+    <div class="form-action">
+        <input type="submit" class="submit-btn" value="{{ 'common.form_submit'|trans }}"/>
+    </div>
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <ul class="user-register">
+            <li>
+                <a href="{{ path('dashboard_login') }}">
+                    <img src="{{ asset('assets/frontend/images/homepage/slider-filter-anchor/modal-user.svg') }}"
+                         width="12"
+                         height="12"
+                         alt="modal-mail"
+                    />
+                    {{ 'menu.login_link'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_create_account') }}">
+                    {{ 'menu.register_link'|trans }}
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+</form>

@@ -1,0 +1,27 @@
+{% set locale = languageHelper.getLocaleFromRequest %}
+
+<div class="content">
+    <div class="inner">
+        <small>Move On - {{ article.createdAt|date('d F Y') }}</small>
+        <h1>{{ article.translation(locale).title }}</h1>
+        <div class="image" data-image="{{ asset(app_article_path ~ article.imageName) }}"></div>
+        {{ article.translation(locale).description|raw }}
+        <div class="social-share">
+            <p>Share</p>
+            <a target="_blank" href="{{ linkedin_share }}{{ app.request.uri }}&title={{ article.translation(locale).title }}&summary={{ article.translation(locale).shortDescription }}&source={{ app.request.host }}">
+                <img src="{{ asset('assets/frontend/images/logo-linkedin.svg') }}" alt="logo"/>
+            </a>
+            <a target="_blank" href="{{ facebook_share }}{{ app.request.uri }}">
+                <img src="{{ asset('assets/frontend/images/logo-facebook.svg') }}" alt="logo"/>
+            </a>
+        </div>
+        <div class="action-btns">
+            <a href="{{ prevArticle ? path('app_article', {'slug': prevArticle.slug}) : '#' }}" class="{{ prevArticle ? '' : 'disabled' }}">
+                 &lt; {{ 'article.prev_article'|trans }}
+            </a>
+            <a href="{{ nextArticle ? path('app_article', {'slug': nextArticle.slug}) : '#' }}" class="{{ nextArticle ? '' : 'disabled' }}">
+                {{ 'article.next_article'|trans }} &gt;
+             </a>
+        </div>
+    </div>
+</div>

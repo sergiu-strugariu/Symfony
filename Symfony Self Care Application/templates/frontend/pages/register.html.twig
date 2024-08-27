@@ -1,0 +1,103 @@
+{% extends 'layout-auth.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'auth.create_account_submit'|trans }}{% endblock %}
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+{% block content %}
+    <main class="create-user-account">
+        <div class="create-user-account">
+            <div class="inner">
+                {% set typeTranslate = 'auth.' ~ type %}
+                <h2>
+                    {{ 'auth.create_account_header_title'|trans({'%type%': typeTranslate|trans}) }}
+                </h2>
+                {{ form_start(form, {'attr': {'class': 'create-user-account-form form-wrapper has-loader'}}) }}
+                <!--begin::Form message-->
+                {% include "shared/frontend/alert.html.twig" %}
+                <!--end::Form message-->
+                <div class="fields">
+                    <div class="row-half form-item-bg">
+                        {{ form_label(form.surname, 'common.filter_surname'|trans, {'label_attr': {'class': 'label'}}) }}
+                        {{ form_widget(form.surname, {'attr': {'placeholder': 'ex. Ion'}}) }}
+                        {{ form_errors(form.surname) }}
+                    </div>
+                    <div class="row-half form-item-bg">
+                        {{ form_label(form.name, 'common.filter_name'|trans, {'label_attr': {'class': 'label'}}) }}
+                        {{ form_widget(form.name, {'attr': {'placeholder': 'ex. Popescu'}}) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                </div>
+                <div class="row">
+                    {{ form_label(form.phone, 'menu.phone_link'|trans, {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.phone, {'attr': {'placeholder': '0789 123 456'}}) }}
+                    {{ form_errors(form.phone) }}
+                </div>
+                <div class="row">
+                    {{ form_label(form.email, 'menu.email_link'|trans, {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.email, {'attr': {'placeholder': 'ion.popescu@email.com'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                <div class="row">
+                    {{ form_label(form.plainPassword.first, 'form.placeholder.password'|trans, {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'form.placeholder.password'|trans}}) }}
+                    {{ form_errors(form.plainPassword.first) }}
+                    <img class="d-block"
+                         src="{{ asset('assets/frontend/images/common/hidden-pass.svg') }}"
+                         width="25"
+                         height="15"
+                         alt="hidden-pass"
+                    />
+                    <img class="d-none"
+                         src="{{ asset('assets/frontend/images/common/visible-pass.svg') }}"
+                         width="25"
+                         height="15"
+                         alt="visible-pass"
+                    />
+                </div>
+                <div class="row">
+                    {{ form_label(form.plainPassword.second, 'form.placeholder.password_repeat'|trans, {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'form.placeholder.password'|trans}}) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                    <img class="d-block"
+                         src="{{ asset('assets/frontend/images/common/hidden-pass.svg') }}"
+                         width="25"
+                         height="15"
+                         alt="hidden-pass"
+                    />
+                    <img class="d-none"
+                         src="{{ asset('assets/frontend/images/common/visible-pass.svg') }}"
+                         width="25"
+                         height="15"
+                         alt="visible-pass"
+                    />
+                </div>
+                <div class="row">
+                    <div class="upload form-item-bg">
+                        {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control file'}}) }}
+                        {{ form_errors(form.profilePicture) }}
+                        {{ form_errors(form.profilePicture) }}
+                        <div class="upload-btn">
+                            <p>{{ 'form.placeholder.picture'|trans }}</p>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="privacy-policy">
+                    {{ form_widget(form.terms) }}
+                    <label for="register_form_terms">{{ 'form.placeholder.terms_register'|trans({'%termPath%': path('app_homepage')})|raw }}</label>
+                    {{ form_errors(form.terms) }}
+                </div>
+                <div class="recaptcha">
+                    <div id="g-recaptcha"
+                         class="g-recaptcha recaptcha"
+                         data-sitekey="{{ recaptcha_site_key }}">
+                    </div>
+                </div>
+                <div class="form-action">
+                    {{ form_widget(form._token) }}
+                    <input type="submit" class="submit-btn" value="{{ 'auth.create_account_submit'|trans }}"/>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,49 @@
+<li class="social-media tooltip-head">
+    <a href="#" class="parent">
+        <img src="{{ asset('assets/frontend/images/common/icons-share-on-social-media.svg') }}"
+             width="15"
+             height="15"
+             alt="modal-phone"
+        >
+        <img src="{{ asset('assets/frontend/images/common/icons-share-on-social-media-active.svg') }}"
+             width="15"
+             height="15"
+             alt="modal-phone"
+        >
+        {{ 'company.share_title'|trans }}
+    </a>
+    <div class="tooltip">
+        <div class="tooltip-text">
+            <ul>
+                <li>
+                    <a href="{{ facebook_share }}{{ app.request.uri }}" target="_blank">
+                        <img src="{{ asset('assets/frontend/images/common/facebook-social-share.svg') }}"
+                             alt="facebook"
+                             width="45"
+                             height="45"
+                        >
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ whatsapp_share }}{{ app.request.uri }}" target="_blank">
+                        <img src="{{ asset('assets/frontend/images/common/watsapp-social-share.svg') }}"
+                             alt="watsapp"
+                             width="45"
+                             height="45"
+                        >
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ linkedin_share }}{{ app.request.uri }}&title={{ title }}&summary={{ summary }}&source={{ app.request.host }}"
+                       target="_blank">
+                        <img src="{{ asset('assets/frontend/images/common/linkedin-new.png') }}"
+                             alt="linkedin"
+                             width="45"
+                             height="45"
+                        >
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</li>

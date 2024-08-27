@@ -1,0 +1,13 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ 'sitemap.title'|trans }} {{ parent() }} {% endblock %}
+
+{% block content %}
+
+<main class="sitemap">
+    {% include "frontend/default/partials/sitemap/intro.html.twig" %}
+    {% include "frontend/default/partials/sitemap/content.html.twig" %}
+</main>
+
+
+{% endblock %}

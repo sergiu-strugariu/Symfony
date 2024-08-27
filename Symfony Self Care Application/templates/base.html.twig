@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="title" content="">
+    <meta name="description" content="">
+    <title>{% block title %} {{ app_name }} | {% endblock %}</title>
+    {% block share %}{% endblock %}
+    {% set favicon = settingService.getService('favicon') %}
+    {% if favicon is not null %}
+        <link rel="icon" type="image/ico" href="{{ asset(app_setting_path ~ favicon) }}"/>
+    {% endif %}
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+{% set category = app.request.query.get('category') %}
+{% set countyCode = app.request.query.get('county') %}
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="20107fcb-1bf8-4263-98a0-acc5107d838b"  type="text/javascript"></script>
+<script>
+    window.intercomSettings = {
+        api_base: "https://api-iam.intercom.io",
+        app_id: "dk36b4qz",
+    };
+</script>
+<script>
+    (function () {
+        var w = window;
+        var ic = w.Intercom;
+        if (typeof ic === "function") {
+            ic('reattach_activator');
+            ic('update', w.intercomSettings);
+        } else {
+            var d = document;
+            var i = function () {
+                i.c(arguments);
+            };
+            i.q = [];
+            i.c = function (args) {
+                i.q.push(args);
+            };
+            w.Intercom = i;
+            var l = function () {
+                var s = d.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://widget.intercom.io/widget/dk36b4qz';
+                var x = d.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+            };
+            if (document.readyState === 'complete') {
+                l();
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', l);
+            } else {
+                w.addEventListener('load', l, false);
+            }
+        }
+    })();
+</script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+            appId: "996cef12-b547-45d8-bb2d-47c4110faf50",
+            safari_web_id: "web.onesignal.auto.548f76b5-1495-4e31-bc8e-b1b76d8ec8fd",
+            notifyButton: {
+                enable: true,
+            },
+        });
+    });
+</script>
+<script>
+    // Default vars
+    window.locale = '{{ locale }}';
+    window.searchApiPath = '{{ path('app_search') }}';
+    window.countyApiPath = '{{ path('ajax_counties') }}';
+    window.commonImagePath = '{{ asset('assets/frontend') }}';
+    window.searchCare = '{{ path('ajax_search_cares') }}';
+
+    // Shelters Endpoints
+    window.companiesData = '{{ path('ajax_get_company') }}';
+    window.filteredCompanies = '{{ path('ajax_get_filter_companies') }}';
+    window.formCompanyDetails = '{{ path('ajax_send_company_details_form') }}';
+    window.companyPath = '{{ path('app_company_single') }}';
+    window.companyListingPath = '{{ path('app_company') }}';
+    window.companyReview = '{{ path('app_company_review') }}';
+    window.providerPath = '{{ path('app_provider_single') }}';
+    window.reviewFormPath = '{{ path('ajax_send_review') }}';
+    window.companyImagePath = '{{ asset(app_company_path) }}';
+    window.companyGalleryImagePath = '{{ asset(app_company_gallery_path) }}';
+
+    window.galleryLimit = 7;
+    window.careCentersLimit = 10;
+    window.resourcesLimit = 10;
+    window.sendReviewItemsLimit = 4;
+    window.county = "{{ countyCode|upper }}";
+
+    // Company types
+    window.locationTypeProvider = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
+    window.locationTypeCare = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
+
+    // Articles endpoints
+    window.articlesData = '{{ path('ajax_get_articles') }}';
+    window.articlPath = '{{ path('app_blog_single') }}';
+    window.artclesImagePath = "{{ asset(app_article_path) }}";
+    window.artclesLimit = 5;
+
+    // Jobs endpoints
+    window.jobLinkPath = '{{ path('app_job_single') }}';
+    window.jobApplyPath = '{{ path('ajax_job_apply') }}';
+    window.listingJobs = '{{ path('ajax_get_listing_jobs', {'category': category}) }}';
+    window.recomandedJobs = '{{ path('ajax_get_recommended_jobs') }}';
+    window.recomandedLoadJobsLimit = 6;
+    window.recomandedListingJobsLimit = 10;
+
+    // Course endpoints
+    window.listingCourses = '{{ path('ajax_get_listing_courses', {'category': category}) }}';
+    window.recomendedCourses = '{{ path('ajax_get_recommended_courses') }}';
+    window.courseLinkPath = '{{ path('app_course_single') }}';
+    window.courseApplyPath = '{{ path('ajax_course_apply') }}';
+
+    window.feedBackFormPath = '{{ path('ajax_send_feedback') }}';
+
+    // Frontend fields translations
+    window.translation = {
+        'search': {
+            'title': '{{ "search.title"|trans }}',
+            'placeholder': '{{ "search.placeholder"|trans }}',
+            'location': '{{ "search.location"|trans }}',
+            'county': '{{ "search.county"|trans }}',
+            'btn_search': '{{ "search.btn_search"|trans }}',
+            'minlength': '{{ "search.minlength"|trans }}',
+            'search_by_location': '{{ "search.search_by_location"|trans }}',
+            'search_by_name': '{{ "search.search_by_name"|trans }}',
+        },
+        'company': {
+            'hostel_title_tooltip': '{{ "company.hostel_title_tooltip"|trans }}',
+            'hostel_content_tooltip': '{{ "company.hostel_content_tooltip"|trans }}',
+            'dementia_title_tooltip': '{{ "company.dementia_title_tooltip"|trans }}',
+            'dementia_content__tooltip': '{{ "company.dementia_content__tooltip"|trans }}',
+            'hostel_type': '{{ "breadcrumb.company_title"|trans }}',
+            'price_title': '{{ "company.price_title"|trans }}',
+            'tooltip_title': '{{ "company.tooltip_title"|trans }}',
+            'price_currency': '{{ "company.price_currency"|trans }}',
+            'no_reviews_text': 'In acest moment nu exista nicio recenzie disponibila pentru',
+            'no_reviews_text_be_first': 'Fii primul care trimite o recenzie',
+        },
+        'common': {
+            'view_more': '{{ "common.view_more"|trans }}',
+            'view_more_review': '{{ "common.view_more_review"|trans }}',
+            'asc_for_details': '{{ "common.asc_for_details"|trans }}',
+            'asc_for_details_jobs': '{{ "common.asc_for_details_jobs"|trans }}',
+            'month': '{{ "common.month"|trans }}',
+            'filter_no_results': '{{ "common.filter_no_results"|trans }}',
+            'next': '{{ "common.next"|trans }}',
+            'prev': '{{ "common.prev"|trans }}',
+            'filter_category': '{{ "common.filter_category"|trans }}',
+            'remove_favorite': '{{ "common.remove_favorite"|trans }}',
+            'view_more_hostels': '{{ "common.view_more_hostels"|trans }}',
+            'care_centers': '{{ "common.care_centers"|trans }}',
+            'care_resources': '{{ "common.care_resources"|trans }}',
+            'jobs': '{{ "common.jobs"|trans }}',
+            'articles': '{{ "common.articles"|trans }}',
+            'courses': '{{ "common.courses"|trans }}',
+            'see_more_results': '{{ "common.see_more_results"|trans }}',
+            'single_result_found': '{{ "common.single_result_found"|trans }}',
+            'multiple_results_found': '{{ "common.multiple_results_found"|trans }}',
+            'results': '{{ "common.results"|trans }}',
+            'see_all': '{{ "common.see_all"|trans }}',
+            'results_for': '{{ "common.results_for"|trans }}',
+        },
+        'form': {
+            'name': {
+                'required': '{{ "form.name.required"|trans }}',
+                'minlength': '{{ "form.name.minlength"|trans }}',
+                'valid_name': '{{ "form.name.valid_name"|trans }}',
+                'name_match': '{{ "form.name.name_match"|trans }}',
+            },
+            'surname': {
+                'required': '{{ "form.surname.required"|trans }}',
+                'minlength': '{{ "form.surname.minlength"|trans }}',
+                'valid_name': '{{ "form.surname.valid_name"|trans }}',
+                'surname_match': '{{ "form.surname.surname_match"|trans }}',
+            },
+            'phone': {
+                'required': '{{ "form.phone.required"|trans }}',
+                'minlength': '{{ "form.phone.minlength"|trans }}',
+                'maxlength': '{{ "form.phone.maxlength"|trans }}',
+                'phone_ro': '{{ "form.phone.phone_ro"|trans }}',
+                'phone_match': '{{ "form.phone.phone_match"|trans }}',
+            },
+            'email': {
+                'required': '{{ "form.email.required"|trans }}',
+                'email': '{{ "form.email.email"|trans }}'
+            },
+            'password': {
+                'required': '{{ 'form.password.required'|trans }}',
+                'minlength': '{{ 'form.password.minlength'|trans }}',
+                'passwordMatch': '{{ 'form.password.passwordMatch'|trans }}'
+            },
+            'message': {
+                'required': '{{ 'form.message.required'|trans }}',
+                'minlength': '{{ 'form.message.minMessage'|trans }}',
+                'maxlength': '{{ 'form.message.maxMessage'|trans }}'
+            },
+            "fileCv": {
+                'required': '{{ 'form.fileCv.required'|trans }}',
+                'required_file': '{{ 'form.fileCv.required_file'|trans }}',
+                'format': '{{ 'form.fileCv.format'|trans }}'
+            },
+            'txtDateRange': {
+                'validDateRange': '{{ 'form.txtDateRange.validDateRange'|trans }}'
+            },
+            'default': {
+                'required': '{{ "form.default.required"|trans }}',
+                'default_field_required': '{{ "form.default.default_field_required"|trans }}',
+            },
+            'messages': {
+                'form_details_success': '{{ "form.messages.form_details_success"|trans }}',
+                'form_details_error': '{{ "form.messages.form_details_error"|trans }}',
+                'form_recaptcha': '{{ "form.messages.form_recaptcha"|trans }}'
+            },
+            'rating_values': {
+                'values': {
+                    'very_low': '{{ "form.rating_values.values.very_low"|trans }}',
+                    'low': '{{ "form.rating_values.values.low"|trans }}',
+                    'medium': '{{ "form.rating_values.values.medium"|trans }}',
+                    'good': '{{ "form.rating_values.values.good"|trans }}',
+                    'very_good': '{{ "form.rating_values.values.very_good"|trans }}'
+                },
+                'minlength': '{{ "form.rating_values.minlength"|trans }}',
+                'maxlength': '{{ "form.rating_values.maxlength"|trans }}',
+            },
+            'user_conections': {
+                'user_conections': '{{ "form.user_conections.user_conections"|trans }}',
+            },
+            'star': {
+                'not_in_range_message_front': '{{ "form.star.not_in_range_message_front"|trans }}',
+            },
+        },
+        'review': {
+            'review_from': '{{ "review.review_from"|trans }}',
+            'reviews': '{{ "review.reviews"|trans }}',
+            'single_review': '{{ "review.single_review"|trans }}',
+            'preview_review_text': '{{ 'review.preview_review_text'|trans }}'
+        },
+        'courses': {
+            'course_title': '{{ "courses.course_title"|trans }}',
+            'recommended_section_title': '{{ "courses.recommended_section_title"|trans }}',
+            'recommended_section_load_more': '{{ "courses.recommended_section_load_more"|trans }}',
+            'other_course': '{{ "courses.other_course"|trans }}',
+            'duration': '{{ "courses.duration"|trans }}',
+            'format': '{{ "courses.format"|trans }}',
+            'min_participants': '{{ "courses.min_participants"|trans }}',
+            'max_participants': '{{ "courses.max_participants"|trans }}',
+            'level': '{{ "courses.level"|trans }}',
+            'certificate': '{{ "courses.certificate"|trans }}',
+            'price': '{{ "courses.price"|trans }}',
+            'provider': '{{ "courses.provider"|trans }}',
+            'description': '{{ "courses.description"|trans }}',
+            'share': '{{ "courses.share"|trans }}',
+            'offered_by': '{{ "courses.offered_by"|trans }}',
+            'subject_mail': '{{ "courses.subject_mail"|trans }}',
+            'location': '{{ "courses.location"|trans }}',
+        },
+        'jobs': {
+            'recommended_section_title': '{{ "jobs.recommended_section_title"|trans }}',
+            'recommended_section_load_more': '{{ "jobs.recommended_section_load_more"|trans }}',
+            'recommended_job': '{{ "jobs.recommended_job"|trans }}',
+            'recommended_job_section': '{{ "jobs.recommended_job_section"|trans }}',
+            'apply_job': '{{ "jobs.apply_job"|trans }}',
+            'subject_mail_job': '{{ "jobs.subject_mail_job"|trans }}',
+            'job_title': '{{ "jobs.job_title"|trans }}',
+            'job_description': '{{ "jobs.job_description"|trans }}',
+            'job_benefits': '{{ "jobs.job_benefits"|trans }}',
+            'view_all_jobs': '{{ "jobs.view_all_jobs"|trans }}',
+            'offered_by': '{{ "jobs.offered_by"|trans }}',
+        }
+    };
+
+    window.favoriteAjaxPath = '{{ path('account_ajax_add_to_favorites') }}';
+    window.newsletterFormPath = '{{ path('ajax_subscribe_newsletter') }}';
+</script>
+{% block javascripts %}{% endblock %}
+{% block page_javascripts %}{% endblock %}
+</body>
+</html>

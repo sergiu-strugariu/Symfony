@@ -1,0 +1,418 @@
+{
+  "entity": "Page",
+  "name": "Despre noi",
+  "machineName": "about-us",
+  "url": "/despre-noi",
+  "classes": "about-us",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "/despre-noi",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "About us section intro",
+      "machineName": "about_section_intro",
+      "template": "intro.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_intro",
+          "template": "intro-content.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Intro Title",
+              "placeholder": "Intro Title",
+              "value": "Sfaturi îngrijire",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Intro Image",
+              "placeholder": "Intro Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "About us section content",
+      "machineName": "about_section_content",
+      "template": "content.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_content",
+          "template": "content-item.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "About us section timelines",
+      "machineName": "about_section_timelines",
+      "template": "timelines.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_one",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_two",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_three",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_four",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_five",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_six",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_seven",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_timeline_item_eight",
+          "template": "timeline-item.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "About us section info",
+      "machineName": "about_section_info",
+      "template": "info.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "about_widget_info",
+          "template": "info-content.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            },
+            {
+              "field": "fileNameMob",
+              "type": "file",
+              "label": "Widget mobile image",
+              "placeholder": "Widget mobile image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<div class="about-us__wrapper inner">
+    <div class="about-us__content">
+        <div class="animation">
+            <div class="row d-xl-flex align-items-center history">
+                <div class="timeline">
+                    <div class="inner">
+                        <span class="timeline__progress"></span>
+                        <!-- start: Page widget  -->
+                        {% for widget in section.pageWidgets %}
+                            {% set translation = widget.translation(locale) %}
+                            {% include 'frontend/pages/partials/about-us/widgets/' ~ widget.template ignore missing %}
+                        {% endfor %}
+                        <!-- end: Page widget  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

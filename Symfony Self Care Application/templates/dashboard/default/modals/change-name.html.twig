@@ -1,0 +1,43 @@
+<div class="modal fade" id="modalChangeName" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close"/>
+            </div>
+            <div class="modal-body">
+                <form id="modalChangeNameForm">
+                    <h3>{{ 'dashboard.edit_profile.change_profile_name'|trans }}</h3>
+                    <p>{{ 'dashboard.edit_profile.current_profile_name'|trans }}: <span class="current-user-name">{{ app.user.name }}</span></p>
+                    <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <div class="board">
+                        <label for="currentName">{{ 'dashboard.edit_profile.current_profile_name'|trans }}</label>
+                        <input type="text"
+                               name="currentName"
+                               id="currentName"
+                               value="{{ app.user.name }}"
+                               disabled
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="name">{{ 'dashboard.edit_profile.new_profile_name'|trans }}</label>
+                        <input type="text"
+                               name="name"
+                               id="name"
+                               placeholder="ex. Dan"
+                        />
+                    </div>
+                    <ul>
+                        <li>
+                            <input type="submit" class="submit-btn" value="{{ 'dashboard.edit_profile.change_profile_name'|trans }}"/>
+                        </li>
+                        <li>
+                            <a href="#" data-bs-dismiss="modal" aria-label="Close">{{ 'auth.cancel'|trans }}</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

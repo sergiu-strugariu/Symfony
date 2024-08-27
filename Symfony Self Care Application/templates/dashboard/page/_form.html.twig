@@ -1,0 +1,65 @@
+{% import "shared/dashboard/partials/form/macros.html.twig" as form %}
+
+{% set locale = app.request.get('locale') %}
+<form method="post" action="{{ path('dashboard_page_edit_save', {'locale': locale}) }}" enctype="multipart/form-data">
+    <div class="card-body p-9 pb-lg-0">
+        <div>
+            <h2>{{ pageTitle }}</h2>
+        </div>
+        <div class="card-body">
+            {% for variable in template['variables'] %}
+                {% if variable['type'] == 'textarea' %}
+                    {{ form.textarea(variable, template['machineName'], template['entity']) }}
+                {% else %}
+                    {{ form.input(variable, template['machineName'], template['entity']) }}
+                {% endif %}
+            {% endfor %}
+            <div class="mt-4">
+                <h3>Sections</h3>
+                {% for section in template['sections'] %}
+                    <div class="card card-body mb-14">
+                        {% for variable in section['variables'] %}
+                            {{ form.input(variable, section['machineName'], section['entity']) }}
+                        {% endfor %}
+                        <div class="card card-body mt-4">
+                            <div class="row mb-12">
+                                <div class="col-md-12 pe-md-10 mb-10 mb-md-0">
+                                    <h4 class="text-gray-800 fw-bold mb-4">{{ 'dashboard.form.widgets'|trans }}</h4>
+                                    {% for widget in section['widgets'] %}
+                                        <div class="m-0">
+                                            <div class="d-flex align-items-center collapsible py-3 toggle mb-0 collapsed"
+                                                 data-bs-toggle="collapse"
+                                                 data-bs-target="#kt_page_{{ widget['machineName'] }}">
+                                                <div class="btn btn-sm btn-icon mw-20px btn-active-color-primary me-5">
+                                                    <i class="ki-outline ki-minus-square toggle-on text-primary fs-1"></i>
+                                                    <i class="ki-outline ki-plus-square toggle-off fs-1"></i>
+                                                </div>
+                                                <h5 class="text-gray-700 fw-bold cursor-pointer mb-0">
+                                                    {{ 'dashboard.form.widget'|trans }} - {{ loop.index }}
+                                                </h5>
+                                            </div>
+                                            <div id="kt_page_{{ widget['machineName'] }}" class="collapse fs-6 ms-1">
+                                                {% for variable in widget['variables'] %}
+                                                    {% if variable['type'] == 'textarea' %}
+                                                        {{ form.textarea(variable, widget['machineName'], widget['entity']) }}
+                                                    {% else %}
+                                                        {{ form.input(variable, widget['machineName'], widget['entity']) }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="separator separator-dashed"></div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('dashboard_page_index') }}" class="btn btn-light me-2">{{ 'dashboard.form.cancel'|trans }}</a>
+            <button type="submit" class="btn btn-primary">{{ 'dashboard.form.submit'|trans }}</button>
+        </div>
+    </div>
+</form>

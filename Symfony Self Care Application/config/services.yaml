@@ -1,0 +1,104 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    app_name: '%env(APP_NAME)%'
+    app_env: '%env(APP_ENV)%'
+    mailchimp_api_key: '%env(MAILCHIMP_API_KEY)%'
+    mailchimp_api_server_prefix: '%env(MAILCHIMP_API_SERVER_PREFIX)%'
+    mailchimp_list_id: '%env(MAILCHIMP_LIST_ID)%'
+    email_address: '%env(EMAIL_ADDRESS)%'
+    email_sender: '%env(EMAIL_SENDER)%'
+    app_email: '%env(APP_EMAIL)%'
+    app_default_image: '%env(APP_DEFAULT_IMAGE)%'
+    app_setting_path: '%env(APP_SETTING_PATH)%'
+    app_page_path: '%env(APP_PAGE_PATH)%'
+    app_job_path: '%env(APP_JOB_PATH)%'
+    app_temporary_path: '%env(APP_TEMPORARY_PATH)%'
+    app_menu_path: '%env(APP_MENU_PATH)%'
+    app_course_path: '%env(APP_COURSE_PATH)%'
+    app_article_path: '%env(APP_ARTICLE_PATH)%'
+    app_company_path: '%env(APP_COMPANY_PATH)%'
+    app_user_path: '%env(APP_USER_PATH)%'
+    app_company_gallery_path: '%env(APP_COMPANY_GALLERY_PATH)%'
+    default_locale: '%env(DEFAULT_LOCALE)%'
+    facebook_share: '%env(FACEBOOK_SHARE)%'
+    whatsapp_share: '%env(WHATSAPP_SHARE)%'
+    linkedin_share: '%env(LINKEDIN_SHARE)%'
+    map_share: '%env(MAP_SHARE)%'
+    recaptcha_site_verify: '%env(RECAPTCHA_SITEVERIFY)%'
+    recaptcha_site_key: '%env(RECAPTCHA_SITE_KEY)%'
+    recaptcha_secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
+twig:
+    globals:
+        app_name: '%app_name%'
+        app_user_path: '%app_user_path%'
+        app_default_image: '%app_default_image%'
+        app_setting_path: '%app_setting_path%'
+        app_page_path: '%app_page_path%'
+        app_job_path: '%app_job_path%'
+        app_menu_path: '%app_menu_path%'
+        app_course_path: '%app_course_path%'
+        app_article_path: '%app_article_path%'
+        app_company_path: '%app_company_path%'
+        app_company_gallery_path: '%app_company_gallery_path%'
+        locale: '%default_locale%'
+        facebook_share: '%facebook_share%'
+        whatsapp_share: '%whatsapp_share%'
+        linkedin_share: '%linkedin_share%'
+        map_share: '%map_share%'
+        recaptcha_site_key: '%recaptcha_site_key%'
+        recaptcha_secret_key: '%recaptcha_secret_key%'
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Helper\MailHelper:
+        arguments:
+            $fromEmail: '%email_address%'
+            $fromSender: '%email_sender%'
+
+    App\Helper\LanguageHelper:
+        arguments:
+            $defaultLocale: '%default_locale%'
+    App\Helper\MailchimpAPIHelper:
+        arguments:
+            $apiKey: '%mailchimp_api_key%'
+            $serverPrefix: '%mailchimp_api_server_prefix%'
+            $listId: '%mailchimp_list_id%'
+
+    App\Command\TestElasticsearchConnectionCommand:
+        arguments:
+            $client: '@fos_elastica.client.default'
+        tags:
+            - { name: 'console.command' }
+    App\Controller\Frontend\ElasticSearchController:
+        arguments:
+            $articleFinder: '@fos_elastica.index.article'
+            $courseFinder: '@fos_elastica.index.course'
+            $jobFinder: '@fos_elastica.index.job'
+            $companyFinder: '@fos_elastica.index.company'
+
+    App\Helper\ScraperHelper:
+        arguments:
+            $kernelProjectDir: '%kernel.project_dir%'
+    App\EventListener\PageNotFoundListener:
+        arguments:
+            $urlGenerator: '@router'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

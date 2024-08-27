@@ -1,0 +1,14 @@
+<div class="job-details__intro">
+    <div class="top-section">
+        <div class="title-section col-md-6">
+            <h1>{{ job.translation(locale).title }}</h1>
+            <p>{{ job.company.name }}</p>
+        </div>
+        <div class="logo-section data-image " data-image="{{ asset(app_company_path ~ job.company.logo) }}"></div>
+    </div>
+    <div class="bottom-section">
+        <div class="cta-resources">
+            <a href="#" data-scroll="jobSubmitForm">{{ 'jobs.apply_job'|trans }}</a>
+        </div>
+    </div>
+</div>

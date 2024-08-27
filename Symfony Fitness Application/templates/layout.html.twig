@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/styles/style.min.css') }}" />
+{% endblock %}
+
+{% block body %}
+    {% set locale = app.request.get('locale') ?? languageHelper.getLocaleFromRequest() %}
+
+    {% include 'frontend/default/partials/common/header.html.twig' %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% include "frontend/default/partials/common/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let absolutePath = "../images";
+        let baseUrl = "";
+        window.profileImageUploadUrl = "/ajax/update-user-picture";
+        window.editAccountDetails = "/ajax/update-user-details";
+        window.editPassword = "/ajax/update-user-password";
+        window.editCompanyData = "/ajax/update-user-company";
+        window.newsletterEmail = "/ajax/subscribe/member";
+    </script>
+    <script src="{{ asset('assets/frontend/scripts/bundle.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+    <script src="{{ asset('assets/frontend/scripts/main.min.js') }}"></script>
+{% endblock %}

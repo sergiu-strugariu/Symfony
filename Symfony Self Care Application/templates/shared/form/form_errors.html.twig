@@ -1,0 +1,9 @@
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        <div class="d-flex flex-column">
+            {% for error in errors %}
+                <span class="form-text text-danger text-left">{{ error.message }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock form_errors %}

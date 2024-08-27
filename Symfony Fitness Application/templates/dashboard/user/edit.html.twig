@@ -1,0 +1,84 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}Edit user {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+        <!--begin::Card body-->
+        <div class="card-body p-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row mb-6">
+                        <div class="col-md-6">
+                            {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.lastName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+
+                    </div>
+                    <div class="row mb-6">
+                        <div class="col-md-6">
+                            {{ form_label(form.phoneNumber, 'Phone', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            {{ form_errors(form.phoneNumber) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                    </div>
+                    <div class="row mb-6">
+                        <div class="col-md-6">
+                            {{ form_label(form.plainPassword.first, 'Password', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            {{ form_errors(form.plainPassword.first) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.plainPassword.second, 'Repeat password', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            {{ form_errors(form.plainPassword.second) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 mb-5">
+                            {{ form_label(form.newsletter, 'Newsletter', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.newsletter, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                        </div>
+                        <div class="col-lg-6 mb-5">
+                            {{ form_label(form.accordGDPR, 'Accord GDPR', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--begin::Card footer-->
+        <div class="card-footer py-6 px-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="d-flex justify-content-end">
+                        {{ form_widget(form._token) }}
+                        <a href="{{ path('dashboard_user_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card footer-->
+        <!--end::Card body-->
+        {{ form_end(form) }}
+    </div>
+    <!--end::Card-->
+{% endblock %}

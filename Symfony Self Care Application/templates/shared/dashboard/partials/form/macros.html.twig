@@ -1,0 +1,55 @@
+{% macro input(variable, id, entity) %}
+    {% set inputName ="fields[" ~ entity ~ "][" ~ id ~ "][" ~ variable['field'] ~ "]" %}
+    {% if variable['isTranslated'] %}
+        {% set inputName ="fields[" ~ entity ~ "][" ~ id ~ "][translations][" ~ variable['field'] ~ "]" %}
+    {% endif %}
+
+    <div class="row mb-6">
+        <label class="col-lg-2 col-form-label fw-semibold fs-6">
+            {{ variable['label'] }}
+        </label>
+        <div class="col-lg-10 fv-row">
+            <input
+                    type="{{ variable['type'] }}"
+                    {{ variable['required'] and not variable['value'] ? 'required' : '' }}
+                    value="{{ variable['value'] }}"
+                    name={{ inputName }}
+                    placeholder="{{ variable['placeholder'] }}"
+                    class="form-control form-control-solid form-control-lg rounded-0"
+            />
+            {% if variable['type'] == "file" %}
+                {% if variable['value'] %}
+                    <div class="form-text">File uploaded:
+                        <a href="{{ asset(app_page_path ~ entity|lower ~ '/' ~ variable['value']) }}" target="_blank">
+                            {{ variable['value'] }}
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="form-text">(format acceptat: jpg, jpeg, png max. 3M)</div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro textarea(variable, id, entity, rows = 5, cols = 40) %}
+    {% set inputName ="fields[" ~ entity ~ "][" ~ id ~ "][" ~ variable['field'] ~ "]" %}
+
+    {% if variable['isTranslated'] %}
+        {% set inputName ="fields[" ~ entity ~ "][" ~ id ~ "][translations][" ~ variable['field'] ~ "]" %}
+    {% endif %}
+    <div class="row mb-6">
+        <label class="col-lg-2 col-form-label fw-semibold fs-6">
+            {{ variable['label'] }}
+        </label>
+        <div class="col-lg-10 fv-row">
+        <textarea
+                type="{{ variable['type'] }}"
+                rows="{{ rows }}"
+                cols="{{ cols }}"
+                name="{{ inputName }}"
+                placeholder="{{ variable['placeholder'] }}"
+                class="form-control form-control-solid form-control-lg rounded-0 {{ variable['field'] != 'metaDescription' ? 'tinymce-editor' : '' }}">{{ variable['value'] }}</textarea>
+        </div>
+    </div>
+{% endmacro %}
+

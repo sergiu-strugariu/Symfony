@@ -1,0 +1,8 @@
+<div class="intro">
+    {% for widget in section.pageWidgets %}
+        {% set translation = widget.translation(locale) %}
+
+        {% include 'frontend/default/partials/widgets/about-us/' ~ widget.template ignore missing %}
+    {% endfor %}
+</div>
+

@@ -1,0 +1,7 @@
+<p>{{ 'mail.hello'|trans }} {{ app_name }},</p>
+<p>
+    {{ companyType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') ? 'mail.care'|trans :  'mail.provider'|trans }}: {{ companyName }}
+</p>
+<p>{{ 'common.filter_name'|trans }}: {{ fullName }}</p>
+<p>{{ 'menu.email_link'|trans }}: {{ emailAddress }}</p>
+<p>{{ 'menu.phone_link'|trans }}: {{ phone }}</p>

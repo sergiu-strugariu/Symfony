@@ -1,0 +1,34 @@
+<div class="modal fade" id="modalChangeEmail" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close"/>
+            </div>
+            <div class="modal-body">
+                <form id="modalChangeEmailForm">
+                    <h3>{{ 'dashboard.edit_profile.change_profile_email'|trans }}</h3>
+                    <p>{{ 'dashboard.edit_profile.current_profile_email'|trans }} {{ app.user.email }}</p>
+                    <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <div class="board">
+                        <label class="label" for="emailAddress">{{ 'dashboard.edit_profile.new_profile_email'|trans }}</label>
+                        <input type="text"
+                               name="emailAddress"
+                               id="emailAddress"
+                               placeholder="dan.popescu@mail.com"
+                        />
+                    </div>
+                    <ul>
+                        <li>
+                            <input type="submit" class="submit-btn" value="{{ 'dashboard.edit_profile.new_profile_email_confirmation'|trans }}"/>
+                        </li>
+                        <li>
+                            <a href="#" data-bs-dismiss="modal" aria-label="Close">{{ 'auth.cancel'|trans }}</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

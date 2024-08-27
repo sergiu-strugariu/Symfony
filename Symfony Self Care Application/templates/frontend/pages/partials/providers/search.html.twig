@@ -1,0 +1,12 @@
+<div class="search">
+    {% for widget in section.pageWidgets %}
+        {% set translation = widget.translation(locale) %}
+        {% include 'frontend/pages/partials/providers/widgets/' ~ widget.template ignore missing %}
+    {% endfor %}
+</div>
+
+<!-- Start: Custom templates  -->
+{% include 'frontend/pages/common/recommended-company-swiper.html.twig' with {'sectionTitle': 'homepage.recommended_service'|trans, 'url': path('app_provider_single')} %}
+{% include 'frontend/pages/partials/providers/custom/items.html.twig' %}
+{% include "frontend/pages/common/pagination.html.twig" %}
+<!-- End: Custom templates  -->

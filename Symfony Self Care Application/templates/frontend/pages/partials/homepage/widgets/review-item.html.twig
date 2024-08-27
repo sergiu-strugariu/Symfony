@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-inner">
+        <div class="card-info">
+            {{ translation.description|sanitize_html('app.editor') }}
+            <div class="avatar">
+                {% if widget.fileName %}
+                    <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+                {% endif %}
+                <p>"{{ translation.title }}"</p>
+            </div>
+        </div>
+    </div>
+</div>

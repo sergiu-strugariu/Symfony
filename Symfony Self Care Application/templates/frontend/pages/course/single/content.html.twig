@@ -1,0 +1,92 @@
+{% set category = course.categoryCourses.first %}
+{% set type = constant('App\\Entity\\Favorite::COURSE_FAVORITE') %}
+<div class="content">
+    <h1>{{ course.translation(locale).title }}</h1>
+    <a href="{{ path('dashboard_login') }}"
+       class="bookmark-favorite {{ app.user ? 'bookmark-item' : '' }}"
+       data-id="{{ course.id }}"
+       data-type="{{ type }}"
+       target="_blank">
+        <div class="bookmark-image">
+            <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon.svg') }}"
+                 class="not-bookmarked {{ settingService.isFavorite(type, course.id) ? '' : 'd-none' }}"
+                 alt="bookmark"
+                 width="24"
+                 height="24"
+            />
+            <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon-bookmarked.svg') }}"
+                 class="bookmarked {{ settingService.isFavorite(type, course.id) ? 'd-none' : '' }}"
+                 alt="bookmark"
+                 width="24"
+                 height="24"
+            />
+        </div>
+        <span>{{ 'common.bookmark_save'|trans }}</span>
+    </a>
+    <ul>
+        <li>
+            <p>
+                <strong>{{ 'courses.course_title'|trans }}:</strong> {{ course.translation(locale).title }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'common.filter_category'|trans }}:</strong> {{ category.translation(locale).title }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'common.start_date'|trans }}:</strong> {{ course.createdAt|date('d.m.Y') }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.duration'|trans }}:</strong> {{ course.translation(locale).duration }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.format'|trans }}:</strong>
+                {{ course.format|trans }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.min_participants'|trans }}:</strong> {{ course.minParticipant }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.max_participants'|trans }}:</strong> {{ course.maxParticipant }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.level'|trans }}:</strong> {{ course.translation(locale).level }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.certificate'|trans }}:</strong> {{ course.translation(locale).certificate }}
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.price'|trans }}:</strong> {{ course.price|number_format(0, ',', '.') }} RON
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>{{ 'courses.provider'|trans }}:</strong> {{ course.company.name }}
+            </p>
+        </li>
+    </ul>
+    <p>
+        <strong>
+            {{ 'courses.description'|trans }}:
+        </strong>
+    </p>
+    <!-- start::Content -->
+    {{ course.translation(locale).body|sanitize_html('app.editor') }}
+    <!-- start::Content -->
+</div>

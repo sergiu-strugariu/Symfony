@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ page.name }} {{ parent() }} {% endblock %}
+
+{% set route = app.request.attributes.get('_route') %}
+
+{% block content %}
+    {% if page %}
+        <main class="{{ page.classes }}">
+            {% for section in page.pageSections %}
+                {% include 'frontend/default/partials/' ~ page.machineName ~ '/' ~ section.template ignore missing %}
+            {% endfor %}
+
+            {% if route not in ['app_certificates', 'app_education_register', 'app_login', 'app_register', 'app_team', 'app_contact', 'app_educations', 'app_blog', 'app_privacy_policy', 'app_terms'] %}
+                {% include "frontend/default/partials/common/newsletter.html.twig" %}
+            {% endif %}
+        </main>
+    {% endif %}
+{% endblock %}

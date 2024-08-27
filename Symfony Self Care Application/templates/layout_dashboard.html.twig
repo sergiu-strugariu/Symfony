@@ -1,0 +1,209 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block body_attributes %}id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-aside-enabled="true" data-kt-app-aside-fixed="true" data-kt-app-aside-push-toolbar="true" data-kt-app-aside-push-footer="true" class="app-default"{% endblock %}
+
+{% block stylesheets %}
+    <!--begin::Fonts (mandatory for all pages)-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Black/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-ExtraBold/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-ExtraLight/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Medium/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Regular/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-SemiBold/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Thin/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Fonts-->
+    <!--begin::Vendor Stylesheets-->
+    <link href="{{ asset('assets/dashboard/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Vendor Stylesheets-->
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="{{ asset('assets/dashboard/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/dashboard/css/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/dashboard/css/custom.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/dashboard/css/editPhotoHandler.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
+    <!--end::Global Stylesheets Bundle-->
+{% endblock %}
+
+{% block body %}
+    <!--begin::App-->
+    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+        <!--begin::Page-->
+        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            <!--begin::Header-->
+            {% include 'shared/dashboard/header.html.twig' %}
+            <!--end::Header-->
+            <!--begin::Wrapper-->
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                <!--begin::Sidebar-->
+                {% include 'shared/dashboard/sidebar.html.twig' %}
+                <!--end::Sidebar-->
+                <!--begin::Main-->
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <!--begin::Content wrapper-->
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <!--begin::Content-->
+                        <div id="kt_app_content" class="app-content flex-column-fluid">
+                            <!--begin::Content container-->
+                            <div id="kt_app_content_container" class="app-container container-fluid">
+                                {% include 'shared/dashboard/alert.html.twig' %}
+                                {% block content %}
+                                {% endblock %}
+                            </div>
+                            <!--end::Content container-->
+                        </div>
+                        <!--end::Content-->
+                    </div>
+                    <!--end::Content wrapper-->
+                    <!--begin::Footer-->
+                    {% include 'shared/dashboard/footer.html.twig' %}
+                    <!--end::Footer-->
+                </div>
+                <!--end:::Main-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <!--end::App-->
+    {% include 'shared/dashboard/scroll_top.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    <!--begin::Javascript-->
+    <script>
+        let hostUrl = "assets/";
+        let absoluteUrl = "{{ app.request.schemeAndHttpHost }}";
+        window.isAdmin = {{ is_granted('ROLE_ADMIN') ? 1 : 0 }};
+
+        window.singleCompanyPath = '{{ path('app_company_single') }}';
+        window.singleServicePath = '{{ path('app_provider_single') }}';
+        window.singleArticlePath = '{{ path('app_blog_single') }}';
+        window.singleJobPath = '{{ path('app_job_single') }}';
+        window.singleCoursePath = '{{ path('app_course_single') }}';
+
+
+        window.countyCitiesPath = "{{ path('dashboard_ajax_cities') }}";
+        window.approvedStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_APPROVED') }}';
+        window.pendingStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_PENDING') }}';
+        window.draftStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_DRAFT') }}';
+
+        window.companyImagePath = '{{ asset(app_company_path) }}';
+        window.companyPath = '{{ path('app_company_single') }}';
+        window.providerPath = '{{ path('app_provider_single') }}';
+
+        window.jobImagePath = '{{ asset(app_job_path) }}';
+        window.jobPath = '{{ path('app_job_single') }}';
+        window.trainingImagePath = '{{ asset(app_job_path) }}';
+        window.coursePath = '{{ path('app_course_single') }}';
+
+        // Company types
+        window.locationTypeProvider = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
+        window.locationTypeCare = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
+        window.jobType = '{{ constant('App\\Entity\\Favorite::JOB_FAVORITE') }}';
+        window.published = '{{ constant('App\\Entity\\Company::STATUS_PUBLISHED') }}';
+        window.courseType = '{{ constant('App\\Entity\\Favorite::COURSE_FAVORITE') }}';
+
+        window.translations = {
+            'dashboard': {
+                'common': {
+                    'error_message': '{{ 'dashboard.common.error_message' | trans }}',
+                    'are_you_sure_delete': '{{ 'dashboard.common.are_you_sure_delete' | trans }}',
+                    'are_you_sure_deactivate': '{{ 'dashboard.common.are_you_sure_deactivate' | trans }}',
+                    'are_you_sure_approve': '{{ 'dashboard.common.are_you_sure_approve' | trans }}',
+                    'are_you_sure_publish': '{{ 'dashboard.common.are_you_sure_publish' | trans }}',
+                    'are_you_sure_draft': '{{ 'dashboard.common.are_you_sure_draft' | trans }}',
+                    'yes': '{{ 'dashboard.common.yes' | trans }}',
+                    'no': '{{ 'dashboard.common.no' | trans }}',
+                    'all': '{{ 'dashboard.common.all' | trans }}',
+                },
+                'actions': {
+                    'load_more': '{{ 'dashboard.actions.load_more' | trans }}',
+                    'actions': '{{ 'dashboard.actions.actions' | trans }}',
+                    'edit': '{{ 'dashboard.actions.edit' | trans }}',
+                    'draft': '{{ 'dashboard.actions.draft' | trans }}',
+                    'publish': '{{ 'dashboard.actions.publish' | trans }}',
+                    'delete': '{{ 'dashboard.actions.delete' | trans }}',
+                    'manage_links': '{{ 'dashboard.table.manage_links' | trans }}',
+                    'preview': '{{ 'dashboard.actions.preview' | trans }}',
+                    'approve': '{{ 'dashboard.actions.approve' | trans }}'
+                },
+                'table': {
+                    'name': '{{ 'dashboard.table.name' | trans }}'
+                },
+                'favorites': {
+                    'no_items': '{{ 'dashboard.favorites.no_items' | trans }}',
+                    'delete_favorite': '{{ 'dashboard.favorites.delete_favorite' | trans }}'
+                },
+                
+            },
+            'form': {
+                 'email': {
+                    'required': '{{ 'form.email.required' | trans }}',
+                    'email': '{{ 'form.email.email' | trans }}',
+                },
+                'password': {
+                    'required': '{{ 'form.password.required' | trans }}',
+                    'minlength': '{{ 'form.password.minlength' | trans({'{{ limit }}': 8}) }}',
+                    'passwordMatch': '{{ 'form.password.passwordMatch' | trans }}',
+                },
+                'name': {
+                    'required':  '{{ 'form.name.required' | trans }}',
+                    'minlength': '{{ 'form.name.minlength' | trans }}', 
+                    'valid_name': '{{ 'form.name.valid_name' | trans }}', 
+                    'name_match': '{{ 'form.name.valid_name' | trans }}', 
+                },
+                'surname': {
+                    'required':  '{{ 'form.surname.required' | trans }}',
+                    'minlength': '{{ 'form.surname.minlength' | trans }}', 
+                    'valid_name': '{{ 'form.surname.valid_name' | trans }}', 
+                    'surname_match': '{{ 'form.surname.valid_name' | trans }}', 
+                },
+                'phone':{
+                    'required':  '{{ 'form.phone.required' | trans }}',
+                    'minlength': '{{ 'form.phone.minlength' | trans }}', 
+                    'maxlength': '{{ 'form.phone.maxlength' | trans }}', 
+                    'phone_ro': '{{ 'form.phone.phone_ro' | trans }}', 
+                    'phone_match': '{{ 'form.phone.phone_match' | trans }}', 
+                }
+            }
+        };
+
+        //Favorites API
+        window.favoriteItems = '{{ path('dashboard_ajax_favorites') }}';
+        window.removeFavoriteItemUrl = '{{ path('dashboard_ajax_remove_favorite') }}';
+
+        //Edit Profile API
+        window.changeEmailPath = '{{ path('dashboard_ajax_change_email') }}';
+        window.changePasswordPath = '{{ path('dashboard_ajax_change_user_data', {'type': 'password'}) }}';
+        window.changeNamePath = '{{ path('dashboard_ajax_change_user_data', {'type': 'name'}) }}';
+        window.changeSurnamePath = '{{ path('dashboard_ajax_change_user_data', {'type': 'surname'}) }}';
+        window.changePhonePath = '{{ path('dashboard_ajax_change_user_data', {'type': 'phone'}) }}';
+        window.profileImageUploadUrl = '{{ path('dashboard_ajax_change_user_data', {'type': 'fileName'}) }}';
+        window.changeDeletePath = '{{ path('dashboard_ajax_delete_account') }}';
+        window.logout = "{{ path('dashboard_logout') }}";
+
+        // Charts
+        window.userDataPath = '{{ path('dashboard_ajax_get_users') }}';
+        window.dataPath = '{{ path('dashboard_ajax_get_user_data') }}';
+    </script>
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/scripts.bundle.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cropper/1.0.1/jquery-cropper.min.js"></script>
+    <!--end::Global Javascript Bundle-->
+
+    <!--begin::Vendors Javascript-->
+    <script src="{{ asset('assets/dashboard/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <!--end::Vendors Javascript-->
+
+    <!--begin::Custom Javascript-->
+    <script src="{{ asset('assets/dashboard/js/widgets.bundle.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/default/common.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/default/main.js') }}"></script>
+    <!--end::Custom Javascript-->
+
+    <!--end::Javascript-->
+{% endblock %}

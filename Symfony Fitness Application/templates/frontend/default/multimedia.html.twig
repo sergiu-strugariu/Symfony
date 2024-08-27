@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'multimedia.title'|trans }} {{ parent() }} {% endblock %}
+
+{% block content %}
+    <main class="blog multimedia">
+        {% include "frontend/default/partials/multimedia/intro.html.twig" %}
+        {% include "frontend/default/partials/multimedia/events.html.twig" %}
+        {% include "frontend/default/partials/common/newsletter.html.twig" %}
+    </main>
+{% endblock %}

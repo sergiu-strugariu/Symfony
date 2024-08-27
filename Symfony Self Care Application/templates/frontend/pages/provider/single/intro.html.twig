@@ -1,0 +1,45 @@
+<div class="intro">
+    <div class="left-section">
+        <div class="title-section">
+            <h1>{{ provider.name }}</h1>
+        </div>
+        <div class="address">
+            {{ provider.county.name }}/{{ provider.city.name }}
+        </div>
+        <div class="links">
+            <ul class="contact-details">
+                <li>
+                    <a href="tel:{{ provider.phone }}" target="_blank">
+                        <img src="{{ asset('assets/frontend/images/homepage/slider-filter-anchor/modal-phone.svg') }}"
+                             width="15"
+                             height="15"
+                             alt="modal-phone"
+                        >
+                        {{ 'menu.phone_link'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:{{ provider.email }}" target="_blank">
+                        <img src="{{ asset('assets/frontend/images/homepage/slider-filter-anchor/modal-mail.svg') }}"
+                             width="20"
+                             height="20"
+                             alt="modal-mail"
+                        >
+                        {{ 'menu.email_link'|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ provider.website }}" target="_blank">
+                        {{ 'menu.website_link'|trans }}
+                    </a>
+                </li>
+                <!-- start::Share -->
+                {% include "frontend/pages/common/share.html.twig" with {'title': provider.name, 'summary': provider.shortDescription} %}
+                <!-- end::Share -->
+            </ul>
+        </div>
+    </div>
+    <div class="right-section">
+        <div class="image" data-image="{{ asset(provider.logo is not null ? app_company_path ~ provider.logo : app_company_path ~ app_default_image) }}"></div>
+    </div>
+</div>

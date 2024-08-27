@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %} {% block content %}
+
+{% block title %}{{ article.translation(locale).title }} {{ parent() }} {% endblock %}
+{% block meta_og %}
+    <meta property="og:title" content="{{ article.translation(locale).title }} {{ parent() }}">
+    <meta property="og:description" content="{{ article.translation(locale).shortDescription }}">
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="{{ absolute_url(asset(app_article_path ~ article.imageName)) }}">
+{% endblock %}
+
+<main class="blog-article">
+    {% include "frontend/default/partials/article/content.html.twig" %}
+</main>
+
+{% endblock %}

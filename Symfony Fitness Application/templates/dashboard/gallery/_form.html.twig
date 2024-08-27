@@ -1,0 +1,78 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<div class="card-body p-9">
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.galleryLink, 'External link', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.galleryLink, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.galleryLink) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.type) }}
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="row">
+                {{ form_label(form.county, 'County', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                <div class="col-lg-8 fv-row">
+                    {{ form_widget(form.county, {'attr': {'class': 'counties form-select form-select-solid form-select-lg', 'data-control': 'select2', 'data-placeholder': 'Select city'}}) }}
+                    {{ form_errors(form.county) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                {{ form_label(form.city, 'City', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                <div class="col-lg-8 fv-row">
+                    {{ form_widget(form.city, {'attr': {'class': 'cities form-select form-select-solid form-select-lg', 'data-control': 'select2', 'data-placeholder': 'Select city'}}) }}
+                    {{ form_errors(form.city) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.eventDate, 'Event date', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.eventDate, {'attr': {'class': 'form-control form-control-solid form-control-lg datepicker'}}) }}
+            {{ form_errors(form.eventDate) }}
+        </div>
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.status, 'Status', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.status, {'attr': {'class': 'form-select form-select-solid form-select-lg'}}) }}
+            {{ form_errors(form.status) }}
+        </div>
+        <div class="col-lg-4 mb-5">
+            {{ form_label(form.image, 'Featured image', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.image) }}
+        </div>
+    </div>
+</div>
+<!--begin::Card footer-->
+<div class="card-footer py-6 px-9">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-end">
+                {{ form_widget(form._token) }}
+                <a href="{{ path('dashboard_gallery_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Card footer-->
+<!--end::Card body-->
+{{ form_end(form) }}

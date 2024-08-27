@@ -1,0 +1,12 @@
+twig:
+    file_name_pattern: '*.twig'
+
+    globals:
+        languageHelper: '@App\Helper\LanguageHelper'
+        defaultLocale: "%env(DEFAULT_LOCALE)%"
+        menuService: '@App\Service\MenuService'
+        settingService: '@App\Service\SettingService'
+
+when@test:
+    twig:
+        strict_variables: true

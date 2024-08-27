@@ -1,0 +1,92 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    email_address: '%env(EMAIL_ADDRESS)%'
+    email_sender: '%env(EMAIL_SENDER)%'
+    default_locale: '%env(DEFAULT_LOCALE)%'
+    app_name: '%env(APP_NAME)%'
+    app_email: '%env(APP_EMAIL)%'
+    app_json_path: '%env(APP_JSON_PATH)%'
+    app_page_path: '%env(APP_PAGE_PATH)%'
+    app_article_path: '%env(APP_ARTICLE_PATH)%'
+    app_certificate_path: '%env(APP_CERTIFICATE_PATH)%'
+    app_diploma_path: '%env(APP_DIPLOMA_PATH)%'
+    app_menu_path: '%env(APP_MENU_PATH)%'
+    app_education_path: '%env(APP_EDUCATION_PATH)%'
+    app_team_member_path: '%env(APP_TEAM_MEMBER_PATH)%'
+    app_user_photo_path: '%env(APP_USER_PHOTO_PATH)%'
+    app_gallery_path: '%env(APP_GALLERY_PATH)%'
+    facebook_share: '%env(FACEBOOK_SHARE)%'
+    linkedin_share: '%env(LINKEDIN_SHARE)%'
+    payu_base_url: '%env(PAYU_BASE_URL)%'
+    payu_secret_key: '%env(PAYU_SECRET_KEY)%'
+    payu_merchant_code: '%env(PAYU_MERCHANT_CODE)%'
+    mailchimp_api_key: '%env(MAILCHIMP_API_KEY)%'
+    mailchimp_server_prefix: '%env(MAILCHIMP_API_SERVER_PREFIX)%'
+    mailchimp_list_id: '%env(MAILCHIMP_LIST_ID)%'
+    smartbill_cif: '%env(SMARTBILL_CIF)%'
+    smartbill_invoice_series_name: '%env(SMARTBILL_INVOICE_SERIES_NAME)%'
+    smartbill_proforma_invoice_series_name: '%env(SMARTBILL_PROFORMA_INVOICE_SERIES_NAME)%'
+    smartbill_username: '%env(SMARTBILL_USERNAME)%'
+    smartbill_token: '%env(SMARTBILL_TOKEN)%'
+
+twig:
+    globals:
+        app_name: '%app_name%'
+        facebook_share: '%facebook_share%'
+        linkedin_share: '%linkedin_share%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Helper\MailHelper:
+        arguments:
+            $fromEmail: '%email_address%'
+            $fromSender: '%email_sender%'
+
+    App\Helper\LanguageHelper:
+        arguments:
+            $defaultLocale: '%default_locale%'
+
+    App\Helper\MenuHelper:
+        public: true
+
+    App\EventSubscriber\LocaleSubscriber:
+        arguments: [ '%default_locale%' ]
+        
+    App\Helper\PayUAPIHelper:
+        arguments:
+            $baseUrl: '%payu_base_url%'
+            $secretKey: '%payu_secret_key%'
+            $merchantCode: '%payu_merchant_code%'
+    
+    App\Helper\MailchimpAPIHelper:
+        arguments:
+            $apiKey: '%mailchimp_api_key%'
+            $serverPrefix: '%mailchimp_server_prefix%'
+            $listId: '%mailchimp_list_id%'
+            
+    App\Helper\SmartBillAPIHelper:
+        arguments:
+            $cif: '%smartbill_cif%'
+            $invoiceSeriesName: '%smartbill_invoice_series_name%'
+            $proformaInvoiceSeriesName: '%smartbill_proforma_invoice_series_name%'
+            $username: '%smartbill_username%'
+            $token: '%smartbill_token%'

@@ -1,0 +1,70 @@
+<div class="articles">
+    <div class="inner">
+        <div class="heading">
+            <p>{{ 'multimedia.description'|trans|raw }}</p>
+            <h2>{{ 'multimedia.subtitle'|trans }}</h2>
+        </div>
+        <div class="filters">
+            <div class="group">
+                <label for="coursesType">Tip educație</label>
+                <select name="coursesType" id="coursesType">
+                    <option value="all">{{ "course_calendar.all"|trans }}</option>
+                    {% for type in types %}
+                        <option value="{{ type }}"
+                                {% if type == selectedType %}selected{% endif %}>{{ type|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="group">
+                <label for="coursesLocation">Locație</label>
+                <select name="coursesLocation" id="coursesLocation">
+                    <option value="all">{{ "course_calendar.all"|trans }}</option>
+                    {% for location in locations %}
+                        <option value="{{ location }}" class="text-capitalize"
+                                {% if location == selectedLocation %}selected{% endif %}>{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="group">
+                <form class="search-courses">
+                    <div class="search-wrapper">
+                        <label for="coursesSearch">{{ "course_calendar.search"|trans }}</label>
+                        <input type="search" value="{{ query }}" name="coursesSearch" id="coursesSearch">
+                    </div>
+                    <div class="submit-wrapper">
+                        <input type="submit" value="">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="filters-wrapper">
+            <p>{{ totalResults }} {{ 'multimedia.results'|trans }}</p>
+        </div>
+        <div class="listing">
+            {% for gallery in galleries %}
+                <div class="article-card">
+                    <a href="{{ gallery.galleryLink }}" target="_blank">
+                        <div class="image" data-image="{{ asset(app_gallery_path ~ gallery.featuredImageName) }}"></div>
+                        <h3>{{ gallery.title }}</h3>
+                        <p><small>{{ gallery.eventDate|date('F Y') }}</small></p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% if totalPages > 1 %}
+    <div class="pagination-wrapper">
+        <div class="inner">
+            <nav class="py-2 w-100">
+                <ul class="pagination justify-content-center">
+                    {% for page in 1..totalPages %}
+                        <li class="page-item">
+                            <a class="page-link {{ currentPage == page ? 'active' : '' }}" href="{{ path('app_multimedia', {'p': page}) }}" data-page="{{ page }}">{{ page }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,37 @@
+{% extends 'layout_email.html.twig' %}
+
+{% block content %}
+    <tr>
+        <td style="font-family: 'Helvetica Neue LT Pro', sans-serif; font-size: 16pt; letter-spacing:0.525px; color: #465686; padding: 38px 50px 0 50px ; font-weight:700;">
+            {{ 'mails.salute'|trans }} {{ name }},
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 15px 50px 0 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ 'mails.email_notifications.notification_text'|trans }} 
+            <a style="color: #465686; text-decoration: none;" href="https://moveon.ro">www.moveon.ro</a>.
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 15px 50px 29px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ 'mails.email_notifications.verify'|trans }}
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0px 50px 0 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ description }} 
+            <a href="{{ generatedUrl }}">{{ educationName }}</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 29px 50px 15px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ 'mails.email_notifications.information'|trans }} 
+            <a style="color: #465686; text-decoration: none;" href="https://moveon.ro">www.moveon.ro</a>.
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0px 50px 35px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ 'mails.greetings'|trans|raw }}
+        </td>
+    </tr>
+{% endblock %}

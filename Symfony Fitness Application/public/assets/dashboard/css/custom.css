@@ -1,0 +1,73 @@
+#kt_app_sidebar {
+    background-color: #04a69c;
+}
+
+.custom-btn,
+.btn-brand,
+.active > .page-link,
+.scrolltop,
+.scrolltop:hover,
+.btn.btn-brand:focus:not(.btn-active) {
+    color: #FFF !important;
+    background-color: #04a69c !important;
+}
+
+.custom-btn:hover:not(.btn-active),
+.btn.btn-brand:hover:not(.btn-active),
+.app-sidebar-menu-primary.menu > .menu-item .menu-item:not(.here) .menu-link:hover:not(.disabled):not(.active):not(.here) .menu-bullet .bullet {
+    color: #000;
+    background-color: #9AE5DB !important;
+}
+
+.app-sidebar-menu-primary.menu > .menu-item .menu-item:hover .menu-item:not(.here) .menu-link:hover:not(.disabled):not(.active):not(.here) .menu-title {
+    color: #000 !important;
+}
+
+.app-header{
+    background-color: #465687;
+}
+
+.app-sidebar-menu-primary.menu > .menu-item > .menu-link.active .menu-title,
+.app-sidebar-menu-primary.menu > .menu-item > .menu-link.active .menu-icon i,
+.menu-state-bg-light-primary .menu-item:not(.here) .menu-link:hover:not(.disabled):not(.active):not(.here),
+.btn.btn-active-light-primary:hover:not(.btn-active),
+.btn.btn-light:hover:not(.btn-active) .svg-icon  {
+    color: #000 !important;
+}
+
+.jstree-default .jstree-icon {
+    color: #04a69c !important;
+}
+
+.app-sidebar-menu-primary.menu > .menu-item .menu-item .menu-link.active {
+    background-color: #9AE5DB !important;
+    color: #000 !important;
+}
+
+.app-sidebar-menu-primary.menu > .menu-item > .menu-link .menu-title,
+.app-sidebar-menu-primary.menu > .menu-item .menu-item .menu-link .menu-title,
+.app-sidebar-menu-primary.menu > .menu-item .menu-item .menu-link.active .menu-title,
+.app-sidebar-menu-primary.menu > .menu-item:not(.here) > .menu-link:hover:not(.disabled):not(.active):not(.here) menu-item,
+.btn.btn-light .svg-icon {
+    color: #FFF !important;
+}
+
+.app-sidebar-menu-primary.menu > .menu-item .menu-item .menu-link.active .menu-bullet .bullet {
+    background-color: #9AE5DB !important;
+}
+
+.app-sidebar .menu-heading {
+    color: #FFF;
+}
+
+.app-sidebar-logo img {  
+    filter: brightness(0) invert(1) !important;
+}
+
+.app-sidebar,
+.app-sidebar-wrapper {
+    @media (min-width: 992px) {
+        margin-top: 10px !important;
+
+    }
+}

@@ -1,0 +1,82 @@
+{% import 'frontend/macros/macro-submenu.html.twig' as menuMacro %}
+{% set item = menu_helper.menuItems(locale, 'header') %}
+{% set locale = app.request.locale %}
+{% set languages = languageHelper.allLanguages %}
+
+<header>
+    <div class="inner">
+        <div class="mobileMenu">
+            <a href="/">
+                <img src="{{ asset('assets/frontend/images/logo-menu.svg') }}" alt="logo"/>
+            </a>
+            <div class="menu-icon-wrapper">
+                <div class="menu-icon"></div>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="/">
+                <img src="{{ asset('assets/frontend/images/logo-menu.svg') }}" alt="logo"/>
+            </a>
+            <ul>
+                {% for item in item %}
+                    {% if item['children'] is not empty %}
+                        {{ menuMacro.render_submenu(item['children'], item['linkText']|upper) }}
+                    {% else %}
+                        <li><a href="{{ item['link'] }}">{{ item['linkText']|upper }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <div class="menu-tools">
+                <ul class="social-media">
+                    <li>
+                        <a href="#"><img src="{{ asset('assets/frontend/images/logo-linkedin.svg') }}" alt="logo"/></a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{{ asset('assets/frontend/images/logo-facebook.svg') }}" alt="logo"/></a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{{ asset('assets/frontend/images/logo-instagram.svg') }}" alt="logo"/></a>
+                    </li>
+                </ul>
+
+                <div>
+                    <div class="language-change">
+                        {% for language in languages %}
+                            <a {% if locale == language.locale %} class="active" {% endif %}
+                                    href="{{ path('app_language', {'_locale': language.locale}) }}">
+                                {{ language.locale }}{% if not loop.last %}<span>/</span>{% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+
+                    <div class="account-status">
+                        {% if not app.user %}
+                            <a href="{{ path('app_login') }}">
+                                <img src="{{ asset('assets/frontend/images/icon-account-not-logged-in.png') }}"
+                                     alt="account"/>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_my_account_details') }}">
+                                <img src="{{ asset('assets/frontend/images/icon-account-logged-in.png') }}"
+                                     alt="account"/>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="menu-search">
+                        <a href="#">
+                            <img src="{{ asset('assets/frontend/images/icon-search.svg') }}" alt="icon-search"/>
+                        </a>
+
+                        <form class="searchCoursesMenuForm" method="get" novalidate="novalidate">
+                            <input name="searchCourses" placeholder="{{ "common.search.text"|trans }}" title="{{ "common.search.text"|trans }}" type="text"/>
+                            <input type="submit" value=""/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

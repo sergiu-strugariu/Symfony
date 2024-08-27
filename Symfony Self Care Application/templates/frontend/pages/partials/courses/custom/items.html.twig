@@ -1,0 +1,51 @@
+{% set categorySlug = app.request.query.get('category') %}
+<div class="jobs-agenda courses-agenda">
+    <div class="inner">
+        <form id="jobsAgendaForm">
+            <div class="agenda-filter-sort">
+                <div class="agenda-filter">
+                    <p>{{ 'common.filter_for'|trans }}:</p>
+                    <div class="filter-box">
+                        <select id="contractFilter" class="contract-filter" name="contractFilter">
+                            <option value="all">{{ 'common.filter_category'|trans }}</option>
+                            {% for category in categories %}
+                                <option value="{{ category.slug }}" {{ category.slug == categorySlug ? 'selected' : '' }}>
+                                    {{ category.translation(locale).title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div id="contract-list" class="contract-suggestions"></div>
+                    </div>
+                    <div class="filter-box">
+                        <select id="regionFilter" class="region-filter" name="regionFilter">
+                            <option value="all">{{ 'search.county'|trans }}</option>
+                        </select>
+                        <div id="regions-list" class="regions-suggestions"></div>
+                    </div>
+                </div>
+                <div class="catalogue-sort">
+                    <p>{{ 'common.sort_for'|trans }}:</p>
+                    <ul class="sorting-buttons">
+                        <li>
+                            <h3 class="sort-date" data-name="createdAt" data-sort="asc">
+                                {{ 'common.filter_date'|trans }}
+                                <span>&#9650;</span>
+                                <span>&#9660;</span>
+                            </h3>
+                        </li>
+                        {% for format in formats %}
+                            <li>
+                                <h3 data-sort="asc" class="sort-{{ format }}" data-type="{{ format }}">
+                                    {{ format|trans }}
+                                    <span>&#9650;</span>
+                                    <span>&#9660;</span>
+                                </h3>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div class="agenda-list has-loader"></div>
+    </div>
+</div>

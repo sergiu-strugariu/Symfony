@@ -1,0 +1,24 @@
+{
+  "reviews": [
+    {"rating": "5",
+      "text":
+      "Nivelul de îngrijire oferit la Premium Senior este cu adevărat lăudabil. Membrii personalului nu sunt doar cu înaltă calificare, experienţă şi cunoștințe, ci și atenți la nevoile fiecărui rezident. Este evident că ei acordă prioritate bunăstării şi demnității tuturor celor aflaţi în grija lor. De fiecare dată când vizitez Premium Senior, plec cu un profund sentiment de recunoștință știind că persoana iubită primește o îngrijire excepțională într-un mediu atât de susţinător şi încurajator. Aş recomanda cu căldură Premium Senior oricui caută o casă de îngrijire care să acorde prioritate compasiunii, profesionalismului şi bunăstării rezidenţilor.",
+      "reviewerName": "Andreea M.",
+    "userRelatedTo": "Fiica a rezidentului"},
+    {"rating": "3",
+      "text":
+      "Nivelul de îngrijire oferit la Premium Senior este cu adevărat lăudabil. Membrii personalului nu sunt doar cu înaltă calificare, experienţă şi cunoștințe, ci și atenți la nevoile fiecărui rezident. Este evident că ei acordă prioritate bunăstării şi demnității tuturor celor aflaţi în grija lor. De fiecare dată când vizitez Premium Senior, plec cu un profund sentiment de recunoștință știind că persoana iubită primește o îngrijire excepțională într-un mediu atât de susţinător şi încurajator. Aş recomanda cu căldură Premium Senior oricui caută o casă de îngrijire care să acorde prioritate compasiunii, profesionalismului şi bunăstării rezidenţilor.",
+      "reviewerName": "Andreea M.2",
+      "userRelatedTo": "Fiica a rezidentului2"},
+    {"rating": "1.55",
+      "text":
+      "Nivelul de îngrijire oferit la Premium Senior este cu adevărat lăudabil. Membrii personalului nu sunt doar cu înaltă calificare, experienţă şi cunoștințe, ci și atenți la nevoile fiecărui rezident. Este evident că ei acordă prioritate bunăstării şi demnității tuturor celor aflaţi în grija lor. De fiecare dată când vizitez Premium Senior, plec cu un profund sentiment de recunoștință știind că persoana iubită primește o îngrijire excepțională într-un mediu atât de susţinător şi încurajator. Aş recomanda cu căldură Premium Senior oricui caută o casă de îngrijire care să acorde prioritate compasiunii, profesionalismului şi bunăstării rezidenţilor.",
+      "reviewerName": "Andreea M.3",
+      "userRelatedTo": "Fiica a rezidentului3"},
+    {"rating": "3.49",
+      "text":
+      "Nivelul de îngrijire oferit la Premium Senior este cu adevărat lăudabil. Membrii personalului nu sunt doar cu înaltă calificare, experienţă şi cunoștințe, ci și atenți la nevoile fiecărui rezident. Este evident că ei acordă prioritate bunăstării şi demnității tuturor celor aflaţi în grija lor. De fiecare dată când vizitez Premium Senior, plec cu un profund sentiment de recunoștință știind că persoana iubită primește o îngrijire excepțională într-un mediu atât de susţinător şi încurajator. Aş recomanda cu căldură Premium Senior oricui caută o casă de îngrijire care să acorde prioritate compasiunii, profesionalismului şi bunăstării rezidenţilor.",
+      "reviewerName": "Andreea M.3",
+      "userRelatedTo": "Fiica a rezidentului3"}
+  ]
+}

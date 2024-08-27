@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block content %}
+    <main class="job-details">
+        <div class="inner">
+            <!-- start::Breadcrumb -->
+            {% include "shared/frontend/common/breadcrumbs.html.twig" %}
+            <!-- end::Breadcrumb -->
+
+            <!-- start::Intro -->
+            {% include "frontend/pages/job/single/intro.html.twig" %}
+            <!-- end::Intro -->
+
+            <!-- start::Info -->
+            {% include "frontend/pages/job/single/info.html.twig" %}
+            <!-- end::Info -->
+
+            <!-- start::Description -->
+            {% include "frontend/pages/job/single/description.html.twig" %}
+            <!-- end::Description -->
+
+            <!-- start::Form & Share -->
+            {% include "frontend/pages/job/single/form.html.twig" %}
+            <!-- end::Form & Share -->
+
+            <!-- start::Recommended -->
+            {% include "frontend/pages/common/recomended-jobs.html.twig" with {'sectionTitle': 'jobs.recommended_job_section'|trans} %}
+            <!-- end::Recommended -->
+
+            <!-- start::Other courses -->
+            {% include "frontend/pages/common/other-courses.html.twig" with {'sectionTitle': 'courses.other_course'|trans} %}
+            <!-- end::Other courses -->
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% set route = app.request.attributes.get('_route') %}
+
+<div class="sidebar">
+    <div class="avatar">
+        <input type="file" name="userPhoto">
+        <div class="image">
+            {% if user.imageName %}
+                <img src="{{ asset('assets/files/user/' ~ user.imageName) }}" alt="avatar">
+            {% else %}
+                <img src="{{ asset('assets/frontend/images/icon-user.png') }}" alt="avatar">
+            {% endif %}
+        </div>
+        <div class="icon"></div>
+
+        {% include "shared/frontend/alert.html.twig" %}
+    </div>
+    <nav>
+        <ul>
+            <li {% if route == 'app_my_account_calendar' %}class="active"{% endif %}>
+                <a href="{{ path('app_my_account_calendar') }}">{{ 'account.sidebar.calendar'|trans }}</a>
+            </li>
+            <li {% if route == 'app_my_account_details' %}class="active"{% endif %}>
+                <a href="{{ path('app_my_account_details') }}">{{ 'account.sidebar.account_details'|trans }}</a>
+            </li>
+            <li {% if route == 'app_my_account_certifications' %}class="active"{% endif %}>
+                <a href="{{ path('app_my_account_certifications') }}">{{ 'account.sidebar.certificates'|trans }}</a>
+            </li>
+            <li {% if route == 'app_my_account_contracts' %}class="active"{% endif %}>
+                <a href="{{ path('app_my_account_contracts') }}">{{ 'account.sidebar.contracts'|trans }}</a>
+            </li>
+            <li {% if route == 'app_my_account_invoices' %}class="active"{% endif %}>
+                <a href="{{ path('app_my_account_invoices') }}">{{ 'account.sidebar.invoices'|trans }}</a>
+            </li>
+
+        </ul>
+    </nav>
+</div>

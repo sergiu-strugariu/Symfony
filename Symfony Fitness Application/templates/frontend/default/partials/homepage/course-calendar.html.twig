@@ -1,0 +1,14 @@
+<div class="course-calendar">
+    <div class="inner">
+        <div class="image"
+             data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName) }}"></div>
+        <div class="image"
+             data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileNameMob) }}"></div>
+    </div>
+
+    {% for widget in section.pageWidgets %}
+        {% set translation = widget.translation(locale) %}
+
+        {% include 'frontend/default/partials/widgets/homepage/' ~ widget.template ignore missing %}
+    {% endfor %}
+</div>

@@ -1,0 +1,6 @@
+<!-- Start: Page widget  -->
+{% for widget in section.pageWidgets %}
+    {% set translation = widget.translation(locale) %}
+    {% include 'frontend/pages/partials/privacy-policy/widgets/' ~ widget.template ignore missing %}
+{% endfor %}
+<!-- End: Page widget  -->

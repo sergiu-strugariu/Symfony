@@ -1,0 +1,8 @@
+<div class="about-course">
+	<div>
+		<h2>{{ 'course_calendar.course_details.about'|trans }}</h2>
+		{{ education.translation(locale).description|raw }}
+	</div>
+
+	<div class="image" data-image="{{ asset('assets/files/education/' ~ education.imageName) }}"></div>
+</div>

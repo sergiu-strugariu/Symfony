@@ -1,0 +1,11 @@
+<div class="cta">
+    <div class="inner">
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+            <h2>{{ translation.title }}</h2>
+
+            {{ translation.description|raw }}
+            <a href="{{ translation.link }}">{{translation.linkText}}</a>
+        {% endfor %}
+    </div>
+</div>

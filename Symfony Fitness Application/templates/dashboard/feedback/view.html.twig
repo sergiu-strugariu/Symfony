@@ -1,0 +1,27 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %} Feedback {{ parent() }} {% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        <!--begin::Card header-->
+        <div class="card-header">
+            <!--begin::Card title-->
+            <h3 class="card-title">Feedback {{ feedback.user.firstName }} {{ feedback.user.lastName }}</h3>
+            <!--end::Card title-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            {% for answer in feedback.feedbackAnswers %}
+                <div class="mb-2">
+                    <h5>{{ loop.index }}. {{ answer.question.title }}</h5>
+                    <p>{{ answer.answer }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

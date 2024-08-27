@@ -1,0 +1,70 @@
+{% extends 'layout-auth.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'menu.login_link'|trans }}{% endblock %}
+{% block content %}
+    <main class="login">
+        <div class="container">
+            <div class="form-wrapper">
+                <h1>{{ 'menu.login_link'|trans }}</h1>
+                <form method="post" id="clientLogin">
+                    {% include "shared/frontend/alert.html.twig" %}
+                    {% if error %}
+                        <!--begin::Form message-->
+                        <div class="form-message error">
+                            <div aria-atomic="true" role="alert" class="error-message">
+                                <div class="error message">
+                                    <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Form message-->
+                    {% endif %}
+                    <div class="row">
+                        <label for="username">{{ 'menu.email_link'|trans }}</label>
+                        <input type="email"
+                               value="{{ last_username }}"
+                               name="_username"
+                               id="username"
+                               autocomplete="email"
+                               required autofocus
+                        />
+                    </div>
+                    <div class="row">
+                        <label for="_password">{{ 'form.placeholder.password'|trans }}</label>
+                        <input type="password" class="password" placeholder="password" name="_password" id="_password">
+                        <div class="toggle-wrapper">
+                            <img src="{{ asset('assets/frontend/images/common/hidden-pass.svg') }}"
+                                 alt="hiddenPass"
+                                 width="20"
+                                 height="20"
+                                 class="hiddenPass"
+                            />
+                            <img src="{{ asset('assets/frontend/images/common/visible-pass.svg') }}"
+                                 alt="visiblePass"
+                                 width="20"
+                                 height="20"
+                                 class="visiblePass hidden"
+                            />
+                        </div>
+                    </div>
+                    <a href="{{ path('app_resetting_forgot_password') }}" class="forgotPass">
+                        {{ 'auth.forgot_password_link'|trans }}
+                    </a>
+                    <div class="form-action">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <input type="submit" class="submit-btn" value="{{ 'auth.login_submit'|trans }}"/>
+                    </div>
+                    <div class="info-text">
+                        <p>{{ 'auth.dont_have_account'|trans }}
+                            <strong>
+                                <a href="{{ path('app_create_account') }}">
+                                    {{ 'auth.create_account_title'|trans }} {{ app_name }}
+                                </a>
+                            </strong>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

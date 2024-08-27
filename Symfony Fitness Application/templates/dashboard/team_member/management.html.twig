@@ -1,0 +1,22 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}Team member {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        {% if editMode %}
+            <div class="card-header">
+                <h3 class="card-title"></h3>
+                <div class="card-toolbar">
+                    {% set params = {'uuid': entity.uuid} %}
+                    {% include 'shared/dashboard/languages.html.twig' with params %}
+                </div>
+            </div>
+        {% endif %}
+        {% include 'dashboard/team_member/_form.html.twig' %}
+    </div>
+    <!--end::Card-->
+{% endblock %}

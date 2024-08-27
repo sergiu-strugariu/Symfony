@@ -1,0 +1,32 @@
+common:
+  not_blank: "Acest camp este obligatoriu"
+  not_valid_email: "Acest email este invalid."
+  gdpr: 'Am citit si sunt de acord cu <a href="%terms_url%">Terms and Conditions</a> și <a href="%privacy_url%">Privacy Policy</a> Move On.'
+  newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
+  contract: "Generate Contract"
+  media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"
+  max_message: "Acest câmp trebuie să aibă cel mult {{ limit }} caractere."
+  not_valid:
+    email: "Email invalid."
+    phone: "Numar de telefon invalid."
+    gdpr: "Trebuie sa accepti politica GDPR."
+    password_not_match: "Parolele nu coincid."
+  min_message: "Acest câmp trebuie să aibe cel putin {{ limit }} caractere."
+
+  custom:
+    min_message: "Mesaj invalid."
+    name: "Nume invalid."
+    first_name: "Nume invalid."
+    last_name: "Prenume invalid."
+
+  form_labels:
+    first_name: "Nume"
+    last_name: "Prenume"
+    full_name: "Nume"
+    email: "Email"
+    sign_up: "Înscrie-te"
+    phone: "Telefon"
+    password:
+      first_options: "Parola"
+      second_options: "Repetă parola"
+      default: "Parola"

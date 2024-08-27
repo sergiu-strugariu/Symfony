@@ -1,0 +1,15 @@
+<div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+{% if translation.title %}
+    <h1>{{ translation.title }}</h1>
+{% endif %}
+{% if translation.description %}
+    {{ translation.description|sanitize_html('app.editor') }}
+{% endif %}
+
+<div class="home-search-more-results">
+    {% if translation.linkText %}
+        <a href="{{ translation.link }}">
+            {{ translation.linkText }}
+        </a>
+    {% endif %}
+</div>

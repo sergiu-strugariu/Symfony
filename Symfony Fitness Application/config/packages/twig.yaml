@@ -1,0 +1,20 @@
+twig:
+    file_name_pattern: '*.twig'
+
+    globals:
+        default_locale: "%default_locale%"
+        app_education_path: '%app_education_path%'
+        app_team_member_path: '%app_team_member_path%'
+        app_article_path: '%app_article_path%'
+        app_certificate_path: '%app_certificate_path%'
+        app_menu_path: '%app_menu_path%'
+        app_user_photo_path: '%app_user_photo_path%'
+        app_gallery_path: '%app_gallery_path%'
+        app_diploma_path: '%app_diploma_path%'
+        settingService: '@App\Service\SettingService'
+        languageHelper: '@App\Helper\LanguageHelper'
+        menu_helper: '@App\Helper\MenuHelper'
+
+when@test:
+    twig:
+        strict_variables: true

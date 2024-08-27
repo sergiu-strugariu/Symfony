@@ -1,0 +1,13 @@
+<div class="description">
+    <div class="inner">
+        <div class="content">
+            {% for widget in section.pageWidgets %}
+                {% set translation = widget.translation(locale) %}
+
+                {{ translation.description|raw }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include "frontend/default/partials/contact/form.html.twig" %}

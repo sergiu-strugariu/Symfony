@@ -1,0 +1,10 @@
+<div class="content-wrapper">
+    <div class="inner">
+        <!-- start: Page widget  -->
+        {% for widget in section.pageWidgets %}
+            {% set translation = widget.translation(locale) %}
+            {% include 'frontend/pages/partials/helpline/widgets/' ~ widget.template ignore missing %}
+        {% endfor %}
+        <!-- end: Page widget  -->
+    </div>
+</div>

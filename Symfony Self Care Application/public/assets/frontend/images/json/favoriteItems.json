@@ -1,0 +1,12 @@
+{
+  "status": true,
+  "rows": [
+    {"slug": "azi-privat1", "name": "Azil Privat1",  "address": "Location 1, Ilfov", "image": "../images/homepage/slider-filter/results_one.webp", "type": "Produse", "createdAt": "6/26/2024"},
+    {"slug": "azi-privat2", "name": "Azil Privat2",  "address": "Location 2, Ilfov", "image": "../images/homepage/slider-filter/results_one.webp", "type": "Produse", "createdAt": "6/26/2024"},
+    {"slug": "azi-privat3", "name": "Azil Privat3",  "address": "Location 3, Ilfov", "image": "../images/homepage/slider-filter/results_one.webp", "type": "Produse", "createdAt": "6/26/2024"},
+    {"slug": "azi-privat4", "name": "Azil Privat4",  "address": "Location 4, Ilfov", "image": "../images/homepage/slider-filter/results_one.webp", "type": "Produse", "createdAt": "6/26/2024"},
+    {"slug": "azi-privat5", "name": "Azil Privat5",  "address": "Location 5, Ilfov", "image": "../images/homepage/slider-filter/results_one.webp", "type": "Produse", "createdAt": "6/26/2024"}
+  ],
+  "totalPages": 100,
+  "currentPage": 1
+}

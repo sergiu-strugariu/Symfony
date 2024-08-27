@@ -1,0 +1,33 @@
+{% set locale = languageHelper.getLocaleFromRequest %}
+
+<div class="articles">
+    <div class="inner">
+        <div class="listing">
+            <div class="article-card related">
+                <a href="{{ path('app_article', {'slug': article.slug}) }}">
+                    <div class="image" data-image="{{ asset(app_article_path ~ article.imageName) }}"></div>
+                    <p><small>Move On - {{ article.createdAt|date('d F Y') }}</small></p>
+                    <h3>{{ article.translation(locale).title }}</h3>
+                    <p>
+                        {{ article.translation(locale).shortDescription |u.truncate(100) }}
+                    </p>
+                    <span>{{ 'article.read_more'|trans }}</span>
+                </a>
+            </div>
+            {% for article in articles %}
+                <div class="article-card">
+                    <a href="{{ path('app_article', {'slug': article.slug}) }}">
+                        <div class="image" data-image="{{ asset(app_article_path ~ article.imageName) }}"></div>
+                        <p><small>Move On - {{ article.createdAt|date('d F Y') }}</small></p>
+                        <h3>{{ article.translation(locale).title }}</h3>
+                        <p>
+                            {{ article.translation(locale).shortDescription|u.truncate(100) }}
+                        </p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include "frontend/default/partials/common/pagination.html.twig" %}

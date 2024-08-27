@@ -1,0 +1,19 @@
+<div class="newsletter">
+    <div>
+        <h2>{{ "newsletter.title"|trans }}</h2>
+        <p>
+            {{ "newsletter.description"|trans }}
+        </p>
+        
+        <div class="newsletter-message">
+            {% include "shared/frontend/alert.html.twig" %}
+        </div>
+        
+        <form id="newsletterForm" novalidate="novalidate">
+            <input name="email" placeholder="E-MAIL" title="E-mail" type="email" />
+            <input type="submit" value="{{ "common.form_labels.sign_up"|trans }}" />
+        </form>
+    </div>
+
+    <div class="image" data-image="{{ asset('assets/frontend/images/newsletter.png') }}" ></div>
+</div>

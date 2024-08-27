@@ -1,0 +1,38 @@
+{% if (recommended is not empty) %}
+    <div class="slider-filter-anchor slick-shelters-anchor">
+        <div class="inner">
+            <div class="common-navigation-btns">
+                <h2>{{ sectionTitle }}</h2>
+                <div class="common-navigation-btns__container">
+                    <div class="common-arrow swiper-button-prev details-item-prev"></div>
+                    <div class="common-arrow swiper-button-next details-item-next"></div>
+                </div>
+            </div>
+            <div class="list-wrapper">
+                <div class="slick-shelters recommended-homes">
+                    {% for item in recommended %}
+                        <div class="shelter">
+                            <div class="shelter-overlay"></div>
+                            <div class="image" style="background-image: url('{{ asset(app_company_path ~ item.fileName) }}');">
+                                <a href="{{ url }}/{{ item.slug }}" class="details-link">
+                                    {{ 'common.view_more'|trans }}
+                                </a>
+                            </div>
+                            <div class="image-content">
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.city }}, {{ item.county }}</p>
+                                {% if(item.locationType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') and item.averageRating is not null) %}
+                                    <span>
+                                        {{ item.averageRating }}
+                                        <img src="{{ asset('assets/frontend/images/common/star.png') }}" alt="rating-star">
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+  

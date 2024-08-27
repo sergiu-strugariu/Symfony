@@ -1,0 +1,5 @@
+<div class="preview-review">
+    {% if translation.description %}
+        {{ translation.description|sanitize_html('app.editor') }}
+    {% endif %}
+</div>

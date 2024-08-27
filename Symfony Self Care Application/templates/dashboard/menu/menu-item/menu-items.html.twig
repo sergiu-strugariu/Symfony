@@ -1,0 +1,17 @@
+<div class="card h-100">
+    <div class="card-header p-9">
+        <h2 class="page-heading d-flex fw-bolder fs-6 flex-column justify-content-center my-0 text-uppercase color-1A394E">
+            {{ 'dashboard.actions.hierarchy_of_links'|trans }}
+        </h2>
+    </div>
+    <div class="card-body menu-items-hierarchy">
+        <div class="menu-item-tree"></div>
+    </div>
+    <!--begin::Card footer-->
+    <div class="card-footer d-flex justify-content-end">
+        <a href="{{ path('dashboard_menu_index') }}" class="btn btn-secondary me-2">
+            {{ 'common.prev'|trans }}
+        </a>
+    </div>
+    <!--end::Card footer-->
+</div>

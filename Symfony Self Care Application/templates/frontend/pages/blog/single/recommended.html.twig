@@ -1,0 +1,26 @@
+{% if(recommended is not null) %}
+    <div class="articles-list-container">
+        <h2>{{ 'blog.recommended_title'|trans }}</h2>
+        <div class="articles-list">
+            <div class="inner">
+                {% for item in recommended %}
+                    <div class="article-card">
+                        <div class="card-inner">
+                            <div class="image" data-image="{{ asset(app_article_path ~ item.image) }}">
+                            </div>
+                            <div class="card-content">
+                                <h3>{{ item.translation(locale).title }}</h3>
+                                <p>
+                                    {{ item.translation(locale).shortDescription|slice(0, 110) ~ '...' }}
+                                </p>
+                                <a href="{{ path('app_blog_single', {'slug': item.slug}) }}">
+                                    {{ 'common.view_more'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}

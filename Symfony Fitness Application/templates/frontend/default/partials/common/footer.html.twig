@@ -1,0 +1,25 @@
+<footer class="footer">
+    <div class="inner">
+        <div class="footer-wrapper">
+            <ul>
+                <li>Copyright</li>
+                <li>&copy; 2005 - {{ 'now'|date('Y') }} {{ app_name }}</li>
+            </ul>
+
+            {% set itemsPerUl = 8 %}
+            {% set menuItems = menu_helper.menuItems(locale, 'footer') %}
+            {% for i in range(0, menuItems|length, itemsPerUl) %}
+                <ul>
+                    {% for parent in menuItems[i:i+itemsPerUl] %}
+                        <li><a href="{{ parent.link }}">{{ parent.linkText }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+
+            <ul>
+                <li>Contact</li>
+                <li><a href="mailto:contact@move-on.ro">contact@move-on.ro</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>

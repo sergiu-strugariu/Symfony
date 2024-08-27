@@ -1,0 +1,18 @@
+<div class="content">
+    <div class="inner">
+        <div>
+            <div>
+                <h2>{{ member.name }}</h2>
+                <h3>{{ member.translation(locale).specialization }}</h3>
+                {{ member.translation(locale).description|raw }}
+            </div>
+            <div>
+                <div>
+                    <img src="{{ asset(app_team_member_path ~ member.imageName) }}" alt="team" />
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ path('app_team') }}">&#60; {{ 'team.button_team'|trans }}</a>
+    </div>
+</div>

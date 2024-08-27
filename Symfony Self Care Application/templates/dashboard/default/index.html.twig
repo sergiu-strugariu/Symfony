@@ -1,0 +1,251 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} Dashboard{% endblock %}
+{% block content %}
+    {% if is_granted('ROLE_COMPANY') %}
+        <!--begin::Content-->
+        <div id="kt_app_content" class="flex-column-fluid mb-10">
+            <!--begin::Content container-->
+            <div id="kt_app_content_container" class="app-container container-fluid app-container-details">
+                <div class="container px-0">
+                    <div class="custom-card-container">
+                        <div class="card p-5 text-center rounded-0 {{ totalCares >= 1 ? 'info bg-f9f9f9' : 'bg-f9f9f9 border-DDE2E6' }}">
+                            <h3 class="text-start fw-bolder color-183B51 pb-3">{{ 'dashboard.favorites.homes'|trans }}</h3>
+                            <div class="{{ totalCares >= 1 ? 'position-relative' : '' }} mx-auto">
+                                {% set careIcon = totalCares >= 1 ? 'shelter.svg' : 'shelter-empty.svg' %}
+                                <img src="{{ asset('assets/dashboard/media/my-account/' ~ careIcon) }}"
+                                     width="103"
+                                     alt="shelter"
+                                />
+                                {% if(totalCares >= 1) %}
+                                    <span class="number-circle">{{ totalCares }}</span>
+                                {% endif %}
+                            </div>
+                            {% if(totalCares >= 1) %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5">
+                                    {{ 'dashboard.my_account.totalCares'|trans({'%totalCares%': totalCares})|raw }}
+                                </p>
+                            {% else %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5 fs-6">
+                                    {{ 'dashboard.favorites.homes_listing_empty'|trans }}
+                                </p>
+                            {% endif %}
+                            <a href="{{ path(totalCares >= 1 ? 'dashboard_company_index' : 'dashboard_company_create', {'locationType' : 'care'}) }}"
+                               class="custom-company-button">
+                                {{ totalCares >= 1 ? 'dashboard.favorites.homes_view_listing'|trans : 'dashboard.favorites.homes_add'|trans }}
+                            </a>
+                        </div>
+                        <div class="card p-5 text-center rounded-0 {{ totalProviders >= 1 ? 'info bg-f9f9f9' : 'bg-f9f9f9 border-DDE2E6' }}">
+                            <h3 class="text-start fw-bolder color-183B51 pb-3">{{ 'dashboard.favorites.services_care'|trans }}</h3>
+                            <div class="{{ totalProviders >= 1 ? 'position-relative' : '' }} mx-auto">
+                                {% set providerIcon = totalProviders >= 1 ? 'care-services.svg' : 'care-services-empty.svg' %}
+                                <img src="{{ asset('assets/dashboard/media/my-account/' ~ providerIcon) }}"
+                                     width="103"
+                                     alt="services"
+                                />
+                                {% if(totalProviders >= 1) %}
+                                    <span class="number-circle">{{ totalProviders }}</span>
+                                {% endif %}
+                            </div>
+                            {% if(totalProviders >= 1) %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5">
+                                    {{ 'dashboard.favorites.congratulations_you_have_services'|trans({'%totalProviders%': totalProviders})|raw }}
+                                </p>
+                            {% else %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5 fs-6">
+                                    {{ 'dashboard.favorites.no_services'|trans }}
+                                </p>
+                            {% endif %}
+                            <a href="{{ path(totalProviders >= 1 ? 'dashboard_company_index' : 'dashboard_company_create', {'locationType' : 'provider'}) }}"
+                               class="custom-company-button">
+                                {{ totalCares >= 1 ? 'dashboard.favorites.view_services'|trans : 'dashboard.favorites.add_services'|trans }}
+                            </a>
+                        </div>
+                        <div class="card p-5 text-center rounded-0 {{ totalJobs >= 1 ? 'info bg-f9f9f9' : 'bg-f9f9f9 border-DDE2E6' }}">
+                            <h3 class="text-start fw-bolder color-183B51 pb-3">{{ 'common.jobs'|trans }}</h3>
+                            <div class="{{ totalJobs >= 1 ? 'position-relative' : '' }} mx-auto">
+                                {% set jobIcon = totalJobs >= 1 ? 'jobs.svg' : 'jobs-empty.svg' %}
+                                <img src="{{ asset('assets/dashboard/media/my-account/' ~ jobIcon) }}"
+                                     width="103"
+                                     alt="jobs-empty"
+                                />
+                                {% if(totalJobs >= 1) %}
+                                    <span class="number-circle">{{ totalJobs }}</span>
+                                {% endif %}
+                            </div>
+                            {% if(totalJobs >= 1) %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5">
+                                    {{ 'dashboard.favorites.congratulations_you_have_jobs'|trans({'%totalJobs%': totalJobs})|raw }}
+                                </p>
+                            {% else %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5 fs-6">
+                                    {{ 'dashboard.favorites.no_jobs'|trans }}
+                                </p>
+                            {% endif %}
+                            <a href="{{ path(totalJobs >= 1 ? 'dashboard_job_index' : 'dashboard_job_create') }}"
+                               class="custom-company-button">
+                                {{ totalJobs >= 1 ? 'dashboard.favorites.view_jobs'|trans : 'dashboard.favorites.add_job'|trans }}
+                            </a>
+                        </div>
+                        <div class="card p-5 text-center rounded-0 {{ totalCourses >= 1 ? 'info bg-f9f9f9' : 'bg-f9f9f9 border-DDE2E6' }}">
+                            <h3 class="text-start fw-bolder color-183B51 pb-3"> {{ 'dashboard.favorites.training_courses'|trans }}</h3>
+                            <div class="{{ totalCourses >= 1 ? 'position-relative' : '' }} mx-auto">
+                                {% set courseIcon = totalCourses >= 1 ? 'training-courses.svg' : 'training-courses-empty.svg' %}
+                                <img src="{{ asset('assets/dashboard/media/my-account/' ~ courseIcon) }}"
+                                     width="103"
+                                     alt="training-courses-empty"
+                                />
+                                {% if(totalCourses >= 1) %}
+                                    <span class="number-circle">{{ totalCourses }}</span>
+                                {% endif %}
+                            </div>
+                            {% if(totalCourses >= 1) %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5">
+                                    {{ 'dashboard.favorites.congratulations_you_have_courses'|trans({'%totalCourses%': totalCourses})|raw }}
+                                </p>
+                            {% else %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5 fs-6">
+                                    {{ 'dashboard.favorites.no_courses'|trans }}
+                                </p>
+                            {% endif %}
+                            <a href="{{ path(totalCourses >= 1 ? 'dashboard_training_index' : 'dashboard_training_create') }}"
+                               class="custom-company-button">
+                                {{ totalCourses >= 1 ? 'dashboard.favorites.view_courses'|trans : 'dashboard.favorites.add_course'|trans }}
+                            </a>
+                        </div>
+                        <div class="card p-5 text-center rounded-0 {{ totalArticles >= 1 ? 'info bg-f9f9f9' : 'bg-f9f9f9 border-DDE2E6' }}">
+                            <h3 class="text-start fw-bolder color-183B51 pb-3">Articole</h3>
+                            <div class="{{ totalArticles >= 1 ? 'position-relative' : '' }} mx-auto">
+                                {% set articleIcon = totalArticles >= 1 ? 'articles.svg' : 'articles-empty.svg' %}
+                                <img src="{{ asset('assets/dashboard/media/my-account/' ~ articleIcon) }}"
+                                     width="103"
+                                     alt="articles-empty"
+                                />
+                                {% if(totalArticles >= 1) %}
+                                    <span class="number-circle">{{ totalArticles }}</span>
+                                {% endif %}
+                            </div>
+                            {% if(totalArticles >= 1) %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5">
+                                    {{ 'dashboard.favorites.congratulations_you_have_articles'|trans({'%totalArticles%': totalArticles})|raw }}
+                                </p>
+                            {% else %}
+                                <p class="color-8597A5 mw-250px min-h-65px mx-auto mt-5 fs-6">
+                                    {{ 'dashboard.favorites.no_articles'|trans }}
+                                </p>
+                            {% endif %}
+                            <a href="{{ path(totalArticles >= 1 ? 'dashboard_article_index' : 'dashboard_article_create') }}"
+                               class="custom-company-button">
+                                {{ totalArticles >= 1 ? 'dashboard.favorites.view_articles'|trans : 'dashboard.favorites.add_articles'|trans }}
+
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Content-->
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="charts">
+            <div class="card mb-5">
+                <!--begin::Card header-->
+                <div class="card-header px-3">
+                    <!--begin::Card title-->
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="ki-duotone ki-profile-user fs-2x">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                        <h3 class="card-label">{{ 'dashboard.common.registers'|trans }}</h3>
+                    </div>
+                    <!--end::Card title-->
+                    <!--begin::Card toolbar-->
+                    <div class="card-toolbar my-1">
+                        <!--begin::Actions-->
+                        <select id="user-year-filter"
+                                class="form-select"
+                                data-control="select2"
+                                data-placeholder="{{ 'dashboard.common.filter_by_year'|trans }}"
+                        >
+                            <option></option>
+                            {% for year in years %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Card toolbar-->
+                </div>
+                <!--begin::Card header-->
+                <div class="card-body">
+                    <canvas id="kt_user_chartjs_2" class="mh-400px"></canvas>
+                </div>
+            </div>
+            <div class="card mt-5">
+                <!--begin::Card header-->
+                <div class="card-header px-3">
+                    <!--begin::Card title-->
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="ki-duotone ki-chart-simple-3 fs-2x">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                        <h3 class="card-label">{{ 'dashboard.common.statistic'|trans }}</h3>
+                    </div>
+                    <!--end::Card title-->
+                    <!--begin::Card toolbar-->
+                    <div class="card-toolbar my-1">
+                        <!--begin::Actions-->
+                        <div class="option-user mx-2">
+                            <select id="data-user-filter"
+                                    class="form-select"
+                                    data-control="select2"
+                                    data-placeholder="{{ 'dashboard.common.filter_by_user'|trans }}"
+                            >
+                                <option value="0">{{ 'dashboard.common.filter_by_user'|trans }}</option>
+                                {% for user in users %}
+                                    <option value="{{ user.id }}">
+                                        {{ user.name ~ ' ' ~ user.surname }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="option-year mx-2">
+                            <select id="data-year-filter"
+                                    class="form-select"
+                                    data-control="select2"
+                                    data-placeholder="{{ 'dashboard.common.filter_by_year'|trans }}"
+                            >
+                                <option></option>
+                                {% for year in dataYears %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Card toolbar-->
+                </div>
+                <!--begin::Card header-->
+                <div class="card-body">
+                    <canvas id="kt_data_chartjs_2" class="mh-400px"></canvas>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block page_javascripts %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <script src="{{ asset('assets/dashboard/js/charts/default.js') }}"></script>
+    {% endif %}
+{% endblock %}

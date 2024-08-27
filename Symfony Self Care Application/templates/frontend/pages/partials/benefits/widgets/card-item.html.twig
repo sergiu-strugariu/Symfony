@@ -1,0 +1,14 @@
+{% if widget.fileName %}
+    <div class="card">
+        <div class="card-inner">
+            <div class="card-image">
+                <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" width="51" height="51" alt="{{ widget.fileName }}" />
+            </div>
+            <div class="card-info">
+                {% if translation.description %}
+                    {{ translation.description|sanitize_html('app.editor') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,89 @@
+<h3>{{ 'account.dashboard.calendar_text'|trans }}</h3>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active" id="new-tab" data-toggle="tab"
+                data-target="#new">{{ 'account.dashboard.new'|trans }}</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="old-tab" data-toggle="tab"
+                data-target="#old">{{ 'account.dashboard.old'|trans }}</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="canceled-tab" data-toggle="tab"
+                data-target="#canceled">{{ 'account.dashboard.cancelled'|trans }}</button>
+    </li>
+</ul>
+<div class="tab-content" id="tabContent">
+
+    <div class="tab-pane fade show active" id="new">
+        <div class="items-wrapper">
+            {% if new is empty %}
+                <div class="item">
+                    <h3>{{ 'account.dashboard.no_calendar'|trans }}</h3>
+                </div>
+            {% else %}
+                {% for result in new %}
+                    <div class="item">
+                        <h4>NR: {{ result.id }} / {{ result.education.createdAt|date('d.m.Y') }}</h4>
+                        <p>{{ result.education.translation(locale).title }}</p>
+                        <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="tab-pane fade" id="old">
+        <div class="items-wrapper">
+            {% if old is empty %}
+                <div class="item">
+                    <h3>{{ 'account.dashboard.no_calendar'|trans }}</h3>
+                </div>
+            {% else %}
+                {% for result in old %}
+                    <div class="item">
+                        <h4>NR: {{ result.id }} / {{ result.education.createdAt|date('d.m.Y') }}</h4>
+                        <p>{{ result.education.translation(locale).title }}</p>
+                        <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="tab-pane fade" id="canceled">
+        <div class="items-wrapper">
+            {% if canceled is empty %}
+                <div class="item">
+                    <h3>{{ 'account.dashboard.no_calendar'|trans }}</h3>
+                </div>
+            {% else %}
+                {% for result in canceled %}
+                    <div class="item">
+                        <h4>NR: {{ result.id }} / {{ result.education.createdAt|date('d.m.Y') }}</h4>
+                        <p>{{ result.education.translation(locale).title }}</p>
+                        <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<div class="btn-wrapper">
+    <a href="{{ path('app_educations') }}">{{ 'account.dashboard.add_new_course'|trans }}</a>
+</div>
+
+<h3>{{ 'account.dashboard.events_text'|trans }}</h3>
+{% if new is empty %}
+    <h3>{{ 'account.dashboard.no_events'|trans }}</h3>
+{% endif %}
+<div class="items-wrapper">
+    {% for result in new %}
+        <div class="item">
+            <h4>[{{ result.education.createdAt|date('d.m.Y') }}]</h4>
+            <p>{{ result.education.translation(locale).title }}</p>
+            <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
+        </div>
+    {% endfor %}
+</div>
