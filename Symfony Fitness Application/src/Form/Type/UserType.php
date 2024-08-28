@@ -107,37 +107,16 @@ class UserType extends AbstractType
                     ])
                 ],
             ])
-            ->add('accordGDPR', ChoiceType::class, [
-                'choices' => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
-                'expanded' => false,
-                'multiple' => false,
-                'constraints' => [
-                    new Choice([
-                        'choices' => [true, false],
-                        'message' => 'common.not_blank'
-                    ])
-                ],
+            ->add('accordGDPR', CheckboxType::class, [
                 'attr' => ['class' => 'form-control form-control-solid form-control-lg'],
-                'label' => 'form_register.invoice'
+                'label' => 'form_register.invoice',
+                'label_html' => true
             ])
-            ->add('newsletter', ChoiceType::class, [
-                'choices' => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
-                'expanded' => false,
-                'multiple' => false,
-                'constraints' => [
-                    new Choice([
-                        'choices' => [true, false],
-                        'message' => 'common.not_blank'
-                    ])
-                ],
+            ->add('newsletter', CheckboxType::class, [
                 'attr' => ['class' => 'form-control form-control-solid form-control-lg'],
-                'label' => 'form_register.invoice'
+                'label' => 'form_register.invoice',
+                'required' => false,
+                'label_html' => true
             ])
         ;
     }

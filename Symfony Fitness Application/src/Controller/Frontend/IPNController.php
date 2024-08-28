@@ -45,6 +45,13 @@ class IPNController extends AbstractController
                     
                     $invoiceNumber = $educationRegistration->getInvoiceNumber();
                     $invoiceSeriesName = $educationRegistration->getInvoiceSeriesName();
+
+                    $contractNumber = $em->getRepository(EducationRegistration::class)->findMaxContractNumber();
+                    if ($contractNumber === null) {
+                        $contractNumber = $this->getParameter('contract_number_start');
+                    } else {
+                        $contractNumber++;
+                    }
                     
                     if (null === $invoiceNumber && null === $invoiceSeriesName) {
                         $education = $educationRegistration->getEducation();
@@ -91,6 +98,7 @@ class IPNController extends AbstractController
                                     !empty($response['number'])) {
                                 $educationRegistration->setInvoiceSeriesName($response['series']);
                                 $educationRegistration->setInvoiceNumber($response['number']);
+                                $educationRegistration->setContractNumber($contractNumber);
                             }
                         }
                     }

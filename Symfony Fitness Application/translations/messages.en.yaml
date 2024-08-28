@@ -71,7 +71,7 @@ multimedia:
   results: "results"
 
 common:
-  gdpr: 'I have read and agree to <a href="%terms_url%">Terms and Conditions</a> and <a href="%privacy_url%">Privacy Policy</a> of Move On.'
+  gdpr: 'I have read and agree to <a target="_blank" href="%terms_url%">Terms and Conditions</a> and <a target="_blank" href="%privacy_url%">Privacy Policy</a> of Move On.'
   newsletter: "I agree to receive news and commercial information (newsletter) from Move On."
   contract: "Generate Contract."
   media: "I give my consent for filming/photographing in education."

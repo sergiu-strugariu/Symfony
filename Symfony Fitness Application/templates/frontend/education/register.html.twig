@@ -23,8 +23,7 @@
                     <div>
                         {% for schedule in education.schedules %}
                             <div class="item">
-                                <p>{{ schedule.startDate|date('l') }}</p>
-                                <p>{{ schedule.startDate|date('H:i') }} - {{ schedule.endDate|date('H:i') }}</p>
+                                <p>{{ schedule.formattedDate(default_locale) }}</p>
                                 {{ schedule.translation(default_locale).description|raw }}
                             </div>
                         {% endfor %}

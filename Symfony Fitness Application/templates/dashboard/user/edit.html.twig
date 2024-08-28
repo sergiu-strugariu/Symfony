@@ -51,12 +51,19 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 mb-5">
-                            {{ form_label(form.newsletter, 'Newsletter', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
-                            {{ form_widget(form.newsletter, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            <div class="form-check form-switch form-check-custom form-check-solid">
+                                {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-check-input'}}) }}
+                                {{ form_label(form.accordGDPR, 'Accord GDPR', {'label_attr': {'class': 'form-check-label'}}) }}
+                            </div>
+                            {{ form_errors(form.accordGDPR) }}
                         </div>
+
                         <div class="col-lg-6 mb-5">
-                            {{ form_label(form.accordGDPR, 'Accord GDPR', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
-                            {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                            <div class="form-check form-switch form-check-custom form-check-solid">
+                                {{ form_widget(form.newsletter, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(form.newsletter, 'Newsletter', {'label_attr': {'class': 'form-check-label'}}) }}
+                            </div>
+                            {{ form_errors(form.newsletter) }}
                         </div>
                     </div>
                 </div>

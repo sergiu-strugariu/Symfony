@@ -71,7 +71,7 @@ multimedia:
   results: "rezultate"
 
 common:
-  gdpr: 'Am citit si sunt de acord cu <a href="%terms_url%">Terms and Conditions</a> și <a href="%privacy_url%">Privacy Policy</a> Move On.'
+  gdpr: 'Am citit si sunt de acord cu <a target="_blank" href="%terms_url%">Terms and Conditions</a> și <a target="_blank" href="%privacy_url%">Privacy Policy</a> Move On.'
   newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
   contract: "Generate Contract"
   media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"

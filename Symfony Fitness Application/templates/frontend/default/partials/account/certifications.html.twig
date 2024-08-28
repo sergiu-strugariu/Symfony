@@ -7,7 +7,7 @@
             <h4>{{ education.translation(locale).title }}</h4>
             <p>24 {{ 'account.certifications.credits'|trans }}</p>
             {% if certification.certificateFileName is not empty %}
-                <a href="{{ asset(app_diploma_path ~ certification.certificateFileName) }}" target="_blank">{{ 'account.certifications.download'|trans }}</a>
+                <a href="{{ asset(app_certificate_path ~ certification.certificateFileName) }}" target="_blank">{{ 'account.contracts.download'|trans }}</a>
             {% endif %}
         </div>
     {% else %}

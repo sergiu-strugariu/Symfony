@@ -90,7 +90,7 @@ class DefaultController extends AbstractController
             $formData = $form->getData();
 
             $email = $mail->sendMail(
-                $this->getParameter('app_email'),
+                $form->get('emailAddress')->getData(),
                 'Contact',
                 'frontend/emails/contact.html.twig', $formData
             );

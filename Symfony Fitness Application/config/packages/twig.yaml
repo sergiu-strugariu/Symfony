@@ -11,8 +11,11 @@ twig:
         app_user_photo_path: '%app_user_photo_path%'
         app_gallery_path: '%app_gallery_path%'
         app_diploma_path: '%app_diploma_path%'
+        intercom_app_id: '%intercom_app_id%'
+        intercom_hash: '%intercom_hash%'
         settingService: '@App\Service\SettingService'
         languageHelper: '@App\Helper\LanguageHelper'
+        defaultHelper: '@App\Helper\DefaultHelper'
         menu_helper: '@App\Helper\MenuHelper'
 
 when@test:

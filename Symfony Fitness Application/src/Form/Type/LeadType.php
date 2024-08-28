@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -24,6 +25,14 @@ class LeadType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'common.not_blank'
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'common.min_message'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z\s\-]+$/',
+                        'message' => 'common.custom.first_name'
                     ])
                 ]
             ])
@@ -32,6 +41,14 @@ class LeadType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'common.not_blank'
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'common.min_message'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z\s\-]+$/',
+                        'message' => 'common.custom.first_name'
                     ])
                 ]
             ])

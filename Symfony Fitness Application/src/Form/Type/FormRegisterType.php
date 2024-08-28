@@ -127,8 +127,7 @@ class FormRegisterType extends AbstractType
                     new Length([
                         'min' => 3,
                         'minMessage' => 'common.min_message'
-                    ]),
-                    new Cui('CUI invalid.')
+                    ])
                 ]
             ])
             ->add('registrationNumber', TextType::class, [

@@ -27,6 +27,9 @@ parameters:
     mailchimp_api_key: '%env(MAILCHIMP_API_KEY)%'
     mailchimp_server_prefix: '%env(MAILCHIMP_API_SERVER_PREFIX)%'
     mailchimp_list_id: '%env(MAILCHIMP_LIST_ID)%'
+    contract_number_start: '%env(CONTRACT_NUMBER_START)%'
+    intercom_app_id: '%env(INTERCOM_APP_ID)%'
+    intercom_hash: '%env(INTERCOM_HASH)%'
     smartbill_cif: '%env(SMARTBILL_CIF)%'
     smartbill_invoice_series_name: '%env(SMARTBILL_INVOICE_SERIES_NAME)%'
     smartbill_proforma_invoice_series_name: '%env(SMARTBILL_PROFORMA_INVOICE_SERIES_NAME)%'
@@ -65,6 +68,10 @@ services:
         arguments:
             $defaultLocale: '%default_locale%'
 
+    App\Helper\DefaultHelper:
+        arguments:
+            $intercomHash: '%intercom_hash%'
+
     App\Helper\MenuHelper:
         public: true
 
@@ -90,3 +97,8 @@ services:
             $proformaInvoiceSeriesName: '%smartbill_proforma_invoice_series_name%'
             $username: '%smartbill_username%'
             $token: '%smartbill_token%'
+    App\EventSubscriber\PageNotFoundListener:
+        arguments:
+            $urlGenerator: '@router'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

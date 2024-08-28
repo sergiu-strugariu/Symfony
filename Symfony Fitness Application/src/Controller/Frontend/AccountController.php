@@ -69,25 +69,9 @@ class AccountController extends AbstractController
     {
         $user = $this->getUser();
 
-        $new = $em->getRepository(EducationRegistration::class)->findBy(
-            [
-                'user' => $user,
-                'paymentStatus' => EducationRegistration::PAYMENT_STATUS_SUCCESS
-            ],
-            [
-                'createdAt' => 'DESC'
-            ]
-        );
+        $new = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "ASC");
 
-        $old = $em->getRepository(EducationRegistration::class)->findBy(
-            [
-                'user' => $user,
-                'paymentStatus' => EducationRegistration::PAYMENT_STATUS_SUCCESS
-            ],
-            [
-                'createdAt' => 'ASC'
-            ]
-        );
+        $old = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "DESC");
 
         $canceled = $em->getRepository(EducationRegistration::class)->findBy(
             [
@@ -96,12 +80,7 @@ class AccountController extends AbstractController
             ]
         );
 
-        $participated = $em->getRepository(EducationRegistration::class)->findBy(
-            [
-                'user' => $user,
-                'paymentStatus' => EducationRegistration::PAYMENT_STATUS_SUCCESS
-            ]
-        );
+        $participated = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "DESC");
 
         return $this->render('frontend/default/account.html.twig', [
             'user' => $user,

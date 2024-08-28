@@ -31,6 +31,7 @@ class SecurityController extends AbstractController
         $registerForm = $this->createForm(UserType::class, $user);
         $registerForm->handleRequest($request);
 
+
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
             $user->setUuid(Uuid::v4());
 

@@ -79,7 +79,10 @@
 
                     <div class="group group-checkbox {{ form_errors(registerForm.accordGDPR)|trim is not empty ? 'error' : '' }}">
                         {{ form_widget(registerForm.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
-                        {{ form_label(registerForm.accordGDPR, 'common.gdpr'|trans({'%terms_url%': path('app_terms'),'%privacy_url%': path('app_privacy_policy')})) }}
+                        {{ form_label(registerForm.accordGDPR, 'common.gdpr'|trans({
+                            '%terms_url%': path('app_terms'),
+                            '%privacy_url%': path('app_privacy_policy')
+                        })) }}
                         {{ form_errors(registerForm.accordGDPR) }}
                     </div>
                     <div class="group group-checkbox">
@@ -94,8 +97,8 @@
             </div>
         </div>
 
-        <div class="faq-redirect">
-            <a href="#">{{ 'authentication.buttons.faq'|trans }}</a>
-        </div>
+{#        <div class="faq-redirect">#}
+{#            <a href="#">{{ 'authentication.buttons.faq'|trans }}</a>#}
+{#        </div>#}
     </div>
 </div>

@@ -31,6 +31,8 @@ class EducationRegistrationController extends AbstractController
     #[Route('/dashboard/education/registration/{uuid}/edit', name: 'dashboard_education_registration_edit')]
     public function editRegistration(Request $request, EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper, FileUploader $fileUploader, $uuid)
     {
+
+
         $educationRegistration = $em->getRepository(EducationRegistration::class)->findOneBy(['uuid' => $uuid]);
         if (null === $educationRegistration) {
             return $this->redirectToRoute('dashboard_index');
@@ -43,6 +45,14 @@ class EducationRegistrationController extends AbstractController
         $form = $this->createForm(EducationRegistrationType::class, $educationRegistration);
         $form->handleRequest($request);
 
+
+        $contractNumber = $em->getRepository(EducationRegistration::class)->findMaxContractNumber();
+        if ($contractNumber === null) {
+            $contractNumber = $this->getParameter('contract_number_start');
+        } else {
+            $contractNumber++;
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             if (EducationRegistration::PAYMENT_TYPE_WIRE === $paymentMethod) {
                 $newPaymentStatus = $educationRegistration->getPaymentStatus();
@@ -50,6 +60,7 @@ class EducationRegistrationController extends AbstractController
                 if ($oldPaymentStatus !== $newPaymentStatus && EducationRegistration::PAYMENT_STATUS_SUCCESS === $newPaymentStatus) {
                     $proformaInvoiceNumber = $educationRegistration->getProformaInvoiceNumber();
                     $proformaInvoiceSeriesName = $educationRegistration->getProformaInvoiceSeriesName();
+
 
                     if (null !== $proformaInvoiceNumber || null !== $proformaInvoiceSeriesName) {
                         $data = [
@@ -82,6 +93,7 @@ class EducationRegistrationController extends AbstractController
                                 $educationRegistration->setInvoiceNumber($response['number']);
                                 $educationRegistration->setProformaInvoiceSeriesName(null);
                                 $educationRegistration->setProformaInvoiceNumber(null);
+                                $educationRegistration->setContractNumber($contractNumber);
                             }
                         }
                     }

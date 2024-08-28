@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/frontend/styles/style.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/frontend/styles/style.min.css') }}"/>
 {% endblock %}
 
 {% block body %}
@@ -15,6 +15,65 @@
 
     {% include "frontend/default/partials/common/footer.html.twig" %}
 {% endblock %}
+
+ {% block intercom %}
+     {% if app.user %}
+         <script>
+             window.intercomSettings = {
+                 api_base: "https://api-iam.intercom.io",
+                 app_id: "{{ intercom_app_id }}",
+                 user_id: "{{ app.user.id }}",
+                 name: "{{ app.user.firstName }}",
+                 email: "{{ app.user.email }}",
+                 created_at: "{{  app.user.createdAt|date('Y-m-d H:i') }}",
+                 user_hash: "{{ defaultHelper.intercomGetHash(app.user.id)  }}"
+             };
+         </script>
+     {% else %}
+         <script>
+             window.intercomSettings = {
+                 api_base: "https://api-iam.intercom.io",
+                 app_id: "{{ intercom_app_id }}",
+             };
+         </script>
+     {% endif %}
+
+     <script>
+         (function () {
+             var w = window;
+             var ic = w.Intercom;
+             if (typeof ic === "function") {
+                 ic('reattach_activator');
+                 ic('update', w.intercomSettings);
+             } else {
+                 var d = document;
+                 var i = function () {
+                     i.c(arguments);
+                 };
+                 i.q = [];
+                 i.c = function (args) {
+                     i.q.push(args);
+                 };
+                 w.Intercom = i;
+                 var l = function () {
+                     var s = d.createElement('script');
+                     s.type = 'text/javascript';
+                     s.async = true;
+                     s.src = 'https://widget.intercom.io/widget/krv0lm9y';
+                     var x = d.getElementsByTagName('script')[0];
+                     x.parentNode.insertBefore(s, x);
+                 };
+                 if (document.readyState === 'complete') {
+                     l();
+                 } else if (w.attachEvent) {
+                     w.attachEvent('onload', l);
+                 } else {
+                     w.addEventListener('load', l, false);
+                 }
+             }
+         })();
+     </script>
+ {% endblock %}
 
 {% block javascripts %}
     <script>

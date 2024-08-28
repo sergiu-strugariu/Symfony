@@ -1,5 +1,3 @@
-{% set locale = languageHelper.getLocaleFromRequest %}
-
 <div class="course-schedule">
     <div>
         <h2>{{ 'course_calendar.course_details.program'|trans }}</h2>
@@ -8,8 +6,7 @@
             {% for schedule in education.schedules %}
                 <div class="item">
                     <p>
-                        {{schedule.startDate|date('l')}} <br />
-                        {{ schedule.startDate|date('H:i') }} - {{ schedule.endDate|date('H:i') }}
+                        {{ schedule.formattedDate(locale) }}
                     </p>
                     {{ schedule.translation(locale) ? schedule.translation(locale).description|raw : schedule.translation(default_locale).description|raw }}
                 </div>

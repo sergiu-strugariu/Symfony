@@ -316,7 +316,7 @@ class AjaxController extends AbstractController
         } catch (ClientException $ex) {
             $contents = $ex->getResponse()->getBody()->getContents();
             $errorResponse = json_decode($contents, true);
-            
+
             if (JSON_ERROR_NONE !== json_last_error()) {
                 return new JsonResponse([
                     'status' => 'error',
@@ -338,6 +338,12 @@ class AjaxController extends AbstractController
                         'message' => $translator->trans('newsletter.errors.email_not_valid')
                     ]);
                     break;
+               case 'Forgotten Email Not Subscribed':
+                   return new JsonResponse([
+                       'status' => 'error',
+                       'message' => $translator->trans('newsletter.errors.user_exists')
+                   ]);
+                   break;
                 default:
                     return new JsonResponse([
                         'status' => 'error',

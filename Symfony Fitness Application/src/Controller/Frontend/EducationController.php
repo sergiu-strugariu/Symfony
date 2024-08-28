@@ -58,16 +58,17 @@ class EducationController extends AbstractController
     }
 
     #[Route('/educatie/{slug}', name: 'app_education_details')]
-    public function educationDetails(EntityManagerInterface $em, $slug): Response
+    public function educationDetails(EntityManagerInterface $em, LanguageHelper $helper ,$slug): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
-
+        $locale = $helper->getLocaleFromRequest();
         if (null === $education) {
            return $this->redirectToRoute('app_educations'); 
         }
 
         return $this->render('frontend/education/details.html.twig', [
-            'education' => $education
+            'education' => $education,
+            'locale' => $locale
         ]);
     }
     

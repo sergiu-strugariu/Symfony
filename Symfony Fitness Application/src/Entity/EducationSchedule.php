@@ -127,4 +127,28 @@ class EducationSchedule
         return $this;
     }
 
+    public function getFormattedDate($locale)
+    {
+
+        $startDate = $this->getStartDate();
+        $endDate = $this->getEndDate();
+
+        if (!$startDate instanceof \DateTime || !$endDate instanceof \DateTime) {
+            throw new \InvalidArgumentException('startDate and endDate must be instances of DateTime');
+        }
+
+        $days = [
+            'Monday'    => 'Luni',
+            'Tuesday'   => 'Marți',
+            'Wednesday' => 'Miercuri',
+            'Thursday'  => 'Joi',
+            'Friday'    => 'Vineri',
+            'Saturday'  => 'Sâmbătă',
+            'Sunday'    => 'Duminică',
+        ];
+
+        $startDay = $locale === 'ro' ? $days[$startDate->format('l')] : $startDate->format('l');
+        return $startDay . ', ' . $startDate->format('H:i') . ' - ' . $endDate->format('H:i');
+    }
+
 }

@@ -144,6 +144,29 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getCalendarEducationRegistrations($user, $status, $order)
+    {
+        return $this->createQueryBuilder('entity')
+            ->join('entity.education', 'education')
+            ->where('entity.user = :user')
+            ->andWhere('entity.paymentStatus = :status')
+            ->setParameter('status', $status)
+            ->setParameter('user', $user)
+            ->orderBy('education.startDate', $order)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMaxContractNumber()
+    {
+        return $this->createQueryBuilder('entity')
+            ->select('MAX(entity.contractNumber)')
+            ->where('entity.paymentStatus = :status')
+            ->setParameter('status', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function getUserYears(): array
     {
         return $this->createQueryBuilder('entity')
