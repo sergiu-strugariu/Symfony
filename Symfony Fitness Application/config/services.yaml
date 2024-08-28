@@ -30,6 +30,8 @@ parameters:
     contract_number_start: '%env(CONTRACT_NUMBER_START)%'
     intercom_app_id: '%env(INTERCOM_APP_ID)%'
     intercom_hash: '%env(INTERCOM_HASH)%'
+    onesignal_app_id: '%env(ONESIGNAL_APP_ID)%'
+    onesignal_safari_web_id: '%env(ONESIGNAL_SAFARI_WEB_ID)%'
     smartbill_cif: '%env(SMARTBILL_CIF)%'
     smartbill_invoice_series_name: '%env(SMARTBILL_INVOICE_SERIES_NAME)%'
     smartbill_proforma_invoice_series_name: '%env(SMARTBILL_PROFORMA_INVOICE_SERIES_NAME)%'

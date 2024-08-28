@@ -7,6 +7,20 @@
         <link rel="icon" type="image/ico" href="{{ asset('assets/frontend/favicon.ico') }}"/>
         {% block stylesheets %}{% endblock %}
         {% block meta_og %}{% endblock %}
+
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+        <script>
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.init({
+                    appId: "{{ onesignal_app_id }}",
+                    safari_web_id: "{{ onesignal_safari_web_id }}",
+                    notifyButton: {
+                        enable: true,
+                    },
+                });
+            });
+        </script>
     </head>
     <body>
         {% block body %}
