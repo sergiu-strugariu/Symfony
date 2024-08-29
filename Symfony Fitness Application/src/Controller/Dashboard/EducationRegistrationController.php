@@ -45,7 +45,6 @@ class EducationRegistrationController extends AbstractController
         $form = $this->createForm(EducationRegistrationType::class, $educationRegistration);
         $form->handleRequest($request);
 
-
         $contractNumber = $em->getRepository(EducationRegistration::class)->findMaxContractNumber();
         if ($contractNumber === null) {
             $contractNumber = $this->getParameter('contract_number_start');
@@ -60,7 +59,6 @@ class EducationRegistrationController extends AbstractController
                 if ($oldPaymentStatus !== $newPaymentStatus && EducationRegistration::PAYMENT_STATUS_SUCCESS === $newPaymentStatus) {
                     $proformaInvoiceNumber = $educationRegistration->getProformaInvoiceNumber();
                     $proformaInvoiceSeriesName = $educationRegistration->getProformaInvoiceSeriesName();
-
 
                     if (null !== $proformaInvoiceNumber || null !== $proformaInvoiceSeriesName) {
                         $data = [
