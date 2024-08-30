@@ -4,7 +4,7 @@
             {{ translation.description|sanitize_html('app.editor') }}
             <div class="avatar">
                 {% if widget.fileName %}
-                    <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+                    <div class="image" data-image="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}"></div>
                 {% endif %}
                 <p>"{{ translation.title }}"</p>
             </div>

@@ -318,7 +318,7 @@ class MenuItems {
         this.menuItemIcon.find('img').remove();
 
         if (data.iconImg){
-            this.menuItemIcon.append(`<img src="${window.menuIconPath}/${data.iconImg}" class="w-45px h-45px" alt="${data.text}">`);
+            this.menuItemIcon.append(`<img src="${window.menuIconPath}${data.iconImg}" class="w-45px h-45px" alt="${data.text}">`);
         }
 
         this.resetSelectParent(data, true);

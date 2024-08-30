@@ -190,7 +190,7 @@
                     {{ form_errors(form.fileName) }}
                     {% if fileName is defined %}
                         <div class="form-text">{{ 'dashboard.form.image_upload'|trans }}:
-                            <a href="{{ asset(app_job_path ~ fileName) }}" target="_blank">
+                            <a href="{{ asset(app_job_path ~ fileName, 'cloudflare') }}" target="_blank">
                                 {{ fileName }}
                             </a>
                         </div>

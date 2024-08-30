@@ -6,7 +6,7 @@
                 <div class="course">
                     <div class="course__wrapper">
                         <h3>{{ 'courses.offered_by'|trans }} {{ item.companyName }}.</h3>
-                        <div class="data-image" data-image="{{ asset(app_company_path ~ item.fileName) }}"></div>
+                        <div class="data-image" data-image="{{ asset(app_company_path ~ item.fileName, 'cloudflare') }}"></div>
                         <ul>
                             <li>
                                 {{ 'search.location'|trans }}: {{ item.county }}

@@ -57,8 +57,8 @@ let KTDatatableJobs = function () {
                     orderable: false,
                     className: 'text-center',
                     render: function (data, type, row) {
-                        return `<a href="${window.courseImagePath}/${data}" target="_blank">
-                                    <img src="${window.courseImagePath}/${data}" alt="image" class="w-100px">
+                        return `<a href="${window.trainingImagePath}${data}" target="_blank">
+                                    <img src="${window.trainingImagePath}${data}" alt="image" class="w-100px">
                                 </a>`;
                     }
                 },

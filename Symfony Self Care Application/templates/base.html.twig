@@ -9,7 +9,7 @@
     {% block share %}{% endblock %}
     {% set favicon = settingService.getService('favicon') %}
     {% if favicon is not null %}
-        <link rel="icon" type="image/ico" href="{{ asset(app_setting_path ~ favicon) }}"/>
+        <link rel="icon" type="image/ico" href="{{ asset(app_setting_path ~ favicon, 'cloudflare') }}"/>
     {% endif %}
     {% block stylesheets %}{% endblock %}
 </head>
@@ -89,8 +89,8 @@
     window.companyReview = '{{ path('app_company_review') }}';
     window.providerPath = '{{ path('app_provider_single') }}';
     window.reviewFormPath = '{{ path('ajax_send_review') }}';
-    window.companyImagePath = '{{ asset(app_company_path) }}';
-    window.companyGalleryImagePath = '{{ asset(app_company_gallery_path) }}';
+    window.companyImagePath = '{{ asset(app_company_path, 'cloudflare') }}';
+    window.companyGalleryImagePath = '{{ asset(app_company_gallery_path, 'cloudflare') }}';
 
     window.galleryLimit = 7;
     window.careCentersLimit = 10;
@@ -105,7 +105,7 @@
     // Articles endpoints
     window.articlesData = '{{ path('ajax_get_articles') }}';
     window.articlPath = '{{ path('app_blog_single') }}';
-    window.artclesImagePath = "{{ asset(app_article_path) }}";
+    window.artclesImagePath = "{{ asset(app_article_path, 'cloudflare') }}";
     window.artclesLimit = 5;
 
     // Jobs endpoints

@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-inner">
             <div class="card-image">
-                <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" width="51" height="51" alt="{{ widget.fileName }}" />
+                <img src="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}" width="51" height="51" alt="{{ widget.fileName }}" />
             </div>
             <div class="card-info">
                 {% if translation.description %}

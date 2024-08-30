@@ -35,6 +35,7 @@ if (document.querySelector('.dropzone_gallery')) {
                     success = data.success;
                     message = data.message;
 
+
                     if (success) {
                         // Create a jQuery object from the HTML string
                         let mediaDiv = $(createMediaItem(data));
@@ -120,7 +121,7 @@ if (document.querySelector('.dropzone_gallery')) {
      */
     function createMediaItem(media) {
         return `<div class="col-md-2 mb-5 item">
-                    <img src="${media.fileUrl}" alt="file-${media.id}" class="lozad rounded img-thumbnail"/>
+                    <img src="${window.companyGalleryImagePath}${media.fileName}" alt="file-${media.id}" class="lozad rounded img-thumbnail"/>
                     <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-id="${media.id}">
                         <i class="ki-duotone ki-cross fs-2">
                             <span class="path1"></span>

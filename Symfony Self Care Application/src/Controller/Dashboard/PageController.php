@@ -316,7 +316,7 @@ class PageController extends AbstractController
                                         $uploadFile = $fileUploader->uploadFile(
                                             $value,
                                             null,
-                                            $this->getParameter('app_page_path') . strtolower($className)
+                                            $this->getParameter('app_page_path') . strtolower($className) . '/'
                                         );
 
                                         // Check success uploaded

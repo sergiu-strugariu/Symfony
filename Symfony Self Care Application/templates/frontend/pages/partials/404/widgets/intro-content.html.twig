@@ -1,4 +1,4 @@
-<div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+<div class="image" data-image="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}"></div>
 {% if translation.title %}
     <h1>{{ translation.title }}</h1>
 {% endif %}

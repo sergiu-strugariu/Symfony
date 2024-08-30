@@ -232,7 +232,7 @@ class AjaxController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'id' => $gallery->getId(),
-            'fileUrl' => $this->getParameter('app_company_gallery_path') . '/' . $uploadFile['fileName'],
+            'fileName' => $uploadFile['fileName'],
             'message' => $translator->trans('controller.success_gallery_images_upload', [], 'messages')
         ]);
     }
@@ -816,7 +816,7 @@ class AjaxController extends AbstractController
         }
 
         $successMessage = $type === 'password' ? 'auth.reset_success' : 'form.messages.success_edit';
-        $fieldValue = $type === 'fileName' ? $this->getParameter('app_user_path') . $uploadFile['fileName'] : $formData[$type];
+        $fieldValue = $type === 'fileName' ? $uploadFile['fileName'] : $formData[$type];
 
         return new JsonResponse([
             'status' => !$validate['checkErrors'],

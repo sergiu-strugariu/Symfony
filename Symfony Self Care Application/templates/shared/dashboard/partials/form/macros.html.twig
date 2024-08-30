@@ -20,7 +20,7 @@
             {% if variable['type'] == "file" %}
                 {% if variable['value'] %}
                     <div class="form-text">File uploaded:
-                        <a href="{{ asset(app_page_path ~ entity|lower ~ '/' ~ variable['value']) }}" target="_blank">
+                        <a href="{{ asset(app_page_path ~ entity|lower ~'/'~ variable['value'], 'cloudflare') }}" target="_blank">
                             {{ variable['value'] }}
                         </a>
                     </div>

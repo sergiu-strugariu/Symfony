@@ -4,12 +4,12 @@
     {% endif %}
     {% if widget.fileName %}
         <div class="first-image">
-            <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" width="730" height="430" alt="intro_home">
+            <img src="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}" width="730" height="430" alt="intro_home">
         </div>
     {% endif %}
     {% if widget.fileNameMob %}
         <div class="second-image hidden">
-            <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileNameMob) }}" width="730" height="430" alt="intro_home">
+            <img src="{{ asset(app_page_widget_path ~ widget.fileNameMob, 'cloudflare') }}" width="730" height="430" alt="intro_home">
         </div>
     {% endif %}
 </div>

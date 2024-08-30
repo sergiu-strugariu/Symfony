@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'A company with this email already exists.', errorPath: 'email')]
 #[UniqueEntity(fields: ['slug'], message: 'A company with this name already exists.', errorPath: 'name')]
 class Company
 {
@@ -45,10 +44,10 @@ class Company
     #[ORM\Column(length: 99)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 99, unique: true)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
     #[ORM\Column(length: 20, nullable: true)]

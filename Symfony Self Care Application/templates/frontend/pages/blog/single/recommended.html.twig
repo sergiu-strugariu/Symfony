@@ -6,7 +6,7 @@
                 {% for item in recommended %}
                     <div class="article-card">
                         <div class="card-inner">
-                            <div class="image" data-image="{{ asset(app_article_path ~ item.image) }}">
+                            <div class="image" data-image="{{ asset(app_article_path ~ item.image, 'cloudflare') }}">
                             </div>
                             <div class="card-content">
                                 <h3>{{ item.translation(locale).title }}</h3>

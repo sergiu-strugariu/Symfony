@@ -1,8 +1,3 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app_name: '%env(APP_NAME)%'
     app_env: '%env(APP_ENV)%'
@@ -15,6 +10,7 @@ parameters:
     app_default_image: '%env(APP_DEFAULT_IMAGE)%'
     app_setting_path: '%env(APP_SETTING_PATH)%'
     app_page_path: '%env(APP_PAGE_PATH)%'
+    app_page_widget_path: '%env(APP_PAGE_WIDGET_PATH)%'
     app_job_path: '%env(APP_JOB_PATH)%'
     app_temporary_path: '%env(APP_TEMPORARY_PATH)%'
     app_menu_path: '%env(APP_MENU_PATH)%'
@@ -31,6 +27,7 @@ parameters:
     recaptcha_site_verify: '%env(RECAPTCHA_SITEVERIFY)%'
     recaptcha_site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha_secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
+    excel_path: '%kernel.project_dir%/public/assets'
 twig:
     globals:
         app_name: '%app_name%'
@@ -38,6 +35,7 @@ twig:
         app_default_image: '%app_default_image%'
         app_setting_path: '%app_setting_path%'
         app_page_path: '%app_page_path%'
+        app_page_widget_path: '%app_page_widget_path%'
         app_job_path: '%app_job_path%'
         app_menu_path: '%app_menu_path%'
         app_course_path: '%app_course_path%'
@@ -52,27 +50,19 @@ twig:
         recaptcha_site_key: '%recaptcha_site_key%'
         recaptcha_secret_key: '%recaptcha_secret_key%'
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+        autowire: true
+        autoconfigure: true
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
     App\Helper\MailHelper:
         arguments:
             $fromEmail: '%email_address%'
             $fromSender: '%email_sender%'
-
     App\Helper\LanguageHelper:
         arguments:
             $defaultLocale: '%default_locale%'
@@ -93,7 +83,6 @@ services:
             $courseFinder: '@fos_elastica.index.course'
             $jobFinder: '@fos_elastica.index.job'
             $companyFinder: '@fos_elastica.index.company'
-
     App\Helper\ScraperHelper:
         arguments:
             $kernelProjectDir: '%kernel.project_dir%'
@@ -102,3 +91,15 @@ services:
             $urlGenerator: '@router'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+    App\Command\CompanySeedCommand:
+        arguments:
+            $targetDirectory: '%excel_path%'
+    App\Helper\FileUploader:
+        arguments:
+            $slugger: '@slugger'
+            $kernel: '@kernel'
+            $accessKey: '%env(CLOUDFLARE_R2_ACCESS_KEY_ID)%'
+            $secretKey: '%env(CLOUDFLARE_R2_SECRET_ACCESS_KEY)%'
+            $region: '%env(CLOUDFLARE_R2_REGION)%'
+            $endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'
+            $bucket: '%env(CLOUDFLARE_R2_BUCKET)%'

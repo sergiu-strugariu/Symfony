@@ -276,7 +276,7 @@
 
                                 {% if previewImage is defined %}
                                     <div class="form-text">Image uploaded:
-                                        <a href="{{ asset(app_company_path ~ previewImage) }}" target="_blank">
+                                        <a href="{{ asset(app_company_path ~ previewImage, 'cloudflare') }}" target="_blank">
                                             {{ previewImage }}
                                         </a>
                                     </div>
@@ -297,7 +297,7 @@
                                 {{ form_errors(form.logo) }}
                                 {% if logo is defined %}
                                     <div class="form-text">Image uploaded:
-                                        <a href="{{ asset(app_company_path ~ logo) }}"
+                                        <a href="{{ asset(app_company_path ~ logo, 'cloudflare') }}"
                                            target="_blank">
                                             {{ logo }}
                                         </a>
@@ -337,7 +337,7 @@
                                 {{ form_errors(form.videoPlaceholder) }}
                                 {% if videoPlaceholder is defined %}
                                     <div class="form-text">{{ 'dashboard.form.image_upload'|trans }}
-                                        <a href="{{ asset(app_company_path ~ videoPlaceholder) }}"
+                                        <a href="{{ asset(app_company_path ~ videoPlaceholder, 'cloudflare') }}"
                                            target="_blank">
                                             {{ videoPlaceholder }}
                                         </a>

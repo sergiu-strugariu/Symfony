@@ -32,7 +32,7 @@ class RegisterFormType extends AbstractType
                         'minMessage' => 'form.name.minlength'
                     ]),
                     new Regex([
-                        'pattern' => '/^[a-zA-Z\s-]+$/',
+                        'pattern' => '/^[a-zA-ZăâîșțĂÂÎȘȚ\s-]+$/',
                         'message' => 'form.name.valid_name'
                     ])
                 ]
@@ -48,7 +48,7 @@ class RegisterFormType extends AbstractType
                         'minMessage' => 'form.surname.minlength',
                     ]),
                     new Regex([
-                        'pattern' => '/^[a-zA-Z\s-]+$/',
+                        'pattern' => '/^[a-zA-ZăâîșțĂÂÎȘȚ\s-]+$/',
                         'message' => 'form.surname.valid_name',
                     ])
                 ]

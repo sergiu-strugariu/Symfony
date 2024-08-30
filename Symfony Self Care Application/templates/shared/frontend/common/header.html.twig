@@ -13,7 +13,7 @@
                         width="120"
                         height="45"
                         data-category="Meniu"
-                        src="{{ asset(app_setting_path ~ logo) }}"
+                        src="{{ asset(app_setting_path ~ logo, 'cloudflare') }}"
                         alt="{{ app_name }}"
                 >
             </a>
@@ -45,7 +45,7 @@
                             <li>
                                 <div class="dropdown">
                                     <a class="top-link">
-                                        <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/frontend/images/common/user-profile-img.webp') }}"
+                                        <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/frontend/images/common/user-profile-img.webp', 'cloudflare') }}"
                                              alt="logo"
                                         />
                                         <span>{{ app.user.fullName }}</span>
@@ -97,7 +97,7 @@
                             <img width="130"
                                  height="55"
                                  data-category="Meniu"
-                                 src="{{ asset(app_setting_path ~ logo) }}"
+                                 src="{{ asset(app_setting_path ~ logo, 'cloudflare') }}"
                                  alt="{{ app_name }}"
                             >
                         </a>

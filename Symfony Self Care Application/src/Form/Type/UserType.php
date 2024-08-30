@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', TextType::class, [
@@ -41,7 +40,7 @@ class UserType extends AbstractType
                     'required' => false,
                     'type' => PasswordType::class,
                     'mapped' => false,
-                    'invalid_message' => $this->translator->trans('form.password.passwordMatch', [], 'messages'),
+                    'invalid_message' => 'form.password.passwordMatch',
                     'options' => ['attr' => ['placeholder' => '******']],
                     'constraints' => [
                         new Assert\Length([

@@ -47,9 +47,6 @@
         let servicesJson = "{{ services|escape('js') }}";
         let services = JSON.parse(servicesJson);
 
-        window.providerType = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
-        window.careType = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
-
         window.locationType = "{{ locationType }}";
 
         initTagify(document.querySelector("#company_form_availableServices"), services);

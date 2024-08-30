@@ -2,62 +2,59 @@
 
 namespace App\Helper;
 
-use Aws\S3\S3Client;
-use Aws\S3\Exception\S3Exception;
 use Exception;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class FileUploader
+class FileUploaderOld
 {
+    /**
+     * @var SluggerInterface
+     */
     private SluggerInterface $slugger;
-    private KernelInterface $kernel;
-    private S3Client $s3Client;
-    private string $bucket;
 
-    public function __construct(SluggerInterface $slugger, KernelInterface $kernel, string $accessKey, string $secretKey, string $region, string $endpoint, string $bucket)
+    /**
+     * @var KernelInterface
+     */
+    private KernelInterface $kernel;
+
+    /**
+     * @var Filesystem
+     */
+    private Filesystem $filesystem;
+
+    /**
+     * @param SluggerInterface $slugger
+     * @param KernelInterface $kernel
+     * @param Filesystem $filesystem
+     */
+    public function __construct(SluggerInterface $slugger, KernelInterface $kernel, Filesystem $filesystem)
     {
         $this->slugger = $slugger;
         $this->kernel = $kernel;
-        $this->bucket = $bucket;
-
-        $this->s3Client = new S3Client([
-            'version' => 'latest',
-            'region'  => $region,
-            'credentials' => [
-                'key'    => $accessKey,
-                'secret' => $secretKey,
-            ],
-            'endpoint' => $endpoint,
-        ]);
+        $this->filesystem = $filesystem;
     }
 
     /**
      * @param UploadedFile $file
-     * @param string $directory
+     * @param $directory
      * @param bool $renameFile
      * @return string
      */
-    public function upload(UploadedFile $file, string $directory, bool $renameFile = true): string
+    public function upload(UploadedFile $file, $directory, bool $renameFile = true): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $renameFile ? $safeFilename . '-' . uniqid() . '.' . $file->guessExtension() : $safeFilename . '.' . $file->guessExtension();
 
-        $key = $directory . $fileName;
-
         try {
-            $this->s3Client->putObject([
-                'Bucket' => $this->bucket,
-                'Key' => $key,
-                'SourceFile' => $file->getPathname(),
-                'ACL' => 'public-read'
-            ]);
-        } catch (S3Exception $e) {
-            throw new FileException('Failed to upload file to R2: ' . $e->getMessage());
+            $file->move($directory, $fileName);
+        } catch (FileException $e) {
+            throw $e;
         }
 
         return $fileName;
@@ -68,17 +65,19 @@ class FileUploader
      * @param $form
      * @param string $folderPath
      * @param string $field
+     * @param string $root
      * @param bool $renameFile
      * @return array|null
      */
-    public function uploadFile(object $file = null, $form, string $folderPath, string $field = 'image', bool $renameFile = true): ?array
+    public function uploadFile(object $file = null, $form, string $folderPath, string $field = 'image', string $root = 'public', bool $renameFile = true): ?array
     {
         $fileName = null;
         $success = true;
 
         if ($file instanceof UploadedFile) {
+            // Upload file
             try {
-                $fileName = $this->upload($file, $folderPath, $renameFile);
+                $fileName = $this->upload($file, sprintf('%s/%s/%s', $this->kernel->getProjectDir(), $root, $folderPath), $renameFile);
             } catch (FileException $e) {
                 $success = false;
             }
@@ -86,7 +85,8 @@ class FileUploader
             $success = false;
         }
 
-        if (!$success && $form !== null) {
+        // Set error form
+        if (!$success && !empty($form)) {
             $form->get($field)->addError(new FormError(sprintf('The %s field is mandatory.', $field)));
         }
 
@@ -96,19 +96,24 @@ class FileUploader
         ];
     }
 
+
     /**
+     * Removes a file by its path.
+     *
+     * @param string $folderPath
+     * @param string $fileName
+     * @return bool
      * @throws Exception
      */
     public function removeFile(string $folderPath, string $fileName): bool
     {
+        $filePath = sprintf('%s/%s/%s/%s', $this->kernel->getProjectDir(), 'public', $folderPath, $fileName);
+
         try {
-            $this->s3Client->deleteObject([
-                'Bucket' => $this->bucket,
-                'Key' => $folderPath . $fileName,
-            ]);
+            $this->filesystem->remove($filePath);
             return true;
-        } catch (S3Exception $e) {
-            throw new Exception("Failed to delete file from R2: " . $e->getMessage());
+        } catch (FileException $e) {
+            throw new Exception("Failed to delete file: " . $filePath . ". Error: " . $e->getMessage());
         }
     }
 }

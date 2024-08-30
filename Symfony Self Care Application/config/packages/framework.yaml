@@ -17,6 +17,10 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    assets:
+        packages:
+            cloudflare:
+                base_urls: 'https://pub-1c17d91dee8741abb7fe4cbde908809c.r2.dev/'
 
 when@test:
     framework:

@@ -59,9 +59,5 @@
 {% endblock %}
 
 {% block page_javascripts %}
-    <script>
-        window.articleAjaxPath = "{{ path('dashboard_ajax_articles') }}";
-        window.articleImagePath = "{{ asset(app_article_path) }}";
-    </script>
     <script src="{{ asset('assets/dashboard/js/datatables/articles.js') }}"></script>
 {% endblock %}

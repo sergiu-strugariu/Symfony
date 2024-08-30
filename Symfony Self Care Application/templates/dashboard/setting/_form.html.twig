@@ -84,7 +84,7 @@
                         {{ form_errors(form.logo) }}
                         {% if logo is not null %}
                             <div class="form-text">{{ 'dashboard.form.image_uploaded'|trans }}:
-                                <a href="{{ asset(app_setting_path ~ '/' ~ logo) }}" target="_blank">
+                                <a href="{{ asset(app_setting_path ~ logo, 'cloudflare') }}" target="_blank">
                                     {{ logo }}
                                 </a>
                             </div>
@@ -103,7 +103,7 @@
                         {{ form_errors(form.footerLogo) }}
                         {% if footerLogo is not null %}
                             <div class="form-text">{{ 'dashboard.form.image_uploaded'|trans }}:
-                                <a href="{{ asset(app_setting_path ~ '/' ~ footerLogo) }}" target="_blank">
+                                <a href="{{ asset(app_setting_path ~ footerLogo, 'cloudflare') }}" target="_blank">
                                     {{ footerLogo }}
                                 </a>
                             </div>
@@ -122,7 +122,7 @@
                         {{ form_errors(form.favicon) }}
                         {% if favicon is not null %}
                             <div class="form-text">{{ 'dashboard.form.image_uploaded'|trans }}:
-                                <a href="{{ asset(app_setting_path ~ '/' ~ favicon) }}" target="_blank">
+                                <a href="{{ asset(app_setting_path ~ favicon, 'cloudflare') }}" target="_blank">
                                     {{ favicon }}
                                 </a>
                             </div>

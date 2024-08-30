@@ -70,7 +70,7 @@
                         {{ form_errors(form.image) }}
                         {% if image is defined %}
                             <div class="form-text">{{ 'dashboard.form.image_uploaded'|trans }}:
-                                <a href="{{ asset(app_article_path ~ '/' ~ image) }}" target="_blank">
+                                <a href="{{ asset(app_article_path ~ image, 'cloudflare') }}" target="_blank">
                                     {{ image }}
                                 </a>
                             </div>

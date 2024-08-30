@@ -6,7 +6,7 @@
                 <div class="job">
                     <div class="job__wrapper">
                         <h3>{{ item.companyName }}</h3>
-                        <div class="data-image" data-image="{{ asset(app_company_path ~ item.fileName) }}"></div>
+                        <div class="data-image" data-image="{{ asset(app_company_path ~ item.fileName, 'cloudflare') }}"></div>
                         <h3>{{ item.title }}</h3>
                         <p>{{ item.city }}/{{ item.county }}</p>
                         <p>{{ item.address }}</p>

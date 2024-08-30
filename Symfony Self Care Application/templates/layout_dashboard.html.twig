@@ -6,15 +6,21 @@
     <!--begin::Fonts (mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
     <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Black/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-ExtraBold/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-ExtraLight/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Medium/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Regular/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-SemiBold/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-ExtraBold/stylesheet.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-ExtraLight/stylesheet.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Medium/stylesheet.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Regular/stylesheet.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-SemiBold/stylesheet.css') }}" rel="stylesheet"
+          type="text/css"/>
     <link href="{{ asset('assets/frontend/fonts/Kumbh-Sans-Thin/stylesheet.css') }}" rel="stylesheet" type="text/css"/>
     <!--end::Fonts-->
     <!--begin::Vendor Stylesheets-->
-    <link href="{{ asset('assets/dashboard/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/dashboard/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
+          type="text/css"/>
     <!--end::Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="{{ asset('assets/dashboard/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
@@ -76,6 +82,9 @@
         let absoluteUrl = "{{ app.request.schemeAndHttpHost }}";
         window.isAdmin = {{ is_granted('ROLE_ADMIN') ? 1 : 0 }};
 
+        window.providerType = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
+        window.careType = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
+
         window.singleCompanyPath = '{{ path('app_company_single') }}';
         window.singleServicePath = '{{ path('app_provider_single') }}';
         window.singleArticlePath = '{{ path('app_blog_single') }}';
@@ -88,14 +97,22 @@
         window.pendingStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_PENDING') }}';
         window.draftStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_DRAFT') }}';
 
-        window.companyImagePath = '{{ asset(app_company_path) }}';
+        window.companyImagePath = '{{ asset(app_company_path, 'cloudflare') }}';
+        window.companyGalleryImagePath = '{{ asset(app_company_gallery_path, 'cloudflare') }}';
         window.companyPath = '{{ path('app_company_single') }}';
         window.providerPath = '{{ path('app_provider_single') }}';
 
-        window.jobImagePath = '{{ asset(app_job_path) }}';
+        window.jobAjaxPath = "{{ path('dashboard_ajax_jobs') }}";
+        window.jobImagePath = '{{ asset(app_job_path, 'cloudflare') }}';
         window.jobPath = '{{ path('app_job_single') }}';
-        window.trainingImagePath = '{{ asset(app_job_path) }}';
+
+        window.trainingImagePath = '{{ asset(app_course_path, 'cloudflare') }}';
         window.coursePath = '{{ path('app_course_single') }}';
+        window.courseAjaxPath = "{{ path('dashboard_ajax_training_course') }}";
+
+        window.articleAjaxPath = "{{ path('dashboard_ajax_articles') }}";
+        window.articleImagePath = "{{ asset(app_article_path, 'cloudflare') }}";
+        window.userImagePath = "{{ asset(app_user_path, 'cloudflare') }}";
 
         // Company types
         window.locationTypeProvider = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
@@ -135,10 +152,10 @@
                     'no_items': '{{ 'dashboard.favorites.no_items' | trans }}',
                     'delete_favorite': '{{ 'dashboard.favorites.delete_favorite' | trans }}'
                 },
-                
+
             },
             'form': {
-                 'email': {
+                'email': {
                     'required': '{{ 'form.email.required' | trans }}',
                     'email': '{{ 'form.email.email' | trans }}',
                 },
@@ -148,23 +165,23 @@
                     'passwordMatch': '{{ 'form.password.passwordMatch' | trans }}',
                 },
                 'name': {
-                    'required':  '{{ 'form.name.required' | trans }}',
-                    'minlength': '{{ 'form.name.minlength' | trans }}', 
-                    'valid_name': '{{ 'form.name.valid_name' | trans }}', 
-                    'name_match': '{{ 'form.name.valid_name' | trans }}', 
+                    'required': '{{ 'form.name.required' | trans }}',
+                    'minlength': '{{ 'form.name.minlength' | trans }}',
+                    'valid_name': '{{ 'form.name.valid_name' | trans }}',
+                    'name_match': '{{ 'form.name.valid_name' | trans }}',
                 },
                 'surname': {
-                    'required':  '{{ 'form.surname.required' | trans }}',
-                    'minlength': '{{ 'form.surname.minlength' | trans }}', 
-                    'valid_name': '{{ 'form.surname.valid_name' | trans }}', 
-                    'surname_match': '{{ 'form.surname.valid_name' | trans }}', 
+                    'required': '{{ 'form.surname.required' | trans }}',
+                    'minlength': '{{ 'form.surname.minlength' | trans }}',
+                    'valid_name': '{{ 'form.surname.valid_name' | trans }}',
+                    'surname_match': '{{ 'form.surname.valid_name' | trans }}',
                 },
-                'phone':{
-                    'required':  '{{ 'form.phone.required' | trans }}',
-                    'minlength': '{{ 'form.phone.minlength' | trans }}', 
-                    'maxlength': '{{ 'form.phone.maxlength' | trans }}', 
-                    'phone_ro': '{{ 'form.phone.phone_ro' | trans }}', 
-                    'phone_match': '{{ 'form.phone.phone_match' | trans }}', 
+                'phone': {
+                    'required': '{{ 'form.phone.required' | trans }}',
+                    'minlength': '{{ 'form.phone.minlength' | trans }}',
+                    'maxlength': '{{ 'form.phone.maxlength' | trans }}',
+                    'phone_ro': '{{ 'form.phone.phone_ro' | trans }}',
+                    'phone_match': '{{ 'form.phone.phone_match' | trans }}',
                 }
             }
         };

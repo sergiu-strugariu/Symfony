@@ -75,7 +75,7 @@ class CompanyFormType extends AbstractType
                         'minMessage' => 'form.name.minlength'
                     ]),
                     new Regex([
-                        'pattern' => '/^[a-zA-Z\s-]+$/',
+                        'pattern' => '/^[a-zA-ZăâîșțĂÂÎȘȚ\s-]+$/',
                         'message' => 'form.name.valid_name'
                     ])
                 ]
@@ -158,8 +158,8 @@ class CompanyFormType extends AbstractType
                     ])
                 ],
                 'choices' => [
-                    'common.public' => 'common.public',
-                    'common.private' => 'common.private',
+                    'common.public' => 'public',
+                    'common.private' => 'private',
                 ]
             ])
             ->add('companyCapacity', IntegerType::class, [

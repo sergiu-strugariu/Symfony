@@ -18,12 +18,12 @@
                         <div data-videoid="{{ company.videoUrl }}"
                              class="data-image videoOverlayContainer video-item"
                              data-toggle="modal" data-target="#videoModal"
-                             data-image="{{ asset(app_company_path ~ company.videoPlaceholder) }}"
+                             data-image="{{ asset(app_company_path ~ company.videoPlaceholder, 'cloudflare') }}"
                              data-title="{{ 'company.video_title'|trans }} {{ company.name }}">
                         </div>
                     {% endif %}
                     <div class="data-image image videoOverlayContainer"
-                         data-image="{{ asset(app_company_path ~ company.fileName) }}"
+                         data-image="{{ asset(app_company_path ~ company.fileName, 'cloudflare') }}"
                          data-title="{{ 'company.image_title'|trans }} {{ company.name }}"
                          data-toggle="modal"
                          data-target="#videoModal">
@@ -31,7 +31,7 @@
                     {% if company.companyGalleries %}
                         {% for item in company.companyGalleries %}
                             <div class="data-image image videoOverlayContainer"
-                                 data-image="{{ asset(app_company_gallery_path ~ item.fileName) }}"
+                                 data-image="{{ asset(app_company_gallery_path ~ item.fileName, 'cloudflare') }}"
                                  data-title="{{ 'company.image_title'|trans }} {{ company.name }}"
                                  data-toggle="modal"
                                  data-target="#videoModal">

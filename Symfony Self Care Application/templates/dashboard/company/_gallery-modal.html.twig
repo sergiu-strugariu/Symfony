@@ -48,7 +48,7 @@
                             <div class="row" id="galleries">
                                 {% for media in galleries %}
                                     <div class="col-md-2 mb-5 item">
-                                        <img src="{{ asset(app_company_gallery_path ~ media.fileName) }}" alt="{{ media.fileName }}" class="lozad rounded img-thumbnail"/>
+                                        <img src="{{ asset(app_company_gallery_path ~ media.fileName, 'cloudflare') }}" alt="{{ media.fileName }}" class="lozad rounded img-thumbnail"/>
                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-id="{{ media.id }}">
                                             <i class="ki-duotone ki-cross fs-2">
                                                 <span class="path1"></span>

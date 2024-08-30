@@ -6,7 +6,7 @@
         <meta property="og:description" content="{{ provider.shortDescription }}"/>
         <meta property="og:type" content="website"/>
         <meta property="og:url" content=""/>
-        <meta property="og:image" content="{{ asset(app_company_path ~ provider.fileName) }}"/>
+        <meta property="og:image" content="{{ asset(app_company_path ~ provider.fileName, 'cloudflare') }}"/>
         <meta property="og:image:width" content="1200"/>
         <meta property="og:image:height" content="630"/>
     {% endblock %}

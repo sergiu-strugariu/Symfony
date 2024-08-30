@@ -2,10 +2,10 @@
     <div class="left-section">
         <div class="title-section">
             <h1>{{ company.name }}</h1>
-            <div class="logo-section data-image" data-image="{{ asset(app_company_path ~ company.logo) }}"></div>
+            <div class="logo-section data-image" data-image="{{ asset(app_company_path ~ company.logo, 'cloudflare') }}"></div>
         </div>
         <div class="address">
-            {{ company.address }} <br>
+            {{ company.address }}, {{ company.city.name}}, {{ company.county.name }} <br>
             ({{ 'company.price_title'|trans }}
             <strong>{{ company.price|number_format(0, ',', '.') }} RON/{{ 'common.month'|trans }}</strong>)
         </div>

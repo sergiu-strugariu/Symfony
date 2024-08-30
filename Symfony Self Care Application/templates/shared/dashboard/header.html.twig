@@ -31,7 +31,7 @@
             <div class="cursor-pointer symbol symbol-circle symbol-30px symbol-lg-65px"
                  data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                  data-kt-menu-placement="bottom-end">
-                <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/dashboard/media/avatars/blank.png') }}"
+                <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/dashboard/media/avatars/blank.png', 'cloudflare') }}"
                      alt="Logo"
                      class="image-change"
                 />
@@ -44,7 +44,7 @@
                     <div class="menu-content d-flex align-items-center px-3">
                         <!--begin::Avatar-->
                         <div class="symbol symbol-50px me-5">
-                            <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/dashboard/media/avatars/blank.png') }}"
+                            <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/dashboard/media/avatars/blank.png', 'cloudflare') }}"
                                 class="image-change"
                                  alt="Logo"
                             />

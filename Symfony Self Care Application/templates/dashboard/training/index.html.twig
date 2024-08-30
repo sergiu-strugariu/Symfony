@@ -62,9 +62,5 @@
 {% endblock %}
 
 {% block page_javascripts %}
-    <script>
-        window.courseAjaxPath = "{{ path('dashboard_ajax_training_course') }}";
-        window.courseImagePath = "{{ asset(app_course_path) }}";
-    </script>
     <script src="{{ asset('assets/dashboard/js/datatables/courses.js') }}"></script>
 {% endblock %}

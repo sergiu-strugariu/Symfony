@@ -127,9 +127,9 @@ $(document).ready(function () {
                                         errorMessage.html('');
                                         if (response.status) {
                                             setTimeout(function () {
-                                                $('.data-image').css({'background-image': 'url(' + absoluteUrl + response.fileName + ')'});
+                                                $('.data-image').css({'background-image': 'url(' + window.userImagePath + response.fileName + ')'});
 
-                                                let newSrc = absoluteUrl + response.fileName;
+                                                let newSrc = window.userImagePath + response.fileName;
                                                 // Update images with class `image-change`
                                                 updateImageSrc(newSrc);
                                                 previewImageModal.modal('hide');

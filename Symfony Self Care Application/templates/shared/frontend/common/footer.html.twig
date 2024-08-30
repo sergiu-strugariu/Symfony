@@ -42,7 +42,7 @@
         <div class="inner">
             {% if footerLogo is not null %}
                 <div class="section logo">
-                    <img src="{{ asset(app_setting_path ~ footerLogo) }}" alt="{{ app_name }}">
+                    <img src="{{ asset(app_setting_path ~ footerLogo, 'cloudflare') }}" alt="{{ app_name }}">
                 </div>
             {% endif %}
             <div class="section services">

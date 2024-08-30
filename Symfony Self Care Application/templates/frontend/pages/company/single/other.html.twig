@@ -6,7 +6,7 @@
                 {% for item in otherCompanies %}
                     <div class="shelter">
                         <div class="shelter-overlay"></div>
-                        <div class="image" style="background-image: url('{{ asset(item.fileName is not null ? app_company_path ~ item.fileName : app_company_path ~ app_default_image) }}');">
+                        <div class="image" style="background-image: url('{{ asset(item.fileName is not null ? app_company_path ~ item.fileName : app_company_path ~ app_default_image, 'cloudflare') }}');">
                             <a href="{{ path('app_company_single', {'slug': item.slug}) }}" class="details-link">
                                 {{ 'common.view_more'|trans }}
                             </a>

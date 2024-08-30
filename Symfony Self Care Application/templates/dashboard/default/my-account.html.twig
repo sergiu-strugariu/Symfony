@@ -20,8 +20,7 @@
                                 <form id="profileImage">
                                     <div class="profile-error-message"></div>
                                     <div class="image-container upload">
-                                        <div class="data-image"
-                                             style="background-image: url( {{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/dashboard/media/dashboard/user-profile-img.webp') }})">
+                                        <div class="data-image" style="background-image: url( {{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/dashboard/media/dashboard/user-profile-img.webp', 'cloudflare') }})">
                                         </div>
                                         <div class="upload-container">
                                             <label id="image-input" for="inputImage"></label>

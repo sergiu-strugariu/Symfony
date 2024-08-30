@@ -1027,12 +1027,11 @@
    }
 }
 
-.error-message{
+span.error{
+    font-family: 'Kumbh Sans', sans-serif;
     color: #ca3e3e;
     font-weight: 600;
-    font-size: 13px;
-    text-align: center;
-    margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .show-loader {
@@ -1189,6 +1188,7 @@
     text-transform: inherit;
 }
 .edit-profile input {
+    font-family: 'Kumbh Sans', sans-serif;
     border: 0;
     border-bottom: 1px solid #dde2e5;
     width: 100%;

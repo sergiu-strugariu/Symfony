@@ -4,7 +4,7 @@
         <h1>{{ article.translation(locale).title }}</h1>
     </div>
     <div class="image-section">
-        <div class="image-section__container" data-image="{{ asset(app_article_path ~ article.image) }}">
+        <div class="image-section__container" data-image="{{ asset(app_article_path ~ article.image, 'cloudflare') }}">
         </div>
     </div>
     <div class="text-section">

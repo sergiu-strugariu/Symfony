@@ -51,7 +51,7 @@
         window.editMenuItemParentEndpoint = "{{ path('dashboard_menu_item_update_node', {'uuid': uuid}) }}";
         window.deleteMenuItemEndpoint = "{{ path('dashboard_menu_item_remove', {'uuid': uuid}) }}";
         window.menuTitle = "{{ menuTitle }}";
-        window.menuIconPath = "{{ asset('assets/files/menu/') }}";
+        window.menuIconPath = "{{ asset(app_menu_path, 'cloudflare') }}";
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />

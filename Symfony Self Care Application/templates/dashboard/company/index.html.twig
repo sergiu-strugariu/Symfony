@@ -62,7 +62,6 @@
 {% block page_javascripts %}
     <script>
         window.companyAjaxPath = "{{ path('dashboard_ajax_companies', {'locationType': locationType}) }}";
-        window.companyImagePath = "{{ asset(app_company_path) }}";
     </script>
     <script src="{{ asset('assets/dashboard/js/datatables/companies.js') }}"></script>
 {% endblock %}

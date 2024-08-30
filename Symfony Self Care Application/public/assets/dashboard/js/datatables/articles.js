@@ -54,8 +54,8 @@ let KTDatatableArticles = function () {
                     orderable: false,
                     className: 'text-center',
                     render: function (data, type, row) {
-                        return `<a href="${window.articleImagePath}/${data}" target="_blank">
-                                    <img src="${window.articleImagePath}/${data}" alt="image" class="w-100px">
+                        return `<a href="${window.articleImagePath}${data}" target="_blank">
+                                    <img src="${window.articleImagePath}${data}" alt="image" class="w-100px">
                                 </a>`;
                     }
                 },

@@ -62,9 +62,5 @@
 {% endblock %}
 
 {% block page_javascripts %}
-    <script>
-        window.jobAjaxPath = "{{ path('dashboard_ajax_jobs') }}";
-        window.jobImagePath = "{{ asset(app_job_path) }}";
-    </script>
     <script src="{{ asset('assets/dashboard/js/datatables/jobs.js') }}"></script>
 {% endblock %}
