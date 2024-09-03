@@ -19,9 +19,12 @@ class TeamMemberController extends AbstractController
 {
 
     #[Route('/dashboard/team-members', name: 'dashboard_team_member_index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return $this->render('dashboard/team_member/index.html.twig');
+        $range = $request->get('range', '');
+        return $this->render('dashboard/team_member/index.html.twig', [
+            'range' => $range,
+        ]);
     }
 
     #[Route('/dashboard/team-member/create', name: 'dashboard_team_member_create')]

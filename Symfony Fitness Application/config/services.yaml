@@ -104,3 +104,12 @@ services:
             $urlGenerator: '@router'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+    App\Helper\FileUploader:
+        arguments:
+            $slugger: '@slugger'
+            $kernel: '@kernel'
+            $accessKey: '%env(CLOUDFLARE_R2_ACCESS_KEY_ID)%'
+            $secretKey: '%env(CLOUDFLARE_R2_SECRET_ACCESS_KEY)%'
+            $region: '%env(CLOUDFLARE_R2_REGION)%'
+            $bucket: '%env(CLOUDFLARE_R2_BUCKET)%'
+            $endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'

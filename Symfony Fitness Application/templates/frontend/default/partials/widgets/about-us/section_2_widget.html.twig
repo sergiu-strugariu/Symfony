@@ -3,5 +3,5 @@
         <h2>{{ translation.title }}</h2>
         {{ translation.description|raw }}
     </div>
-    <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+    <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName, 'cloudflare') }}"></div>
 </div>

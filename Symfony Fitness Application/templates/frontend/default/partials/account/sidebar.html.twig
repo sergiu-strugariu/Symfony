@@ -5,7 +5,7 @@
         <input type="file" name="userPhoto">
         <div class="image">
             {% if user.imageName %}
-                <img src="{{ asset('assets/files/user/' ~ user.imageName) }}" alt="avatar">
+                <img src="{{ asset('assets/files/user/' ~ user.imageName, 'cloudflare') }}" alt="avatar">
             {% else %}
                 <img src="{{ asset('assets/frontend/images/icon-user.png') }}" alt="avatar">
             {% endif %}

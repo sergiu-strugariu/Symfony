@@ -28,8 +28,8 @@
             {{ form_errors(form.image) }}
             {% if editMode %}
                 <div class="form-text">File uploaded:
-                    <a href="{{ asset('assets/files/certificate/' ~ entity.imageName) }}" target="_blank">
-                        {{ asset('assets/files/certificate/' ~ entity.imageName) }}
+                    <a href="{{ asset('assets/files/certificate/' ~ entity.imageName, 'cloudflare') }}" target="_blank">
+                        {{ asset('assets/files/certificate/' ~ entity.imageName, 'cloudflare') }}
                     </a>
                 </div>
             {% endif %}

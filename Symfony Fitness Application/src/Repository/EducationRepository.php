@@ -253,4 +253,23 @@ class EducationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    public function getTeamMemberEducationsCount($user, $startDate = null, $endDate = null)
+    {
+        $qb = $this->createQueryBuilder('entity')
+            ->join('entity.teamMembers', 'teamMembers')
+            ->select('COUNT(DISTINCT teamMembers.id)')
+            ->where('teamMembers.id = :user')
+            ->setParameter(':user', $user);
+
+        if ($startDate !== null && $endDate !== null) {
+            $qb
+                ->andWhere('entity.createdAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb->getQuery()
+            ->getSingleColumnResult();
+    }
 }

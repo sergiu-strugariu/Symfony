@@ -157,6 +157,27 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getEducationRegistrationCount($user, $startDate = null, $endDate = null)
+    {
+        $qb = $this->createQueryBuilder('entity')
+            ->select('COUNT(DISTINCT entity.education)')
+            ->where('entity.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('entity.paymentStatus = :status')
+            ->setParameter('status', EducationRegistration::PAYMENT_STATUS_SUCCESS);
+
+        if ($startDate !== null && $endDate !== null) {
+            $qb
+                ->andWhere('entity.createdAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function findMaxContractNumber()
     {
         return $this->createQueryBuilder('entity')

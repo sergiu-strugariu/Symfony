@@ -14,9 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class UserController extends AbstractController
 {
     #[Route('/dashboard/users', name: 'dashboard_user_index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return $this->render('dashboard/user/index.html.twig', []);
+        $range = $request->get('range', '');
+        return $this->render('dashboard/user/index.html.twig', [
+            'range' => $range
+        ]);
     }
     
     #[Route('/dashboard/user/{uuid}/edit', name: 'dashboard_user_edit')]

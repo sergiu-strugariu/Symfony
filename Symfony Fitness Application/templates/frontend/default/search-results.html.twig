@@ -10,6 +10,6 @@
 
     <script>
         window.baseUrl = "{{ app.request.getSchemeAndHttpHost() }}"
-        window.imagePath = "{{ asset('assets/files/education/') }}";
+        window.imagePath = "{{ asset(app_education_path, 'cloudflare') }}";
     </script>
 {% endblock %}

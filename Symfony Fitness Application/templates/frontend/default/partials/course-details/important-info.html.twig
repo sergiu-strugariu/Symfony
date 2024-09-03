@@ -9,5 +9,8 @@
         {% if education.allowRegistrations %}
             <a href="{{ path('app_education_register', {'slug': education.slug}) }}">{{ 'course_calendar.course_details.sign_up'|trans }}</a>
         {% endif %}
+        <a href="{{ path('app_contact') }}">
+            {{ "educational.linkText"|trans }}
+        </a>
     </div>
 </div>

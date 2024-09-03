@@ -4,7 +4,7 @@
     <div class="inner">
         <small>Move On - {{ article.createdAt|date('d F Y') }}</small>
         <h1>{{ article.translation(locale).title }}</h1>
-        <div class="image" data-image="{{ asset(app_article_path ~ article.imageName) }}"></div>
+        <div class="image" data-image="{{ asset(app_article_path ~ article.imageName, 'cloudflare') }}"></div>
         {{ article.translation(locale).description|raw }}
         <div class="social-share">
             <p>Share</p>

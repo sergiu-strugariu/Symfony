@@ -42,10 +42,17 @@ class TeamMember
     #[ORM\OneToMany(targetEntity: TeamMemberTranslation::class, mappedBy: 'teamMember', orphanRemoval: true)]
     private Collection $teamMemberTranslation;
 
+    /**
+     * @var Collection<int, Education>
+     */
+    #[ORM\ManyToMany(targetEntity: Education::class, mappedBy: 'teamMembers')]
+    private Collection $educations;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->teamMemberTranslation = new ArrayCollection();
+        $this->educations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,13 +153,31 @@ class TeamMember
     public function removeTeamMemberTranslation(TeamMemberTranslation $teamMemberTranslation): static
     {
         if ($this->teamMemberTranslation->removeElement($teamMemberTranslation)) {
-            // set the owning side to null (unless already changed)
             if ($teamMemberTranslation->getTeamMember() === $this) {
                 $teamMemberTranslation->setTeamMember(null);
             }
         }
 
         return $this;
+    }
+
+    public function getEducationsFilteredCount($startDate, $endDate): int
+    {
+        return $this->educations->filter(function (Education $education) use ($startDate, $endDate) {
+            if ($startDate !== null && $endDate !== null) {
+                $educationDate = $education->getStartDate();
+                return $educationDate >= $startDate && $educationDate <= $endDate;
+            }
+
+            return true;
+        })->count();
+    }
+
+
+
+    public function getEducations(): Collection
+    {
+        return $this->educations;
     }
 
     public function getTranslation($locale)

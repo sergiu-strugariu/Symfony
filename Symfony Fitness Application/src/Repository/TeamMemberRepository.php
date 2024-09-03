@@ -81,5 +81,4 @@ class TeamMemberRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

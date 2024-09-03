@@ -1,9 +1,9 @@
 <div class="course-calendar">
     <div class="inner">
         <div class="image"
-             data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName) }}"></div>
+             data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName, 'cloudflare') }}"></div>
         <div class="image"
-             data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileNameMob) }}"></div>
+             data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileNameMob, 'cloudflare') }}"></div>
     </div>
 
     {% for widget in section.pageWidgets %}

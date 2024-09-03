@@ -3,7 +3,7 @@
         <h4>{{ translation.title }}</h4>
 
         {% if widget.fileName %}
-            <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}" alt="icon"/>
+            <img src="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName, 'cloudflare') }}" alt="icon"/>
         {% endif %}
     </div>
     {{ translation.description|raw }}

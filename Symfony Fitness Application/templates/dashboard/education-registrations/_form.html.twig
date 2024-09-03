@@ -134,8 +134,8 @@
 
         {% if editMode and entity.certificateFileName %}
             <div class="form-text">File uploaded:
-                <a href="{{ asset(app_diploma_path ~ entity.certificateFileName) }}" target="_blank">
-                    {{ asset(app_diploma_path ~ entity.certificateFileName) }}
+                <a href="{{ asset(app_diploma_path ~ entity.certificateFileName, 'cloudflare') }}" target="_blank">
+                    {{ asset(app_diploma_path ~ entity.certificateFileName, 'cloudflare') }}
                 </a>
             </div>
         {% endif %}

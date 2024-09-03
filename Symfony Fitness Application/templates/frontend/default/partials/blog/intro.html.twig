@@ -1,5 +1,5 @@
 {% for widget in section.pageWidgets %}
-    <div class="intro" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}">
+    <div class="intro" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName, 'cloudflare') }}">
        <div class="inner">
            {% set translation = widget.translation(locale) %}
 

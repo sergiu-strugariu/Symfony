@@ -5,7 +5,7 @@
         <div class="listing">
             <div class="article-card related">
                 <a href="{{ path('app_article', {'slug': article.slug}) }}">
-                    <div class="image" data-image="{{ asset(app_article_path ~ article.imageName) }}"></div>
+                    <div class="image" data-image="{{ asset(app_article_path ~ article.imageName, 'cloudflare') }}"></div>
                     <p><small>Move On - {{ article.createdAt|date('d F Y') }}</small></p>
                     <h3>{{ article.translation(locale).title }}</h3>
                     <p>
@@ -17,7 +17,7 @@
             {% for article in articles %}
                 <div class="article-card">
                     <a href="{{ path('app_article', {'slug': article.slug}) }}">
-                        <div class="image" data-image="{{ asset(app_article_path ~ article.imageName) }}"></div>
+                        <div class="image" data-image="{{ asset(app_article_path ~ article.imageName, 'cloudflare') }}"></div>
                         <p><small>Move On - {{ article.createdAt|date('d F Y') }}</small></p>
                         <h3>{{ article.translation(locale).title }}</h3>
                         <p>

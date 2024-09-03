@@ -45,7 +45,7 @@ class DatatableHelper
     
     const TEAM_MEMBER_FIELDS = [
         "id",
-        "name"
+        "name",
     ];
     
     const GALLERY_FIELDS = [

@@ -15,7 +15,16 @@
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
-                    <input type="text" data-kt-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search ..."/>
+                    <input type="text" data-kt-table-filter="search" class="form-control form-control-solid w-250px ps-12 me-4" placeholder="Search ..."/>
+                    <form method="get" action="">
+                        <div class="d-flex gap-4 align-items-center position-relative my-1 ml-2">
+                            <input class="form-control form-control-solid" name="range" placeholder="Pick date rage"
+                                   id="kt_daterangepicker_1" value="{{ range }}" />
+                            <button class="btn btn-brand btn-sm fw-bold btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
                 </div>
                 <!--end::Search-->
             </div>
@@ -41,6 +50,7 @@
                     <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                         <th class="min-w-50px">#ID</th>
                         <th class="min-w-150px">Name</th>
+                        <th class="min-w-150px">Team Member Educations</th>
                         <th class="text-end min-w-100px">Actions</th>
                     </tr>
                 </thead>
@@ -57,5 +67,18 @@
     <script src="{{ asset('assets/dashboard/js/datatables/team-members.js') }}"></script>
     <script>
         window.teamMembersAjaxPath = "{{ path('dashboard_ajax_team_members') }}"
+
+
+        $("#kt_daterangepicker_1").daterangepicker({
+            autoUpdateInput: false
+        });
+
+        $('#kt_daterangepicker_1').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD-MM-Y') + ' | ' + picker.endDate.format('DD-MM-Y'));
+        });
+
+        $('#kt_daterangepicker_1').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
     </script>
 {% endblock %}

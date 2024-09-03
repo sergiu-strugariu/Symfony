@@ -10,7 +10,7 @@
                     {% if not certification.deletedAt %}
                         <div class="item">
                             <div class="image"
-                                 data-image="{{ asset(app_certificate_path ~ certification.imageName) }}"></div>
+                                 data-image="{{ asset(app_certificate_path ~ certification.imageName, 'cloudflare') }}"></div>
                             <div>
                                 <h3>{{ certification.translation(locale).level }}</h3>
                                 <h2>{{ certification.translation(locale).title }}</h2>

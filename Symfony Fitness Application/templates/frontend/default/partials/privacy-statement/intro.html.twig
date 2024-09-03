@@ -1,6 +1,6 @@
 <div class="common-intro-v2">
     <div class="inner">
-        <div class="image" data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName) }}"></div>
+        <div class="image" data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName, 'cloudflare') }}"></div>
         {% for widget in section.pageWidgets %}
             {% set translation = widget.translation(locale) %}
 

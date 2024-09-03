@@ -93,7 +93,7 @@ class Education
     /**
      * @var Collection<int, TeamMember>
      */
-    #[ORM\ManyToMany(targetEntity: TeamMember::class)]
+    #[ORM\ManyToMany(targetEntity: TeamMember::class, inversedBy: 'educations')]
     private Collection $teamMembers;
 
     /**

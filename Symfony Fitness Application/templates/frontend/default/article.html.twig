@@ -5,7 +5,7 @@
     <meta property="og:title" content="{{ article.translation(locale).title }} {{ parent() }}">
     <meta property="og:description" content="{{ article.translation(locale).shortDescription }}">
     <meta property="og:type" content="website"/>
-    <meta property="og:image" content="{{ absolute_url(asset(app_article_path ~ article.imageName)) }}">
+    <meta property="og:image" content="{{ absolute_url(asset(app_article_path ~ article.imageName, 'cloudflare')) }}">
 {% endblock %}
 
 <main class="blog-article">

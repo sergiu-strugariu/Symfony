@@ -55,12 +55,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery();
 
         $result = $query->getResult();
-        $daysInMonth = (int) (new \DateTime())->format('t');
+        $daysInMonth = (int)(new \DateTime())->format('t');
         $counts['counts'] = array_fill(1, $daysInMonth, 0);
 
         foreach ($result as $row) {
-            $counts['counts'][(int) $row['day']] = (int) $row['count'];
-            $counts['daysWithUsers'][(int) $row['day']] = (int) $row['count'];
+            $counts['counts'][(int)$row['day']] = (int)$row['count'];
+            $counts['daysWithUsers'][(int)$row['day']] = (int)$row['count'];
         }
 
 
@@ -110,7 +110,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $fields = [
             'u.id',
             'u.firstName',
-            'u.email'
+            'u.email',
         ];
 
         // Check @keyword
@@ -126,7 +126,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->andWhere($orExpr)
                 ->setParameter('keyword', '%' . $keyword . '%');
         }
-        
+
         if (null !== $role) {
             $queryBuilder->andWhere('u.roles LIKE :role')
                 ->setParameter('role', '%"' . $role . '"%');
@@ -139,10 +139,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->setParameter('endDate', $endDate);
         }
 
+        // Ensure the results are grouped by user ID for accurate counts
+        $queryBuilder->groupBy('u.id');
+
         // Dynamic order by
         return $queryBuilder
             ->orderBy('u.' . $column, $dir)
             ->getQuery()
             ->getResult();
     }
+
 }

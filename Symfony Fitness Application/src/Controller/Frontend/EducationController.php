@@ -95,7 +95,7 @@ class EducationController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                /*$existingRegistration = $em->getRepository(EducationRegistration::class)->findOneBy([
+                $existingRegistration = $em->getRepository(EducationRegistration::class)->findOneBy([
                     'user' => $user,
                     'education' => $education
                 ]);
@@ -103,7 +103,7 @@ class EducationController extends AbstractController
                 if (null !== $existingRegistration) {
                     $this->addFlash('error', "Deja esti inscris in aceasta educatie.");
                     return $this->redirectToRoute('app_educations');
-                }*/
+                }
 
                 $uuid = Uuid::v4();
                 $educationVat = $education->getVat();

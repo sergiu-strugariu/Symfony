@@ -44,7 +44,7 @@
             {% for gallery in galleries %}
                 <div class="article-card">
                     <a href="{{ gallery.galleryLink }}" target="_blank">
-                        <div class="image" data-image="{{ asset(app_gallery_path ~ gallery.featuredImageName) }}"></div>
+                        <div class="image" data-image="{{ asset(app_gallery_path ~ gallery.featuredImageName, 'cloudflare') }}"></div>
                         <h3>{{ gallery.title }}</h3>
                         <p><small>{{ gallery.eventDate|date('F Y') }}</small></p>
                     </a>

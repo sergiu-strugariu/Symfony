@@ -20,7 +20,7 @@
         <div>
             {% for teamMember in education.teamMembers %}
                 <div class="item">
-                    <img src="{{ asset(app_team_member_path ~ teamMember.imageName) }}" alt="trainer" />
+                    <img src="{{ asset(app_team_member_path ~ teamMember.imageName, 'cloudflare') }}" alt="trainer" />
                     <p>{{ teamMember.name }}</p>
                 </div>
             {% endfor %}

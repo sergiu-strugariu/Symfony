@@ -1,10 +1,10 @@
 <div class="swiper-slide">
     {% if widget.fileName %}
-        <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName) }}"></div>
+        <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName, 'cloudflare') }}"></div>
     {% endif %}
 
     {% if widget.fileNameMob %}
-        <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileNameMob) }}"></div>
+        <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileNameMob, 'cloudflare') }}"></div>
     {% endif %}
 
     <div class="inner">

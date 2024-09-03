@@ -4,5 +4,5 @@
 		{{ education.translation(locale).description|raw }}
 	</div>
 
-	<div class="image" data-image="{{ asset('assets/files/education/' ~ education.imageName) }}"></div>
+	<div class="image" data-image="{{ asset('assets/files/education/' ~ education.imageName, 'cloudflare') }}"></div>
 </div>

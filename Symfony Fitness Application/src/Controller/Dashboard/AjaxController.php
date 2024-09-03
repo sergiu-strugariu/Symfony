@@ -7,6 +7,7 @@ use App\Entity\Education;
 use App\Entity\EducationRegistration;
 use App\Entity\EducationSchedule;
 use App\Entity\Menu;
+use App\Entity\TeamMember;
 use App\Entity\User;
 use App\Helper\DatatableHelper;
 use App\Helper\DefaultHelper;
@@ -36,10 +37,19 @@ use DateTime;
 class AjaxController extends AbstractController
 {
     #[Route('/dashboard/ajax/users', name: 'dashboard_ajax_users')]
-    public function getUsers(Request $request, UserRepository $userRepository, DatatableHelper $datatableHelper): JsonResponse
+    public function getUsers(Request $request, UserRepository $userRepository, DatatableHelper $datatableHelper, EntityManagerInterface $em): JsonResponse
     {
         // get all params from the request
         $params = $request->query->all();
+        $startDate = null;
+        $endDate = null;
+
+        if (isset($params['range']) && !empty($params['range'])) {
+            list($startDate, $endDate) = explode(' | ', $params['range']);
+
+            $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+            $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+        }
 
         // get sortable fields
         $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_FIELDS);
@@ -51,6 +61,11 @@ class AjaxController extends AbstractController
             $tableParams['keyword'],
             $params['role']
         );
+
+        foreach ($users as $key => $user) {
+            $educationRegistrationsCount = $em->getRepository(EducationRegistration::class)->getEducationRegistrationCount($user['id'], $startDate, $endDate);
+            $users[$key]['educationRegistrationsCount'] = $educationRegistrationsCount;
+        }
 
         // get total count
         $totalRecords = $userRepository->findTotalCount(User::ROLE_CLIENT);
@@ -69,11 +84,11 @@ class AjaxController extends AbstractController
             'data' => $users
         ]);
     }
-    
+
     #[Route('/dashboard/ajax/education/{uuid}/registrations', name: 'dashboard_ajax_education_registrations')]
     public function getEducationRegistrations(Request $request, EducationRegistrationRepository $redistrationsRepository, DatatableHelper $datatableHelper, $uuid): JsonResponse
     {
-         // get all params from the request
+        // get all params from the request
         $params = $request->query->all();
 
         // get sortable fields
@@ -89,7 +104,7 @@ class AjaxController extends AbstractController
 
         return $this->getFilteredData($redistrationsRepository, $registrations, $params);
     }
-    
+
     #[Route('/dashboard/ajax/educations/{type}', name: 'dashboard_ajax_educations')]
     public function getEducations(Request $request, EducationRepository $educationRepository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper, $type): JsonResponse
     {
@@ -120,7 +135,7 @@ class AjaxController extends AbstractController
         // pagination length
         if (isset($params['length'])) {
             $educations = array_splice($educations, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
-    }
+        }
 
         return new JsonResponse([
             'recordsTotal' => $totalRecords,
@@ -170,12 +185,21 @@ class AjaxController extends AbstractController
 
         return $this->getFilteredData($leadRepository, $leads, $params);
     }
-    
+
     #[Route('/dashboard/ajax/team-members', name: 'dashboard_ajax_team_members')]
-    public function getTeamMembers(Request $request, TeamMemberRepository $teamMemberRepository, DatatableHelper $datatableHelper): JsonResponse
+    public function getTeamMembers(Request $request, TeamMemberRepository $teamMemberRepository, DatatableHelper $datatableHelper, EntityManagerInterface $em): JsonResponse
     {
         // get all params from the request
         $params = $request->query->all();
+        $startDate = null;
+        $endDate = null;
+
+        if (isset($params['range']) && !empty($params['range'])) {
+            list($startDate, $endDate) = explode(' | ', $params['range']);
+
+            $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+            $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+        }
 
         // get sortable fields
         $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::TEAM_MEMBER_FIELDS);
@@ -187,9 +211,18 @@ class AjaxController extends AbstractController
             $tableParams['keyword']
         );
 
+        foreach ($teamMembers as $key => $teamMember) {
+            $tm = $em->getRepository(TeamMember::class)->find($teamMember['id']);
+
+            if (null !== $tm) {
+                $educationsCount = $tm->getEducationsFilteredCount($startDate, $endDate);
+                $teamMembers[$key]['teamMemberEducations'] = $educationsCount;
+            }
+        }
+
         return $this->getFilteredData($teamMemberRepository, $teamMembers, $params);
     }
-    
+
     #[Route('/dashboard/ajax/galleries', name: 'dashboard_ajax_galleries')]
     public function getGalleries(Request $request, GalleryRepository $galleryRepository, DatatableHelper $datatableHelper): JsonResponse
     {
@@ -277,20 +310,20 @@ class AjaxController extends AbstractController
     {
         // get all params from the request
         $params = $request->query->all();
-        
+
         // get sortable fields
         $tableParams = $datatableHelper->getTableParams((array)$params, $datatableHelper::PAGE_FIELDS);
-        
+
         // filter by params
         $pages = $pageRepository->findByFilters(
             $tableParams['column'],
             $tableParams['dir'],
             $tableParams['keyword']
         );
-        
+
         return $this->getFilteredData($pageRepository, $pages, $params);
     }
-    
+
     #[Route('/dashboard/ajax/feedback', name: 'dashboard_ajax_feedback')]
     public function getFeedback(Request $request, FeedbackRepository $feedbackRepository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
     {
@@ -302,7 +335,7 @@ class AjaxController extends AbstractController
 
         // get default language
         $defaultLanguage = $languageHelper->getDefaultLanguage();
-        
+
         // filter by params
         $languages = $feedbackRepository->findByFilters(
             $tableParams['column'],
@@ -418,6 +451,7 @@ class AjaxController extends AbstractController
             'message' => 'You have successfully deleted the schedule.'
         ]);
     }
+
     #[Route('/dashboard/ajax/upload-image', name: 'dashboard_ajax_upload_image')]
     public function uploadImage(Request $request, FileUploader $fileUploader): Response
     {
@@ -441,7 +475,7 @@ class AjaxController extends AbstractController
         if ($uploadFile['success']) {
             return new JsonResponse([
                 'success' => true,
-                'path' => sprintf("%s%s", $request->getSchemeAndHttpHost(), $uploadDir . 'pagewidget/' .$uploadFile['fileName']),
+                'path' => sprintf("%s%s", $request->getSchemeAndHttpHost(), $uploadDir . 'pagewidget/' . $uploadFile['fileName']),
                 'message' => 'The file has been uploaded successfully.'
             ]);
         }

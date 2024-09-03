@@ -179,8 +179,8 @@
 
             {% if editMode %}
                 <div class="form-text">File uploaded:
-                    <a href="{{ asset('assets/files/education/' ~ entity.imageName) }}" target="_blank">
-                        {{ asset('assets/files/education/' ~ entity.imageName) }}
+                    <a href="{{ asset('assets/files/education/' ~ entity.imageName, 'cloudflare') }}" target="_blank">
+                        {{ asset('assets/files/education/' ~ entity.imageName, 'cloudflare') }}
                     </a>
                 </div>
             {% endif %}
