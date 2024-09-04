@@ -64,7 +64,7 @@ class ArticleRepository extends ServiceEntityRepository
                 a.uuid,
                 a.slug,
                 at.title,
-                a.image,
+                a.fileName,
                 a.status,
                 DATE_FORMAT(a.createdAt, '%d-%m-%Y %H:%i') as createdAt"
             )
@@ -171,7 +171,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder
-            ->select("at.title, at.shortDescription, a.slug, a.image")
+            ->select("at.title, at.shortDescription, a.slug, a.fileName")
             ->groupBy('a.id')
             ->orderBy('a.id', 'DESC')
             ->setMaxResults($limit)

@@ -16,7 +16,8 @@ class Article
 {
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
-    
+    const ENTITY_NAME = 'article';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -31,12 +32,12 @@ class Article
 
     #[ORM\Column(length: 20)]
     private ?string $status = null;
-    
+
     #[ORM\Column(length: 255, unique: true)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $image = null;
+    private ?string $fileName = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -84,7 +85,7 @@ class Article
 
         return $this;
     }
-    
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -109,14 +110,14 @@ class Article
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getFileName(): ?string
     {
-        return $this->image;
+        return $this->fileName ?: 'default.png';
     }
 
-    public function setImage(string $image): static
+    public function setFileName(string $fileName): static
     {
-        $this->image = $image;
+        $this->fileName = $fileName;
 
         return $this;
     }
@@ -186,8 +187,8 @@ class Article
 
         return $this;
     }
-    
-    public static function getStatuses() 
+
+    public static function getStatuses()
     {
         return [
             self::STATUS_DRAFT => self::STATUS_DRAFT,
@@ -241,5 +242,5 @@ class Article
 
         return $this;
     }
-    
+
 }

@@ -1,0 +1,129 @@
+{
+  "entity": "Page",
+  "name": "Listare rezultate search",
+  "machineName": "search",
+  "url": "/rezultate-search",
+  "classes": "catalogue",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Listare camine",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/camine",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Search section intro",
+      "machineName": "search_section_intro",
+      "template": "intro.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "search_section_intro_widget",
+          "template": "intro-content.html.twig",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Intro Title",
+              "placeholder": "Intro Title",
+              "value": "Listare Centre de îngrijire seniori",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Intro Image",
+              "placeholder": "Intro Image",
+              "value": "",
+              "isTranslated": false,
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Search section search",
+      "machineName": "search_section_search",
+      "template": "search.html.twig",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "search_section_search_widget",
+          "template": "search-content.html.twig",
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Content",
+              "placeholder": "Widget Content",
+              "value": "",
+              "isTranslated": true,
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -19,10 +19,15 @@ fos_elastica:
         name: { type: 'text', analyzer: 'custom_analyzer' }
         slug: { type: 'text', analyzer: 'custom_analyzer' }
         description: { type: 'text', analyzer: 'custom_analyzer' }
+        shortDescription: { type: 'text', analyzer: 'custom_analyzer' }
         availableServices: { type: 'text', analyzer: 'custom_analyzer' }
         countyName: { type: 'text', analyzer: 'custom_analyzer' }
         cityName: { type: 'text', analyzer: 'custom_analyzer' }
         address: { type: 'text', analyzer: 'custom_analyzer' }
+        firstReview: { type: 'text' }
+        averageRating: { type: 'text' }
+        averageCount: { type: 'text' }
+        price: { type: 'text' }
         locationType: { type: 'keyword' }
         status: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
@@ -53,8 +58,12 @@ fos_elastica:
                 - ascii_folding
       properties:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
-        image: { type: 'keyword' }
+        fileName: { type: 'keyword' }
         status: { type: 'keyword' }
+        jobType: { type: 'keyword' }
+        firstCategory: { type: 'text' }
+        countyName: { type: 'keyword' }
+        cityName: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
         jobTranslations:
           type: nested
@@ -90,8 +99,12 @@ fos_elastica:
                 - ascii_folding
       properties:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
-        image: { type: 'keyword' }
+        fileName: { type: 'keyword' }
         status: { type: 'keyword' }
+        price: { type: 'keyword' }
+        firstCategory: { type: 'keyword' }
+        countyName: { type: 'keyword' }
+        cityName: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
         trainingCourseTranslations:
           type: nested
@@ -127,7 +140,7 @@ fos_elastica:
                 - ascii_folding
       properties:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
-        image: { type: 'keyword' }
+        fileName: { type: 'keyword' }
         status: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
         articleTranslations:

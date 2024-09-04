@@ -53,6 +53,8 @@ class SettingService extends AbstractController
     public function getArticles($limit): ?array
     {
         $articles = $this->em->getRepository(Article::class)->getArticles(null, $limit);
+        dd($articles);
+
 
         return $articles ?? null;
     }

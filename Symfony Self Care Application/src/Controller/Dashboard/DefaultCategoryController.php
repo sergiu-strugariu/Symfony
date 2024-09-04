@@ -110,11 +110,11 @@ class DefaultCategoryController extends AbstractController
                         $categoryTranslation = new CategoryJobTranslation();
                         $categoryTranslation->setCategoryJob($category);
                         break;
-                    case 'care':
+                    case Company::LOCATION_TYPE_CARE:
                         $categoryTranslation = new CategoryCareTranslation();
                         $categoryTranslation->setCategoryCare($category);
                         break;
-                    case 'service':
+                    case Company::LOCATION_TYPE_PROVIDER:
                         $categoryTranslation = new CategoryServiceTranslation();
                         $categoryTranslation->setCategoryService($category);
                         break;
@@ -177,13 +177,13 @@ class DefaultCategoryController extends AbstractController
                 $categoryRelationTranslate = 'categoryJob';
                 $setCategoryRelation = 'setCategoryJob';
                 break;
-            case 'care':
+            case Company::LOCATION_TYPE_CARE:
                 $categoryClass = CategoryCare::class;
                 $categoryClassTranslation = CategoryCareTranslation::class;
                 $categoryRelationTranslate = 'categoryCare';
                 $setCategoryRelation = 'setCategoryCare';
                 break;
-            case 'service':
+            case Company::LOCATION_TYPE_PROVIDER:
                 $categoryClass = CategoryService::class;
                 $categoryClassTranslation = CategoryServiceTranslation::class;
                 $categoryRelationTranslate = 'categoryService';

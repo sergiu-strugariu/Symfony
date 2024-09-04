@@ -5,6 +5,11 @@
 
 {% set helpLine = settingService.getService('helpLine') %}
 {% set logo = settingService.getService('logo') %}
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMKTWXBM" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="header">
     <div class="menu-header mobile-header-menu d-md-none">
         {% if logo is not null %}
@@ -45,9 +50,7 @@
                             <li>
                                 <div class="dropdown">
                                     <a class="top-link">
-                                        <img src="{{ asset(app.user.profilePicture ? app_user_path ~ app.user.profilePicture : 'assets/frontend/images/common/user-profile-img.webp', 'cloudflare') }}"
-                                             alt="logo"
-                                        />
+                                        <img src="{{ asset(app_user_path ~ app.user.profilePicture, 'cloudflare') }}" alt="logo" />
                                         <span>{{ app.user.fullName }}</span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
@@ -56,15 +59,15 @@
                                                 <img src="{{ asset('assets/frontend/images/common/user.svg') }}"
                                                      width="15"
                                                      alt="user-profile"/>
-                                                Vezi profil
+                                                {{ 'dashboard.edit_profile.view_profile'|trans }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#todo">
+                                            <a class="dropdown-item" href="{{ path('dashboard_favorites') }}">
                                                 <img src="{{ asset('assets/frontend/images/common/heart-bookmark-icon-bookmarked.svg') }}"
                                                      width="15"
                                                      alt="favorites"/>
-                                                Pagini favorite
+                                                {{ 'dashboard.favorites.favorite_pages'|trans }}
                                             </a>
                                         </li>
                                         <li>
@@ -72,7 +75,7 @@
                                                 <img src="{{ asset('assets/frontend/images/common/log-out.svg') }}"
                                                      width="20"
                                                      alt="logout"/>
-                                                Logout
+                                                {{ 'dashboard.actions.sign_out'|trans }}
                                             </a>
                                         </li>
                                     </ul>

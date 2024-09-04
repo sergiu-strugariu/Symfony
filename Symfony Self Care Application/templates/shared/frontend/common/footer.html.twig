@@ -7,6 +7,7 @@
 {% set twitterLink = settingService.getService('twitterLink') %}
 {% set facebookLink = settingService.getService('facebookLink') %}
 {% set linkedinLink = settingService.getService('linkedinLink') %}
+{% set instagramLink = settingService.getService('instagramLink') %}
 {% set footerLogo = settingService.getService('footerLogo') %}
 <div class="footer">
     <div class="top-section">
@@ -33,7 +34,7 @@
                     </div>
                 </form>
                 <!--begin::Form message-->
-                <div class="form-message"></div>
+                <div class="form-message-newsletter"></div>
                 <!--end::Form message-->
             </div>
         </div>
@@ -56,20 +57,20 @@
                     {% endfor %}
                 </ul>
             </div>
-            {% if getArticles is not null %}
-                <div class="section advices">
-                    <p>{{ 'footer.article_title'|trans }}</p>
-                    <ul>
-                        {% for item in getArticles %}
-                            <li>
-                                <a href="{{ path('app_blog_single', {'slug': item.slug}) }}">
-                                    {{ item.translation(locale).title }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+{#            {% if getArticles is not null %}#}
+{#                <div class="section advices">#}
+{#                    <p>{{ 'footer.article_title'|trans }}</p>#}
+{#                    <ul>#}
+{#                        {% for item in getArticles %}#}
+{#                            <li>#}
+{#                                <a href="{{ path('app_blog_single', {'slug': item.slug}) }}">#}
+{#                                    {{ item.translation(locale).title }}#}
+{#                                </a>#}
+{#                            </li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+{#                </div>#}
+{#            {% endif %}#}
             <div class="section contact-info">
                 <ul class="contacts">
                     <li>
@@ -95,6 +96,11 @@
                     <li>
                         <a href="{{ linkedinLink }}" target="_blank">
                             <img src="{{ asset('assets/frontend/images/common/linkedin.png') }}" alt="linkedin">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ instagramLink }}" target="_blank">
+                            <img src="{{ asset('assets/frontend/images/common/instagram.svg') }}" alt="linkedin">
                         </a>
                     </li>
                 </ul>

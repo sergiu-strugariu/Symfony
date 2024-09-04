@@ -190,7 +190,7 @@ class ArticleSeedCommand extends Command
             $article->setSlug($slug);
             $article->setStatus(Article::STATUS_PUBLISHED);
             $article->setUser($user);
-            $article->setImage('default.png');
+            $article->setFileName('default.png');
 
             // Associate article with the corresponding category
             $category = $categoryEntities[$item['category']];

@@ -6,7 +6,7 @@ twig:
         defaultLocale: "%env(DEFAULT_LOCALE)%"
         menuService: '@App\Service\MenuService'
         settingService: '@App\Service\SettingService'
-
+        defaultHelper: '@App\Helper\DefaultHelper'
 when@test:
     twig:
         strict_variables: true

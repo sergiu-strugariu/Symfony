@@ -76,6 +76,17 @@
                 </div>
                 <div class="row mb-6">
                     <!--begin::Label-->
+                    {{ form_label(form.instagramLink, 'common.social_link_instagram'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.instagramLink, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.instagramLink) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
                     {{ form_label(form.logo, 'dashboard.form.logo'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
                     <!--end::Label-->
                     <!--begin::Col-->

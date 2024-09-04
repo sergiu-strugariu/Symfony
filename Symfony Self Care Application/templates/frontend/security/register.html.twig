@@ -72,11 +72,11 @@
                 </div>
                 <div class="row">
                     <div class="upload form-item-bg">
-                        {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control file file-name'}}) }}
-                        {{ form_errors(form.profilePicture) }}
+                        {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control file file-name', 'accept': '.jpg, .jpeg, .png'}}) }}
                         <div class="upload-btn">
                             <p>{{ 'form.placeholder.picture'|trans }}</p>
                             <p></p>
+                            {{ form_errors(form.profilePicture) }}
                         </div>
                     </div>
                 </div>

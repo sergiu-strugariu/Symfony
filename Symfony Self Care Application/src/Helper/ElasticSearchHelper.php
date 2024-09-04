@@ -44,7 +44,6 @@ class ElasticSearchHelper
     const COMPANY_QUERY_FIELDS = [
         'name',
         'slug',
-        'description',
         'availableServices'
     ];
 
@@ -61,11 +60,12 @@ class ElasticSearchHelper
      * @param array $fields
      * @param string $translationField
      * @param int $limit
+     * @param int $page
      * @param string $countyCode
      * @param string $searchType
      * @return array
      */
-    public function searchAction(Index $finder, string $searchTerm, string $locale, array $fields, string $translationField, int $limit = 5, string $countyCode = '', string $searchType = 'most_fields'): array
+    public function searchAction(Index $finder, string $searchTerm, string $locale, array $fields, string $translationField, int $limit = 5, int $page = 1, string $countyCode = '', string $searchType = 'phrase_prefix'): array
     {
         // Create a BoolQuery object for the main query
         $boolQuery = new BoolQuery();
@@ -83,6 +83,7 @@ class ElasticSearchHelper
         $multiMatch->setType($searchType);
         $multiMatch->setFields($fields);
         $multiMatch->setOperator('and');
+
 
         // Add the MultiMatch query to the nested BoolQuery query
         $nestedBoolQuery->addMust($multiMatch);
@@ -123,12 +124,22 @@ class ElasticSearchHelper
         // Add descending sort by @id
         $query->setSort(['_id' => ['order' => 'desc']]);
 
-        // Set the maximum number of results returned
+        // Calculate the offset (from) based on the current page
+        $offset = ($page - 1) * $limit;
+
+        // Set the offset and limit (size) for pagination
+        $query->setFrom($offset);
         $query->setSize($limit);
 
+        // Execute the search query
+        $resultSet = $finder->search($query);
+
         return [
-            'data' => $this->formatElasticaResultSet($finder->search($query), true, $locale, $translationField),
-            'total' => $finder->search($query)->getTotalHits()
+            'data' => $this->formatElasticaResultSet($resultSet, true, $locale, $translationField),
+            'total' => $resultSet->getTotalHits(),
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($resultSet->getTotalHits() / $limit)
         ];
     }
 
@@ -139,10 +150,11 @@ class ElasticSearchHelper
      * @param array $fields
      * @param string $countyCode
      * @param int $limit
+     * @param int $page
      * @param string $searchType
      * @return array
      */
-    public function searchCompany(Index $finder, string $searchTerm, string $locationType, array $fields, string $countyCode, int $limit = 5, string $searchType = 'most_fields')
+    public function searchCompany(Index $finder, string $searchTerm, string $locationType, array $fields, string $countyCode, int $limit = 5, int $page = 1, string $searchType = 'phrase_prefix')
     {
         // Create a BoolQuery object for the main query
         $boolQuery = new BoolQuery();
@@ -187,12 +199,22 @@ class ElasticSearchHelper
         // Add descending sort by @id
         $query->setSort(['_id' => ['order' => 'desc']]);
 
-        // Set the maximum number of results returned
+        // Calculate the offset (from) based on the current page
+        $offset = ($page - 1) * $limit;
+
+        // Set the offset and limit (size) for pagination
+        $query->setFrom($offset);
         $query->setSize($limit);
 
+        // Execute the search query
+        $resultSet = $finder->search($query);
+
         return [
-            'data' => $this->formatElasticaResultSet($finder->search($query)),
-            'total' => $finder->search($query)->getTotalHits()
+            'data' => $this->formatElasticaResultSet($resultSet),
+            'total' => $resultSet->getTotalHits(),
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($resultSet->getTotalHits() / $limit)
         ];
     }
 

@@ -71,7 +71,7 @@ class FileUploader
      * @param bool $renameFile
      * @return array|null
      */
-    public function uploadFile(object $file = null, $form, string $folderPath, string $field = 'image', bool $renameFile = true): ?array
+    public function uploadFile(object $file = null, $form, string $folderPath, string $field = 'fileName', bool $renameFile = true): ?array
     {
         $fileName = null;
         $success = true;

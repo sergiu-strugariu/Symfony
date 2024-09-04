@@ -45,6 +45,18 @@ class BreadcrumbsHelper
             'params' => []
         ]
     ];
+    const SEARCH_BREADCRUMBS = [
+        [
+            'name' => 'breadcrumb.homepage_title',
+            'route' => 'app_homepage',
+            'params' => []
+        ],
+        [
+            'name' => 'Rezultate search',
+            'route' => null,
+            'params' => []
+        ]
+    ];
     const BLOG_LISTING_BREADCRUMBS = [
         [
             'name' => 'breadcrumb.homepage_title',
@@ -86,11 +98,6 @@ class BreadcrumbsHelper
         [
             'name' => 'breadcrumb.homepage_title',
             'route' => 'app_homepage',
-            'params' => []
-        ],
-        [
-            'name' => 'breadcrumb.company_search_title',
-            'route' => null,
             'params' => []
         ],
         [

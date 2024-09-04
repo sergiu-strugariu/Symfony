@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ForgotPasswordType extends AbstractType
 {
@@ -18,11 +19,18 @@ class ForgotPasswordType extends AbstractType
     private UserRepository $userRepository;
 
     /**
-     * @param UserRepository $userRepository
+     * @var TranslatorInterface
      */
-    public function __construct(UserRepository $userRepository)
+    protected TranslatorInterface $translator;
+
+    /**
+     * @param UserRepository $userRepository
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(UserRepository $userRepository, TranslatorInterface $translator)
     {
         $this->userRepository = $userRepository;
+        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -28,6 +28,12 @@ parameters:
     recaptcha_site_key: '%env(RECAPTCHA_SITE_KEY)%'
     recaptcha_secret_key: '%env(RECAPTCHA_SECRET_KEY)%'
     excel_path: '%kernel.project_dir%/public/assets'
+    cookie_bot_id: '%env(COOKIE_BOT_ID)%'
+    intercom_id: '%env(INTERCOM_ID)%'
+    onesignal_id: '%env(ONESIGNAL_ID)%'
+    onesignal_web_id: '%env(ONESIGNAL_WEB_ID)%'
+    intercom_secret_key: '%env(INTERCOM_SECRET_KEY)%'
+    cloudflare_path: '%env(CLOUDFLARE_R2_FILE_PATH)%'
 twig:
     globals:
         app_name: '%app_name%'
@@ -49,6 +55,10 @@ twig:
         map_share: '%map_share%'
         recaptcha_site_key: '%recaptcha_site_key%'
         recaptcha_secret_key: '%recaptcha_secret_key%'
+        cookie_bot_id: '%cookie_bot_id%'
+        intercom_id: '%intercom_id%'
+        onesignal_id: '%onesignal_id%'
+        onesignal_web_id: '%onesignal_web_id%'
 services:
     _defaults:
         autowire: true
@@ -59,6 +69,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Helper\DefaultHelper:
+        arguments:
+            $intercomSecretKey: '%intercom_secret_key%'
     App\Helper\MailHelper:
         arguments:
             $fromEmail: '%email_address%'

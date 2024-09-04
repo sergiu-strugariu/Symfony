@@ -398,7 +398,7 @@ class AjaxController extends AbstractController
 
                 if ($uploadFile['success']) {
                     // Get cv path
-                    $filePath = sprintf("%s/public/%s%s", $this->getParameter('kernel.project_dir'), $this->getParameter('app_temporary_path'), $uploadFile['fileName']);
+                    $filePath = $this->getParameter('cloudflare_path') . $this->getParameter('app_temporary_path') . $uploadFile['fileName'];
 
                     // Send email to @company and attach cv
                     $emailSend = $mail->sendMail(
@@ -631,7 +631,7 @@ class AjaxController extends AbstractController
 
                 if ($uploadFile['success']) {
                     // Get cv path
-                    $filePath = sprintf("%s/public/%s%s", $this->getParameter('kernel.project_dir'), $this->getParameter('app_temporary_path'), $uploadFile['fileName']);
+                    $filePath = $this->getParameter('cloudflare_path') . $this->getParameter('app_temporary_path') . $uploadFile['fileName'];
 
                     // Send email to @company and attach cv
                     $emailSend = $mail->sendMail(

@@ -20,7 +20,7 @@ framework:
     assets:
         packages:
             cloudflare:
-                base_urls: 'https://pub-1c17d91dee8741abb7fe4cbde908809c.r2.dev/'
+                base_urls: '%env(CLOUDFLARE_R2_FILE_PATH)%'
 
 when@test:
     framework:

@@ -6,6 +6,7 @@ use App\Repository\JobRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -19,6 +20,8 @@ class Job
 
     const TYPE_PART_TYME = 'Part-Time';
     const TYPE_FULL_TYME = 'Full-Time';
+
+    const ENTITY_NAME = 'job';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -210,7 +213,7 @@ class Job
 
     public function getFileName(): ?string
     {
-        return $this->fileName;
+        return $this->fileName ?: 'default.png';
     }
 
     public function setFileName(string $fileName): static
@@ -332,6 +335,37 @@ class Job
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountyName(): string
+    {
+        return $this->getCounty()->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCityName(): string
+    {
+        return $this->getCity()->getName();
+    }
+
+    /**
+     * @return CompanyReview|false|mixed|null
+     */
+    public function getFirstCategory(): mixed
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('status', self::STATUS_PUBLISHED))
+            ->orderBy(['createdAt' => 'DESC'])
+            ->setMaxResults(1);
+
+        $reviews = $this->categoryJobs->matching($criteria);
+
+        return $reviews->isEmpty() ? null : $reviews->first()->getTranslation('ro')->getTitle();
     }
 
     /**

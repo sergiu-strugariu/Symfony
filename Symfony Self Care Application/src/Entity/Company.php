@@ -746,7 +746,7 @@ class Company
 
         $reviews = $this->companyReviews->matching($criteria);
 
-        return $reviews->isEmpty() ? null : $reviews->first();
+        return $reviews->isEmpty() ? null : $reviews->first()->getReview();
     }
 
 

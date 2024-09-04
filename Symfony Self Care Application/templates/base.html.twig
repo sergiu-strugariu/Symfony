@@ -17,12 +17,47 @@
 {% block body %}{% endblock %}
 {% set category = app.request.query.get('category') %}
 {% set countyCode = app.request.query.get('county') %}
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="20107fcb-1bf8-4263-98a0-acc5107d838b"  type="text/javascript"></script>
+<!-- Google Tag Manager -->
 <script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TMKTWXBM');
+</script>
+<!-- End Google Tag Manager -->
+
+<!--start:: Cookiebot-->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookie_bot_id }}"
+        type="text/javascript"></script>
+<!--end:: Cookiebot-->
+
+<!--start:: Intercome-->
+<script>
+    {% if app.user %}
     window.intercomSettings = {
         api_base: "https://api-iam.intercom.io",
-        app_id: "dk36b4qz",
+        app_id: "{{ intercom_id }}",
+        user_id: "{{ app.user.id }}",
+        name: "{{ app.user.fullName }}",
+        email: "{{ app.user.email }}",
+        created_at: "{{ app.user.createdAt|date('Y-m-d H:i') }}",
+        user_hash: "{{ defaultHelper.intercomGetHash(app.user.id) }}"
     };
+    {% else %}
+    window.intercomSettings = {
+        api_base: "https://api-iam.intercom.io",
+        app_id: "{{ intercom_id }}",
+    };
+    {% endif %}
 </script>
 <script>
     (function () {
@@ -45,7 +80,7 @@
                 var s = d.createElement('script');
                 s.type = 'text/javascript';
                 s.async = true;
-                s.src = 'https://widget.intercom.io/widget/dk36b4qz';
+                s.src = 'https://widget.intercom.io/widget/{{ intercom_id }}';
                 var x = d.getElementsByTagName('script')[0];
                 x.parentNode.insertBefore(s, x);
             };
@@ -59,19 +94,23 @@
         }
     })();
 </script>
+<!--end:: Intercome-->
+
+<!--Start:: OneSignal-->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
+    OneSignalDeferred.push(async function (OneSignal) {
         await OneSignal.init({
-            appId: "996cef12-b547-45d8-bb2d-47c4110faf50",
-            safari_web_id: "web.onesignal.auto.548f76b5-1495-4e31-bc8e-b1b76d8ec8fd",
-            notifyButton: {
-                enable: true,
-            },
+            appId: "{{ onesignal_id }}",
+            safari_web_id: "{{ onesignal_web_id }}",
+            notifyButton: {enable: true}
         });
     });
 </script>
+<!--end:: OneSignal-->
+
+<!--Start:: Translations-->
 <script>
     // Default vars
     window.locale = '{{ locale }}';
@@ -101,6 +140,11 @@
     // Company types
     window.locationTypeProvider = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
     window.locationTypeCare = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
+
+    window.categoryResultsUrl = '{{ path('app_search_result') }}';
+    window.locationTypeJob = '{{ constant('App\\Entity\\Job::ENTITY_NAME') }}';
+    window.locationTypeArticle = '{{ constant('App\\Entity\\Article::ENTITY_NAME') }}';
+    window.locationTypeCourse = '{{ constant('App\\Entity\\TrainingCourse::ENTITY_NAME') }}';
 
     // Articles endpoints
     window.articlesData = '{{ path('ajax_get_articles') }}';
@@ -284,6 +328,8 @@
     window.favoriteAjaxPath = '{{ path('account_ajax_add_to_favorites') }}';
     window.newsletterFormPath = '{{ path('ajax_subscribe_newsletter') }}';
 </script>
+<!--End:: Translations-->
+
 {% block javascripts %}{% endblock %}
 {% block page_javascripts %}{% endblock %}
 </body>

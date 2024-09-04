@@ -25,7 +25,7 @@ class SecurityController extends AbstractController
     /**
      * @throws TransportExceptionInterface
      */
-    #[Route(path: '/inregistrare/{type}', name: 'app_register_form')]
+    #[Route(path: '/creare-cont/{type}', name: 'app_register_form')]
     public function register(EntityManagerInterface $em, Request $request, FileUploader $fileUploader, UserPasswordHasherInterface $passwordEncoder, TranslatorInterface $translator, MailHelper $mail, DefaultHelper $helper, $type): Response
     {
         $user = new User();
@@ -66,7 +66,8 @@ class SecurityController extends AbstractController
                 $uploadFile = $fileUploader->uploadFile(
                     $file,
                     $form,
-                    $this->getParameter('app_user_path')
+                    $this->getParameter('app_user_path'),
+                    'profilePicture'
                 );
 
                 if ($uploadFile['success']) {

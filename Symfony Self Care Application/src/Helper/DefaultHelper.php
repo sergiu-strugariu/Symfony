@@ -12,9 +12,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DefaultHelper
 {
     const CATEGORY_TYPES = ['training', 'job', 'article', 'care', 'provider'];
-    const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'logo', 'footerLogo', 'favicon'];
+    const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'instagramLink', 'logo', 'footerLogo', 'favicon'];
     const SETTING_FILE_FIELDS = ['logo', 'footerLogo', 'favicon'];
     const COMPANY_FILE_FIELDS = ['video' => 'videoPlaceholder', 'preview' => 'fileName', 'logo' => 'logo'];
+
+    /**
+     * @var string
+     */
+    private string $intercomSecretKey;
 
     /**
      * @var TranslatorInterface
@@ -35,12 +40,14 @@ class DefaultHelper
      * @param KernelInterface $kernel
      * @param ParameterBagInterface $parameterBag
      * @param TranslatorInterface $translator
+     * @param string $intercomSecretKey
      */
-    public function __construct(KernelInterface $kernel, ParameterBagInterface $parameterBag, TranslatorInterface $translator)
+    public function __construct(KernelInterface $kernel, ParameterBagInterface $parameterBag, TranslatorInterface $translator, string $intercomSecretKey)
     {
         $this->kernel = $kernel;
         $this->parameterBag = $parameterBag;
         $this->translator = $translator;
+        $this->intercomSecretKey = $intercomSecretKey;
     }
 
     /**
@@ -117,20 +124,31 @@ class DefaultHelper
     public function captchaVerify($recaptcha): bool
     {
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, $this->getEnvValue('recaptcha_site_verify'));
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, true);
-
-        curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                "secret" => $this->getEnvValue('recaptcha_secret_key'),
-                "response" => $recaptcha
-            ]
-        );
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ["secret" => $this->getEnvValue('recaptcha_secret_key'), "response" => $recaptcha]);
 
         $response = curl_exec($ch);
+
+        if ($response === false) {
+            // Handle cURL error
+            $error = curl_error($ch);
+            curl_close($ch);
+
+            return true;
+        }
+
         curl_close($ch);
         $data = json_decode($response);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            return true;
+        }
 
         return !$data->success;
     }
@@ -224,5 +242,14 @@ class DefaultHelper
             'labels' => $labels,
             'values' => $values
         ];
+    }
+
+    /**
+     * @param $id
+     * @return false|string
+     */
+    public function intercomGetHash($id): bool|string
+    {
+        return hash_hmac('sha256', $id, $this->intercomSecretKey);
     }
 }

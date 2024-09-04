@@ -41,6 +41,18 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    #[Route('/rezultate-search', name: 'app_search_result')]
+    public function searchResults(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    {
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "search"]);
+
+        return $this->render('frontend/pages/search.html.twig', [
+            'page' => $page,
+            'breadcrumbs' => $helper::SEARCH_BREADCRUMBS
+        ]);
+    }
+
     #[Route(path: '/creare-cont', name: 'app_create_account')]
     public function register(EntityManagerInterface $em): Response
     {

@@ -53,9 +53,10 @@ class ElasticSearchController extends AbstractController
     public function index(Request $request, LanguageHelper $helper, ElasticSearchHelper $searchHelper): JsonResponse
     {
         // FormData
-        $query = $request->get('search');
+        $query = '*' .$request->get('search') . '*';
         $county = empty($request->get('county')) ? '' : $request->get('county');
         $limit = $request->get('limit');
+        $page = $request->get('page', 1);
         $locale = $helper->getLanguageByLocale($request->get('locale', $this->getParameter('default_locale')));
 
         if (empty($query) || empty($limit) || empty($locale)) {
@@ -72,7 +73,8 @@ class ElasticSearchController extends AbstractController
             $locale->getLocale(),
             $searchHelper::ARTICLE_QUERY_FIELDS['fields'],
             $searchHelper::ARTICLE_QUERY_FIELDS['translationField'],
-            $limit
+            $limit,
+            $page
         );
 
         // Get courses by search params
@@ -83,6 +85,7 @@ class ElasticSearchController extends AbstractController
             $searchHelper::COURSE_QUERY_FIELDS['fields'],
             $searchHelper::COURSE_QUERY_FIELDS['translationField'],
             $limit,
+            $page,
             $county
         );
 
@@ -94,6 +97,7 @@ class ElasticSearchController extends AbstractController
             $searchHelper::JOB_QUERY_FIELDS['fields'],
             $searchHelper::JOB_QUERY_FIELDS['translationField'],
             $limit,
+            $page,
             $county
         );
 
@@ -104,7 +108,8 @@ class ElasticSearchController extends AbstractController
             Company::LOCATION_TYPE_CARE,
             $searchHelper::COMPANY_QUERY_FIELDS,
             $county,
-            $limit
+            $limit,
+            $page
         );
 
         // Get company care by search params
@@ -114,30 +119,41 @@ class ElasticSearchController extends AbstractController
             Company::LOCATION_TYPE_PROVIDER,
             $searchHelper::COMPANY_QUERY_FIELDS,
             $county,
-            $limit
+            $limit,
+            $page
         );
 
         return new JsonResponse([
             'status' => true,
             'companyCares' => [
                 'rows' => $companyCare['data'],
-                'total' => $companyCare['total']
+                'total' => $companyCare['total'],
+                'page' => $companyCare['page'],
+                'totalPages' => $companyCare['pages']
             ],
             'companyServices' => [
                 'rows' => $companyService['data'],
-                'total' => $companyService['total']
+                'total' => $companyService['total'],
+                'page' => $companyService['page'],
+                'totalPages' => $companyService['pages']
             ],
             'articles' => [
                 'rows' => $articles['data'],
-                'total' => $articles['total']
+                'total' => $articles['total'],
+                'page' => $articles['page'],
+                'totalPages' => $articles['pages']
             ],
             'courses' => [
                 'rows' => $courses['data'],
-                'total' => $courses['total']
+                'total' => $courses['total'],
+                'page' => $courses['page'],
+                'totalPages' => $courses['pages']
             ],
             'jobs' => [
                 'rows' => $jobs['data'],
-                'total' => $jobs['total']
+                'total' => $jobs['total'],
+                'page' => $jobs['page'],
+                'totalPages' => $jobs['pages']
             ]
         ]);
     }

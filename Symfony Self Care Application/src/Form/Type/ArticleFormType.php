@@ -94,7 +94,7 @@ class ArticleFormType extends AbstractType
                 ],
                 'choices' => Article::getStatuses()
             ])
-            ->add('image', FileType::class, [
+            ->add('fileName', FileType::class, [
                 'required' => empty($data->getId()),
                 'mapped' => false,
                 'constraints' => [

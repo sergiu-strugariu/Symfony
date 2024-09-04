@@ -40,7 +40,7 @@ class ArticleController extends AbstractController
             $article->setUser($this->getUser());
 
             // get data from the form
-            $file = $form->get('image')->getData();
+            $file = $form->get('fileName')->getData();
 
             // create translation and set data
             $articleTranslation = new ArticleTranslation();
@@ -61,8 +61,8 @@ class ArticleController extends AbstractController
 
             // Check and set @filename
             if ($uploadFile['success']) {
-                // Set image file
-                $article->setImage($uploadFile['fileName']);
+                // Set fileName file
+                $article->setFileName($uploadFile['fileName']);
 
                 // save new item to DB
                 $em->persist($article);
@@ -115,7 +115,7 @@ class ArticleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get data from the form
-            $file = $form->get('image')->getData();
+            $file = $form->get('fileName')->getData();
             $fileUploaded = true;
 
             $article->setUpdatedAt(new DateTime());
@@ -140,7 +140,7 @@ class ArticleController extends AbstractController
 
                 // Check and set @filename
                 if ($uploadFile['success']) {
-                    $article->setImage($uploadFile['fileName']);
+                    $article->setFileName($uploadFile['fileName']);
                 }
             }
 
@@ -160,7 +160,7 @@ class ArticleController extends AbstractController
         return $this->render('dashboard/article/actions.html.twig', [
             'form' => $form->createView(),
             'pageTitle' => $translator->trans('controller.edit_article', [], 'messages'),
-            'image' => $article->getImage()
+            'image' => $article->getFileName()
         ]);
     }
 

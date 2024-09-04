@@ -21,7 +21,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/dashboard/user/{uuid}/edit', name: 'dashboard_user_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, $uuid, TranslatorInterface $translator): Response
+    public function edit(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TranslatorInterface $translator, $uuid): Response
     {
         $user = $em->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
         if (null === $user) {
@@ -58,7 +58,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/dashboard/user/{uuid}/delete', name: 'dashboard_user_delete')]
-    public function delete(EntityManagerInterface $em, $uuid): Response
+    public function delete(EntityManagerInterface $em, TranslatorInterface $translator, $uuid): Response
     {
         $user = $em->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
         if (null === $user) {

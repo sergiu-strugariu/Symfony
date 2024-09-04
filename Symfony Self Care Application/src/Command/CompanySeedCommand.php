@@ -226,7 +226,7 @@ class CompanySeedCommand extends Command
         $company->setCompanyCapacity($rowData['companyCapacity']);
         $company->setAdmissionCriteria(55);
         $company->setPrice(rand(2000, 10000));
-        $company->setWebsite('https://seniorhelp.ro');
+        $company->setWebsite('https://www.seniorhelp.ro');
         $company->setAvailableServices(Company::getServices());
         $company->addCategoryCare($category);
         $company->setShortDescription($rowData['name'] . self::SHORT_DESCRIPTION);

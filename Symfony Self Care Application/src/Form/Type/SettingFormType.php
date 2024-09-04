@@ -32,11 +32,7 @@ class SettingFormType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'dashboard.form.field_mandatory'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?:(?:(?:\+4)?07\d{2}\d{6}|(?:\+4)?(21|31)\d{1}\d{6}|(?:\+4)?((2|3)[3-7]\d{1})\d{6}|(?:\+4)?(8|9)0\d{1}\d{6}))$/',
-                        'message' => 'form.phone.phone_ro'
-                    ]),
+                    ])
                 ]
             ])
             ->add('helpLine', TextType::class, [
@@ -46,11 +42,7 @@ class SettingFormType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'dashboard.form.field_mandatory'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?:(?:(?:\+4)?07\d{2}\d{6}|(?:\+4)?(21|31)\d{1}\d{6}|(?:\+4)?((2|3)[3-7]\d{1})\d{6}|(?:\+4)?(8|9)0\d{1}\d{6}))$/',
-                        'message' => 'form.phone.phone_ro'
-                    ]),
+                    ])
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -96,12 +88,22 @@ class SettingFormType extends AbstractType
                     ])
                 ]
             ])
+            ->add('instagramLink', TextType::class, [
+                'required' => true,
+                'mapped' => false,
+                'data' => !empty($data['instagramLink']) ? $data['instagramLink'] : '',
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory'
+                    ])
+                ]
+            ])
             ->add('logo', FileType::class, [
                 'required' => empty($data['logo']),
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '3M'
                     ]),
@@ -119,7 +121,7 @@ class SettingFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '3M'
                     ]),
