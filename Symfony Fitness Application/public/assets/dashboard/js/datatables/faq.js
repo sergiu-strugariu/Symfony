@@ -1,15 +1,13 @@
 "use strict";
 
 // Class definition
-let KTDatatableUsers = function () {
+let KTDatatableTeamMembers = function () {
     // Shared variables
     let table;
     let datatable;
-    let range;
 
     // Private functions
-    let initDatatable = function (role) {
-        range = $('#kt_daterangepicker_1').val();
+    let initDatatable = function () {
 
         datatable = $(table).DataTable({
             searchDelay: 500,
@@ -21,43 +19,15 @@ let KTDatatableUsers = function () {
             stateSave: false,
             lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
             ajax: {
-                url: "/dashboard/ajax/users",
-                data: {
-                    'role': role,
-                    'range': range
-                }
+                url: window.faqAjaxPath,
             },
             columns: [
                 {data: 'id'},
-                {data: 'firstName'},
-                {data: 'email'},
-                {data: 'educationRegistrationsCount'},
-                {data: 'enabled'},
+                {data: 'question'},
                 {data: 'createdAt'},
-                {data: 'lastLoginAt'},
                 {data: null}
             ],
             columnDefs: [
-                {
-                    targets: 4,
-                    orderable: true,
-                    className: 'text-center',
-                    render: function (data, type, row) {
-                        if (data) {
-                            return `<span class="badge badge-success">activ</span>`;
-                        } else {
-                            return `<span class="badge badge-danger">inactiv</span>`;
-                        }
-                    }
-                },
-                {
-                    targets: 6,
-                    orderable: true,
-                    className: 'text-center',
-                    render: function (data, type, row) {
-                        return data ? data : `<span class="badge badge-light-dark">-</span>`;
-                    }
-                },
                 {
                     targets: -1,
                     data: null,
@@ -80,14 +50,14 @@ let KTDatatableUsers = function () {
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/dashboard/user/${row.uuid}/edit" class="menu-link px-3">
+                                    <a href="/dashboard/faq/${row.uuid}/edit" class="menu-link px-3">
                                         Edit
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-table-action="delete" data-action="/dashboard/user/${row.uuid}/delete">
+                                    <a href="#" class="menu-link px-3" data-kt-table-action="delete" data-action="/dashboard/faq/${row.uuid}/delete">
                                         Delete
                                     </a>
                                 </div>
@@ -123,7 +93,7 @@ let KTDatatableUsers = function () {
             }, 500);
         });
     };
-    
+
     // Handle delete
     let handleDeleteRow = () => {
         // Delete button on click
@@ -133,7 +103,7 @@ let KTDatatableUsers = function () {
                 e.preventDefault();
 
                 Swal.fire({
-                    text: "Are you sure you want to delete this user?",
+                    text: "Are you sure you want to delete this faq?",
                     icon: "warning",
                     showCancelButton: true,
                     buttonsStyling: false,
@@ -157,7 +127,7 @@ let KTDatatableUsers = function () {
     // Public methods
     return {
         init: function (role) {
-            table = document.querySelector('#kt_datatable_users');
+            table = document.querySelector('#kt_datatable_faq');
 
             if (!table) {
                 return;
@@ -168,3 +138,8 @@ let KTDatatableUsers = function () {
         }
     };
 }();
+
+KTUtil.onDOMContentLoaded(function () {
+    KTDatatableTeamMembers.init();
+});
+

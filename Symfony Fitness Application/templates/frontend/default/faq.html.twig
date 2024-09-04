@@ -1,0 +1,10 @@
+{% extends "layout.html.twig" %} {% block content %}
+
+    {% block title %}Faq {{ parent() }} {% endblock %}
+
+    <main class="faq">
+        {% include "frontend/default/partials/faq/intro.html.twig" %}
+        {% include "frontend/default/partials/faq/faq.html.twig" %}
+    </main>
+
+{% endblock %}

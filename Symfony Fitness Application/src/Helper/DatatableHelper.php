@@ -33,6 +33,12 @@ class DatatableHelper
         "status"
     ];
 
+    const FAQ_FIELDS = [
+        "id",
+        "question",
+        "createdAt"
+    ];
+
     const LEAD_FIELDS = [
         "id",
         "firstName",

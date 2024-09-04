@@ -17,6 +17,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\CertificationRepository;
 use App\Repository\EducationRepository;
 use App\Repository\EducationRegistrationRepository;
+use App\Repository\FaqRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\GalleryRepository;
 use App\Repository\LanguageRepository;
@@ -165,6 +166,29 @@ class AjaxController extends AbstractController
         );
 
         return $this->getFilteredData($articleRepository, $articles, $params);
+    }
+
+    #[Route('/dashboard/ajax/faq', name: 'dashboard_ajax_faq')]
+    public function getFaq(Request $request, FaqRepository $FAQRepository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::FAQ_FIELDS);
+
+        // get default language
+        $defaultLanguage = $languageHelper->getDefaultLanguage();
+
+        // filter by params
+        $faqs = $FAQRepository->findByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $defaultLanguage
+        );
+
+        return $this->getFilteredData($FAQRepository, $faqs, $params);
     }
 
     #[Route('/dashboard/ajax/leads', name: 'dashboard_ajax_leads')]

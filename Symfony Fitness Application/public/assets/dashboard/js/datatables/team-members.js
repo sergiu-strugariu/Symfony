@@ -5,9 +5,12 @@ let KTDatatableTeamMembers = function () {
     // Shared variables
     let table;
     let datatable;
+    let range;
 
     // Private functions
     let initDatatable = function () {
+        range = $('#kt_daterangepicker_1').val();
+
         datatable = $(table).DataTable({
             searchDelay: 500,
             processing: true,
@@ -18,11 +21,15 @@ let KTDatatableTeamMembers = function () {
             stateSave: false,
             lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
             ajax: {
-                url: window.teamMembersAjaxPath
+                url: window.teamMembersAjaxPath,
+                data: {
+                    'range': range
+                }
             },
             columns: [
                 {data: 'id'},
                 {data: 'name'},
+                {data: 'teamMemberEducations'},
                 {data: null}
             ],
             columnDefs: [

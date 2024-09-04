@@ -1,11 +1,5 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-$('#cache-clear').click(function (event) {
-    event.preventDefault();
+$('#cache-clear').click(function (event) {event.preventDefault();
 
     $.ajax({
         url: window.ajaxCacheClear,
@@ -61,49 +55,18 @@ if (document.querySelector('.counties') && document.querySelector('.cities')) {
     });
 }
 
-$('#education_price').on('change', function () {
-    let price = Number($('#education_price').val());
-    let vat = Number($('#education_vat').val());
+let price = Number($("#education_price").val());
+let vat = Number($("#education_vat").val());
+$("#education_finalPrice").val((price + (vat / 100) * price).toFixed(2));
 
-    $('#education_finalPrice').val(price + ((vat) / 100 * price));
-})
+$("#education_price").on("change", function () {
+    price = Number($("#education_price").val());
+    vat = Number($("#education_vat").val());
+    $("#education_finalPrice").val((price + (vat / 100) * price).toFixed(2));
+});
 
-$('#education_vat').on('change', function () {
-    let price = Number($('#education_price').val());
-    let vat = Number($('#education_vat').val());
-
-    $('#education_finalPrice').val(price + ((vat) / 100 * price));
-})
-
-$('.delete-education-schedule').on('click', function (e) {
-    e.preventDefault();
-
-    let id = $(this).data('id');
-    let parent = $(this).closest('.card');
-
-    Swal.fire({
-        text: "Are you sure you want to delete this schedule?",
-        icon: "warning",
-        showCancelButton: true,
-        buttonsStyling: false,
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-        customClass: {
-            confirmButton: "btn fw-bold btn-danger",
-            cancelButton: "btn fw-bold btn-active-light-primary"
-        }
-    }).then(function (result) {
-        if (result.value) {
-            $.ajax({
-                method: "GET",
-                url: '/dashboard/ajax/education/schedule/' + id + '/delete',
-                cache: false,
-                success: function (response) {
-                    if (response.success) {
-                        parent.remove();
-                    }
-                }
-            });
-        }
-    });
+$("#education_vat").on("change", function () {
+    price = Number($("#education_price").val());
+    vat = Number($("#education_vat").val());
+    $("#education_finalPrice").val((price + (vat / 100) * price).toFixed(2));
 });
