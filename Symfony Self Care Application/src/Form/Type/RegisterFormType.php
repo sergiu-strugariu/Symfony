@@ -98,7 +98,7 @@ class RegisterFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png'],
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '1M'
                     ])

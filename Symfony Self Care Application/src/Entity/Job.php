@@ -363,9 +363,9 @@ class Job
             ->orderBy(['createdAt' => 'DESC'])
             ->setMaxResults(1);
 
-        $reviews = $this->categoryJobs->matching($criteria);
+        $categories = $this->categoryJobs->matching($criteria);
 
-        return $reviews->isEmpty() ? null : $reviews->first()->getTranslation('ro')->getTitle();
+        return $categories->isEmpty() ? null : $categories->first();
     }
 
     /**

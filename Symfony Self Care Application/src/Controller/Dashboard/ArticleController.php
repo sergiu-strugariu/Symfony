@@ -52,28 +52,30 @@ class ArticleController extends AbstractController
 
             $article->addArticleTranslation($articleTranslation);
 
-            // Upload company file
-            $uploadFile = $fileUploader->uploadFile(
-                $file,
-                $form,
-                $this->getParameter('app_article_path')
-            );
+            if (isset($file)) {
+                // Upload article file
+                $uploadFile = $fileUploader->uploadFile(
+                    $file,
+                    $form,
+                    $this->getParameter('app_article_path')
+                );
 
-            // Check and set @filename
-            if ($uploadFile['success']) {
-                // Set fileName file
-                $article->setFileName($uploadFile['fileName']);
-
-                // save new item to DB
-                $em->persist($article);
-                $em->persist($articleTranslation);
-                $em->flush();
-
-                // Set flash message
-                $this->addFlash('success', $translator->trans('controller.success_item_added', [], 'messages'));
-
-                return $this->redirectToRoute('dashboard_article_index');
+                // Check and set @filename
+                if ($uploadFile['success']) {
+                    // Set fileName file
+                    $article->setFileName($uploadFile['fileName']);
+                }
             }
+
+            // save new item to DB
+            $em->persist($article);
+            $em->persist($articleTranslation);
+            $em->flush();
+
+            // Set flash message
+            $this->addFlash('success', $translator->trans('controller.success_item_added', [], 'messages'));
+
+            return $this->redirectToRoute('dashboard_article_index');
         }
 
         return $this->render('dashboard/article/actions.html.twig', [

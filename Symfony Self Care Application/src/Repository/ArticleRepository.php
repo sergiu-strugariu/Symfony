@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\CategoryArticle;
 use App\Entity\Language;
 use App\Entity\User;
+use App\Helper\DefaultHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,9 +21,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArticleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var DefaultHelper
+     */
+    protected DefaultHelper $helper;
+
+    public function __construct(ManagerRegistry $registry, DefaultHelper $helper)
     {
         parent::__construct($registry, Article::class);
+        $this->helper = $helper;
     }
 
     /**
@@ -57,6 +64,8 @@ class ArticleRepository extends ServiceEntityRepository
      */
     public function findArticlesByFilters(string $column, string $dir, $keyword, Language $language, User $user = null): array
     {
+        $defaultImage = $this->helper->getEnvValue('app_default_image');
+
         $queryBuilder = $this->createQueryBuilder('a')
             ->join('a.articleTranslations', 'at')
             ->select("
@@ -64,7 +73,7 @@ class ArticleRepository extends ServiceEntityRepository
                 a.uuid,
                 a.slug,
                 at.title,
-                a.fileName,
+                COALESCE(a.fileName, '$defaultImage') as fileName,
                 a.status,
                 DATE_FORMAT(a.createdAt, '%d-%m-%Y %H:%i') as createdAt"
             )

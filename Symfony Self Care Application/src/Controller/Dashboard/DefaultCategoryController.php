@@ -265,10 +265,10 @@ class DefaultCategoryController extends AbstractController
             case 'job':
                 $categoryClass = CategoryJob::class;
                 break;
-            case 'care':
+            case Company::LOCATION_TYPE_CARE:
                 $categoryClass = CategoryCare::class;
                 break;
-            case 'service':
+            case Company::LOCATION_TYPE_PROVIDER:
                 $categoryClass = CategoryService::class;
                 break;
         }

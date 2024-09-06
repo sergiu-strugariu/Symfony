@@ -4,13 +4,18 @@
 {% block content %}
     {% if page %}
         {% set searchType = app.request.query.get('type') %}
-        <main class="{{ searchType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') ? 'catalogue' : '' }}
-                    {{ searchType == constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') ? 'care-resources': '' }}
-                    {{ searchType == constant('App\\Entity\\Job::ENTITY_NAME') ? 'jobs': '' }}
-                    {{ searchType == constant('App\\Entity\\TrainingCourse::ENTITY_NAME') ? 'jobs courses-forming': '' }}
-                    {{ searchType == constant('App\\Entity\\Article::ENTITY_NAME') ? 'blog': '' }}">
+
+        {% set care = (constant('App\\Entity\\Company::LOCATION_TYPE_CARE')) %}
+        {% set provider = (constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER')) %}
+        {% set job = (constant('App\\Entity\\Job::ENTITY_NAME')) %}
+        {% set course = (constant('App\\Entity\\TrainingCourse::ENTITY_NAME')) %}
+        {% set article =  (constant('App\\Entity\\Article::ENTITY_NAME')) %}
+
+        {% set classes = { care: 'catalogue', provider: 'care-resources', job: 'jobs resultsList-filter-county', course: 'jobs courses-forming resultsList-filter-county', article: 'blog'} %}
+
+        <main class="{{ classes[searchType] ?? '' }}">
             {% for section in page.pageSections %}
-                {% include 'frontend/pages/' ~ page.machineName ~ '/' ~ section.template ignore missing %}
+                {% include 'frontend/pages/' ~ page.machineName ~ '/' ~ section.template ignore missing with {'care': care, 'provider': provider, 'job': job, 'course': course, 'article': article} %}
             {% endfor %}
         </main>
     {% endif %}

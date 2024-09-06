@@ -54,6 +54,19 @@ class ElasticSearchHelper
     ];
 
     /**
+     * @var DefaultHelper
+     */
+    protected DefaultHelper $helper;
+
+    /**
+     *
+     */
+    public function __construct(DefaultHelper $helper)
+    {
+        $this->helper = $helper;
+    }
+
+    /**
      * @param Index $finder
      * @param string $searchTerm
      * @param string $locale
@@ -153,6 +166,7 @@ class ElasticSearchHelper
      * @param int $page
      * @param string $searchType
      * @return array
+     * @throws \Exception
      */
     public function searchCompany(Index $finder, string $searchTerm, string $locationType, array $fields, string $countyCode, int $limit = 5, int $page = 1, string $searchType = 'phrase_prefix')
     {
@@ -225,6 +239,7 @@ class ElasticSearchHelper
      * @param string $translationField
      * @param bool $hasTranslation
      * @return array
+     * @throws \Exception
      */
     protected function formatElasticaResultSet(ResultSet $resultSet, bool $hasTranslation = false, string $locale = '', string $translationField = ''): array
     {
@@ -234,19 +249,48 @@ class ElasticSearchHelper
             $source = $result->getSource();
 
             if ($hasTranslation) {
-                // Filter and keep only the translation that matches the specified locale
-                $filteredTranslations = array_values(array_filter($source[$translationField], function ($translation) use ($locale) {
-                    return $translation['languageLocale'] === $locale;
-                }));
-
-                if (!empty($filteredTranslations)) {
-                    // Replace the array of translations with the filtered one
-                    $source[$translationField] = $filteredTranslations[0];
-                    $formattedResults[] = $source;
+                if (!empty($source['createdAt'])){
+                    $source['createdAt'] = $this->helper->getTimeAgo(new \DateTime($source['createdAt']));
                 }
-            } else {
-                $formattedResults[] = $source;
+
+                if (!empty($source[$translationField])) {
+                    // Filter and keep only the translation that matches the specified locale
+                    $filteredTranslations = array_values(array_filter($source[$translationField], function ($translation) use ($locale) {
+                        return $translation['languageLocale'] === $locale;
+                    }));
+
+                    // Replace the array of translations with the filtered one
+                    if (!empty($filteredTranslations)) {
+                        $source[$translationField] = $filteredTranslations[0];
+                    }
+                }
+
+                if (!empty($source['firstCategory']['categoryJobTranslations'])) {
+                    // Filter and keep only the translation that matches the specified locale
+                    $catFilteredTranslations = array_values(array_filter($source['firstCategory']['categoryJobTranslations'], function ($translation) use ($locale) {
+                        return $translation['languageLocale'] == $locale;
+                    }));
+
+                    // Replace the array of translations with the filtered one
+                    if (!empty($catFilteredTranslations)) {
+                        $source['firstCategory'] = $catFilteredTranslations[0]['title'];
+                    }
+                }
+
+                if (!empty($source['firstCategory']['categoryCourseTranslations'])) {
+                    // Filter and keep only the translation that matches the specified locale
+                    $catCourseFilteredTranslations = array_values(array_filter($source['firstCategory']['categoryCourseTranslations'], function ($translation) use ($locale) {
+                        return $translation['languageLocale'] == $locale;
+                    }));
+
+                    // Replace the array of translations with the filtered one
+                    if (!empty($catCourseFilteredTranslations)) {
+                        $source['firstCategory'] = $catCourseFilteredTranslations[0]['title'];
+                    }
+                }
             }
+
+            $formattedResults[] = $source;
         }
 
         return $formattedResults;

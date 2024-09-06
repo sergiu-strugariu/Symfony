@@ -20,7 +20,8 @@
                                 <form id="profileImage">
                                     <div class="profile-error-message"></div>
                                     <div class="image-container upload">
-                                        <div class="data-image" style="background-image: url( {{ asset(app_user_path ~ app.user.profilePicture , 'cloudflare') }})">
+                                        <div class="data-image"
+                                             style="background-image: url( {{ asset(app_user_path ~ app.user.profilePicture , 'cloudflare') }})">
                                         </div>
                                         <div class="upload-container">
                                             <label id="image-input" for="inputImage"></label>
@@ -39,7 +40,8 @@
                                         </div>
                                     </div>
                                 </form>
-                                <p><span class="current-user-name">{{ app.user.name }}</span> <span class="current-user-surname">{{ app.user.surname }}</span></p>
+                                <p><span class="current-user-name">{{ app.user.name }}</span> <span
+                                            class="current-user-surname">{{ app.user.surname }}</span></p>
                             </div>
                             <div id="errorMessageAvatar"></div>
                         </div>
@@ -49,49 +51,57 @@
                             <h4>{{ 'menu.email_link'|trans }}</h4>
                             <p>{{ app.user.email }}</p>
                         </div>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalChangeEmail">{{ 'dashboard.edit_profile.change_profile_email'|trans }}</a>
+                        <a href="#" data-bs-toggle="modal"
+                           data-bs-target="#modalChangeEmail">{{ 'dashboard.edit_profile.change_profile_email'|trans }}</a>
                     </div>
                     <div class="row">
                         <div class="pack">
                             <h4>{{ 'form.placeholder.password'|trans }}</h4>
                             <p>{{ 'dashboard.edit_profile.change_password'|trans }}</p>
                         </div>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalChangePassword">{{ 'dashboard.edit_profile.change_password'|trans }}</a>
+                        <a href="#" data-bs-toggle="modal"
+                           data-bs-target="#modalChangePassword">{{ 'dashboard.edit_profile.change_password'|trans }}</a>
                     </div>
                     <div class="row">
                         <div class="pack">
                             <h4>{{ 'common.filter_name'|trans }}</h4>
                             <p>{{ 'dashboard.edit_profile.change_profile_name'|trans }}</p>
                         </div>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalChangeName">{{ 'dashboard.edit_profile.change_profile_name'|trans }}</a>
+                        <a href="#" data-bs-toggle="modal"
+                           data-bs-target="#modalChangeName">{{ 'dashboard.edit_profile.change_profile_name'|trans }}</a>
                     </div>
                     <div class="row">
                         <div class="pack">
                             <h4>{{ 'common.filter_surname'|trans }}</h4>
                             <p>{{ 'dashboard.edit_profile.change_profile_surname'|trans }}</p>
                         </div>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalChangeSurname">{{ 'dashboard.edit_profile.change_profile_surname'|trans }}</a>
+                        <a href="#" data-bs-toggle="modal"
+                           data-bs-target="#modalChangeSurname">{{ 'dashboard.edit_profile.change_profile_surname'|trans }}</a>
                     </div>
                     <div class="row">
                         <div class="pack">
                             <h4>{{ 'menu.phone_link'|trans }}</h4>
                             <p>{{ 'dashboard.edit_profile.change_phone_number'|trans }}</p>
                         </div>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalChangePhoneNumber">{{ 'dashboard.edit_profile.change_phone_number'|trans }}</a>
+                        <a href="#" data-bs-toggle="modal"
+                           data-bs-target="#modalChangePhoneNumber">{{ 'dashboard.edit_profile.change_phone_number'|trans }}</a>
                     </div>
                 </div>
-                <div class="board">
-                    <div class="row">
-                        <h3>{{ 'dashboard.actions.actions'|trans }}</h3>
-                    </div>
-                    <div class="row">
-                        <div class="pack">
-                            <h4>{{ 'dashboard.edit_profile.delete_account'|trans }}</h4>
-                            <p>{{ 'dashboard.edit_profile.delete_no_return'|trans }}</p>
+                {% if not is_granted('ROLE_ADMIN') %}
+                    <div class="board">
+                        <div class="row">
+                            <h3>{{ 'dashboard.actions.actions'|trans }}</h3>
                         </div>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalChangeDelete">{{ 'dashboard.edit_profile.delete_account'|trans }}</a>
+                        <div class="row">
+                            <div class="pack">
+                                <h4>{{ 'dashboard.edit_profile.delete_account'|trans }}</h4>
+                                <p>{{ 'dashboard.edit_profile.delete_no_return'|trans }}</p>
+                            </div>
+                            <a href="#" data-bs-toggle="modal"
+                               data-bs-target="#modalChangeDelete">{{ 'dashboard.edit_profile.delete_account'|trans }}</a>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
 

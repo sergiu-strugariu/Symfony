@@ -197,7 +197,7 @@
                                 <!--begin:Menu item-->
                                 <div class="menu-item">
                                     <!--begin:Menu link-->
-                                    <a class="menu-link {{ type =='care' ? 'active' : '' }}"
+                                    <a class="menu-link {{ type == careType ? 'active' : '' }}"
                                        href="{{ path('dashboard_default_category_index', {'type': careType}) }}">
                                 <span class="menu-bullet">
                                    <span class="bullet bullet-dot"></span>
@@ -215,7 +215,7 @@
 
                     <!--begin:Menu items-->
                     <div data-kt-menu-trigger="click"
-                         class="menu-item here menu-accordion {{ type =='service' or route == 'dashboard_company_index' and locationType == providerType or route == 'dashboard_company_create' and locationType == providerType or route == 'dashboard_company_edit' and locationType == providerType ? 'hover show' : '' }}">
+                         class="menu-item here menu-accordion {{ type == providerType or route == 'dashboard_company_index' and locationType == providerType or route == 'dashboard_company_create' and locationType == providerType or route == 'dashboard_company_edit' and locationType == providerType ? 'hover show' : '' }}">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                       <span class="menu-image-v1">
@@ -251,7 +251,7 @@
                                 <!--begin:Menu item-->
                                 <div class="menu-item">
                                     <!--begin:Menu link-->
-                                    <a class="menu-link {{ type =='service' ? 'active' : '' }}"
+                                    <a class="menu-link {{ type == providerType ? 'active' : '' }}"
                                        href="{{ path('dashboard_default_category_index', {'type': providerType}) }}">
                                 <span class="menu-bullet">
                                    <span class="bullet bullet-dot"></span>
@@ -269,7 +269,7 @@
 
                     <!--begin:Menu items-->
                     <div data-kt-menu-trigger="click"
-                         class="menu-item here menu-accordion {{ type =='article' or route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'hover show' : '' }}">
+                         class="menu-item here menu-accordion {{ type == 'article' or route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'hover show' : '' }}">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                         <span class="menu-image-v1">
@@ -305,7 +305,7 @@
                                 <!--begin:Menu item-->
                                 <div class="menu-item">
                                     <!--begin:Menu link-->
-                                    <a class="menu-link {{ type =='article' ? 'active' : '' }}"
+                                    <a class="menu-link {{ type == 'article' ? 'active' : '' }}"
                                        href="{{ path('dashboard_default_category_index', {'type': 'article'}) }}">
                                 <span class="menu-bullet">
                                    <span class="bullet bullet-dot"></span>

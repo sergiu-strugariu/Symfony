@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends AbstractController
 {
@@ -41,11 +42,15 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/rezultate-search', name: 'app_search_result')]
-    public function searchResults(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    #[Route('/cautare', name: 'app_search_result')]
+    public function searchResults(EntityManagerInterface $em, Request $request, BreadcrumbsHelper $helper): Response
     {
         /** @var Page $page */
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "search"]);
+
+        if (empty($request->get('type')) && empty($request->get('search'))) {
+            return $this->redirectToRoute('app_homepage');
+        }
 
         return $this->render('frontend/pages/search.html.twig', [
             'page' => $page,

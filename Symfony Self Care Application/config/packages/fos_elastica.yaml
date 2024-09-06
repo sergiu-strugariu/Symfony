@@ -2,7 +2,7 @@ fos_elastica:
   clients:
     default: { host: '%env(ELASTICSEARCH_URL)%', port: '%env(ELASTICSEARCH_PORT)%' }
   indexes:
-    company:
+    '%env(resolve:ELASTICSEARCH_COMPANY_INDEX)%':
       settings:
         analysis:
           filter:
@@ -24,6 +24,7 @@ fos_elastica:
         countyName: { type: 'text', analyzer: 'custom_analyzer' }
         cityName: { type: 'text', analyzer: 'custom_analyzer' }
         address: { type: 'text', analyzer: 'custom_analyzer' }
+        fileName: { type: 'text' }
         firstReview: { type: 'text' }
         averageRating: { type: 'text' }
         averageCount: { type: 'text' }
@@ -35,6 +36,10 @@ fos_elastica:
           type: nested
           properties:
             code: { type: 'keyword' }
+        companyGalleries:
+          type: nested
+          properties:
+            fileName: { type: 'text' }
       persistence:
         driver: orm
         model: App\Entity\Company
@@ -43,7 +48,7 @@ fos_elastica:
           insert: true
           update: true
           delete: true
-    job:
+    '%env(resolve:ELASTICSEARCH_JOB_INDEX)%':
       settings:
         analysis:
           filter:
@@ -58,12 +63,13 @@ fos_elastica:
                 - ascii_folding
       properties:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
-        fileName: { type: 'keyword' }
+        fileName: { type: 'text' }
         status: { type: 'keyword' }
-        jobType: { type: 'keyword' }
-        firstCategory: { type: 'text' }
-        countyName: { type: 'keyword' }
-        cityName: { type: 'keyword' }
+        jobType: { type: 'text' }
+        countyName: { type: 'text' }
+        cityName: { type: 'text' }
+        address: { type: 'text' }
+        createdAt: { type: 'text' }
         deletedAt: { type: 'keyword' }
         jobTranslations:
           type: nested
@@ -76,6 +82,18 @@ fos_elastica:
           type: nested
           properties:
             code: { type: 'keyword' }
+        firstCategory:
+          type: nested
+          properties:
+            categoryJobTranslations:
+              type: nested
+              properties:
+                title: { type: 'text' }
+                languageLocale: { type: 'keyword' }
+        company:
+          type: nested
+          properties:
+            name: { type: 'text' }
       persistence:
         driver: orm
         model: App\Entity\Job
@@ -84,7 +102,7 @@ fos_elastica:
           insert: true
           update: true
           delete: true
-    course:
+    '%env(resolve:ELASTICSEARCH_COURSE_INDEX)%':
       settings:
         analysis:
           filter:
@@ -99,12 +117,12 @@ fos_elastica:
                 - ascii_folding
       properties:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
-        fileName: { type: 'keyword' }
+        fileName: { type: 'text' }
         status: { type: 'keyword' }
-        price: { type: 'keyword' }
-        firstCategory: { type: 'keyword' }
-        countyName: { type: 'keyword' }
-        cityName: { type: 'keyword' }
+        price: { type: 'text' }
+        countyName: { type: 'text' }
+        cityName: { type: 'text' }
+        format: { type: 'text' }
         deletedAt: { type: 'keyword' }
         trainingCourseTranslations:
           type: nested
@@ -112,11 +130,26 @@ fos_elastica:
             title: { type: 'text', analyzer: 'custom_analyzer' }
             body: { type: 'text', analyzer: 'custom_analyzer' }
             shortDescription: { type: 'text', analyzer: 'custom_analyzer' }
+            level: { type: 'text' }
+            certificate: { type: 'text' }
             languageLocale: { type: 'keyword' }
         county:
           type: nested
           properties:
             code: { type: 'keyword' }
+        firstCategory:
+          type: nested
+          properties:
+            categoryCourseTranslations:
+              type: nested
+              properties:
+                title: { type: 'text' }
+                languageLocale: { type: 'keyword' }
+        company:
+          type: nested
+          properties:
+            name: { type: 'text' }
+            fileName: { type: 'text' }
       persistence:
         driver: orm
         model: App\Entity\TrainingCourse
@@ -125,7 +158,7 @@ fos_elastica:
           insert: true
           update: true
           delete: true
-    article:
+    '%env(resolve:ELASTICSEARCH_ARTICLE_INDEX)%':
       settings:
         analysis:
           filter:
@@ -140,7 +173,7 @@ fos_elastica:
                 - ascii_folding
       properties:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
-        fileName: { type: 'keyword' }
+        fileName: { type: 'text' }
         status: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
         articleTranslations:

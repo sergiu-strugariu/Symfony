@@ -320,6 +320,7 @@ dashboard:
     title: 'Title'
     slug: 'Slug'
     status: 'Status'
+    role: 'Role'
     image: 'Image'
     created_at: 'Created at'
     updated_at: 'Updated at'

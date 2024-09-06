@@ -19,6 +19,8 @@ class DatatableHelper
         "name",
         "email",
         "enabled",
+        "",
+        "",
         "createdAt",
         "lastLoginAt"
     ];

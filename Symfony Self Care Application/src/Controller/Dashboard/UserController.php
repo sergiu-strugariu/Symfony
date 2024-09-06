@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Helper\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,9 +22,10 @@ class UserController extends AbstractController
     }
 
     #[Route('/dashboard/user/{uuid}/edit', name: 'dashboard_user_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TranslatorInterface $translator, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TranslatorInterface $translator, FileUploader $fileUploader, $uuid): Response
     {
         $user = $em->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+
         if (null === $user) {
             return $this->redirectToRoute('dashboard_user_index');
         }
@@ -33,13 +35,33 @@ class UserController extends AbstractController
 
         // Validate form
         if ($form->isSubmitted() && $form->isValid()) {
+            // Get data from the form
+            $file = $form->get('profilePicture')->getData();
+
             // Update password
             $plainPassword = $form->get('plainPassword')->getData();
+
             if (!empty($plainPassword)) {
                 $user->setPassword($passwordEncoder->hashPassword(
                     $user,
                     $plainPassword
                 ));
+            }
+
+            // Check uploaded file
+            if (isset($file)) {
+                // Upload company file
+                $uploadFile = $fileUploader->uploadFile(
+                    $file,
+                    $form,
+                    $this->getParameter('app_user_path'),
+                    'profilePicture'
+                );
+
+                // Check and set @filename
+                if ($uploadFile['success']) {
+                    $user->setProfilePicture($uploadFile['fileName']);
+                }
             }
 
             // save changes to DB
@@ -53,7 +75,8 @@ class UserController extends AbstractController
         }
 
         return $this->render('dashboard/user/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'fileName' => $user->getProfilePicture()
         ]);
     }
 
@@ -61,11 +84,12 @@ class UserController extends AbstractController
     public function delete(EntityManagerInterface $em, TranslatorInterface $translator, $uuid): Response
     {
         $user = $em->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+
         if (null === $user) {
             return $this->redirectToRoute('dashboard_user_index');
         }
 
-        // soft delete
+        // Soft delete
         $user->setDeletedAt(new \DateTime());
 
         // save changes to DB

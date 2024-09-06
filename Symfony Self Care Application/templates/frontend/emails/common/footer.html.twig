@@ -4,6 +4,7 @@
 {% set twitterLink = settingService.getService('twitterLink') %}
 {% set facebookLink = settingService.getService('facebookLink') %}
 {% set linkedinLink = settingService.getService('linkedinLink') %}
+{% set instagramLink = settingService.getService('instagramLink') %}
 <tr>
     <td style="background-color: #1b3a51; padding: 30px;">
         <table>
@@ -37,6 +38,11 @@
                              height="45"
                              style="max-width: 45px; height: auto; display: block;"
                         />
+                    </a>
+                </td>
+                <td style="width: 45px; margin: 0 5px; display: inline-block;">
+                    <a href="{{ instagramLink }}" target="_blank" style="display: block;width: 45px;  margin: 0;">
+                        <img src="{{ asset('assets/frontend/images/common/instagram.svg') }}" alt="instagram" width="45" height="45" style="max-width: 45px; height: auto; display: block;">
                     </a>
                 </td>
             </tr>

@@ -95,20 +95,13 @@ class ArticleFormType extends AbstractType
                 'choices' => Article::getStatuses()
             ])
             ->add('fileName', FileType::class, [
-                'required' => empty($data->getId()),
+                'required' => false,
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
                         'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '3M'
-                    ]),
-                    new Assert\Callback([
-                        'callback' => function ($value, ExecutionContextInterface $context) use ($data) {
-                            if (empty($data->getId()) && empty($value)) {
-                                $context->buildViolation('dashboard.form.field_mandatory')->addViolation();
-                            }
-                        }
                     ])
                 ]
             ])

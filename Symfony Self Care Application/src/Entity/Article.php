@@ -36,7 +36,7 @@ class Article
     #[ORM\Column(length: 255, unique: true)]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $fileName = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

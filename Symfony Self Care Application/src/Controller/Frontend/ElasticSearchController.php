@@ -6,7 +6,6 @@ use App\Entity\Company;
 use App\Helper\DefaultHelper;
 use App\Helper\ElasticSearchHelper;
 use App\Helper\LanguageHelper;
-use Doctrine\ORM\EntityManagerInterface;
 use FOS\ElasticaBundle\Elastica\Index;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,7 +52,7 @@ class ElasticSearchController extends AbstractController
     public function index(Request $request, LanguageHelper $helper, ElasticSearchHelper $searchHelper): JsonResponse
     {
         // FormData
-        $query = '*' .$request->get('search') . '*';
+        $query = $request->get('search');
         $county = empty($request->get('county')) ? '' : $request->get('county');
         $limit = $request->get('limit');
         $page = $request->get('page', 1);

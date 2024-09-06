@@ -1,11 +1,10 @@
-{% set logo = settingService.getService('logo') %}
 <div class="header-account">
     <div class="inner">
         <a class="header-logo" href="{{ path('app_homepage') }}">
             <img width="180"
                  height="75"
                  data-category="Meniu"
-                 src="{{ asset(app_setting_path ~ logo, 'cloudflare') }}"
+                 src="{{ asset('assets/frontend/images/common/logo.svg') }}"
                  alt="{{ app_name }}">
         </a>
     </div>

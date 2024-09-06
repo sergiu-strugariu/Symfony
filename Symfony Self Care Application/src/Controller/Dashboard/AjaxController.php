@@ -845,7 +845,7 @@ class AjaxController extends AbstractController
             $validate = $validatorHelper->validate($formData);
 
             // Check errors
-            if (!$validate['checkErrors']) {
+            if (!$validate['checkErrors'] && !$this->isGranted('ROLE_ADMIN')) {
                 /** @var User $user */
                 $user = $this->getUser();
 

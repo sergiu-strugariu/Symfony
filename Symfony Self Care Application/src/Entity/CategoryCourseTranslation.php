@@ -66,4 +66,12 @@ class CategoryCourseTranslation
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getLanguageLocale(): ?string
+    {
+        return $this->language->getLocale();
+    }
 }

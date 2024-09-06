@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Helper\DefaultHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,9 +21,19 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var DefaultHelper
+     */
+    protected DefaultHelper $helper;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param DefaultHelper $helper
+     */
+    public function __construct(ManagerRegistry $registry, DefaultHelper $helper)
     {
         parent::__construct($registry, User::class);
+        $this->helper = $helper;
     }
 
     /**
@@ -50,33 +61,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getSingleScalarResult();
     }
 
+
     /**
      * @param string $column
      * @param string $dir
      * @param $keyword
-     * @param $role
-     * @param DateTimeInterface|null $startDate
-     * @param DateTimeInterface|null $endDate
      * @return array
      */
-    public function findUsersByFilters(string $column, string $dir, $keyword, $role = null, DateTimeInterface $startDate = null, DateTimeInterface $endDate = null): array
+    public function findUsersByFilters(string $column, string $dir, $keyword): array
     {
+        $defaultImage = $this->helper->getEnvValue('app_default_image');
+
         $queryBuilder = $this->createQueryBuilder('u')
             ->select("
                 u.id,
                 u.uuid,
                 u.name,
+                u.roles,
+                COALESCE(u.profilePicture, '$defaultImage') as fileName,
                 u.email,
                 u.enabled,
                 DATE_FORMAT(u.createdAt, '%d-%m-%Y') as createdAt,
                 DATE_FORMAT(u.lastLoginAt, '%d-%m-%Y %H:%i') as lastLoginAt"
             )
-            ->where('u.deletedAt IS NULL');
+            ->where('u.deletedAt IS NULL')
+            ->andWhere("u.roles NOT LIKE '%ROLE_ADMIN%'");
 
         // Field search
         $fields = [
             'u.id',
             'u.name',
+            'u.surname',
             'u.email'
         ];
 
@@ -92,18 +107,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $queryBuilder
                 ->andWhere($orExpr)
                 ->setParameter('keyword', '%' . $keyword . '%');
-        }
-
-        if (null !== $role) {
-            $queryBuilder->andWhere('u.roles LIKE :role')
-                ->setParameter('role', '%"' . $role . '"%');
-        }
-
-        if ($startDate && $endDate) {
-            $queryBuilder
-                ->andWhere('u.createdAt BETWEEN :startDate AND :endDate')
-                ->setParameter('startDate', $startDate)
-                ->setParameter('endDate', $endDate);
         }
 
         // Dynamic order by

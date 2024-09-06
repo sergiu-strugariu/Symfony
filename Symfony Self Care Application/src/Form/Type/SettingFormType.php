@@ -103,7 +103,7 @@ class SettingFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml'],
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '3M'
                     ]),
@@ -121,7 +121,7 @@ class SettingFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml'],
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '3M'
                     ]),

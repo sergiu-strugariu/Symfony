@@ -303,9 +303,9 @@ class TrainingCourse
             ->orderBy(['createdAt' => 'DESC'])
             ->setMaxResults(1);
 
-        $reviews = $this->categoryCourses->matching($criteria);
+        $categories = $this->categoryCourses->matching($criteria);
 
-        return $reviews->isEmpty() ? null : $reviews->first()->getTranslation('ro')->getTitle();
+        return $categories->isEmpty() ? null : $categories->first();
     }
 
     /**

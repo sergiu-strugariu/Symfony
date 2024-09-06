@@ -57,20 +57,20 @@
                     {% endfor %}
                 </ul>
             </div>
-{#            {% if getArticles is not null %}#}
-{#                <div class="section advices">#}
-{#                    <p>{{ 'footer.article_title'|trans }}</p>#}
-{#                    <ul>#}
-{#                        {% for item in getArticles %}#}
-{#                            <li>#}
-{#                                <a href="{{ path('app_blog_single', {'slug': item.slug}) }}">#}
-{#                                    {{ item.translation(locale).title }}#}
-{#                                </a>#}
-{#                            </li>#}
-{#                        {% endfor %}#}
-{#                    </ul>#}
-{#                </div>#}
-{#            {% endif %}#}
+            {% if getArticles is not null %}
+                <div class="section advices">
+                    <p>{{ 'footer.article_title'|trans }}</p>
+                    <ul>
+                        {% for item in getArticles %}
+                            <li>
+                                <a href="{{ path('app_blog_single', {'slug': item.slug}) }}">
+                                    {{ item.translation(locale).title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <div class="section contact-info">
                 <ul class="contacts">
                     <li>

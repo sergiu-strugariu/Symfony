@@ -34,6 +34,10 @@ parameters:
     onesignal_web_id: '%env(ONESIGNAL_WEB_ID)%'
     intercom_secret_key: '%env(INTERCOM_SECRET_KEY)%'
     cloudflare_path: '%env(CLOUDFLARE_R2_FILE_PATH)%'
+    elasticsearch_article_index: '%env(ELASTICSEARCH_ARTICLE_INDEX)%'
+    elasticsearch_course_index: '%env(ELASTICSEARCH_COURSE_INDEX)%'
+    elasticsearch_job_index: '%env(ELASTICSEARCH_JOB_INDEX)%'
+    elasticsearch_company_index: '%env(ELASTICSEARCH_COMPANY_INDEX)%'
 twig:
     globals:
         app_name: '%app_name%'
@@ -84,18 +88,11 @@ services:
             $apiKey: '%mailchimp_api_key%'
             $serverPrefix: '%mailchimp_api_server_prefix%'
             $listId: '%mailchimp_list_id%'
-
     App\Command\TestElasticsearchConnectionCommand:
         arguments:
             $client: '@fos_elastica.client.default'
         tags:
             - { name: 'console.command' }
-    App\Controller\Frontend\ElasticSearchController:
-        arguments:
-            $articleFinder: '@fos_elastica.index.article'
-            $courseFinder: '@fos_elastica.index.course'
-            $jobFinder: '@fos_elastica.index.job'
-            $companyFinder: '@fos_elastica.index.company'
     App\Helper\ScraperHelper:
         arguments:
             $kernelProjectDir: '%kernel.project_dir%'
@@ -116,3 +113,25 @@ services:
             $region: '%env(CLOUDFLARE_R2_REGION)%'
             $endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'
             $bucket: '%env(CLOUDFLARE_R2_BUCKET)%'
+    fos_elastica.index.article:
+        class: Elastica\Index
+        factory: [ '@fos_elastica.client.default', 'getIndex' ]
+        arguments: [ '%elasticsearch_article_index%' ]
+    fos_elastica.index.course:
+        class: Elastica\Index
+        factory: [ '@fos_elastica.client.default', 'getIndex' ]
+        arguments: [ '%elasticsearch_course_index%' ]
+    fos_elastica.index.job:
+        class: Elastica\Index
+        factory: [ '@fos_elastica.client.default', 'getIndex' ]
+        arguments: [ '%elasticsearch_job_index%' ]
+    fos_elastica.index.company:
+        class: Elastica\Index
+        factory: [ '@fos_elastica.client.default', 'getIndex' ]
+        arguments: [ '%elasticsearch_company_index%' ]
+    App\Controller\Frontend\ElasticSearchController:
+        arguments:
+            $articleFinder: '@fos_elastica.index.article'
+            $courseFinder: '@fos_elastica.index.course'
+            $jobFinder: '@fos_elastica.index.job'
+            $companyFinder: '@fos_elastica.index.company'

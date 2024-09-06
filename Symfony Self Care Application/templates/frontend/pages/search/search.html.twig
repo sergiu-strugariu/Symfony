@@ -5,34 +5,26 @@
     {% endfor %}
 </div>
 {% set searchType = app.request.query.get('type') %}
-<div class="{{ searchType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') ? 'catalogue-list-wrapper has-loader' : '' }}
-                    {{ searchType == constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') ? 'resources-list-wrapper has-loader' : '' }}
-                    {{ searchType == constant('App\\Entity\\Job::ENTITY_NAME') ? 'jobs-list has-loader' : '' }}
-                    {{ searchType == constant('App\\Entity\\TrainingCourse::ENTITY_NAME') ? 'agenda-list has-loader' : '' }}
-                    {{ searchType == constant('App\\Entity\\Article::ENTITY_NAME') ? 'articles-list' : '' }}">
+{% set classes = {care: 'catalogue-list-wrapper', provider: 'resources-list-wrapper', job: 'resultsList-filter-county jobs-agenda', course: 'resultsList-filter-county jobs-agenda courses-agenda', article: 'articles-list'} %}
+{% set listClasses = { care: 'catalogue-list has-loader', provider: 'resources-list has-loader', job: 'agenda-list has-loader', course: 'agenda-list has-loader', article: 'row has-loader'} %}
+
+<div class="{{ classes[searchType] ?? '' }}">
     <div class="inner">
-        <form id="catalogueForm">
+        <form id="catalogueForm" class="{{ searchType == constant('App\\Entity\\Article::ENTITY_NAME') ? 'd-none': '' }}">
             <div class="catalogue-filter-sort">
                 <div class="catalogue-filter">
-                    <div class="filter-box">
-                        <select id="regionFilter" class="region-filter" name="regionFilter">
-                            <option value="all">{{ 'search.county'|trans }}</option>
-                        </select>
+                    <p>{{ 'common.filter_for'|trans }}:</p>
+                    <div class="catalogue-filter">
+                        <div class="filter-box">
+                            <select id="regionFilter" class="region-filter" name="regionFilter">
+                                <option value="all">{{ 'search.county'|trans }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
-        {% if searchType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') %}
-            <div class="catalogue-list"></div>
-        {% elseif searchType == constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') %}
-            <div class="resources-list"></div>
-        {% elseif searchType == constant('App\\Entity\\Job::ENTITY_NAME') %}
-            <div class="list"></div>
-        {% elseif searchType == constant('App\\Entity\\TrainingCourse::ENTITY_NAME') %}
-            <div class="agenda-list has-loader"></div>
-        {% elseif searchType == constant('App\\Entity\\Article::ENTITY_NAME') %}
-            <div class="row has-loader"></div>
-        {% endif %}
+        <div class="{{ listClasses[searchType] ?? '' }}"></div>
     </div>
 </div>
 {% include "frontend/pages/common/pagination.html.twig" %}
