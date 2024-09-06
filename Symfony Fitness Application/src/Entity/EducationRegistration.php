@@ -20,6 +20,7 @@ class EducationRegistration
     const PAYMENT_STATUS_PENDING = 'pending';
     const PAYMENT_STATUS_SUCCESS = 'success';
     const PAYMENT_STATUS_FAILED = 'failed';
+    const PAYMENT_STATUS_REFUNDED = 'refunded';
 
     const COMPANY_FIELDS = ['companyName', 'companyAddress', 'cui', 'registrationNumber', 'bankName', 'bankAccount'];
 
@@ -121,6 +122,9 @@ class EducationRegistration
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $certificateFileName = null;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private ?bool $reminderSent = false;
     
     public function __construct() {
         $this->createdAt = new \DateTime();
@@ -510,6 +514,18 @@ class EducationRegistration
     public function setCertificateFileName(?string $certificateFileName): static
     {
         $this->certificateFileName = $certificateFileName;
+
+        return $this;
+    }
+
+    public function isReminderSent(): ?bool
+    {
+        return $this->reminderSent;
+    }
+
+    public function setReminderSent(bool $reminderSent): static
+    {
+        $this->reminderSent = $reminderSent;
 
         return $this;
     }

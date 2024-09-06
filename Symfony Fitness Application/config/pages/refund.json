@@ -1,0 +1,90 @@
+{
+  "entity": "Page",
+  "name": "Refund",
+  "machineName": "refund",
+  "url": "/refund",
+  "classes": "refund",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Refund",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "/refund",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "isTranslated": false,
+      "required": true,
+      "editable": false
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Refund sections",
+      "machineName": "refund_section_1",
+      "template": "intro.html.twig",
+      "classes": "",
+      "variables": [
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Section Image",
+          "placeholder": "Section Image",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "refund_section_1_widget_1",
+          "template": "",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

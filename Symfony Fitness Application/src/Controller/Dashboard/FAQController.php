@@ -23,7 +23,7 @@ class FAQController extends AbstractController
     }
 
     #[Route('/dashboard/faq/create', name: 'dashboard_faq_create')]
-    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader): Response
+    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper): Response
     {
         $language = $languageHelper->getDefaultLanguage();
 
@@ -58,7 +58,9 @@ class FAQController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $uuid): Response
     {
         $faq = $em->getRepository(Faq::class)->findOneBy(['uuid' => $uuid]);
-        if (null === $faq) return $this->redirectToRoute('dashboard_index');
+        if (null === $faq) {
+            return $this->redirectToRoute('dashboard_index');
+        }
 
         $locale = $request->get('locale', $this->getParameter('default_locale'));
         $language = $languageHelper->getLanguageByLocale($locale);
@@ -67,6 +69,7 @@ class FAQController extends AbstractController
             'faq' => $faq,
             'language' => $language
         ]);
+
 
         if (null === $faqTranslation) {
             $faqTranslation = new FaqTranslations();
@@ -81,11 +84,6 @@ class FAQController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $faq->setUuid(Uuid::v4());
-
-            $faqTranslation = new FaqTranslations();
-            $faqTranslation->setFAQ($faq);
-            $faqTranslation->setLanguage($language);
             $faqTranslation->setQuestions($form->get('question')->getData());
             $faqTranslation->setAnswer($form->get('answer')->getData());
 
@@ -108,7 +106,9 @@ class FAQController extends AbstractController
     public function delete(EntityManagerInterface $em, $uuid): Response
     {
         $faq = $em->getRepository(Faq::class)->findOneBy(['uuid' => $uuid]);
-        if (null === $faq) return $this->redirectToRoute('dashboard_index');
+        if (null === $faq) {
+            return $this->redirectToRoute('dashboard_faq_index');
+        }
 
         $em->remove($faq);
         $em->flush();

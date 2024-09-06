@@ -41,10 +41,10 @@ class ContactType extends AbstractType
                 'label' => 'Email',
                 'required' => true,
                 'constraints' => [
-                    new Email([
-                        'message' => 'common.not_valid.email'
-                    ]),
                     new NotBlank([
+                        'message' => 'common.not_blank'
+                    ]),
+                    new Email([
                         'message' => 'common.not_valid.email'
                     ])
                 ]
@@ -53,7 +53,7 @@ class ContactType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'common.not_valid.phone'
+                        'message' => 'common.not_blank'
                     ]),
                     new Regex([
                         'pattern' => '/^(?:(?:(?:\+4)?07\d{2}\d{6}|(?:\+4)?(21|31)\d{1}\d{6}|(?:\+4)?((2|3)[3-7]\d{1})\d{6}|(?:\+4)?(8|9)0\d{1}\d{6}))$/',
@@ -69,7 +69,7 @@ class ContactType extends AbstractType
                     ]),
                     new Length([
                         'min' => 20,
-                        'minMessage' => 'common.custom.min_message',
+                        'minMessage' => 'common.min_message',
                     ])
                 ]
             ])

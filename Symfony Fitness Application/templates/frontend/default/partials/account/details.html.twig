@@ -1,4 +1,4 @@
-<h3>{{ 'account.my_account'|trans }}</h3>
+<h3>{{ 'meta.title.account.details'|trans }}</h3>
 
 {% include "shared/frontend/alert.html.twig" %}
 
@@ -89,23 +89,23 @@
                 <input type="text" placeholder="{{ 'account.details.data_company'|trans }}" id="companyName" name="companyName" title="Parola" value="{{ user.companyName }}" />
             </div>
             <div class="group">
-                <label for="companyAddress" class="hidden-label">{{ 'account.details.address'|trans }}</label>
+                <label for="companyAddress">{{ 'account.details.address'|trans }}</label>
                 <input type="text" placeholder="{{ 'account.details.address'|trans }}" id="companyAddress" name="companyAddress" title="Adresa" value="{{ user.companyAddress }}" />
             </div>
             <div class="group">
-                <label for="cui" class="hidden-label">{{ 'account.details.cui'|trans }}</label>
+                <label for="cui">{{ 'account.details.cui'|trans }}</label>
                 <input type="text" placeholder="{{ 'account.details.cui'|trans }}" id="companyCUI" name="cui" title="Cui" value="{{ user.cui }}" />
             </div>
             <div class="group">
-                <label for="registrationNumber" class="hidden-label">{{ 'account.details.registration_number'|trans }}</label>
+                <label for="registrationNumber">{{ 'account.details.registration_number'|trans }}</label>
                 <input type="text" placeholder="{{ 'account.details.registration_number'|trans }}" id="companyRegisterNumber" name="registrationNumber" title="Număr înregistrare (J)" value="{{ user.registrationNumber }}" />
             </div>
             <div class="group">
-                <label for="bankName" class="hidden-label">{{ 'account.details.bank_name'|trans }}</label>
+                <label for="bankName">{{ 'account.details.bank_name'|trans }}</label>
                 <input type="text" placeholder="{{ 'account.details.bank_name'|trans }}" id="bankName" name="bankName" title="Nume bancă" value="{{ user.bankName }}" />
             </div>
             <div class="group">
-                <label for="bankAccount" class="hidden-label">{{ 'account.details.bank_account'|trans }}</label>
+                <label for="bankAccount">{{ 'account.details.bank_account'|trans }}</label>
                 <input type="text" placeholder="{{ 'account.details.bank_account'|trans }}" id="bankAccount" name="bankAccount" title="Cont bancar" value="{{ user.bankAccount }}" />
                 <div>
                     <a class="company-edit" href="#">{{ 'account.details.validate'|trans }}</a>

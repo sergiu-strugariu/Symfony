@@ -9,6 +9,7 @@ class SmartBillAPIHelper
     const GENERATE_PROFORMA_ENDPOINT = '/estimate';
     const GET_INVOICE_ENDPOINT = '/invoice/pdf';
     const GET_PROFORMA_INVOICE_ENDPOINT = '/estimate/pdf';
+    const GENERATE_STORNO_INVOICE_ENDPOINT = '/invoice/reverse';
     const INVOICE_TYPE_DEFAULT = 'invoice';
     const INVOICE_TYPE_PROFORMA = 'proforma';
 
@@ -51,6 +52,14 @@ class SmartBillAPIHelper
         }
         
         return $this->sendRequest($method, sprintf('%s?cif=%s&seriesname=%s&number=%s', $endpoint, $this->cif, $seriesName, $number), $seriesName, [], $extraHeaders, false);
+    }
+    
+    public function generateStornoInvoice(array $data, array $extraHeaders = []) {
+        $method = 'POST';
+        $endpoint = self::GENERATE_STORNO_INVOICE_ENDPOINT;
+        $seriesName = $this->invoiceSeriesName;
+        
+        return $this->sendRequest($method, $endpoint, $seriesName, $data, $extraHeaders);
     }
 
     private function sendRequest(string $method, string $endpoint, string $seriesName = '', array $data = [], array $extraHeaders = [], $decodeResult = true) {

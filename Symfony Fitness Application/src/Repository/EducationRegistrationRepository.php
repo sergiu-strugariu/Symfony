@@ -208,4 +208,17 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    
+    public function findPendingPaymentsForReminder() {
+        return $this->createQueryBuilder('er')
+            ->where('er.paymentMethod = :type')
+            ->andWhere('er.paymentStatus = :status')
+            ->andWhere('er.reminderSent = 0')
+            ->andWhere('er.createdAt <= :date')
+            ->setParameter('type', EducationRegistration::PAYMENT_TYPE_WIRE)
+            ->setParameter('status', EducationRegistration::PAYMENT_STATUS_PENDING)
+            ->setParameter('date', new \DateTime('-3 days'))
+            ->getQuery()
+            ->getResult();
+    }
 }

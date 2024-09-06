@@ -1,5 +1,6 @@
-<div class="common-intro" data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName, 'cloudflare') }}">
+<div class="common-intro-v2">
     <div class="inner">
+        <div class="image" data-image="{{ asset('assets/files/page/pagesection/' ~ section.fileName, 'cloudflare') }}"></div>
         {% for widget in section.pageWidgets %}
             {% set translation = widget.translation(locale) %}
 
@@ -8,4 +9,4 @@
     </div>
 </div>
 
-{% include "frontend/default/partials/faq/faq.html.twig" %}
+{% include "frontend/default/partials/refund/form.html.twig" %}

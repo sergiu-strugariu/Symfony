@@ -1,0 +1,115 @@
+<div class="form-wrapper">
+    <div class="inner">
+        <div class="content">
+            <h2>{{ 'refund.text'|trans }}</h2>
+            <p>{{ "refund.description"|trans }}</p>
+
+            {% include "shared/frontend/alert.html.twig" %}
+
+            {{ form_start(form, {'attr': {'class': 'contact-form has-loader', 'id': 'contactFrom'}}) }}
+            <div class="row">
+                <div class="group">
+                    {{ form_label(form.firstName, 'common.form_labels.first_name'|trans) }}
+                    {{ form_widget(form.firstName) }}
+                    <span class="error">
+                        {{ form_errors(form.firstName) }}
+                    </span>
+                </div>
+                <div class="group">
+                    {{ form_label(form.lastName, 'common.form_labels.last_name'|trans) }}
+                    {{ form_widget(form.lastName) }}
+                    <span class="error">
+                        {{ form_errors(form.lastName) }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="group">
+                {{ form_label(form.address, 'account.details.address'|trans) }}
+                {{ form_widget(form.address) }}
+                <span class="error">
+                    {{ form_errors(form.address) }}
+                </span>
+            </div>
+
+            <div class="group">
+                {{ form_label(form.cnp, 'CNP') }}
+                {{ form_widget(form.cnp) }}
+                <span class="error">
+                    {{ form_errors(form.cnp) }}
+                </span>
+            </div>
+
+            <div class="group">
+                {{ form_label(form.company, 'account.details.company_name'|trans) }}
+                {{ form_widget(form.company) }}
+                <span class="error">
+                    {{ form_errors(form.company) }}
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="group">
+                    {{ form_label(form.bank, 'account.details.bank_name'|trans) }}
+                    {{ form_widget(form.bank) }}
+                    <span class="error">
+                        {{ form_errors(form.bank) }}
+                    </span>
+                </div>
+                <div class="group">
+                    {{ form_label(form.iban, 'account.details.iban'|trans) }}
+                    {{ form_widget(form.iban) }}
+                    <span class="error">
+                        {{ form_errors(form.iban) }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="group">
+                {{ form_label(form.amount, 'account.details.amount'|trans) }}
+                {{ form_widget(form.amount) }}
+                <span class="error">
+                    {{ form_errors(form.amount) }}
+                </span>
+            </div>
+
+            <div class="group">
+                {{ form_label(form.invoiceNumber, 'common.form_labels.invoiceNumber'|trans) }}
+                {{ form_widget(form.invoiceNumber) }}
+                <span class="error">
+                    {{ form_errors(form.invoiceNumber) }}
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="group">
+                    {{ form_label(form.invoiceDate, 'common.form_labels.invoiceDate'|trans) }}
+                    {{ form_widget(form.invoiceDate, {'attr': {'class': 'datepicker'}}) }}
+                    <span class="error">
+                        {{ form_errors(form.invoiceDate) }}
+                    </span>
+                </div>
+                <div class="group">
+                    {{ form_label(form.paymentDate, 'common.form_labels.paymentDate'|trans) }}
+                    {{ form_widget(form.paymentDate, {'attr': {'class': 'datepicker'}}) }}
+                    <span class="error">
+                        {{ form_errors(form.paymentDate) }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="group group-textarea">
+                {{ form_label(form.reason, 'common.form_labels.reason'|trans) }}
+                {{ form_widget(form.reason) }}
+                <span class="error">
+                    {{ form_errors(form.reason) }}
+                </span>
+            </div>
+
+            <div class="group group-submit">
+                <input type="submit" value="{{ "authentication.buttons.send"|trans }}"/>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

@@ -27,7 +27,7 @@ class EducationController extends AbstractController
 {
     
     #[Route('/calendar-cursuri', name: 'app_educations')]
-    public function listCourses(Request $request, EntityManagerInterface $em, EducationRepository $repository, LanguageHelper $languageHelper): Response
+    public function listCourses(Request $request, EntityManagerInterface $em, EducationRepository $repository, LanguageHelper $languageHelper, TranslatorInterface $translator): Response
     {
         $locale = $request->getLocale();
         $language = $languageHelper->getLanguageByLocale($locale);
@@ -53,7 +53,8 @@ class EducationController extends AbstractController
             'types' => array_column($types, 'type'),
             'selectedType' => $type,
             'selectedLocation' => $location,
-            'query' => $query
+            'query' => $query,
+            'page_title' => $translator->trans('meta.title.course-calendar')
         ]);
     }
 

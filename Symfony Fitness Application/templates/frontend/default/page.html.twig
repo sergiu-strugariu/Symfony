@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ page.name }} {{ parent() }} {% endblock %}
+{% block title %}{{ page_title }} {{ parent() }} {% endblock %}
 
 {% set route = app.request.attributes.get('_route') %}
 

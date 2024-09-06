@@ -40,8 +40,8 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/raport', name: 'dashboard_raport_index')]
-    public function raport(EntityManagerInterface $em): Response
+    #[Route('/dashboard/report', name: 'dashboard_report_index')]
+    public function report(EntityManagerInterface $em): Response
     {
         $educationYears = $em->getRepository(Education::class)->getDataYears();
 
@@ -54,8 +54,8 @@ class DefaultController extends AbstractController
         $courses = $em->getRepository(Education::class)->findBy(['deletedAt' => null, 'type' => Education::TYPE_COURSE]);
         $workshops = $em->getRepository(Education::class)->findBy(['deletedAt' => null, 'type' => Education::TYPE_WORKSHOP]);
 
-        return $this->render('dashboard/raport/index.html.twig', [
-            'page_title' => 'Raport',
+        return $this->render('dashboard/report/index.html.twig', [
+            'page_title' => 'Reports',
             'dataYears' => $uniqueYears,
             'years' => $years,
             'courses' => $courses,

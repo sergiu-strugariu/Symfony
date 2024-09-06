@@ -179,10 +179,11 @@ class EducationRegistrationType extends AbstractType
                 'choices' => [
                     'Success' => EducationRegistration::PAYMENT_STATUS_SUCCESS,
                     'Pending' => EducationRegistration::PAYMENT_STATUS_PENDING,
-                    'Failed' => EducationRegistration::PAYMENT_STATUS_FAILED
+                    'Failed' => EducationRegistration::PAYMENT_STATUS_FAILED,
+                    'Refunded' => EducationRegistration::PAYMENT_STATUS_REFUNDED
                 ],
-                'expanded' => false, // Render as a dropdown
-                'multiple' => false, // Single selection
+                'expanded' => false,
+                'multiple' => false,
                 'attr' => ['class' => 'form-control form-control-solid form-control-lg'],
                 'label' => 'form_register.invoice'
             ])

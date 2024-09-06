@@ -59,12 +59,12 @@ class FaqTranslations
 
     public function getFAQ(): ?Faq
     {
-        return $this->FAQ;
+        return $this->faq;
     }
 
     public function setFAQ(?Faq $FAQ): static
     {
-        $this->FAQ = $FAQ;
+        $this->faq = $FAQ;
 
         return $this;
     }

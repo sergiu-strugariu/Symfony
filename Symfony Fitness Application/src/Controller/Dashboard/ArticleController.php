@@ -71,7 +71,9 @@ class ArticleController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $uuid): Response
     {
         $article = $em->getRepository(Article::class)->findOneBy(['uuid' => $uuid]);
-        if (null === $article) return $this->redirectToRoute('dashboard_index');
+        if (null === $article) {
+            return $this->redirectToRoute('dashboard_index');
+        }
 
         $locale = $request->get('locale', $this->getParameter('default_locale'));
         $language = $languageHelper->getLanguageByLocale($locale);

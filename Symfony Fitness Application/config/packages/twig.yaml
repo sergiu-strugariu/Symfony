@@ -3,6 +3,7 @@ twig:
 
     globals:
         default_locale: "%default_locale%"
+        app_page_path: '%app_page_path%'
         app_education_path: '%app_education_path%'
         app_team_member_path: '%app_team_member_path%'
         app_article_path: '%app_article_path%'

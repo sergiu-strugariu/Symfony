@@ -51,6 +51,12 @@ authentication:
     success: "Mesajul a fost trimis cu succes."
     fail: "Mesajul nu s-a putut trimite. Incearca mai tarziu."
 
+refund:
+  success: "Cererea de refund a fost trimisa cu succes."
+  fail: "A intervenit o erroare la trimiterea cererii."
+  text: 'Formular solicitare retur'
+  description: "Completează formularul de mai jos și îți vom răspunde cât de curând posibil!"
+
 article:
   title: "Articol"
   next_article: "Următorul articol"
@@ -71,7 +77,7 @@ multimedia:
   results: "rezultate"
 
 common:
-  gdpr: 'Am citit si sunt de acord cu <a target="_blank" href="%terms_url%">Terms and Conditions</a> și <a target="_blank" href="%privacy_url%">Privacy Policy</a> Move On.'
+  gdpr: 'Am citit si sunt de acord cu <a target="_blank" href="%terms_url%">Termeni şi condiţii</a> și <a target="_blank" href="%privacy_url%">Politica de confidenţialitate</a> Move On.'
   newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
   contract: "Generate Contract"
   media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"
@@ -99,6 +105,10 @@ common:
     email: "Email"
     sign_up: "Înscrie-te"
     phone: "Telefon"
+    invoiceNumber: "Număr Factură"
+    invoiceDate: "Dată facturare"
+    paymentDate: "Dată plată"
+    reason: "Motiv"
     password:
       first_options: "Parola"
       second_options: "Repetă parola"
@@ -213,13 +223,14 @@ account:
     new_password: "Parola nouă"
     repeat_password: "Repetă parola nouă"
     data_company: "Date companie"
-    company_name: "Nume campanie"
+    company_name: "Nume companie"
     address: "Adresa"
     cui: "CUI"
     registration_number: "Număr înregistrare (J)"
     bank_name: "Nume bancă"
     bank_account: "Cont bancar"
     iban: "IBAN"
+    amount: "Sumă"
     confirm_email_update: "Vă rugăm să vă verificați e-mailul pentru a confirma actualizarea adresei de email"
     proforma_invoice_disclaimer: "Mențiune plată"
 
@@ -267,6 +278,9 @@ mails:
     details: "Conform modalității de plată pe care ai ales-o, te rugăm să trimiți suma de %price% RON prin transfer bancar, în contul indicat mai jos:"
     disclaimer_1: "De reținut: când efectuezi plata prin transfer bancar, te rugăm să menționezi la detalii de plată numărul facturii proforme menționat mai sus."
     disclaimer_2: "De îndată ce plata va fi confirmată în sistem, vei primi pe e-mail factura fiscală."
+    
+  payment_reminder:
+    description: "Nu ai finalizat plata pentru educația %title%. Te rugăm să o faci cât mai curând pentru a finaliza cu succes procesul de înregistrare."
 
 feedback:
   title: "Feedback"
@@ -286,3 +300,24 @@ education:
         title: "Eroare plată."
     pending:
         title: Plata este în curs de procesare."
+
+meta.title:
+  home: "Acasa"
+  parteners: "Parteneri"
+  aboutus: "Despre Noi"
+  privacy: "Politica de Confidentialitate"
+  tos: "Termeni si Conditii"
+  contact: "Contact"
+  faq: "FAQ"
+  refund: "Refund"
+  certificates: "Certificari"
+  blog: "Blog"
+  team: "Echipa"
+  course-calendar: "Calendar Cursuri"
+  autentification: "Authentificare"
+  account:
+    certifications: "Certificari"
+    contracts: "Contracte"
+    dashboard: "Calendarul Meu"
+    details: "Detalii"
+    invoices: "Facturi"

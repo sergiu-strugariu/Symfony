@@ -51,6 +51,12 @@ authentication:
     success: "The message was sent successfully."
     fail: "The message fas not send. Please try again later"
 
+refund:
+  success: "The refund request has been sended successfully."
+  fail: "An error occured."
+  text: 'Refund formular'
+  description: "Complete the refund formular!"
+
 article:
   title: "Article"
   next_article: "Next article"
@@ -99,6 +105,10 @@ common:
     email: "Email"
     sign_up: "Sign up"
     phone: "Phone"
+    invoiceNumber: "Invoice Number"
+    invoiceDate: "Invoice Date"
+    paymentDate: "Payment Date"
+    reason: "Reason"
     password:
       first_options: "Password"
       second_options: "Repeat Password"
@@ -178,7 +188,7 @@ form_register:
     description: "Bank transfer data"
 
 account:
-  my_account: "My Account"
+  my_account: "My account"
   logout: "Log off"
 
   contracts:
@@ -221,6 +231,7 @@ account:
     bank_name: "Bank Name"
     bank_account: "Bank Account"
     iban: "IBAN"
+    amount: "Amount"
     confirm_email_update: "Please check your email to confirm the email update"
     proforma_invoice_disclaimer: "Wire transfer details"
 
@@ -266,6 +277,9 @@ mails:
     details: "According to the payment method you have chosen, please send the amount of %price% RON by wire transfer, to the account indicated below:"
     disclaimer_1: "Please note: when paying by wire transfer, please mention the proforma invoice number mentioned above in the payment details."
     disclaimer_2: "As soon as the payment is confirmed in the system, you will receive the invoice by e-mail."
+    
+  payment_reminder:
+    description: "You have not completed the payment for the education %title%. Please do it as soon as possible to successfully complete the registration process."
 
 feedback:
   title: "Feedback"
@@ -285,3 +299,25 @@ education:
       title: "Payment Error."
   pending:
       title: "The payment is in pending."
+
+meta.title:
+  home: "Home"
+  parteners: "Parteners"
+  aboutus: "About Us"
+  privacy: "Privacy Policy"
+  tos: "Terms and Conditions"
+  contact: "Contact"
+  faq: "FAQ"
+  refund: "Refund"
+  certificates: "Certifications"
+  blog: "Blog"
+  team: "Team"
+  course-calendar: "Course Calendar"
+  autentification: "Autentification"
+  account:
+    certifications: "Certifications"
+    contracts: "Contracts"
+    dashboard: "My Calendar"
+    details: "Details"
+    invoices: "Invoices"
+

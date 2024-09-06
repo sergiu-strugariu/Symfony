@@ -5,10 +5,14 @@
         <div>
             {% for schedule in education.schedules %}
                 <div class="item">
-                    <p>
-                        {{ schedule.formattedDate(locale) }}
-                    </p>
-                    {{ schedule.translation(locale) ? schedule.translation(locale).description|raw : schedule.translation(default_locale).description|raw }}
+                    <div>
+                        <p>
+                            {{ schedule.formattedDate(locale) }}
+                        </p>
+                    </div>
+                    <div>
+                        {{ schedule.translation(locale) ? schedule.translation(locale).description|raw : schedule.translation(default_locale).description|raw }}
+                    </div>
                 </div>
             {% endfor %}
         </div>

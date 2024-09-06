@@ -6,6 +6,7 @@ use App\Entity\Page;
 use App\Form\Type\PageType;
 use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
+use App\Helper\FileUploaderOld;
 use App\Helper\LanguageHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +25,7 @@ class PageController extends AbstractController
     }
 
     #[Route('/dashboard/page/create', name: 'dashboard_page_create')]
-    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, LanguageHelper $languageHelper, DefaultHelper $helper): Response
+    public function create(Request $request, EntityManagerInterface $em, FileUploaderOld $fileUploader, LanguageHelper $languageHelper, DefaultHelper $helper): Response
     {
         $form = $this->createForm(PageType::class);
         $form->handleRequest($request);
@@ -317,7 +318,7 @@ class PageController extends AbstractController
                                     $uploadFile = $fileUploader->uploadFile(
                                         $value,
                                         null,
-                                        $this->getParameter('app_page_path') . strtolower($className)
+                                        $this->getParameter('app_page_path') . strtolower($className) . '/'
                                     );
 
                                     // Check success uploaded

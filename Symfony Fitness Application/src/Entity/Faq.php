@@ -21,9 +21,6 @@ class Faq
     #[ORM\Column(length: 40, unique: true)]
     private ?string $uuid = null;
 
-    #[ORM\Column(length: 255, unique: true)]
-    private ?string $slug = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt;
 
@@ -49,18 +46,6 @@ class Faq
     public function setUuid(string $uuid): static
     {
         $this->uuid = $uuid;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
 
         return $this;
     }

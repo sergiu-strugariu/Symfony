@@ -174,6 +174,19 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ route == 'app_dashboard_refund' ? 'active' : '' }}"
+                       href="{{ path('app_dashboard_refund') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-bill fs-2 text-white"></i>
+                        </span>
+                        <span class="menu-title">Refunds</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
                 <!--begin:Menu tab-->
                 <div class="menu-item menu-labels">
                     <div class="menu-content d-flex flex-stack fw-bold text-gray-600 text-uppercase fs-7">
@@ -184,12 +197,12 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link {{ route in ['dashboard_raport_index', 'dashboard_raport_index'] ? 'active' : '' }}"
-                       href="{{ path('dashboard_raport_index') }}">
+                    <a class="menu-link {{ route in ['dashboard_report_index', 'dashboard_report_index'] ? 'active' : '' }}"
+                       href="{{ path('dashboard_report_index') }}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-messages fs-2 text-white"></i>
                         </span>
-                        <span class="menu-title">Raports</span>
+                        <span class="menu-title">Reports</span>
                     </a>
                     <!--end:Menu link-->
                 </div>

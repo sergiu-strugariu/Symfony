@@ -24,6 +24,7 @@ use App\Repository\LanguageRepository;
 use App\Repository\LeadRepository;
 use App\Repository\MenuRepository;
 use App\Repository\PageRepository;
+use App\Repository\RefundRepository;
 use App\Repository\TeamMemberRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -166,6 +167,29 @@ class AjaxController extends AbstractController
         );
 
         return $this->getFilteredData($articleRepository, $articles, $params);
+    }
+
+    #[Route('/dashboard/ajax/refund', name: 'dashboard_ajax_refund')]
+    public function getRefunds(Request $request, RefundRepository $refundRepository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::REFUND_FIELDS);
+
+        // get default language
+        $defaultLanguage = $languageHelper->getDefaultLanguage();
+
+        // filter by params
+        $refunds = $refundRepository->findByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $defaultLanguage
+        );
+
+        return $this->getFilteredData($refundRepository, $refunds, $params);
     }
 
     #[Route('/dashboard/ajax/faq', name: 'dashboard_ajax_faq')]

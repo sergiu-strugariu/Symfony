@@ -7,6 +7,7 @@ class PayUAPIHelper
    
     const AUTHORIZE_ENDPOINT = '/api/v4/payments/authorize';
     const PAYMENT_STATUS_ENDPOINT = '/api/v4/payments/status';
+    const REFUND_PAYMENT_ENDPOINT = '/api/v4/payments/refund';
     
     private $baseUrl;
     private $secretKey;
@@ -24,6 +25,10 @@ class PayUAPIHelper
     
     public function getPaymentStatus(string $merchantPaymentReference, array $extraHeaders = []) {
         return $this->sendRequest('GET', sprintf('%s/%s', self::PAYMENT_STATUS_ENDPOINT, $merchantPaymentReference), [], $extraHeaders);
+    }
+    
+    public function refundPayment(array $data, array $extraHeaders = []) {
+        return $this->sendRequest('POST', self::REFUND_PAYMENT_ENDPOINT, $data, $extraHeaders);
     }
     
     private function sendRequest(string $method, string $endpoint, array $data = [], array $extraHeaders = []) {

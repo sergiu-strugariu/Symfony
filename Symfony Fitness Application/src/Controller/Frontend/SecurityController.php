@@ -83,6 +83,7 @@ class SecurityController extends AbstractController
             'registerForm' => $registerForm->createView(),
             'last_username' => $lastUsername,
             'error' => $error,
+            'page_title' => $translator->trans('meta.title.autentification')
         ]);
     }
 

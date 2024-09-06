@@ -33,6 +33,15 @@ class DatatableHelper
         "status"
     ];
 
+    const REFUND_FIELDS = [
+        "id",
+        "firstName",
+        "lastName",
+        "invoiceNumber",
+        "invoiceDate",
+        "amount"
+    ];
+
     const FAQ_FIELDS = [
         "id",
         "question",

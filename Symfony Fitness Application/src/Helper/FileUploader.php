@@ -78,6 +78,7 @@ class FileUploader
         if ($file instanceof UploadedFile) {
             try {
                 $fileName = $this->upload($file, $folderPath, $renameFile);
+
             } catch (FileException $e) {
                 $success = false;
             }

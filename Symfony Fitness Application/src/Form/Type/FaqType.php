@@ -32,15 +32,6 @@ class FaqType extends AbstractType
                     ])
                 ]
             ])
-            ->add('slug', TextType::class, [
-                'required' => null === $data->getId() ? false : true,
-                'disabled' => null === $data->getId() ? true : false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'common.not_blank'
-                    ])
-                ]
-            ])
             ->add('answer', TextareaType::class, [
                 'required' => false,
                 'mapped' => false,
@@ -52,21 +43,6 @@ class FaqType extends AbstractType
                 ]
             ])
         ;
-
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
-    }
-
-    public function onPreSubmit(FormEvent $event): void
-    {
-        $data = $event->getData();
-        $entity = $event->getForm()->getData();
-
-        if (null === $entity->getSlug() && isset($data['question'])) {
-            $slugger = new AsciiSlugger();
-            $slug = $slugger->slug($data['question'])->lower();
-
-            $entity->setSlug($slug);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

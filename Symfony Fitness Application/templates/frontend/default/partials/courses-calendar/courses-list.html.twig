@@ -43,7 +43,7 @@
             {% else %}
                 {% for course in courses %}
                     <div class="course-card">
-                        <div class="image" data-image="{{ asset('assets/files/education/' ~ course.imageName) }}"></div>
+                        <div class="image" data-image="{{ asset('assets/files/education/' ~ course.imageName, 'cloudflare') }}"></div>
                         <div>
                             <h3>{{ course.type }}</h3>
                             <h2>{{ course.translation(locale).title ?? course['title'] }}</h2>
