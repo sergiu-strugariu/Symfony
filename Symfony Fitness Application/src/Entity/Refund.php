@@ -49,9 +49,9 @@ class Refund
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2, nullable: true)]
     private ?string $approvedAmount = null;
 
-    #[ORM\Column]
-    private ?int $invoiceNumber = null;
-
+    #[ORM\Column(length: 20)]
+    private ?string $invoiceNumber = null;
+    
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $invoiceDate = null;
 
@@ -211,13 +211,13 @@ class Refund
 
         return $this;
     }
-
-    public function getInvoiceNumber(): ?int
+    
+    public function getInvoiceNumber(): ?string
     {
         return $this->invoiceNumber;
     }
 
-    public function setInvoiceNumber(int $invoiceNumber): static
+    public function setInvoiceNumber(string $invoiceNumber): static
     {
         $this->invoiceNumber = $invoiceNumber;
 

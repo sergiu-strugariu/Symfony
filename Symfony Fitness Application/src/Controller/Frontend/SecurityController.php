@@ -6,6 +6,7 @@ use App\Entity\Page;
 use App\Entity\User;
 use App\Form\LoginType;
 use App\Form\Type\UserType;
+use App\Helper\DefaultHelper;
 use App\Helper\MailHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,7 @@ class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
     #[Route('/register', name: 'app_register')]
-    public function authentication(Request $request, AuthenticationUtils $authenticationUtils, MailHelper $mail, EntityManagerInterface $em, TranslatorInterface $translator, Security $security, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function authentication(Request $request, AuthenticationUtils $authenticationUtils, MailHelper $mail, EntityManagerInterface $em, TranslatorInterface $translator, Security $security, UserPasswordHasherInterface $userPasswordHasher, DefaultHelper $helper): Response
     {
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "authentication"]);
 
@@ -31,8 +32,14 @@ class SecurityController extends AbstractController
         $registerForm = $this->createForm(UserType::class, $user);
         $registerForm->handleRequest($request);
 
-
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
+            $recaptcha = $request->get('g-recaptcha-response');
+
+            if ($helper->captchaVerify($recaptcha)) {
+                $this->addFlash('error', $translator->trans('form_register.form_recaptcha', [], 'messages'));
+                return $this->redirectToRoute('app_register');
+            }
+
             $user->setUuid(Uuid::v4());
 
             $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $registerForm->get('email')->getData()]);

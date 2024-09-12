@@ -4,9 +4,10 @@
         <meta charset="UTF-8">
         <title>{% block title %}| MoveOn{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/ico" href="{{ asset('assets/frontend/favicon.ico', 'cloudflare') }}"/>
+        <link rel="icon" type="image/ico" href="{{ asset('assets/frontend/favicon.ico') }}"/>
         {% block stylesheets %}{% endblock %}
         {% block meta_og %}{% endblock %}
+        <script src='https://www.google.com/recaptcha/api.js'></script>
 
         <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
         <script>

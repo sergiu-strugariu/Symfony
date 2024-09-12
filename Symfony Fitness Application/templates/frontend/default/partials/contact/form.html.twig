@@ -53,6 +53,11 @@
                     {{ form_errors(form.accordGDPR) }}
                 </span>
             </div>
+
+            <div class="recaptcha group group-checkbox">
+                <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+            </div>
+
             <div class="group group-submit">
                 <input type="submit" value="{{ 'contact.sendButton'|trans }}">
             </div>

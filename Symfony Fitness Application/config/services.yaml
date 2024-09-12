@@ -19,6 +19,9 @@ parameters:
     app_team_member_path: '%env(APP_TEAM_MEMBER_PATH)%'
     app_user_photo_path: '%env(APP_USER_PHOTO_PATH)%'
     app_gallery_path: '%env(APP_GALLERY_PATH)%'
+    recaptcha_site_verify: '%env(RECAPTCHA_SITEVERIFY)%'
+    recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    recaptcha_secret_key: '%env(GOOGLE_RECAPTCHA_SECRET_KEY)%'
     facebook_share: '%env(FACEBOOK_SHARE)%'
     linkedin_share: '%env(LINKEDIN_SHARE)%'
     payu_base_url: '%env(PAYU_BASE_URL)%'
@@ -37,6 +40,7 @@ parameters:
     smartbill_proforma_invoice_series_name: '%env(SMARTBILL_PROFORMA_INVOICE_SERIES_NAME)%'
     smartbill_username: '%env(SMARTBILL_USERNAME)%'
     smartbill_token: '%env(SMARTBILL_TOKEN)%'
+    cookiebot_id: '%env(COOKIEBOT_ID)%'
 
 twig:
     globals:

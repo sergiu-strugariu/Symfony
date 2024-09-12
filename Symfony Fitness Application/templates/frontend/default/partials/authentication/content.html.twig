@@ -90,6 +90,9 @@
                         {{ form_label(registerForm.newsletter, 'common.newsletter'|trans) }}
                     </div>
 
+                    <div class="recaptcha group group-checkbox">
+                        <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+                    </div>
                     <div class="group-submit">
                         <input type="submit" value="{{ 'authentication.buttons.register'|trans }}"/>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use DateTime;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class DefaultHelper
@@ -15,13 +16,16 @@ class DefaultHelper
     private KernelInterface $kernel;
     private $intercomHash;
 
+    private ParameterBagInterface $parameterBag;
+
     /**
      * @param KernelInterface $kernel
      */
-    public function __construct(KernelInterface $kernel, $intercomHash)
+    public function __construct(KernelInterface $kernel, $intercomHash, ParameterBagInterface $parameterBag)
     {
         $this->kernel = $kernel;
         $this->intercomHash = $intercomHash;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -235,5 +239,50 @@ class DefaultHelper
             $id,
             $this->intercomHash
         );
+    }
+
+    /**
+     * @param $recaptcha
+     * @return bool
+     */
+    public function captchaVerify($recaptcha): bool
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $this->getEnvValue('recaptcha_site_verify'));
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ["secret" => $this->getEnvValue('recaptcha_secret_key'), "response" => $recaptcha]);
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            // Handle cURL error
+            $error = curl_error($ch);
+            curl_close($ch);
+
+            return true;
+        }
+
+        curl_close($ch);
+        $data = json_decode($response);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            return true;
+        }
+
+        return !$data->success;
+    }
+
+    /**
+     * @param $param
+     * @return string
+     */
+    public function getEnvValue($param): string
+    {
+        return $this->parameterBag->get($param);
     }
 }

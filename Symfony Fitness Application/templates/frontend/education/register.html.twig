@@ -123,6 +123,9 @@
                     {{ form_label(form.accordMedia, "common.media"|trans) }}
                     {{ form_errors(form.accordMedia) }}
                 </div>
+                <div class="recaptcha group group-checkbox">
+                    <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+                </div>
                 <div class="group-submit">
                     <input type="submit" value="{{ 'form_register.buy'|trans }}"/>
                 </div>

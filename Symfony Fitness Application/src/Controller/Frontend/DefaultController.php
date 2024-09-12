@@ -10,6 +10,7 @@ use App\Entity\Refund;
 use App\Entity\TeamMember;
 use App\Form\Type\ContactType;
 use App\Form\Type\RefundUserType;
+use App\Helper\DefaultHelper;
 use App\Helper\LanguageHelper;
 use App\Helper\MailHelper;
 use App\Repository\ArticleRepository;
@@ -94,13 +95,20 @@ class DefaultController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route('/contact', name: 'app_contact')]
-    public function contact(EntityManagerInterface $em, Request $request, MailHelper $mail, TranslatorInterface $translator): Response
+    public function contact(EntityManagerInterface $em, Request $request, MailHelper $mail, TranslatorInterface $translator, DefaultHelper $helper): Response
     {
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "contact"]);
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $recaptcha = $request->get('g-recaptcha-response');
+
+            if ($helper->captchaVerify($recaptcha)) {
+                $this->addFlash('error', $translator->trans('form_register.form_recaptcha', [], 'messages'));
+                return $this->redirectToRoute('app_contact');
+            }
+
             $formData = $form->getData();
 
             $email = $mail->sendMail(

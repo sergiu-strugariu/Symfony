@@ -172,6 +172,7 @@ form_register:
   location: "Locație"
   course_type: "Tipul cursului"
   price: "Preț"
+  form_recaptcha: 'Nu uita să bifezi recaptcha.'
   payment_method: "Selectați metoda de plată:"
   card: "Card online"
   bank: "Transfer bancar"

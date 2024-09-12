@@ -4,12 +4,15 @@ twig:
     globals:
         default_locale: "%default_locale%"
         app_page_path: '%app_page_path%'
+        cookiebot_id: '%cookiebot_id%'
         app_education_path: '%app_education_path%'
         app_team_member_path: '%app_team_member_path%'
         app_article_path: '%app_article_path%'
         app_certificate_path: '%app_certificate_path%'
         app_menu_path: '%app_menu_path%'
         app_user_photo_path: '%app_user_photo_path%'
+        recaptcha_site_key: '%recaptcha_site_key%'
+        recaptcha_secret_key: '%recaptcha_secret_key%'
         app_gallery_path: '%app_gallery_path%'
         app_diploma_path: '%app_diploma_path%'
         intercom_app_id: '%intercom_app_id%'

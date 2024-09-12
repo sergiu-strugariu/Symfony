@@ -6,6 +6,7 @@ use App\Entity\Education;
 use App\Entity\EducationRegistration;
 use App\Entity\Page;
 use App\Form\Type\FormRegisterType;
+use App\Helper\DefaultHelper;
 use App\Helper\LanguageHelper;
 use App\Helper\MailHelper;
 use App\Helper\PayUAPIHelper;
@@ -74,7 +75,7 @@ class EducationController extends AbstractController
     }
     
     #[Route('/educatie/{slug}/inregistrare', name: 'app_education_register')]
-    public function educationRegister(Request $request, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $translator, PayUAPIHelper $payUAPIHelper, SmartBillAPIHelper $smartBillAPIHelper, $slug): Response
+    public function educationRegister(Request $request, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $translator, PayUAPIHelper $payUAPIHelper, SmartBillAPIHelper $smartBillAPIHelper, DefaultHelper $helper, $slug): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
         if (null === $education) {
@@ -96,6 +97,15 @@ class EducationController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $recaptcha = $request->get('g-recaptcha-response');
+
+                if ($helper->captchaVerify($recaptcha)) {
+                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha', [], 'messages'));
+                    return $this->redirectToRoute('app_education_register', [
+                        'slug' => $slug
+                    ]);
+                }
+
                 $existingRegistration = $em->getRepository(EducationRegistration::class)->findOneBy([
                     'user' => $user,
                     'education' => $education

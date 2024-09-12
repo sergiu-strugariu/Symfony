@@ -173,6 +173,7 @@ form_register:
   location: "Location"
   course_type: "Course Type"
   price: "Price"
+  form_recaptcha: "Don't forget to check recaptcha"
   payment_method: "Select method of paying:"
   card: "Online Card"
   invoice: "I want invoice as a juridic person."
