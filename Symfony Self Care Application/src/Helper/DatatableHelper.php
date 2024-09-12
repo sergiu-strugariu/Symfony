@@ -53,6 +53,23 @@ class DatatableHelper
         "",
         "createdAt"
     ];
+    const SPEAKER_FIELDS = [
+        "id",
+        "name",
+        "surname",
+        "role",
+        "company",
+        "status",
+        "",
+        "createdAt"
+    ];
+    const PARTNER_FIELDS = [
+        "id",
+        "name",
+        "type",
+        "",
+        "createdAt"
+    ];
     const JOB_FIELDS = [
         "id",
         "title",

@@ -25,6 +25,8 @@ use App\Helper\MailHelper;
 use App\Repository\ArticleRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\CompanyReviewRepository;
+use App\Repository\EventPartnerRepository;
+use App\Repository\EventSpeakerRepository;
 use App\Repository\JobRepository;
 use App\Repository\LanguageRepository;
 use App\Repository\MenuRepository;
@@ -370,6 +372,74 @@ class AjaxController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard/ajax/admin/speakers', name: 'dashboard_ajax_speakers')]
+    public function getSpeakers(Request $request, EventSpeakerRepository $eventSpeakerRepository, DatatableHelper $datatableHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams((array)$params, $datatableHelper::SPEAKER_FIELDS);
+
+        // filter by params
+        $speakers = $eventSpeakerRepository->findSpeakersByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword']
+        );
+
+        // get total count
+        $totalRecords = $eventSpeakerRepository->countSpeakers();
+
+        // get filtered count
+        $totalDisplay = count($speakers);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $speakers = array_splice($speakers, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $speakers
+        ]);
+    }
+
+    #[Route('/dashboard/ajax/admin/partners', name: 'dashboard_ajax_partners')]
+    public function getPartners(Request $request, EventPartnerRepository $eventPartnerRepository, DatatableHelper $datatableHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams((array)$params, $datatableHelper::PARTNER_FIELDS);
+
+        // filter by params
+        $partners = $eventPartnerRepository->findPartnersByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword']
+        );
+
+        // get total count
+        $totalRecords = $eventPartnerRepository->countPartners();
+
+        // get filtered count
+        $totalDisplay = count($partners);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $partners = array_splice($partners, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $partners
+        ]);
+    }
+
     #[Route('/dashboard/ajax/jobs', name: 'dashboard_ajax_jobs')]
     public function getJobs(Request $request, JobRepository $jobRepository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
     {
@@ -592,7 +662,7 @@ class AjaxController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/ajax/county/cities', name: 'dashboard_ajax_cities')]
+    #[Route('/ajax/county/cities', name: 'dashboard_ajax_cities')]
     public function getCitiesByCounty(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $id = $request->get('id');

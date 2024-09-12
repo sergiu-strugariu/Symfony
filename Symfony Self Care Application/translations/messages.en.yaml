@@ -237,6 +237,22 @@ form:
     user_conections: 'Select the connection'
   txtDateRange:
     validDateRange: 'Please enter the start and end date of your stay.'
+  companyName:
+    required: 'Please enter the company name'
+  cui: 
+    required: 'Please enter the unique registration code'
+    validCIF: "Please enter a valid Romanian CIF."
+  companyRegisterNumber:
+    required: "Please enter the company register number",
+    regNumber: "Please enter a valid Registration number."
+  iban:
+    required: "Please enter a valid IBAN."
+  county:
+    required: "Please enter the county."
+  city: 
+    required:  "Please enter the city"
+  address: 
+    required: "Please enter the address"
 mail:
   hello: 'Hello'
   title: 'You have received an email from'
@@ -316,12 +332,15 @@ auth:
   save: 'Save'
 dashboard:
   table:
+    name: 'Name'
+    surname: 'Surname'
     care_name: 'Care name'
     title: 'Title'
     slug: 'Slug'
     status: 'Status'
     role: 'Role'
     image: 'Image'
+    type: 'Type'
     created_at: 'Created at'
     updated_at: 'Updated at'
     search_placeholder: 'Search ...'
@@ -339,6 +358,8 @@ dashboard:
     manage_links: 'Manage links'
   actions:
     add_new_article: 'Add new article'
+    add_new_speaker: 'Add new speaker'
+    add_new_partner: 'Add new partner'
     load_more: 'Load more'
     sorting_by_date: 'Sorting by date'
     actions: 'Actions'
@@ -368,12 +389,15 @@ dashboard:
     dashboard: 'Dashboard'
     cms: 'CMS'
     pages: 'Pages'
+    events: 'Events'
     care_homes: 'Care Homes'
     listing_care_homes: 'Listing Care homes'
     listing_reviews: 'Listing reviews'
     listing_provides: 'Listing providers'
     provider_categories: 'Provider categories'
     listing_articles: 'Listing articles'
+    listing_speakers: 'Listing speakers'
+    listing_partners: 'Listing partners'
     listing_jobs: 'Listing jobs'
     job_categories: 'Job categories'
     listing_courses: 'Listing courses'
@@ -445,6 +469,8 @@ dashboard:
     company_type: 'Home type'
     company_capacity: 'Capacity/benefit no.'
     company: 'Company'
+    companyName: 'Company name'
+    role: 'Role'
   my_account:
     totalCares: 'Felicitări!</br>Ai %totalCares% cămine adăugate.'
     my_account: 'My account'
@@ -521,7 +547,11 @@ controller:
   success_updated: 'This content has been successfully updated'
   success_delete: 'This content has been successfully deleted.'
   edit_article: 'Edit article'
+  edit_speaker: 'Edit speaker'
+  edit_partner: 'Edit partner'
   create_article: 'Create article'
+  create_speaker: 'Create speaker'
+  create_partner: 'Create partner'
   moderated: 'moderated'
   deleted: 'deleted'
   cares: 'Cares'

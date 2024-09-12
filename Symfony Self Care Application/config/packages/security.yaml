@@ -45,6 +45,7 @@ security:
         - { path: ^/dashboard/page, roles: ROLE_ADMIN }
         - { path: ^/dashboard/menu, roles: ROLE_ADMIN }
         - { path: ^/dashboard/review, roles: ROLE_ADMIN }
+        - { path: ^/dashboard/event, roles: ROLE_ADMIN }
         - { path: ^/dashboard/rebuild-search, roles: ROLE_ADMIN }
         - { path: ^/dashboard/ajax/admin, roles: ROLE_ADMIN }
 

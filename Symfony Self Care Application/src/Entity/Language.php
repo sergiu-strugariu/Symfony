@@ -81,6 +81,12 @@ class Language
     #[ORM\OneToMany(targetEntity: PageWidgetTranslation::class, mappedBy: 'language', orphanRemoval: true)]
     private Collection $pageWidgetTranslations;
 
+    /**
+     * @var Collection<int, EventTranslation>
+     */
+    #[ORM\OneToMany(targetEntity: EventTranslation::class, mappedBy: 'language', orphanRemoval: true)]
+    private Collection $eventTranslations;
+
     public function __construct()
     {
         $this->jobTranslations = new ArrayCollection();
@@ -92,6 +98,7 @@ class Language
         $this->categoryServiceTranslations = new ArrayCollection();
         $this->menuItemTranslations = new ArrayCollection();
         $this->pageWidgetTranslations = new ArrayCollection();
+        $this->eventTranslations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -399,6 +406,36 @@ class Language
             // set the owning side to null (unless already changed)
             if ($pageWidgetTranslation->getLanguage() === $this) {
                 $pageWidgetTranslation->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EventTranslation>
+     */
+    public function getEventTranslations(): Collection
+    {
+        return $this->eventTranslations;
+    }
+
+    public function addEventTranslation(EventTranslation $eventTranslation): static
+    {
+        if (!$this->eventTranslations->contains($eventTranslation)) {
+            $this->eventTranslations->add($eventTranslation);
+            $eventTranslation->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventTranslation(EventTranslation $eventTranslation): static
+    {
+        if ($this->eventTranslations->removeElement($eventTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($eventTranslation->getLanguage() === $this) {
+                $eventTranslation->setLanguage(null);
             }
         }
 

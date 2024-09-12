@@ -11,6 +11,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefaultHelper
 {
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISHED = 'published';
+
     const CATEGORY_TYPES = ['training', 'job', 'article', 'care', 'provider'];
     const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'instagramLink', 'logo', 'footerLogo', 'favicon'];
     const SETTING_FILE_FIELDS = ['logo', 'footerLogo', 'favicon'];
@@ -251,5 +254,16 @@ class DefaultHelper
     public function intercomGetHash($id): bool|string
     {
         return hash_hmac('sha256', $id, $this->intercomSecretKey);
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getStatus(): array
+    {
+        return [
+            self::STATUS_DRAFT => self::STATUS_DRAFT,
+            self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
+        ];
     }
 }

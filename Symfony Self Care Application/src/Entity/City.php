@@ -46,11 +46,18 @@ class City
     #[ORM\OneToMany(targetEntity: Company::class, mappedBy: 'city', orphanRemoval: true)]
     private Collection $companies;
 
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'city', orphanRemoval: true)]
+    private Collection $events;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
         $this->trainingCourses = new ArrayCollection();
         $this->companies = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,6 +197,36 @@ class City
             // set the owning side to null (unless already changed)
             if ($company->getCity() === $this) {
                 $company->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getCity() === $this) {
+                $event->setCity(null);
             }
         }
 

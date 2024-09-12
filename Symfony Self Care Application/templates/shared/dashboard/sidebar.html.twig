@@ -427,6 +427,58 @@
                 {% endif %}
 
                 {% if isAdmin %}
+                    <!--begin:Menu items-->
+                    <div data-kt-menu-trigger="click" class="menu-item here menu-accordion {{route == 'dashboard_speaker_index' or route == 'dashboard_speaker_create' or route == 'dashboard_speaker_edit' or route == 'dashboard_partner_index' or route == 'dashboard_partner_create' or route == 'dashboard_partner_edit' ? 'hover show' : '' }}">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-image-v1">
+                                <img src="{{ asset('assets/dashboard/media/dashboard/articles.svg') }}" width="28" alt="articles" />
+                            </span>
+                            <span class="menu-title text-uppercase ps-12">
+                                {{ 'dashboard.common.events'|trans }}
+                            </span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ route == 'dashboard_speaker_index' or route == 'dashboard_speaker_create' or route == 'dashboard_speaker_edit' ? 'active' : '' }}" href="{{ path('dashboard_speaker_index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">
+                                        {{ 'dashboard.common.listing_speakers'|trans }}
+                                    </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ route == 'dashboard_partner_index' or route == 'dashboard_partner_create' or route == 'dashboard_partner_edit' ? 'active' : '' }}" href="{{ path('dashboard_partner_index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">
+                                        {{ 'dashboard.common.listing_partners'|trans }}
+                                    </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                    </div>
+                    <!--end:Menu items-->
+
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->

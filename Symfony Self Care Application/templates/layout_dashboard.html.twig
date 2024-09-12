@@ -114,11 +114,17 @@
         window.articleImagePath = "{{ asset(app_article_path, 'cloudflare') }}";
         window.userImagePath = "{{ asset(app_user_path, 'cloudflare') }}";
 
+        window.speakerAjaxPath = "{{ path('dashboard_ajax_speakers') }}";
+        window.speakerImagePath = "{{ asset(app_event_speaker_path, 'cloudflare') }}";
+
+        window.partnerAjaxPath = "{{ path('dashboard_ajax_partners') }}";
+        window.partnerImagePath = "{{ asset(app_event_partner_path, 'cloudflare') }}";
+
         // Company types
         window.locationTypeProvider = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
         window.locationTypeCare = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
         window.jobType = '{{ constant('App\\Entity\\Favorite::JOB_FAVORITE') }}';
-        window.published = '{{ constant('App\\Entity\\Company::STATUS_PUBLISHED') }}';
+        window.published = '{{ constant('App\\Helper\\DefaultHelper::STATUS_PUBLISHED') }}';
         window.courseType = '{{ constant('App\\Entity\\Favorite::COURSE_FAVORITE') }}';
 
         window.translations = {

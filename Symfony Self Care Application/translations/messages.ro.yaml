@@ -243,6 +243,22 @@ form:
     user_conections: 'Selectează conexiunea'
   txtDateRange:
     validDateRange: 'Vă rugăm să introduceți data inițială și finală a șederii dumneavoastră.'
+  companyName:
+    required: 'Vă rugăm să introduceți numele companiei'
+  cui: 
+    required: 'Vă rugăm să introduceți codul unic de înregistrare (CUI)'
+    validCIF: "Vă rugăm să introduceți un CIF valid"
+  companyRegisterNumber:
+    required: "Vă rugăm să introduceți numărul de înregistrare al companiei"
+    regNumber: "Vă rugăm să introduceți un număr de înregistrare valid."
+  iban:
+    required: "Vă rugăm să introduceți un IBAN valid"
+  county:
+    required: "Vă rugăm să intrați în județ"
+  city: 
+    required:  "Vă rugăm să introduceți orașul"
+  address: 
+    required: "Vă rugăm să introduceți adresa"
 mail:
   hello: 'Salut'
   title: 'Ai primit un mail de la'
@@ -324,12 +340,14 @@ auth:
 dashboard:
   table:
     name: 'Nume'
+    surname: 'Prenume'
     care_name: 'Nume companie'
     title: 'Titlu'
     slug: 'Slug'
     status: 'Stare'
     role: 'Rol'
     image: 'Imagine'
+    type: 'Tip'
     created_at: 'Creat la'
     updated_at: 'Actualizat la'
     search_placeholder: 'Căutați'
@@ -347,6 +365,8 @@ dashboard:
     manage_links: 'Gestionați linkurile'
   actions:
     add_new_article: 'Adăugați articol'
+    add_new_speaker: 'Adăugați speaker'
+    add_new_partner: 'Adăugați partener'
     load_more: 'Încarcă mai multe'
     sorting_by_date: 'Sortare după dată'
     actions: 'Acțiuni'
@@ -376,12 +396,15 @@ dashboard:
     dashboard: 'Dashboard'
     cms: 'CMS'
     pages: 'Pagini'
+    events: 'Evenimente'
     care_homes: 'Cămine de îngrijire'
     listing_care_homes: 'Listă cămine'
     listing_reviews: 'Listă recenzii'
     listing_provides: 'Listă furnizori'
     provider_categories: 'Categorii furnizori'
     listing_articles: 'Listă articole'
+    listing_speakers: 'Listarea speakerilor'
+    listing_partners: 'Listarea partenerilor'
     listing_jobs: 'Listă locuri de muncă'
     job_categories: 'Categorii locuri de muncă'
     listing_courses: 'Listă cursuri'
@@ -449,6 +472,8 @@ dashboard:
     company_type: 'Tip cămin'
     company_capacity: 'Capacitate/nr.benef.'
     company: 'Companie'
+    companyName: 'Nume companie'
+    role: 'Rol'
   my_account:
     totalCares: 'Felicitări!</br>Ai %totalCares% cămine adăugate.'
     my_account: 'Contul meu'
@@ -526,7 +551,11 @@ controller:
   success_updated: 'Acest conținut a fost actualizat cu succes'
   success_delete: 'Acest conținut a fost șters cu succes.'
   edit_article: 'Editați articolul'
+  edit_speaker: 'Editați speaker-ul'
+  edit_partner: 'Editați partener-ul'
   create_article: 'Creați articol'
+  create_speaker: 'Creați speaker'
+  create_partner: 'Creați partener'
   moderated: 'moderat'
   deleted: 'șters'
   cares: 'Servicii'

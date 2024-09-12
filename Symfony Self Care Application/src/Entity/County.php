@@ -45,12 +45,19 @@ class County
     #[ORM\OneToMany(targetEntity: Company::class, mappedBy: 'county', orphanRemoval: true)]
     private Collection $companies;
 
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'county', orphanRemoval: true)]
+    private Collection $events;
+
     public function __construct()
     {
         $this->cities = new ArrayCollection();
         $this->jobs = new ArrayCollection();
         $this->trainingCourses = new ArrayCollection();
         $this->companies = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +203,36 @@ class County
             // set the owning side to null (unless already changed)
             if ($company->getCounty() === $this) {
                 $company->setCounty(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setCounty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getCounty() === $this) {
+                $event->setCounty(null);
             }
         }
 
