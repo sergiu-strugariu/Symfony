@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Stretching instructor",
+      "shortDescription": "În cadrul acestui curs, veţi învăţa bazele analitice și generale ale celor mai importante mișcări de stretching; veţi înţelege practica în doi (mișcări de întindere asistate, foarte folositoare pentru antrenorii personali)",
+      "imageUrl": "../images/courses/cours-image.png",
+      "type": "curs",
+      "location": "Bucuresti",
+      "date": "28-30 iunie 2024",
+      "url": "#"
+    },
+    {
+      "id": 1,
+      "title": "Stretching instructor",
+      "shortDescription": "În cadrul acestui curs, veţi învăţa bazele analitice și generale ale celor mai importante mișcări de stretching; veţi înţelege practica în doi (mișcări de întindere asistate, foarte folositoare pentru antrenorii personali)",
+      "imageUrl": "../images/courses/cours-image.png",
+      "type": "curs",
+      "location": "Timisoara",
+      "date": "20-22 iulie 2024",
+      "url": "#"
+    },
+    {
+      "id": 1,
+      "title": "Stretching instructor",
+      "shortDescription": "În cadrul acestui curs, veţi învăţa bazele analitice și generale ale celor mai importante mișcări de stretching; veţi înţelege practica în doi (mișcări de întindere asistate, foarte folositoare pentru antrenorii personali)",
+      "imageUrl": "../images/courses/cours-image.png",
+      "type": "curs",
+      "location": "Iasi",
+      "date": "15-16 august 2024",
+      "url": "#"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Antonio';
+    src: url('Antonio-Bold.eot');
+    src: url('Antonio-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Antonio-Bold.woff2') format('woff2'),
+        url('Antonio-Bold.woff') format('woff'),
+        url('Antonio-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+

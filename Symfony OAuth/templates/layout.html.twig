@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+
+{% block body %}
+    {% include 'frontend/partials/common/header.html.twig' %}
+    {% include "shared/alert.html.twig" %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% include "frontend/partials/common/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

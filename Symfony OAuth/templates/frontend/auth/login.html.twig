@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block content %}
+
+    <section class="bg-white">
+        <div class="w-full mx-auto max-w-xl flex flex-col justify-center py-24 mt-4 relative p-8">
+
+            <div class="mt-6">
+                <div>
+                    <form method="post" class="w-full divide-neutral-200 rounded-3xl bg-white shadow-2xl border p-8 lg:p-10">
+                        <div class="prose text-gray-500 prose-sm prose-headings:font-normal prose-headings:text-xl">
+                            <div>
+                                <h1>Register form with password validation</h1>
+                                <p class="text-balance">
+                                    Fill in the form below to register your account, and you will see
+                                    the inputs validation in action.
+                                </p>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}">
+
+                        <div class="mt-4">
+                            <label for="username">Email</label>
+                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="block w-full h-12 px-4 py-3 placeholder-gray-500 bg-gray-100 border-0 rounded-lg appearance-none text-blue-500 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 focus:ring-inset focus:ring-2 text-xs" autocomplete="email" required autofocus>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="password">Password</label>
+                            <input type="password" name="_password" id="password" class="block w-full h-12 px-4 py-3 placeholder-gray-500 bg-gray-100 border-0 rounded-lg appearance-none text-blue-500 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 focus:ring-2 focus:ring-inset text-xs" autocomplete="current-password" required>
+                        </div>
+
+                        {% if error %}
+                            <div class="alert alert-danger mt-4 text-red-500">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        <div class="mt-4">
+                            <a href="{{ path('app_resetting_forgot_password') }}" class="text-blue-400">
+                                Forgot Password
+                            </a>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit"
+                                    class="rounded-full bg-blue-600 px-8 py-2 h-12 text-sm font-semibold text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
+                                Log in
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

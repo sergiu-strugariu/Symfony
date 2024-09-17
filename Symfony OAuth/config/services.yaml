@@ -1,0 +1,29 @@
+parameters:
+    email_address: '%env(EMAIL_ADDRESS)%'
+    email_sender: '%env(EMAIL_SENDER)%'
+    app_name: "%env(APP_NAME)%"
+
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    hwi_oauth.user.provider.entity:
+        class: HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider
+        arguments:
+            $class: App\Entity\User
+            $properties:
+                'facebook': 'facebook'
+                'google': 'google'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+    App\Helper\MailHelper:
+        arguments:
+            $fromEmail: '%email_address%'
+            $fromSender: '%email_sender%'
