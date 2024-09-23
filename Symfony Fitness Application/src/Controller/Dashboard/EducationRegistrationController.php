@@ -31,8 +31,6 @@ class EducationRegistrationController extends AbstractController
     #[Route('/dashboard/education/registration/{uuid}/edit', name: 'dashboard_education_registration_edit')]
     public function editRegistration(Request $request, EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper, FileUploader $fileUploader, $uuid)
     {
-
-
         $educationRegistration = $em->getRepository(EducationRegistration::class)->findOneBy(['uuid' => $uuid]);
         if (null === $educationRegistration) {
             return $this->redirectToRoute('dashboard_index');

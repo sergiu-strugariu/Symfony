@@ -6,6 +6,7 @@ use App\Entity\Certification;
 use App\Entity\City;
 use App\Entity\County;
 use App\Entity\Education;
+use App\Entity\EducationCategory;
 use App\Entity\TeamMember;
 use App\Repository\CityRepository;
 use App\Repository\CountyRepository;
@@ -88,6 +89,17 @@ class EducationType extends AbstractType
                 'class' => Certification::class,
                 'choice_label' => function (Certification $certification) use ($locale) {
                     return $certification->getTranslation($locale)->getTitle();
+                },
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.deletedAt IS NULL');
+                },
+                'required' => true,
+            ])
+            ->add('category', EntityType::class, [
+                'class' => EducationCategory::class,
+                'choice_label' => function (EducationCategory $category) use ($locale) {
+                    return $category->getTranslation($locale)->getTitle();
                 },
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')

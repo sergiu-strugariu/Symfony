@@ -200,7 +200,7 @@
                         <div class="d-flex flex-stack">
                             <!--begin::Symbol-->
                             <div class="symbol symbol-40px me-4">
-                                <img alt="" src="{{ asset(app_education_path ~ education.imageName) }}"
+                                <img alt="" src="{{ asset(app_education_path ~ education.imageName, 'cloudflare') }}"
                                      class=""/>
                             </div>
                             <!--end::Symbol-->
@@ -258,7 +258,7 @@
                         <div class="d-flex flex-stack">
                             <!--begin::Symbol-->
                             <div class="symbol symbol-40px me-4">
-                                <img alt="" src="{{ asset('assets/files/article/' ~ article.imageName, 'cloudflare') }}" class=""/>
+                                <img alt="" src="{{ asset(app_article_path ~ article.imageName, 'cloudflare') }}" class=""/>
                             </div>
                             <!--end::Symbol-->
                             <!--begin::Section-->

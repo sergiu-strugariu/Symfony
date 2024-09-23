@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PaymentReminderCommand extends Command {
     
     protected static $defaultDescription = 'Sends an automated payment reminder.';
-    
+
     public function __construct(
         private EntityManagerInterface $em,
         private MailHelper $mailHelper,
@@ -24,7 +24,7 @@ class PaymentReminderCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $pendingPaymentsForReminder = $this->em->getRepository(EducationRegistration::class)->findPendingPaymentsForReminder();
-        
+
         foreach ($pendingPaymentsForReminder as $pendingPayment) {
              $sent = $this->mailHelper->sendMail(
                 $pendingPayment->getEmail(),
@@ -32,12 +32,12 @@ class PaymentReminderCommand extends Command {
                 'frontend/emails/payment-reminder.html.twig',
                 [
                     'firstName' => $pendingPayment->getFirstName(),
-                    'title' => $pendingPayment->getEducation()->getTranslation('ro')->getTitle()
+                    'title' => $pendingPayment->getEducation()->getTranslation('ro')->getTitle(),
                 ]);
 
             if ($sent) {
                 $pendingPayment->setReminderSent(true);
-                
+
                 $this->em->persist($pendingPayment);
                 $this->em->flush();
             }

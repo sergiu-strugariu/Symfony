@@ -17,6 +17,13 @@
     </div>
     <div class="row">
         <div class="col-lg-12 mb-5">
+            {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.category, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.category) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
             {{ form_label(form.slug, 'Slug', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.slug, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.slug) }}

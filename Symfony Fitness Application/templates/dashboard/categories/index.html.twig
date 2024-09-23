@@ -1,6 +1,6 @@
 {% extends 'layout_dashboard.html.twig' %}
 
-{% block title %}Education registrations {{ parent() }} {% endblock %}
+{% block title %} Categories {{ parent() }} {% endblock %}
 
 {% block content %}
     <!--begin::Card-->
@@ -20,23 +20,28 @@
                 <!--end::Search-->
             </div>
             <!--end::Card title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <a href="{{ path('dashboard_category_create') }}" class="btn btn-brand btn-sm fw-bold btn-primary">
+                    <i class="ki-duotone ki-plus-square">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                    </i> Add new category
+                </a>
+            </div>
+            <!--end::Actions-->
         </div>
         <!--end::Card header-->
         <!--begin::Card body-->
         <div class="card-body pt-0">
             <!--begin::Datatable-->
-            <table id="kt_datatable_educations" class="table align-middle table-row-dashed fs-6 gy-5">
+            <table id="kt_datatable_categories" class="table align-middle table-row-dashed fs-6 gy-5">
                 <thead>
                     <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                         <th class="min-w-50px">#ID</th>
-                        <th class="min-w-100px">First name</th>
-                        <th class="min-w-100px">Last name</th>
-                        <th class="min-w-100px">Email</th>
-                        <th class="min-w-100px">Phone</th>
-                        <th class="min-w-100px">Payment amount</th>
-                        <th class="min-w-100px">Payment status</th>
-                        <th class="min-w-100px">Payment method</th>
-                        <th class="min-w-100px">PayU payment reference</th>
+                        <th class="min-w-150px">Title</th>
+                        <th class="min-w-150px">Description</th>
                         <th class="text-end min-w-100px">Actions</th>
                     </tr>
                 </thead>
@@ -50,8 +55,8 @@
 {% endblock %}
 
 {% block page_javascripts %}
-    <script src="{{ asset('assets/dashboard/js/datatables/education-registrations.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/categories.js') }}"></script>
     <script>
-        window.educationRepositoriesAjaxPath = "{{ path('dashboard_ajax_education_registrations', {'uuid': uuid}) }}"
+        window.categoryAjaxPath = "{{ path('dashboard_ajax_categories') }}"
     </script>
 {% endblock %}

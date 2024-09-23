@@ -15,7 +15,7 @@
                                 <h3>{{ certification.translation(locale).level }}</h3>
                                 <h2>{{ certification.translation(locale).title }}</h2>
                                 {{ certification.translation(locale).description|raw }}
-                                <a href="{{ path('app_educations') }}">{{ 'common.buttons.view_courses'|trans }}</a>
+                                <a href="{{ path('app_educations', {'category' : certification.slug }) }}">{{ 'common.buttons.view_courses'|trans }}</a>
                             </div>
                         </div>
                     {% endif %}

@@ -9,9 +9,9 @@
                 <label for="coursesType">{{ "course_calendar.type"|trans }}</label>
                 <select name="coursesType" id="coursesType">
                     <option value="all">{{ "course_calendar.all"|trans }}</option>
-                    {% for type in types %}
-                        <option value="{{ type }}"
-                                {% if type == selectedType %}selected{% endif %}>{{ type|capitalize }}</option>
+                    {% for key, type in types %}
+                        <option value="{{ key }}"
+                                {% if key == selectedType %}selected{% endif %}>{{ type|capitalize }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -39,13 +39,19 @@
         </div>
         <div class="courses-list">
             {% if courses is empty %}
-                <h6>{{ 'common.no_result'|trans }} "{{ query }}"</h6>
+                <h6>{{ 'common.no_result'|trans }}</h6>
             {% else %}
                 {% for course in courses %}
                     <div class="course-card">
                         <div class="image" data-image="{{ asset('assets/files/education/' ~ course.imageName, 'cloudflare') }}"></div>
                         <div>
-                            <h3>{{ course.type }}</h3>
+                            {% if course.type == "course" %}
+                                <h3>{{ 'common.course'|trans }}</h3>
+                                {% elseif course.type == "workshop" %}
+                                    <h3>{{ 'common.workshop'|trans }}</h3>
+                                {% else %}
+                                <h3>{{ 'common.convention'|trans }}</h3>
+                            {% endif %}
                             <h2>{{ course.translation(locale).title ?? course['title'] }}</h2>
                                 {{ course.translation(locale).shortDescription|u.truncate(270)|raw }}
                             <ul>

@@ -148,7 +148,7 @@ class EducationSchedule
         ];
 
         $startDay = $locale === 'ro' ? $days[$startDate->format('l')] : $startDate->format('l');
-        return $startDay . ', ' . $startDate->format('H:i') . ' - ' . $endDate->format('H:i');
+        return $startDay . ' <br/> ' . $startDate->format('H:i') . ' - ' . $endDate->format('H:i');
     }
 
 }

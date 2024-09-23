@@ -81,7 +81,11 @@ common:
   newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
   contract: "Generate Contract"
   media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"
-  no_result: "Nu a fost gasit nici un rezultat pentru "
+  no_result: "Nu a fost gasit nici un rezultat."
+
+  course: "Curs"
+  workshop: "Workshop"
+  convention: "Conventie"
 
   not_blank: "Camp obligatoriu necompletat."
   not_valid:
@@ -175,10 +179,17 @@ form_register:
   form_recaptcha: 'Nu uita să bifezi recaptcha.'
   payment_method: "Selectați metoda de plată:"
   card: "Card online"
+  card_avantaj: "Card Avantaj"
+  google_pay: "Google Pay"
+  google_pay_invalid_token: "Selectați mai întâi un card alocat în Google Pay"
+  apple_pay: "Apple Pay"
+  apple_pay_invalid_token: "Selectați mai întâi un card alocat în Apple Pay"
   bank: "Transfer bancar"
   invoice: "Doresc facturarea pe persoană juridică"
-  buy: "CUMpĂRĂ"
+  buy: "Cumpără"
   back_to_main_page: "Întoarce-te la pagina principală"
+  not_logged_in: "Trebuie sa fii logat ca sa te poti inregistra la o educatie"
+  already_registered: "Te-ai înscris deja la această educație."
   payment_confirmation:
     title: "Confirmare plată"
     download_invoice: "Descarcă FACTURA"
@@ -322,3 +333,10 @@ meta.title:
     dashboard: "Calendarul Meu"
     details: "Detalii"
     invoices: "Facturi"
+
+paymentReminder:
+  title: "Notificare plata"
+  description_1: "Ești doar la un pas distanță de a începe cariera ta în fitness!"
+  description_2: "UPS! Se pare că nu ai finalizat comanda."
+  description_3: "Finalizează comanda acum și începe parcursul tău educațional pentru a-i inspira pe ceilalți spre un stil de viață activ și sănătos! 😊"
+  card: "🛒 Coșul tău conține:"

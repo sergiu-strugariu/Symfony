@@ -55,6 +55,12 @@ class Language
     #[ORM\OneToMany(targetEntity: TeamMemberTranslation::class, mappedBy: 'language')]
     private Collection $teamMemberTranslations;
 
+    /**
+     * @var Collection<int, EducationCategoryTranslation>
+     */
+    #[ORM\OneToMany(targetEntity: EducationCategoryTranslation::class, mappedBy: 'language')]
+    private Collection $educationCategoryTranslations;
+
     public function __construct()
     {
         $this->menuItemTranslations = new ArrayCollection();
@@ -62,6 +68,7 @@ class Language
         $this->certificationTranslations = new ArrayCollection();
         $this->educationScheduleTranslations = new ArrayCollection();
         $this->teamMemberTranslations = new ArrayCollection();
+        $this->educationCategoryTranslations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,6 +266,36 @@ class Language
             // set the owning side to null (unless already changed)
             if ($teamMemberTranslation->getLanguage() === $this) {
                 $teamMemberTranslation->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EducationCategoryTranslation>
+     */
+    public function getEducationCategoryTranslations(): Collection
+    {
+        return $this->educationCategoryTranslations;
+    }
+
+    public function addEducationCategoryTranslation(EducationCategoryTranslation $educationCategoryTranslation): static
+    {
+        if (!$this->educationCategoryTranslations->contains($educationCategoryTranslation)) {
+            $this->educationCategoryTranslations->add($educationCategoryTranslation);
+            $educationCategoryTranslation->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEducationCategoryTranslation(EducationCategoryTranslation $educationCategoryTranslation): static
+    {
+        if ($this->educationCategoryTranslations->removeElement($educationCategoryTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($educationCategoryTranslation->getLanguage() === $this) {
+                $educationCategoryTranslation->setLanguage(null);
             }
         }
 

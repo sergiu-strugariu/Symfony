@@ -15,6 +15,7 @@ use App\Repository\EducationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +28,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class EducationController extends AbstractController
 {
     
-    #[Route('/calendar-cursuri', name: 'app_educations')]
-    public function listCourses(Request $request, EntityManagerInterface $em, EducationRepository $repository, LanguageHelper $languageHelper, TranslatorInterface $translator): Response
+    #[Route('/calendar-cursuri/{category}', name: 'app_educations')]
+    public function index(Request $request, EntityManagerInterface $em, EducationRepository $repository, LanguageHelper $languageHelper, TranslatorInterface $translator, string $category = "all"): Response
     {
         $locale = $request->getLocale();
         $language = $languageHelper->getLanguageByLocale($locale);
@@ -44,14 +45,14 @@ class EducationController extends AbstractController
             $location = "all";
         }
 
-        $courses = $repository->findCoursesByFilters($language, $type, $location, $query);
-        $types = $repository->getAllCourseTypes();
+        $courses = $repository->findCoursesByFilters($language, $type, $location, $category, $query);
+        $types = Education::getEducationTypes($language->getLocale());
 
         return $this->render('frontend/default/page.html.twig', [
             'page' => $page,
             'courses' => $courses,
             'locations' => $locations,
-            'types' => array_column($types, 'type'),
+            'types' => $types,
             'selectedType' => $type,
             'selectedLocation' => $location,
             'query' => $query,
@@ -75,17 +76,16 @@ class EducationController extends AbstractController
     }
     
     #[Route('/educatie/{slug}/inregistrare', name: 'app_education_register')]
-    public function educationRegister(Request $request, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $translator, PayUAPIHelper $payUAPIHelper, SmartBillAPIHelper $smartBillAPIHelper, DefaultHelper $helper, $slug): Response
+    public function educationRegister(Request $request, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $translator, PayUAPIHelper $payUAPIHelper, SmartBillAPIHelper $smartBillAPIHelper, DefaultHelper $helper, LoggerInterface $payuLogger, LoggerInterface $smartbillLogger, $slug): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
         if (null === $education) {
-            $this->addFlash('error', "Educatia nu a fost gasita.");
             return $this->redirectToRoute('app_educations');
         }
         
         $user = $this->getUser();
         if (null === $user) {
-            $this->addFlash('error', "Trebuie sa fii logat ca sa te poti inregistra la o educatie");
+            $this->addFlash('error', $translator->trans('form_register.not_logged_in'));
             return $this->redirectToRoute('app_login');
         }
 
@@ -100,7 +100,7 @@ class EducationController extends AbstractController
                 $recaptcha = $request->get('g-recaptcha-response');
 
                 if ($helper->captchaVerify($recaptcha)) {
-                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha', [], 'messages'));
+                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha'));
                     return $this->redirectToRoute('app_education_register', [
                         'slug' => $slug
                     ]);
@@ -108,12 +108,34 @@ class EducationController extends AbstractController
 
                 $existingRegistration = $em->getRepository(EducationRegistration::class)->findOneBy([
                     'user' => $user,
-                    'education' => $education
+                    'education' => $education,
+                    'paymentStatus' => EducationRegistration::PAYMENT_STATUS_SUCCESS
                 ]);
 
                 if (null !== $existingRegistration) {
-                    $this->addFlash('error', "Deja esti inscris in aceasta educatie.");
-                    return $this->redirectToRoute('app_educations');
+                    $this->addFlash('error', $translator->trans('form_register.already_registered'));
+                    return $this->redirectToRoute('app_education_register', [
+                        'slug' => $slug
+                    ]);
+                }
+                
+                $paymentMethod = $educationRegistration->getPaymentMethod();
+                //$googlePayToken = urlencode($form->get('googlePayToken')->getData());
+                $googlePayToken = "%7B%5C%22signature%5C%22%3A%5C%22MEUCIQD5A02NqBxOve8QjPgqNIBWXjVsGTpuO2HCKfcp2mDPWwIgRKUkacEWT1QuUB1lVAm6HHBwBUeOoU3%2Bwzdc0bV9NRo%3D%5C%22%2C%5C%22intermediateSigningKey%5C%22%3A%7B%5C%22signedKey%5C%22%3A%5C%22%7B%5C%5C%22keyValue%5C%5C%22%3A%5C%5C%22MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE%2F1%2B3HBVSbdv%2Bj7NaArdgMyoSAM43yRydzqdg1TxodSzA96Dj4Mc1EiKroxxunavVIvdxGnJeFViTzFvzFRxyCw%3D%3D%5C%5C%22%2C%5C%5C%22keyExpiration%5C%5C%22%3A%5C%5C%2210280171658706%5C%5C%22%7D%5C%22%2C%5C%22signatures%5C%22%3A%5B%5C%22MEQCIASmYbwIUBrVTMUv7LgNJEhOg0f000KVRa7tEJJIFhmdAiByfzxLQLmHnkdbFZuQYL4yLFH0w9J2NBoRz%2Bws%2Fej8tg%3D%3D%5C%22%5D%7D%2C%5C%22protocolVersion%5C%22%3A%5C%22ECv2%5C%22%2C%5C%22signedMessage%5C%22%3A%5C%22%7B%5C%5C%22encryptedMessage%5C%5C%22%3A%5C%5C%22ftbpI1nKxdYruI2f3FD%2BCcqv0RYUGfWSIxvERpiBrjAtMbLbs1vgcKz8khg6q5HFp73G%2BKXmEgEDYdXUEevC%2FM88qh%2FmJd7Q%2FkYuAN5Kl4NV06hf4ADDnOgQJKt2yh6u2o705%2B%2FlB5toKAzDfAXCUFACEXkBK7QIwPVL4TyYZFQLGuLIhmq4g4jm2IVb1%2FAuX0OyPP5Z6uey9bq0BeTptIO5o2hSiNXDafb7XGk2ep%2FshDSqmOu74ANdNVmACeuiqmwxBzSNryHCnNJIragyaUEfMqyvW2Q0E%2Btql9SwPdkzc8jKLt%2FJ1Ta2w%2BLQCtuXLccFf6iyoYRbUfQ7r9F3OFFd7g3HenCrc1%2B%2BedYqcLm1mA95TmYBhG0b5eAJfVW5FnZ7pS2OAPQNzUsTaYmX%5C%5C%22%2C%5C%5C%22ephemeralPublicKey%5C%5C%22%3A%5C%5C%22BL1lzaMzhAN9ltgvIl%2BPwCW%2BqH0XIZHHn%2Fi%2F0I1FvnaWmMgUQIP7Fy%2Fjooyc6xljrRbrl8N3x96CXOXw2DuYZaA%3D%5C%5C%22%2C%5C%5C%22tag%5C%5C%22%3A%5C%5C%22iCs11Cxo80PbGkIpD35%2BNqROiv%2FhUVJGoGQVYITUNHY%3D%5C%5C%22%7D%5C%22%7D";
+                $applePayToken = urlencode($form->get('applePayToken')->getData());
+                
+                if (EducationRegistration::PAYMENT_TYPE_GOOGLE_PAY === $paymentMethod && empty($googlePayToken)) {
+                    $this->addFlash('error', $translator->trans('form_register.google_pay_invalid_token'));
+                    return $this->redirectToRoute('app_education_register', [
+                        'slug' => $slug
+                    ]);
+                }
+                
+                if (EducationRegistration::PAYMENT_TYPE_APPLE_PAY === $paymentMethod && empty($applePayToken)) {
+                    $this->addFlash('error', $translator->trans('form_register.apple_pay_invalid_token'));
+                    return $this->redirectToRoute('app_education_register', [
+                        'slug' => $slug
+                    ]);
                 }
 
                 $uuid = Uuid::v4();
@@ -130,7 +152,7 @@ class EducationController extends AbstractController
                 $em->persist($educationRegistration);
                 $em->flush();
                 
-                if (EducationRegistration::PAYMENT_TYPE_WIRE == $educationRegistration->getPaymentMethod()) {
+                if (EducationRegistration::PAYMENT_TYPE_WIRE == $paymentMethod) {
                     $service = $education->getInvoiceServiceName();
                     $isInvoicingPerLegalEntity = $educationRegistration->isInvoicingPerLegalEntity();
                     
@@ -164,11 +186,13 @@ class EducationController extends AbstractController
                     try {
                         $response = $smartBillAPIHelper->generateInvoice(SmartBillAPIHelper::INVOICE_TYPE_PROFORMA, $data);
                     } catch (\Exception $e) {
+                       $smartbillLogger->error($e->getMessage(), ['id' => $educationRegistration->getId()]);
                        $this->addFlash('danger', $e->getMessage());
                        return $this->redirectToRoute('app_education_register', ['slug' => $slug]);
                     }
                     
                     if (isset($response['errorText']) && !empty($response['errorText'])) {
+                        $smartbillLogger->error($response['errorText'], ['id' => $educationRegistration->getId()]);
                         $this->addFlash('danger', $response['errorText']);
                         return $this->redirectToRoute('app_education_register', ['slug' => $slug]);
                     }
@@ -187,6 +211,7 @@ class EducationController extends AbstractController
                             $extraHeaders = ['Accept: application/octet-stream'];
                             $pdfResponse = $smartBillAPIHelper->getInvoiceAsPDF(SmartBillAPIHelper::INVOICE_TYPE_PROFORMA, $response['number'], $extraHeaders);
                         } catch (\Exception $e) {
+                            $smartbillLogger->error($e->getMessage(), ['id' => $educationRegistration->getId()]);
                             $hasException = true;
                         }
                         
@@ -215,14 +240,13 @@ class EducationController extends AbstractController
                 }
 
                 $defaultLocale = $this->getParameter('default_locale');
+                $returnUrl = $this->generateUrl('app_education_registration_details', ['slug' => $slug, 'uuid' => $uuid], UrlGeneratorInterface::ABSOLUTE_URL);
                 $data = [
                     'merchantPaymentReference' => $educationRegistration->getId(),
                     'currency' => 'RON',
-                    'returnUrl' => $this->generateUrl('app_education_registration_details', ['slug' => $slug, 'uuid' => $uuid], UrlGeneratorInterface::ABSOLUTE_URL),
+                    'returnUrl' => $returnUrl,
                     'authorization' => [
-                        'paymentMethod' => 'CCVISAMC',
-                        'installmentsNumber' => 1,
-                        'usePaymentPage' => 'YES'
+                        'paymentMethod' => in_array($paymentMethod, [EducationRegistration::PAYMENT_TYPE_GOOGLE_PAY, EducationRegistration::PAYMENT_TYPE_APPLE_PAY]) ? EducationRegistration::PAYMENT_TYPE_CARD : $paymentMethod
                     ],
                     'client' => [
                         'billing' => [
@@ -250,6 +274,18 @@ class EducationController extends AbstractController
                         ]
                     ]
                 ];
+                
+                switch ($paymentMethod) {
+                    case EducationRegistration::PAYMENT_TYPE_GOOGLE_PAY:
+                        $data['authorization']['googlePayToken'] = $googlePayToken;
+                        break;
+                    case EducationRegistration::PAYMENT_TYPE_APPLE_PAY:
+                        $data['authorization']['applePayToken'] = $applePayToken;
+                        break;
+                    default:
+                        $data['authorization']['usePaymentPage'] = 'YES';
+                        break;
+                }
 
                 if ($educationRegistration->isInvoicingPerLegalEntity()) {
                     $data['client']['billing']['companyName'] = $educationRegistration->getCompanyName();
@@ -257,14 +293,10 @@ class EducationController extends AbstractController
                     $data['client']['billing']['addressLine1'] = $educationRegistration->getCompanyAddress();
                 }
 
-                $hasException = false;
                 try {
                     $response = $payUAPIHelper->authorizePayment($data);
                 } catch (\Exception $e) {
-                    $hasException = true;
-                }
-
-                if ($hasException) {
+                    $payuLogger->error($e->getMessage(), ['id' => $educationRegistration->getId()]);
                     $this->addFlash('error', $e->getMessage());
                     return $this->redirectToRoute('app_education_register', ['slug' => $slug]);
                 }
@@ -273,6 +305,8 @@ class EducationController extends AbstractController
                     if (isset($response['paymentResult']) && isset($response['paymentResult']['url'])) {
                         return new RedirectResponse($response['paymentResult']['url']);
                     }
+                    
+                    return new RedirectResponse($returnUrl);
 
                     // send confirmation email
                     /*$mail->sendMail(
@@ -287,6 +321,7 @@ class EducationController extends AbstractController
                             ]
                     );*/
                 } else {
+                    $payuLogger->error($response['message'], ['id' => $educationRegistration->getId()]);
                     $this->addFlash('error', $response['message']);
                     return $this->redirectToRoute('app_education_register', ['slug' => $slug]);
                 }
@@ -300,7 +335,7 @@ class EducationController extends AbstractController
     }
     
     #[Route('/educatie/{slug}/inregistrare/{uuid}', name: 'app_education_registration_details')]
-    public function educationRegistrationDetails(EntityManagerInterface $em, PayUAPIHelper $payUAPIHelper, TranslatorInterface $translator, $slug, $uuid): Response
+    public function educationRegistrationDetails(EntityManagerInterface $em, PayUAPIHelper $payUAPIHelper, TranslatorInterface $translator, LoggerInterface $payuLogger, $slug, $uuid): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
         if (null === $education) {
@@ -322,6 +357,7 @@ class EducationController extends AbstractController
             $error = true;
             $title = 'Oups, a intervenit o eroare neprevăzută';
             $message = $e->getMessage();
+            $payuLogger->error($message, ['id' => $educationRegistration->getId()]);
         }
         
         if (isset($response['code']) && $response['code'] == 200) {
@@ -349,6 +385,7 @@ class EducationController extends AbstractController
             $error = true;
             $title = $translator->trans('authentication.account.default_password_error');
             $message = $response['message'];
+            $payuLogger->error($message, ['id' => $educationRegistration->getId()]);
         }
 
         return $this->render('frontend/education/result.html.twig', [
@@ -409,7 +446,7 @@ class EducationController extends AbstractController
     }
     
     #[Route('/educatie/{slug}/inregistrare/{uuid}/factura', name: 'app_education_registration_invoice')]
-    public function educationRegistrationInvoice(EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper, $slug, $uuid): Response
+    public function educationRegistrationInvoice(EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper, LoggerInterface $smartbillLogger, $slug, $uuid): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
         if (null === $education) {
@@ -438,6 +475,7 @@ class EducationController extends AbstractController
                 $extraHeaders = ['Accept: application/octet-stream'];
                 $pdfResponse = $smartBillAPIHelper->getInvoiceAsPDF($type, $invoiceNumber, $extraHeaders);
             } catch (\Exception $e) {
+                $smartbillLogger->error($e->getMessage(), ['id' => $educationRegistration->getId()]);
                 return new Response('');
             }
 

@@ -42,7 +42,7 @@ class Article
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deletedAt = null;
     
-    private $defaultLocale = 'ro';
+    private string $defaultLocale = 'ro';
 
     public function __construct()
     {

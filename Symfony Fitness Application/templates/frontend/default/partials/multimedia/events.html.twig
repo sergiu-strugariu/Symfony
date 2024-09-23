@@ -9,9 +9,9 @@
                 <label for="coursesType">Tip educație</label>
                 <select name="coursesType" id="coursesType">
                     <option value="all">{{ "course_calendar.all"|trans }}</option>
-                    {% for type in types %}
-                        <option value="{{ type }}"
-                                {% if type == selectedType %}selected{% endif %}>{{ type|capitalize }}</option>
+                    {% for key, type in types %}
+                        <option value="{{ key }}"
+                                {% if key == selectedType %}selected{% endif %}>{{ type|capitalize }}</option>
                     {% endfor %}
                 </select>
             </div>

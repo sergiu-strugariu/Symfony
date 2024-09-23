@@ -3,12 +3,12 @@
 <div class="card-body p-9">
     <div class="row">
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.paymentStatus, 'Payment Status', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.paymentStatus, 'Payment status', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.paymentStatus, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.paymentStatus) }}
         </div>
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.paymentMethod, 'Payment Status', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.paymentMethod, 'Payment method', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.paymentMethod, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.paymentMethod) }}
         </div>
@@ -16,12 +16,12 @@
 
     <div class="row">
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.firstName, 'First name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.firstName) }}
         </div>
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.lastName, 'Last name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.lastName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.lastName) }}
         </div>
@@ -42,12 +42,12 @@
 
     <div class="row">
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.bankName, 'Bank Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.bankName, 'Bank name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.bankName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.bankName) }}
         </div>
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.bankAccount, 'Bank Account', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.bankAccount, 'Bank account', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.bankAccount, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.bankAccount) }}
         </div>
@@ -55,12 +55,12 @@
 
     <div class="row">
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.companyName, 'Company Name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.companyName, 'Company name', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.companyName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.companyName) }}
         </div>
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.companyAddress, 'Company Address', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.companyAddress, 'Company address', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.companyAddress, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.companyAddress) }}
         </div>
@@ -73,7 +73,7 @@
             {{ form_errors(form.cui) }}
         </div>
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.registrationNumber, 'Registration Number', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.registrationNumber, 'Registration number', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.registrationNumber, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.registrationNumber) }}
         </div>
@@ -81,25 +81,25 @@
 
     <div class="row">
         <div class="col-lg-6 mb-5">
+            {{ form_label(form.paymentAmount, 'Payment amount', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.paymentAmount, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.paymentAmount) }}
+        </div>
+        <div class="col-lg-6 mb-5">
             {{ form_label(form.paymentVat, 'Payment VAT', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.paymentVat, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.paymentVat) }}
-        </div>
-        <div class="col-lg-6 mb-5">
-            {{ form_label(form.paymentAmount, 'Payment Amount', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
-            {{ form_widget(form.paymentAmount, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
-            {{ form_errors(form.paymentAmount) }}
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.paymentMessage, 'Payment Message', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.paymentMessage, 'Payment message', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.paymentMessage, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '5'}}) }}
             {{ form_errors(form.paymentMessage) }}
         </div>
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.payuPaymentReference, 'Payment Reference', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.payuPaymentReference, 'PayU payment reference', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.payuPaymentReference, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '5'}}) }}
             {{ form_errors(form.payuPaymentReference) }}
         </div>
@@ -107,7 +107,7 @@
 
     <div class="row">
         <div class="col-lg-6 mb-5">
-            {{ form_label(form.invoicingPerLegalEntity, 'Invoice per legal Entity', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_label(form.invoicingPerLegalEntity, 'Invoice per legal Eentity?', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.invoicingPerLegalEntity, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
         </div>
         <div class="col-lg-6 mb-5">

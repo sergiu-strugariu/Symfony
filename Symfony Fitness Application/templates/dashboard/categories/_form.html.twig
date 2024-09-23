@@ -1,0 +1,57 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<div class="card-body p-9">
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.slug, 'Slug', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.slug, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.slug) }}
+            <div class="form-text">Auto generated SEO friendly URL from title - please leave empty when adding a new
+                education.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control form-control-solid form-control-lg tinymce', 'rows': '5'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.fileName, 'Image', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.fileName, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.fileName) }}
+            {% if editMode %}
+                <div class="form-text">File uploaded:
+                    <a href="{{ asset(app_categories_path ~ entity.fileName, 'cloudflare') }}" target="_blank">
+                        {{ asset(app_categories_path ~ entity.fileName, 'cloudflare') }}
+                    </a>
+                </div>
+            {% endif %}
+            <div class="form-text">(format acceptat: jpg, jpeg, png max. 3M)</div>
+        </div>
+    </div>
+</div>
+
+<div class="card-footer py-6 px-9">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-end">
+                {{ form_widget(form._token) }}
+                <a href="{{ path('dashboard_categories_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

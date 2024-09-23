@@ -14,8 +14,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[AppAssert\RegistrationCui]
 class EducationRegistration
 {
-    const PAYMENT_TYPE_WIRE = 'wire';
-    const PAYMENT_TYPE_CARD = 'card';
+    const PAYMENT_TYPE_WIRE = 'WIRE';
+    const PAYMENT_TYPE_CARD = 'CCVISAMC';
+    const PAYMENT_TYPE_GOOGLE_PAY = 'GOOGLE_PAY';
+    const PAYMENT_TYPE_APPLE_PAY = 'APPLE_PAY';
+    const PAYMENT_TYPE_CARD_AVANTAJ = 'CARD_AVANTAJ';
+    const PAYMENT_TYPE_STAR_BT = 'STAR_BT';
 
     const PAYMENT_STATUS_PENDING = 'pending';
     const PAYMENT_STATUS_SUCCESS = 'success';
@@ -528,5 +532,15 @@ class EducationRegistration
         $this->reminderSent = $reminderSent;
 
         return $this;
+    }
+    
+    public static function getPaymentMethods() {
+        return [
+            'form_register.card' => self::PAYMENT_TYPE_CARD,
+            'form_register.card_avantaj' => self::PAYMENT_TYPE_CARD_AVANTAJ,
+            'form_register.bank' => self::PAYMENT_TYPE_WIRE,
+            'form_register.google_pay' => self::PAYMENT_TYPE_GOOGLE_PAY,
+            'form_register.apple_pay' => self::PAYMENT_TYPE_APPLE_PAY
+        ];
     }
 }

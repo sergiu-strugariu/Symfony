@@ -2,9 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Certification;
-use App\Entity\CertificationCategory;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\EducationCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,10 +13,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class CertificationType extends AbstractType
+class EducationCategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -33,6 +30,8 @@ class CertificationType extends AbstractType
             ])
         ];
 
+        $slugConstraints = [];
+
         if (null === $data->getId()) {
             $additionalImageConstraints = [
                 new NotBlank([
@@ -40,19 +39,17 @@ class CertificationType extends AbstractType
                 ])
             ];
             $imageConstraints = array_merge($imageConstraints, $additionalImageConstraints);
+        } else {
+            $slugConstraints = [
+                new NotBlank([
+                    'message' => 'common.not_blank'
+                ])
+            ];
         }
 
         $builder
-            ->add('certificateCategory', EntityType::class, [
-                'class' => CertificationCategory::class,
-                'choice_label' => function (CertificationCategory $certificationCategory) use ($translation) {
-                    return $certificationCategory->getTranslation('ro')->getName();
-                },
-                'mapped' => true,
-                'required' => true
-            ])
             ->add('title', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'mapped' => false,
                 'data' => !empty($translation) ? $translation->getTitle() : '',
                 'constraints' => [
@@ -64,16 +61,7 @@ class CertificationType extends AbstractType
             ->add('slug', TextType::class, [
                 'required' => null === $data->getId() ? false : true,
                 'disabled' => null === $data->getId() ? true : false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'common.not_blank'
-                    ])
-                ]
-            ])
-            ->add('level', TextType::class, [
-                'required' => false,
-                'mapped' => false,
-                'data' => !empty($translation) ? $translation->getLevel() : '',
+                'constraints' => $slugConstraints
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
@@ -82,14 +70,10 @@ class CertificationType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'common.not_blank'
-                    ]),
-                    new Length([
-                        'max' => 200,
-                        'maxMessage' => 'common.max_message'
                     ])
                 ]
             ])
-            ->add('image', FileType::class, [
+            ->add('fileName', FileType::class, [
                 'required' => !$data->getId(),
                 'mapped' => false,
                 'constraints' => $imageConstraints
@@ -119,7 +103,7 @@ class CertificationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Certification::class,
+            'data_class' => EducationCategory::class,
             'translation' => null
         ]);
     }

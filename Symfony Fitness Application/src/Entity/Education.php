@@ -18,6 +18,19 @@ class Education
     const TYPE_WORKSHOP = 'workshop';
     const TYPE_CONVENTION = 'convention';
 
+    const EDUCATION_TYPES = [
+        'ro' => [
+            self::TYPE_COURSE => 'Cursuri',
+            self::TYPE_WORKSHOP => 'Workshops',
+            self::TYPE_CONVENTION => 'Conventii'
+        ],
+        'en' => [
+            self::TYPE_COURSE => 'Courses',
+            self::TYPE_WORKSHOP => 'Workshops',
+            self::TYPE_CONVENTION => 'Conventions'
+        ]
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -112,6 +125,12 @@ class Education
     private ?string $invoiceServiceName = null;
 
     private $defaultLocale = 'ro';
+
+    #[ORM\ManyToOne(inversedBy: 'education')]
+    private ?EducationCategory $category = null;
+
+
+
 
     public function __construct()
     {
@@ -371,8 +390,7 @@ class Education
     public function getPriceWithVAT()
     {
         $price = $this->getBasePrice();
-
-        return round($price * (1 + $this->vat / 100), 2);
+        return round($price * (1 + $this->vat / 100), 0);
     }
 
     public function getVATAddedValue()
@@ -584,4 +602,28 @@ class Education
 
         return $formattedDate = $startDate->format('d') . ' ' . $startMonth . ' ' . $startDate->format('Y') . ' - ' . $endDate->format('d') . ' ' . $endMonth . ' ' . $endDate->format('Y');
     }
+
+    public function getCategory(): ?EducationCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?EducationCategory $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public static function getEducationTypes($locale)
+    {
+        $types = self::EDUCATION_TYPES;
+
+        if (isset($types[$locale])) {
+            return $types[$locale];
+        }
+
+        return [];
+    }
+
 }

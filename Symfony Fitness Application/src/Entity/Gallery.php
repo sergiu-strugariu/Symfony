@@ -18,6 +18,20 @@ class Gallery
     
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
+
+    const EDUCATION_TYPES = [
+        'ro' => [
+            self::TYPE_COURSE => 'Cursuri',
+            self::TYPE_WORKSHOP => 'Workshops',
+            self::TYPE_CONVENTION => 'Conventii'
+        ],
+        'en' => [
+            self::TYPE_COURSE => 'Courses',
+            self::TYPE_WORKSHOP => 'Workshops',
+            self::TYPE_CONVENTION => 'Conventions'
+        ]
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -183,4 +197,14 @@ class Gallery
         return $this;
     }
 
+    public static function getGalleryTypes($locale)
+    {
+        $types = self::EDUCATION_TYPES;
+
+        if (isset($types[$locale])) {
+            return $types[$locale];
+        }
+
+        return [];
+    }
 }

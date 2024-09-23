@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Education;
 use App\Entity\Language;
+use App\Helper\LanguageHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,15 +22,6 @@ class EducationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Education::class);
-    }
-
-    public function getAllCourseTypes(): array
-    {
-        return
-            $this->createQueryBuilder('e')
-                ->select('DISTINCT e.type')
-                ->getQuery()
-                ->getArrayResult();
     }
 
     public function getAllCourseLocations($type): array
@@ -67,7 +59,7 @@ class EducationRepository extends ServiceEntityRepository
                 ->getSingleScalarResult();
     }
 
-    public function findCoursesByFilters($language, $type = "all", $location = "all", $query = null, $limit = 3, $offset = 0)
+    public function findCoursesByFilters($language, $type = "all", $location = "all", $category = 'all', $query = null, $limit = 3, $offset = 0)
     {
         $qb = $this->createQueryBuilder('e')
             ->join('e.educationTranslations', 'et')
@@ -77,9 +69,16 @@ class EducationRepository extends ServiceEntityRepository
             ->setParameter('language', $language);
 
         if ($query) {
+            if (null !== $category && $category !== 'all') {
+                $qb->join('e.category', 'cat')
+                    ->join('e.certification', 'certification')
+                    ->andWhere('cat.slug = :category')
+                    ->orWhere('certification.slug = :category')
+                    ->setParameter('category', $category);
+            }
+
             return $qb->andWhere('et.title LIKE :query OR et.description LIKE :query')
                 ->setParameter('query', '%' . $query . '%')
-//                ->setMaxResults($limit)
                 ->setFirstResult($offset)
                 ->getQuery()
                 ->getResult();
@@ -95,10 +94,18 @@ class EducationRepository extends ServiceEntityRepository
                 ->setParameter('location', $location);
         }
 
+        if (null !== $category && $category !== 'all') {
+            $qb->join('e.category', 'cat')
+                ->join('e.certification', 'certification')
+                ->andWhere('cat.slug = :category')
+                ->orWhere('certification.slug = :category')
+                ->setParameter('category', $category);
+        }
+
         return $qb
-//            ->setMaxResults($limit)
             ->setFirstResult($offset)
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 
     public function searchEducation(string $query, Language $language, int $limit = 4, int $offset = 0, bool $count = false)

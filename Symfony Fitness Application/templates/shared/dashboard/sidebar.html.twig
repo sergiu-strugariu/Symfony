@@ -42,6 +42,20 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
+
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ route in ['dashboard_categories_index', 'dashboard_category_edit'] ? 'active' : '' }}"
+                       href="{{ path('dashboard_categories_index') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-barcode fs-2 text-white"></i>
+                        </span>
+                        <span class="menu-title">Categories</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
                 
                 <!--begin:Menu item-->
                 <div class="menu-item">

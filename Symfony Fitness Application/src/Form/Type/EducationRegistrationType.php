@@ -140,10 +140,7 @@ class EducationRegistrationType extends AbstractType
             ])
             ->add('paymentMethod', ChoiceType::class, [
                 'disabled' => true,
-                'choices' => [
-                    'form_register.card' => EducationRegistration::PAYMENT_TYPE_CARD,
-                    'form_register.bank' => EducationRegistration::PAYMENT_TYPE_WIRE
-                ],
+                'choices' => EducationRegistration::getPaymentMethods(),
                 'expanded' => false, 
                 'multiple' => false, 
                 'constraints' => [

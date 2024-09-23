@@ -1,0 +1,26 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}Management Article {{ parent() }} {% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card card-flush">
+        {% if editMode %}
+            <div class="card-header">
+                <h3 class="card-title"></h3>
+                <div class="card-toolbar">
+                    {% set params = {'uuid': entity.uuid} %}
+                    {% include 'shared/dashboard/languages.html.twig' with params %}
+                </div>
+            </div>
+        {% endif %}
+        {% include 'dashboard/categories/_form.html.twig' %}
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
+{% endblock %}

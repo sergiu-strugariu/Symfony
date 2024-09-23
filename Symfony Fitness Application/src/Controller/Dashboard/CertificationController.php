@@ -21,7 +21,6 @@ class CertificationController extends AbstractController
     {
         return $this->render('dashboard/certification/index.html.twig');
     }
-
     #[Route('/dashboard/certificate/create', name: 'dashboard_certificate_create')]
     public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader): Response
     {

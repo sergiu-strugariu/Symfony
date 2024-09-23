@@ -48,7 +48,9 @@ class EducationRegistrationRepository extends ServiceEntityRepository
                 er.email,
                 er.phone,
                 er.paymentAmount,
-                er.paymentStatus"
+                er.paymentStatus,
+                er.paymentMethod,
+                er.payuPaymentReference"
             )
             ->where('e.uuid = :uuid')
             ->setParameter('uuid', $uuid);
@@ -61,7 +63,9 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             'er.email',
             'er.phone',
             'er.paymentAmount',
-            'er.paymentStatus'
+            'er.paymentStatus',
+            'er.paymentMethod',
+            'er.payuPaymentReference'
         ];
 
         // Check @keyword

@@ -81,7 +81,11 @@ common:
   newsletter: "I agree to receive news and commercial information (newsletter) from Move On."
   contract: "Generate Contract."
   media: "I give my consent for filming/photographing in education."
-  no_result: "No results was found for  "
+  no_result: "No results found."
+
+  course: "Course"
+  workshop: "Workshop"
+  convention: "Convention"
 
   not_blank: "This field is required"
   not_valid:
@@ -176,10 +180,17 @@ form_register:
   form_recaptcha: "Don't forget to check recaptcha"
   payment_method: "Select method of paying:"
   card: "Online Card"
+  card_avantaj: "Card Avantaj"
+  google_pay: "Google Pay"
+  google_pay_invalid_token: "Please select a card assigned in Google Pay first"
+  apple_pay: "Apple Pay"
+  apple_pay_invalid_token: "Please select a card assigned in Apple Pay first"
   invoice: "I want invoice as a juridic person."
   bank: "Bank Transfer"
   buy: "Buy"
   back_to_main_page: "Return to the main page"
+  not_logged_in: "You must be logged in to be able to register for an education"
+  already_registered: "You are already registered in this education"
   payment_confirmation:
     title: "Payment confirmation"
     download_invoice: "Download INVOICE"
@@ -322,3 +333,9 @@ meta.title:
     details: "Details"
     invoices: "Invoices"
 
+paymentReminder:
+  title: "Payment Notification"
+  description_1: "You are just one step away from starting your fitness career!"
+  description_2: "UPS! It looks like you haven't completed the order.."
+  description_3: "Complete your order now and begin your educational journey to inspire others toward an active and healthy lifestyle! 😊"
+  card: "🛒 Your cart contains:"

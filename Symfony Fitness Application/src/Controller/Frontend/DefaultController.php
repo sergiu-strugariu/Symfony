@@ -4,7 +4,9 @@ namespace App\Controller\Frontend;
 
 use App\Entity\Article;
 use App\Entity\CertificationCategory;
+use App\Entity\EducationCategory;
 use App\Entity\Faq;
+use App\Entity\Gallery;
 use App\Entity\Page;
 use App\Entity\Refund;
 use App\Entity\TeamMember;
@@ -30,11 +32,16 @@ class DefaultController extends AbstractController
     public function index(EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "homepage"]);
-        return $this->render('frontend/default/page.html.twig', ['page' => $page, 'page_title' => $translator->trans('meta.title.home')]);
+        $categories = $em->getRepository(EducationCategory::class)->getCategories();
+        return $this->render('frontend/default/page.html.twig', [
+            'page' => $page,
+            'page_title' => $translator->trans('meta.title.home'),
+            'categories' => $categories
+        ]);
     }
 
     #[Route('/language/{_locale}', name: 'app_language')]
-    public function language(EntityManagerInterface $em, TranslatorInterface $translator): Response
+    public function language(): Response
     {
         return $this->redirectToRoute("app_index");
     }
@@ -187,6 +194,7 @@ class DefaultController extends AbstractController
     public function certificate(EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         $categories = $em->getRepository(CertificationCategory::class)->findAll();
+
         $categorizedCertifications = [];
 
         foreach ($categories as $category) {
@@ -248,7 +256,7 @@ class DefaultController extends AbstractController
             $location = "all";
         }
 
-        $types = $repository->getAllMultimediaTypes();
+        $types = Gallery::getGalleryTypes($language->getLocale());
         $galleries = $repository->findMultimediaByFilters($language, $type, $location, $query, $limit, $offset);
 
         $totalCount = $repository->findMultimediaByFilters($language, $type, $location, $query, $limit, $offset, true);
@@ -259,7 +267,7 @@ class DefaultController extends AbstractController
             'totalPages' => $totalPages,
             'totalResults' => $totalCount,
             'currentPage' => $page,
-            'types' => array_column($types, 'type'),
+            'types' => $types,
             'selectedType' => $type,
             'locations' => $locations,
             'selectedLocation' => $location,

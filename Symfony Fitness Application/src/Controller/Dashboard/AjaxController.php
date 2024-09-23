@@ -15,6 +15,7 @@ use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
 use App\Repository\ArticleRepository;
 use App\Repository\CertificationRepository;
+use App\Repository\EducationCategoryRepository;
 use App\Repository\EducationRepository;
 use App\Repository\EducationRegistrationRepository;
 use App\Repository\FaqRepository;
@@ -88,7 +89,7 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/dashboard/ajax/education/{uuid}/registrations', name: 'dashboard_ajax_education_registrations')]
-    public function getEducationRegistrations(Request $request, EducationRegistrationRepository $redistrationsRepository, DatatableHelper $datatableHelper, $uuid): JsonResponse
+    public function getEducationRegistrations(Request $request, EducationRegistrationRepository $educationRegistrationRepository, DatatableHelper $datatableHelper, $uuid): JsonResponse
     {
         // get all params from the request
         $params = $request->query->all();
@@ -97,14 +98,14 @@ class AjaxController extends AbstractController
         $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::EDUCATION_REPOSITORY_FIELDS);
 
         // filter by params        
-        $registrations = $redistrationsRepository->findByFilters(
+        $registrations = $educationRegistrationRepository->findByFilters(
             $tableParams['column'],
             $tableParams['dir'],
             $tableParams['keyword'],
             $uuid
         );
 
-        return $this->getFilteredData($redistrationsRepository, $registrations, $params);
+        return $this->getFilteredData($educationRegistrationRepository, $registrations, $params);
     }
 
     #[Route('/dashboard/ajax/educations/{type}', name: 'dashboard_ajax_educations')]
@@ -167,6 +168,29 @@ class AjaxController extends AbstractController
         );
 
         return $this->getFilteredData($articleRepository, $articles, $params);
+    }
+
+    #[Route('/dashboard/ajax/categories', name: 'dashboard_ajax_categories')]
+    public function getCategories(Request $request, EducationCategoryRepository $repository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::CATEGORIES_FIELDS);
+
+        // get default language
+        $defaultLanguage = $languageHelper->getDefaultLanguage();
+
+        // filter by params
+        $categories = $repository->findByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $defaultLanguage
+        );
+
+        return $this->getFilteredData($repository, $categories, $params);
     }
 
     #[Route('/dashboard/ajax/refund', name: 'dashboard_ajax_refund')]

@@ -3,12 +3,12 @@
 namespace App\Form\Type;
 
 use App\Entity\EducationRegistration;
-use App\Validator\Cui;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -154,10 +154,7 @@ class FormRegisterType extends AbstractType
 
             ->add('paymentMethod', ChoiceType::class, [
                 'required' => true,
-                'choices' => [
-                    'form_register.card' => EducationRegistration::PAYMENT_TYPE_CARD,
-                    'form_register.bank' => EducationRegistration::PAYMENT_TYPE_WIRE
-                ],
+                'choices' => EducationRegistration::getPaymentMethods(),
                 'expanded' => true,
                 'multiple' => false,
                 'data' => 'card'
@@ -178,6 +175,12 @@ class FormRegisterType extends AbstractType
                         'message' => 'common.not_blank'
                     ])
                 ]
+            ])
+            ->add('googlePayToken', HiddenType::class, [
+                'mapped' => false
+            ])
+            ->add('applePayToken', HiddenType::class, [
+                'mapped' => false
             ])
         ;
 

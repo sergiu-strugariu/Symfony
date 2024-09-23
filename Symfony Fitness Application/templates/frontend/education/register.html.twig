@@ -2,6 +2,26 @@
 
 {% block title %}{{ 'form_register.title'|trans }} {{ parent() }} {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #apple_pay div, 
+        #google_pay div {
+            margin-top: 15px;
+        }
+        apple-pay-button {
+            --apple-pay-button-width: 240px;
+            --apple-pay-button-height: 40px;
+            --apple-pay-button-border-radius: 3px;
+            --apple-pay-button-padding: 0px 0px;
+            --apple-pay-button-box-sizing: border-box;
+        }
+    </style>
+    <script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded();"></script>
+    <script async crossorigin src="https://applepay.cdn-apple.com/jsapi/1.latest/apple-pay-sdk.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+{% endblock %}
+
 {% form_theme form 'shared/form/frontend_form_errors.html.twig' %}
 
 {% block content %}
@@ -105,12 +125,19 @@
                 <div class="radio-wrapper">
                     <p>{{ form_label(form.paymentMethod, 'form_register.payment_method'|trans) }}</p>
                     {% for child in form.paymentMethod %}
-                        <div class="group group-radio">
+                        {% set paymentMethod = child.vars.value %}
+                        <div class="group group-radio" id="{{ paymentMethod|lower }}">
                             {{ form_widget(child) }}
                             {{ form_label(child) }}
+                            {% if paymentMethod == constant('App\\Entity\\EducationRegistration::PAYMENT_TYPE_APPLE_PAY') %}
+                                <div>
+                                    <apple-pay-button id="apple_pay_button" buttonstyle="black" type="pay" locale="en-US"></apple-pay-button>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                     {{ form_errors(form.paymentMethod) }}
+
                 </div>
 
                 <div class="group group-checkbox {% if form_errors(form.accordGDPR)|trim is not empty %} error {% endif %}">
@@ -127,10 +154,405 @@
                     <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
                 </div>
                 <div class="group-submit">
+                    {{ form_widget(form.googlePayToken) }}
+                    {{ form_widget(form.applePayToken) }}
                     <input type="submit" value="{{ 'form_register.buy'|trans }}"/>
                 </div>
                 {{ form_end(form) }}
             </div>
         </div>
     </main>
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        /**
+          * Define the version of the Google Pay API referenced when creating your
+          * configuration
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|apiVersion in PaymentDataRequest}
+          */
+        const baseRequest = {
+              apiVersion: 2,
+              apiVersionMinor: 0
+        };
+
+        /**
+          * Card networks supported by your site and your gateway
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+          * @todo confirm card networks supported by your site and gateway
+          */
+        const allowedCardNetworks = ["MASTERCARD", "VISA"];
+
+        /**
+          * Card authentication methods supported by your site and your gateway
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+          * @todo confirm your processor supports Android device tokens for your
+          * supported card networks
+          */
+        const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+        /**
+          * Identify your gateway and your site's gateway merchant identifier
+          *
+          * The Google Pay API response will return an encrypted payment method capable
+          * of being charged by a supported gateway after payer authorization
+          *
+          * @todo check with your gateway on the parameters to pass
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#gateway|PaymentMethodTokenizationSpecification}
+          */
+        const tokenizationSpecification = {
+              type: 'PAYMENT_GATEWAY',
+              parameters: {
+                    'gateway': 'payuro',
+                    'gatewayMerchantId': '{{ payu_merchant_code }}'
+              }
+        };
+
+        /**
+          * Describe your site's support for the CARD payment method and its required
+          * fields
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+          */
+        const baseCardPaymentMethod = {
+              type: 'CARD',
+              parameters: {
+                    allowedAuthMethods: allowedCardAuthMethods,
+                    allowedCardNetworks: allowedCardNetworks
+              }
+        };
+
+        /**
+          * Describe your site's support for the CARD payment method including optional
+          * fields
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+          */
+        const cardPaymentMethod = Object.assign(
+                  {},
+                  baseCardPaymentMethod,
+                  {
+                        tokenizationSpecification: tokenizationSpecification
+                  }
+        );
+
+        /**
+          * An initialized google.payments.api.PaymentsClient object or null if not yet set
+          *
+          * @see {@link getGooglePaymentsClient}
+          */
+        let paymentsClient = null;
+
+        /**
+          * Configure your site's support for payment methods supported by the Google Pay
+          * API.
+          *
+          * Each member of allowedPaymentMethods should contain only the required fields,
+          * allowing reuse of this base request when determining a viewer's ability
+          * to pay and later requesting a supported payment method
+          *
+          * @returns {object} Google Pay API version, payment methods supported by the site
+          */
+        function getGoogleIsReadyToPayRequest() {
+              return Object.assign(
+                          {},
+                          baseRequest,
+                          {
+                                allowedPaymentMethods: [baseCardPaymentMethod]
+                          }
+              );
+        }
+
+        /**
+          * Configure support for the Google Pay API
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|PaymentDataRequest}
+          * @returns {object} PaymentDataRequest fields
+          */
+        function getGooglePaymentDataRequest() {
+              const paymentDataRequest = Object.assign({}, baseRequest);
+              paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+              paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+              paymentDataRequest.merchantInfo = {
+                    // @todo a merchant ID is available for a production environment after approval by Google
+                    // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+                    merchantId: '{{ google_pay_merchant_id }}',
+                    merchantName: 'Move On'
+              };
+              return paymentDataRequest;
+        }
+
+        /**
+          * Return an active PaymentsClient or initialize
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/client#PaymentsClient|PaymentsClient constructor}
+          * @returns {google.payments.api.PaymentsClient} Google Pay API client
+          */
+        function getGooglePaymentsClient() {
+              if (paymentsClient === null) {
+                    paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+              }
+              return paymentsClient;
+        }
+
+        /**
+          * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
+          *
+          * Display a Google Pay payment button after confirmation of the viewer's
+          * ability to pay.
+          */
+        function onGooglePayLoaded() {
+              const paymentsClient = getGooglePaymentsClient();
+              paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+                          .then(function (response) {
+                                if (response.result) {
+                                      addGooglePayButton();
+                                      // @todo prefetch payment data to improve performance after confirming site functionality
+                                      // prefetchGooglePaymentData();
+                                }
+                          })
+                          .catch(function (err) {
+                                // show error in developer console for debugging
+                                console.error(err);
+                          });
+        }
+
+        /**
+          * Add a Google Pay purchase button alongside an existing checkout button
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#ButtonOptions|Button options}
+          * @see {@link https://developers.google.com/pay/api/web/guides/brand-guidelines|Google Pay brand guidelines}
+          */
+        function addGooglePayButton() {
+              const paymentsClient = getGooglePaymentsClient();
+              const button = paymentsClient.createButton(
+                    {
+                        onClick: onGooglePaymentButtonClicked
+                    });
+              document.getElementById('google_pay').appendChild(button);
+        }
+
+        /**
+          * Provide Google Pay API with a payment amount, currency, and amount status
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#TransactionInfo|TransactionInfo}
+          * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
+          */
+        function getGoogleTransactionInfo() {
+              return {
+                    countryCode: 'RO',
+                    currencyCode: 'RON',
+                    totalPriceStatus: 'FINAL',
+                    // set to cart total
+                    totalPrice: '{{ education.priceWithVAT }}'
+              };
+        }
+
+        /**
+          * Prefetch payment data to improve performance
+          *
+          * @see {@link https://developers.google.com/pay/api/web/reference/client#prefetchPaymentData|prefetchPaymentData()}
+          */
+        function prefetchGooglePaymentData() {
+              const paymentDataRequest = getGooglePaymentDataRequest();
+              // transactionInfo must be set but does not affect cache
+              paymentDataRequest.transactionInfo = {
+                    totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+                    currencyCode: 'RON'
+              };
+              const paymentsClient = getGooglePaymentsClient();
+              paymentsClient.prefetchPaymentData(paymentDataRequest);
+        }
+
+        /**
+          * Show Google Pay payment sheet when Google Pay payment button is clicked
+          */
+        function onGooglePaymentButtonClicked() {
+              const paymentDataRequest = getGooglePaymentDataRequest();
+              paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+
+              const paymentsClient = getGooglePaymentsClient();
+              paymentsClient.loadPaymentData(paymentDataRequest)
+                          .then(function (paymentData) {
+                                // handle the response
+                                processPayment(paymentData);
+                          })
+                          .catch(function (err) {
+                                // show error in developer console for debugging
+                                console.error(err);
+                          });
+        }
+
+        /**
+          * Process payment data returned by the Google Pay API
+          *
+          * @param {object} paymentData response from Google Pay API after user approves payment
+          * @see {@link https://developers.google.com/pay/api/web/reference/response-objects#PaymentData|PaymentData object reference}
+          */
+        function processPayment(paymentData) {
+              // show returned data in developer console for debugging
+              console.log(paymentData);
+              // @todo pass payment token to your gateway to process payment
+              paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+            document.getElementById("form_register_googlePayToken").value = paymentToken;
+        }
+    </script>
+    <script>
+        var applePayUiController = (function () {
+            var DOMStrings = {
+                appleButton: 'apple_pay_button',
+                appleContainer: 'apple_pay'
+            };
+            return {
+                DOMStrings,
+                hideApplePayContainer: function () {
+                    document.getElementById(DOMStrings.appleContainer).style.display = 'none';
+                }
+            };
+        })();
+        
+        var applePayController = (function (uiController) {
+            var BACKEND_URL_VALIDATE_SESSION = '{{ path('app_apple_pay_validate_session') }}';
+            var applePayVersion;
+
+            // High level configuration options.
+            var config = {
+                payments: {
+                    acceptedCardSchemes: ['masterCard', 'visa']
+                },
+                shop: {
+                    product_price: {{ education.priceWithVAT }},
+                    shop_name: 'Move On',
+                    shop_localisation: {
+                        currencyCode: 'RON',
+                        countryCode: 'RO'
+                    }
+                }
+            };
+            /**
+             * Checks if Apple Pay is possible in the current environment.
+             * @return {boolean} Boolean to check if Apple Pay is possible
+             */
+            var _applePayAvailable = function () {
+                if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+                    for (var i = 15; i > 0; i--) {
+                        if (ApplePaySession.supportsVersion(i)) {
+                            applePayVersion = i;
+                            break;
+                        }
+                    }
+                    
+                    return true;
+                }
+                
+                return false;
+            };
+
+            /**
+             * Starts the Apple Pay session using a configuration
+             */
+            var _startApplePaySession = function (config) {
+                var applePaySession = new ApplePaySession(applePayVersion, config);
+                _handleApplePayEvents(applePaySession);
+                applePaySession.begin();
+            };
+
+            /**
+             * This method cals your backend server with the Apple Pay validation URL.
+             * On the backend, a POST request will be done to this URL with the Apple Pay certificates
+             * and the outcome will be returned
+             *
+             * @param {string} appleUrl The Apple Pay validation URL generated by Apple
+             * @param {function} callback Callback function used to return the server call outcome
+             *
+             * @return {object} The session payload
+             *
+             */
+            var _validateApplePaySession = function (appleUrl, callback) {
+                axios.post(BACKEND_URL_VALIDATE_SESSION,
+                        {
+                            url: appleUrl
+                        }
+                    ).then(function (response) {
+                        callback(response.data);
+                    });
+            };
+
+            /**
+             * This is the main method of the script, since here we handle all the Apple Pay events.
+             * 
+             * @param {object} Apple Pay Session (the one generate on the button click)
+             *
+             */
+            var _handleApplePayEvents = function (appleSession) {
+                // This is the first event that Apple triggers. Here you need to validate the
+                // Apple Pay Session from your Back-End
+                appleSession.onvalidatemerchant = function (event) {
+                    _validateApplePaySession(event.validationURL, function (merchantSession) {
+                        appleSession.completeMerchantValidation(merchantSession);
+                    });
+                };
+
+                // This method is the most important method. It gets triggered after the user has
+                // confirmed the transaction with the Touch ID or Face ID. Besides getting all the
+                // details about the customer (email, address ...) you also get the Apple Pay payload
+                // needed to perform a payment.
+                appleSession.onpaymentauthorized = function (event) {
+                    console.log(event.payment);
+                    document.getElementById("form_register_applePayToken").value = '';
+                    //appleSession.completePayment(ApplePaySession.STATUS_SUCCESS);
+                };
+            };
+
+            /**
+             * Sets a onClick listen on the Apple Pay button. When clicked it will
+             * begin the Apple Pay session with your configuration
+             */
+            var _setButtonClickListener = function () {
+                var appleButton = document.getElementById(uiController.DOMStrings.appleButton);
+
+                if (null === appleButton) {
+                    return;
+                }
+
+                appleButton
+                        .addEventListener('click', function () {
+                            _startApplePaySession({
+                                currencyCode: config.shop.shop_localisation.currencyCode,
+                                countryCode: config.shop.shop_localisation.countryCode,
+                                merchantCapabilities: [
+                                    'supports3DS',
+                                    'supportsEMV',
+                                    'supportsCredit',
+                                    'supportsDebit'
+                                ],
+                                supportedNetworks: config.payments.acceptedCardSchemes,
+                                total: {
+                                    label: config.shop.shop_name,
+                                    amount: config.shop.product_price,
+                                    type: 'final'
+                                }
+                            });
+                        });
+            };
+
+            return {
+                init: function () {
+                    // If Apple Pay is available show the button otherwise show the error
+                    if (!_applePayAvailable()) {
+                        uiController.hideApplePayContainer();
+                    }
+
+                    // Set the onClick listener on the Apple Pay button
+                    _setButtonClickListener();
+                }
+            };
+        })(applePayUiController); // passing the UI controller
+
+        // Initialise the Apple Pay controller
+        applePayController.init();
+    </script>
 {% endblock %}

@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CertificationRepository::class)]
+#[UniqueEntity(fields: ['slug'], message: 'A certification with this slug already exists.', errorPath: 'title')]
 class Certification
 {
     #[ORM\Id]
@@ -43,7 +45,10 @@ class Certification
     #[ORM\ManyToOne(inversedBy: 'certifications')]
     private ?CertificationCategory $certificateCategory = null;
 
-    private $defaultLocale = 'ro';
+    private string $defaultLocale = 'ro';
+
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $slug = null;
     
     public function __construct()
     {
@@ -188,6 +193,18 @@ class Certification
     public function setCertificateCategory(?CertificationCategory $certificateCategory): static
     {
         $this->certificateCategory = $certificateCategory;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

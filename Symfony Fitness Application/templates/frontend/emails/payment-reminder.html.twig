@@ -2,11 +2,30 @@
 
 {% block content %}
     <tr>
-        <td style="font-family: 'Helvetica Neue LT Pro', sans-serif; font-size: 16pt; letter-spacing:0.525px; color: #465686; padding: 40px 50px 15px 50px ; font-weight:700;">{{ 'mails.salute'|trans }} {{ firstName }},</td>
+        <td style="font-family: 'Helvetica Neue LT Pro', sans-serif; font-size: 16pt; letter-spacing:0.525px; color: #465686; padding: 40px 50px 15px 50px ; font-weight:700;">{{ 'mails.salute'|trans }} {{ firstName }}
+            ,
+        </td>
     </tr>
     <tr>
         <td style="padding: 0px 50px 20px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
             {{ 'mails.payment_reminder.description'|trans({'%title%': title}) }}
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0px 50px 20px 50px; font-family: 'Helvetica Neue LT Pro', sans-serif; color: #465686; font-size: 12pt; font-weight: 400; letter-spacing:0.4px;">
+            {{ "paymentReminder.description_1"|trans }}
+            <br/>
+            {{ "paymentReminder.description_2"|trans }}
+            <br/>
+            {{ "paymentReminder.card"|trans }}
+            <br/>
+            <ul>
+                <li>
+                    {{ title }}
+                </li>
+            </ul>
+            <br/>
+            {{ "paymentReminder.description_3"|trans }}
         </td>
     </tr>
     <tr>

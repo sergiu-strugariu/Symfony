@@ -9,12 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
 
 class IPNController extends AbstractController
 {
     
     #[Route('/payu/ipn', name: 'app_payu_ipn')]
-    public function payuIpn(Request $request, EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper): Response
+    public function payuIpn(Request $request, EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper, LoggerInterface $smartbillLogger): Response
     {
         $content = $request->getContent();
         $data = json_decode($content, true);
@@ -33,6 +34,10 @@ class IPNController extends AbstractController
             
             $educationRegistration = $em->getRepository(EducationRegistration::class)->find($orderData['merchantPaymentReference']);
             if (null === $educationRegistration) {
+                return new Response('');
+            }
+            
+            if (EducationRegistration::PAYMENT_STATUS_SUCCESS === $educationRegistration->getPaymentStatus()) {
                 return new Response('');
             }
             
@@ -88,6 +93,7 @@ class IPNController extends AbstractController
                         try {
                             $response = $smartBillAPIHelper->generateInvoice(SmartBillAPIHelper::INVOICE_TYPE_DEFAULT, $data);
                         } catch (\Exception $e) {
+                            $smartbillLogger->error($e->getMessage(), ['id' => $educationRegistration->getId()]);
                             $hasException = true;
                         }
 

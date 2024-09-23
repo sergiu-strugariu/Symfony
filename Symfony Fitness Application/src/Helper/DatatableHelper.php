@@ -33,6 +33,13 @@ class DatatableHelper
         "status"
     ];
 
+    const CATEGORIES_FIELDS = [
+        "id",
+        "title",
+        "description"
+    ];
+
+
     const REFUND_FIELDS = [
         "id",
         "firstName",
@@ -77,6 +84,8 @@ class DatatableHelper
         "phone",
         "paymentAmount",
         "paymentStatus",
+        "paymentMethod",
+        "payuPaymentReference"
     ];
 
     const LANGUAGE_FIELDS = [
