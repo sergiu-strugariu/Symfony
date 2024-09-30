@@ -71,6 +71,7 @@ class EventPartnerController extends AbstractController
     {
         /** @var EventPartner $partner */
         $partner = $em->getRepository(EventPartner::class)->findOneBy(['uuid' => $uuid]);
+        $fileUploaded = true;
 
         if (null === $partner) {
             // Set flash message
@@ -85,10 +86,11 @@ class EventPartnerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Get data from the form
             $file = $form->get('fileName')->getData();
-            $fileUploaded = true;
 
             // Check uploaded file
             if (isset($file)) {
+                $fileUploaded = false;
+
                 // Upload file
                 $uploadFile = $fileUploader->uploadFile(
                     $file,
@@ -96,17 +98,10 @@ class EventPartnerController extends AbstractController
                     $this->getParameter('app_event_partner_path')
                 );
 
-                // Remove file
-                $removeCurrentFile = $fileUploader->removeFile(
-                    $this->getParameter('app_event_partner_path'),
-                    $partner->getFileName()
-                );
-
-                // Set status uploaded
-                $fileUploaded = $uploadFile['success'] && $removeCurrentFile;
-
                 // Check and set @filename
                 if ($uploadFile['success']) {
+                    // Remove file
+                    $fileUploaded = $fileUploader->removeFile($this->getParameter('app_event_partner_path'), $partner->getFileName());
                     $partner->setFileName($uploadFile['fileName']);
                 }
             }

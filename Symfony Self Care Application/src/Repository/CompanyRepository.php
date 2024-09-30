@@ -406,4 +406,20 @@ class CompanyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    /**
+     * @param string $locationType
+     * @return array
+     */
+    public function getAllCompanyByType(string $locationType = Company::LOCATION_TYPE_CARE): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.deletedAt IS NULL')
+            ->andWhere('c.status = :status')
+            ->andWhere('c.locationType = :type')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->setParameter('type', $locationType)
+            ->getQuery()
+            ->getResult();
+    }
 }

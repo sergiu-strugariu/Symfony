@@ -1,0 +1,69 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+
+{% form_theme form 'shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+        <!--begin::Toolbar container-->
+        <div id="kt_app_toolbar_container"
+             class="app-container container-fluid d-flex flex-stack app-container-details">
+            <!--begin::Page title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                <!--begin::Title-->
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                    {{ pageTitle }}
+                </h1>
+                <!--end::Title-->
+            </div>
+            <!--end::Page title-->
+        </div>
+        <!--end::Toolbar container-->
+    </div>
+    <!--end::Toolbar-->
+
+    <!--begin::Content-->
+    <div id="kt_app_content" class="flex-column-fluid">
+        <!--begin::Content container-->
+        <div id="kt_app_content_container" class="app-container container-fluid app-container-details">
+            <!--start::Form-->
+            {% include 'dashboard/event/_form.html.twig' %}
+            <!--end::Form-->
+
+            {% if uuid is defined %}
+                <!--start::Modal-->
+                {% include 'dashboard/event/galleries/default.html.twig' with {'galleries': galleries} %}
+                {% include 'dashboard/event/galleries/gallery-intro.html.twig' with {'galleryIntro': galleryIntro} %}
+                <!--end::Modal-->
+            {% endif %}
+        </div>
+    </div>
+    <!--end::Content-->
+{% endblock %}
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
+    <script>
+        {% set date = startDate is defined ? startDate : '' %}
+        flatpickrInit("{{ date }}", true, 'd.m.Y H:i');
+        initEditor('#event_form_description');
+
+        {% if uuid is defined %}
+        let buttonUpload = document.getElementById("uploadFiles");
+        let buttonIntroUpload = document.getElementById("uploadIntroFiles");
+
+        let galleryPath = '{{ path('dashboard_ajax_upload_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::EVENT_GALLERY')}) }}';
+        let galleryIntroPath = '{{ path('dashboard_ajax_upload_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::EVENT_GALLERY_INTRO')}) }}';
+
+        window.removeGalleryPath = "{{ path('dashboard_ajax_remove_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::EVENT_GALLERY')}) }}";
+        window.removeIntroGalleryPath = "{{ path('dashboard_ajax_remove_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::EVENT_GALLERY_INTRO')}) }}";
+
+        initDropZone('#kt_dropzone_gallery', galleryPath, buttonUpload, window.eventGalleryImagePath);
+        initDropZone('#kt_dropzone_intro_gallery', galleryIntroPath, buttonIntroUpload, window.eventGalleryImagePath, '#introGalleries');
+
+        removeGalleryItem(window.removeGalleryPath);
+        removeGalleryItem(window.removeIntroGalleryPath, '#introGalleries');
+        {% endif %}
+    </script>
+{% endblock %}

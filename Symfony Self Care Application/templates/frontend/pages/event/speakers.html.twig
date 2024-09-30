@@ -1,0 +1,47 @@
+<div class="speakers">
+    <div class="inner">
+        <h2>{{ 'dashboard.form.speakers'|trans }}</h2>
+        <div class="items-list">
+            {% for speaker in event.eventSpeakers %}
+                <div class="item">
+                    <div class="image"
+                         data-image="{{ asset(app_event_speaker_path ~ speaker.fileName, 'cloudflare') }}"></div>
+                    <div class="content">
+                        <h3>{{ speaker.fullName }}</h3>
+                        <p>{{ speaker.company }}</p>
+                        <p>{{ speaker.role }}</p>
+                        <ul>
+                            {% if speaker.facebook %}
+                                <li>
+                                    <a href="{{ speaker.facebook }}" target="_blank">
+                                        <img src="{{ asset('assets/frontend/images/common/facebook-blue.svg') }}"
+                                             alt="facebook"
+                                        />
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if speaker.linkedin %}
+                                <li>
+                                    <a href="{{ speaker.linkedin }}" target="_blank">
+                                        <img src="{{ asset('assets/frontend/images/common/linkedIn-blue.svg') }}"
+                                             alt="linkedin"
+                                        />
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if speaker.twitter %}
+                                <li>
+                                    <a href="{{ speaker.twitter }}" target="_blank">
+                                        <img src="{{ asset('assets/frontend/images/common/twitter-blue.svg') }}"
+                                             alt="facebook"
+                                        />
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

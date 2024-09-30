@@ -115,9 +115,14 @@ class JobFormType extends AbstractType
                 ]
             ])
             ->add('benefits', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'mapped' => false,
-                'data' => !empty($translation) ? json_encode($translation->getBenefits()) : []
+                'data' => !empty($translation) ? json_encode($translation->getBenefits()) : [],
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory',
+                    ])
+                ]
             ])
             ->add('county', EntityType::class, [
                 'class' => County::class,

@@ -1,5 +1,6 @@
 parameters:
     app_name: '%env(APP_NAME)%'
+    app_base_url: '%env(BASE_URL)%'
     app_env: '%env(APP_ENV)%'
     mailchimp_api_key: '%env(MAILCHIMP_API_KEY)%'
     mailchimp_api_server_prefix: '%env(MAILCHIMP_API_SERVER_PREFIX)%'
@@ -11,6 +12,7 @@ parameters:
     app_setting_path: '%env(APP_SETTING_PATH)%'
     app_page_path: '%env(APP_PAGE_PATH)%'
     app_page_widget_path: '%env(APP_PAGE_WIDGET_PATH)%'
+    app_page_widget_gallery_path: '%env(APP_PAGE_WIDGET_GALLERY_PATH)%'
     app_job_path: '%env(APP_JOB_PATH)%'
     app_temporary_path: '%env(APP_TEMPORARY_PATH)%'
     app_menu_path: '%env(APP_MENU_PATH)%'
@@ -20,8 +22,10 @@ parameters:
     app_user_path: '%env(APP_USER_PATH)%'
     app_company_gallery_path: '%env(APP_COMPANY_GALLERY_PATH)%'
     app_event_path: '%env(APP_EVENT_PATH)%'
+    app_event_gallery_path: '%env(APP_EVENT_GALLERY_PATH)%'
     app_event_speaker_path: '%env(APP_EVENT_SPEAKER_PATH)%'
     app_event_partner_path: '%env(APP_EVENT_PARTNER_PATH)%'
+    app_membership_package_path: '%env(APP_MEMBERSHIP_PACKAGE_PATH)%'
     default_locale: '%env(DEFAULT_LOCALE)%'
     facebook_share: '%env(FACEBOOK_SHARE)%'
     whatsapp_share: '%env(WHATSAPP_SHARE)%'
@@ -49,6 +53,7 @@ twig:
         app_setting_path: '%app_setting_path%'
         app_page_path: '%app_page_path%'
         app_page_widget_path: '%app_page_widget_path%'
+        app_page_widget_gallery_path: '%app_page_widget_gallery_path%'
         app_job_path: '%app_job_path%'
         app_menu_path: '%app_menu_path%'
         app_course_path: '%app_course_path%'
@@ -56,8 +61,10 @@ twig:
         app_company_path: '%app_company_path%'
         app_company_gallery_path: '%app_company_gallery_path%'
         app_event_path: '%app_event_path%'
+        app_event_gallery_path: '%app_event_gallery_path%'
         app_event_speaker_path: '%app_event_speaker_path%'
         app_event_partner_path: '%app_event_partner_path%'
+        app_membership_package_path: '%app_membership_package_path%'
         locale: '%default_locale%'
         facebook_share: '%facebook_share%'
         whatsapp_share: '%whatsapp_share%'
@@ -107,9 +114,10 @@ services:
             $urlGenerator: '@router'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
-    App\Command\CompanySeedCommand:
+    App\Command\GenerateSitemapCommand:
         arguments:
-            $targetDirectory: '%excel_path%'
+            $projectDir: '%kernel.project_dir%'
+            $baseUrl: '%app_base_url%'
     App\Helper\FileUploader:
         arguments:
             $slugger: '@slugger'

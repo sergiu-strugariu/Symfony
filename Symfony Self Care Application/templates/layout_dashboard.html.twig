@@ -82,6 +82,8 @@
         let absoluteUrl = "{{ app.request.schemeAndHttpHost }}";
         window.isAdmin = {{ is_granted('ROLE_ADMIN') ? 1 : 0 }};
 
+        window.removePageItemGalleryPath = "{{ path('dashboard_ajax_remove_page_item_gallery') }}";
+
         window.providerType = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
         window.careType = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_CARE') }}';
 
@@ -96,6 +98,7 @@
         window.approvedStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_APPROVED') }}';
         window.pendingStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_PENDING') }}';
         window.draftStatus = '{{ constant('App\\Entity\\CompanyReview::STATUS_DRAFT') }}';
+        window.endedStatus = '{{ constant('App\\Entity\\Event::STATUS_ENDED') }}';
 
         window.companyImagePath = '{{ asset(app_company_path, 'cloudflare') }}';
         window.companyGalleryImagePath = '{{ asset(app_company_gallery_path, 'cloudflare') }}';
@@ -114,11 +117,21 @@
         window.articleImagePath = "{{ asset(app_article_path, 'cloudflare') }}";
         window.userImagePath = "{{ asset(app_user_path, 'cloudflare') }}";
 
+        window.packageAjaxPath = "{{ path('dashboard_ajax_membership_packages') }}";
+        window.packageImagePath = "{{ asset(app_membership_package_path, 'cloudflare') }}";
+
         window.speakerAjaxPath = "{{ path('dashboard_ajax_speakers') }}";
         window.speakerImagePath = "{{ asset(app_event_speaker_path, 'cloudflare') }}";
 
+        window.singleEventPath = '{{ path('app_event_single') }}';
+        window.eventAjaxPath = "{{ path('dashboard_ajax_events') }}";
+        window.eventImagePath = "{{ asset(app_event_path, 'cloudflare') }}";
+        window.eventGalleryImagePath = '{{ asset(app_event_gallery_path, 'cloudflare') }}';
+
         window.partnerAjaxPath = "{{ path('dashboard_ajax_partners') }}";
         window.partnerImagePath = "{{ asset(app_event_partner_path, 'cloudflare') }}";
+        window.partnerSponsorType = "{{ constant('App\\Entity\\EventPartner::SPONSOR_TYPE') }}";
+        window.partnerMediaType = "{{ constant('App\\Entity\\EventPartner::MEDIA_TYPE') }}";
 
         // Company types
         window.locationTypeProvider = '{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}';
@@ -131,6 +144,7 @@
             'dashboard': {
                 'common': {
                     'error_message': '{{ 'dashboard.common.error_message' | trans }}',
+                    'error_no_data_in_table': '{{ 'dashboard.common.error_no_data_in_table' | trans }}',
                     'are_you_sure_delete': '{{ 'dashboard.common.are_you_sure_delete' | trans }}',
                     'are_you_sure_deactivate': '{{ 'dashboard.common.are_you_sure_deactivate' | trans }}',
                     'are_you_sure_approve': '{{ 'dashboard.common.are_you_sure_approve' | trans }}',
@@ -139,6 +153,10 @@
                     'yes': '{{ 'dashboard.common.yes' | trans }}',
                     'no': '{{ 'dashboard.common.no' | trans }}',
                     'all': '{{ 'dashboard.common.all' | trans }}',
+                    'billing_data': '{{ 'dashboard.common.billing_data' | trans }}',
+                    'modify': '{{ 'dashboard.common.modify' | trans }}',
+                    'add_new_address': '{{ 'dashboard.common.add_new_address' | trans }}',
+                    'delete': '{{ 'dashboard.common.delete' | trans }}',
                 },
                 'actions': {
                     'load_more': '{{ 'dashboard.actions.load_more' | trans }}',
@@ -158,9 +176,16 @@
                     'no_items': '{{ 'dashboard.favorites.no_items' | trans }}',
                     'delete_favorite': '{{ 'dashboard.favorites.delete_favorite' | trans }}'
                 },
-
+                'form':{
+                    'county': '{{ 'dashboard.form.county' | trans }}',
+                    'city': '{{ 'dashboard.form.city' | trans }}',
+                },
             },
             'form': {
+                'common':{
+                    'comapny_details_add': '{{ 'common.comapny_details_add' | trans }}',
+                    'comapny_details_modify': '{{ 'common.comapny_details_modify' | trans }}',
+                },
                 'email': {
                     'required': '{{ 'form.email.required' | trans }}',
                     'email': '{{ 'form.email.email' | trans }}',
@@ -189,9 +214,32 @@
                     'phone_ro': '{{ 'form.phone.phone_ro' | trans }}',
                     'phone_match': '{{ 'form.phone.phone_match' | trans }}',
                 },
+                'cui': {
+                    'required': '{{ 'form.cui.required' | trans }}',
+                    'validCIF': '{{ 'form.cui.validCIF' | trans }}',
+                },
+                'companyRegisterNumber': {
+                    'required': '{{ 'form.companyRegisterNumber.required' | trans }}',
+                    'regNumber': '{{ 'form.companyRegisterNumber.regNumber' | trans }}',
+                },
                 'messages': {
                     'form_details_error': '{{ 'form.messages.form_details_error' | trans }}',
-                }
+                },
+                'iban': {
+                    'required': '{{ 'form.iban.required' | trans }}',
+                },
+                'address':{
+                    'required': '{{ 'form.address.required' | trans }}',
+                },
+                'companyName':{
+                    'required': '{{ 'form.address.required' | trans }}',
+                },
+                 'county':{
+                    'required': '{{ 'form.county.required' | trans }}',
+                },
+                 'city':{
+                    'required': '{{ 'form.city.required' | trans }}',
+                },
 
             }
         };
@@ -213,6 +261,10 @@
         // Charts
         window.userDataPath = '{{ path('dashboard_ajax_get_users') }}';
         window.dataPath = '{{ path('dashboard_ajax_get_user_data') }}';
+
+        //API counties
+        window.countyApiPath = '{{ path('ajax_counties') }}';
+        window.companyDetails = '{{ asset('assets/dashboard/media/my-account/companyDetails.json') }}';
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>

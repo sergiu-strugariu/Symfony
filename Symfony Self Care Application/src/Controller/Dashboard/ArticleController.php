@@ -24,6 +24,12 @@ class ArticleController extends AbstractController
         return $this->render('dashboard/article/index.html.twig');
     }
 
+    #[Route('/dashboard/secure/generate-article', name: 'dashboard_generate_article_index')]
+    public function generateArticle(): Response
+    {
+        return $this->render('dashboard/article/generate-article.html.twig');
+    }
+
     #[Route('/dashboard/article/create', name: 'dashboard_article_create')]
     public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator): Response
     {

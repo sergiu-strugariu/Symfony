@@ -1,0 +1,12 @@
+<div class="partners">
+    <div class="inner">
+        <h2>{{ 'events.partner_media_title'|trans }}</h2>
+        <ul class="partners-list">
+            {% for media in event.eventPartnerMedia %}
+                <li>
+                    <div data-image="{{ asset(app_event_partner_path ~ media.fileName, 'cloudflare') }}"></div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

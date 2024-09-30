@@ -1,0 +1,66 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'dashboard.common.membership_packages'|trans }}{% endblock %}
+
+{% block content %}
+    <!--begin::Users-->
+    <div class="card card-flush">
+        <!--begin::Card header-->
+        <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <input
+                            type="text"
+                            data-kt-table-filter="search"
+                            class="form-control form-control-solid w-250px ps-12"
+                            placeholder="{{ 'dashboard.table.search_placeholder'|trans }} ..."
+                    />
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--end::Card title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <a href="{{ path('dashboard_membership_create') }}"
+                   class="btn btn-brand btn-md rounded-0 fw-bold btn-primary text-uppercase">
+                    {{ 'dashboard.actions.add_new_package'|trans }}
+                </a>
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Datatable-->
+            <table id="kt_datatable_packages" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                    <th>ID</th>
+                    <th class="min-w-150px">{{ 'dashboard.table.name'|trans }}</th>
+                    <th class="min-w-150px">{{ 'dashboard.table.slug'|trans }}</th>
+                    <th class="min-w-150px">{{ 'dashboard.table.price'|trans }}</th>
+                    <th class="min-w-150px">{{ 'dashboard.table.discount'|trans }}</th>
+                    <th class="min-w-100px">{{ 'dashboard.table.status'|trans }}</th>
+                    <th class="min-w-100px">{{ 'dashboard.table.image'|trans }}</th>
+                    <th class="min-w-100px">{{ 'dashboard.table.created_at'|trans }}</th>
+                    <th class="text-end min-w-100px">{{ 'dashboard.actions.actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold"></tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Users-->
+{% endblock %}
+
+{% block page_javascripts %}
+        <script src="{{ asset('assets/dashboard/js/datatables/packages.js') }}"></script>
+{% endblock %}

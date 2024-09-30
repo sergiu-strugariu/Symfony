@@ -1,0 +1,11 @@
+<div class="benefits">
+    <div class="inner">
+        <div class="content">
+            <div class="section-intro">
+                {% if translation.description %}
+                    {{ translation.description|sanitize_html('app.editor') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -35,7 +35,7 @@ class PageController extends AbstractController
             // Get data from the form
             $file = $form->get('file')->getData();
 
-            // Upload company file
+            // Upload file
             $uploadFile = $fileUploader->uploadFile(
                 $file,
                 $form,
@@ -291,7 +291,9 @@ class PageController extends AbstractController
         $formData = $request->get('fields');
         $files = $request->files->get('fields');
 
+        // Check method and @formData
         if ($request->isMethod('POST') && isset($formData)) {
+            // Parse and save files
             if (isset($files)) {
                 // Parse and save file
                 foreach ($files as $className => $variables) {
@@ -312,24 +314,48 @@ class PageController extends AbstractController
                             if (isset($entity)) {
                                 // Parse fields and upload files
                                 foreach ($fields as $name => $value) {
-                                    if (isset($value)) {
+                                    if (!isset($value)) {
+                                        continue;
+                                    }
+
+                                    // Check gallery field
+                                    if ($name === 'galleries') {
+                                        $existingGalleries = $entity->getGalleries() ?? [];
+
+                                        foreach ($value as $file) {
+                                            // Upload file
+                                            $uploadFile = $fileUploader->uploadFile(
+                                                $file,
+                                                null,
+                                                $this->getParameter('app_page_widget_gallery_path')
+                                            );
+
+                                            if ($uploadFile['success']) {
+                                                $existingGalleries[] = $uploadFile['fileName'];
+                                            }
+                                        }
+
+                                        // Setăm galleries dacă avem fișiere noi adăugate
+                                        if (!empty($existingGalleries)) {
+                                            $entity->setGalleries($existingGalleries);
+                                        }
+                                    } else {
                                         // Upload file
                                         $uploadFile = $fileUploader->uploadFile(
                                             $value,
                                             null,
-                                            $this->getParameter('app_page_path') . strtolower($className) . '/'
+                                            $this->getParameter('app_page_widget_path')
                                         );
 
-                                        // Check success uploaded
                                         if ($uploadFile['success']) {
                                             $accessor->setValue($entity, $name, $uploadFile['fileName']);
-
-                                            // Persist data and save
-                                            $em->persist($entity);
-                                            $em->flush();
                                         }
                                     }
                                 }
+
+                                // Parse fields and save files
+                                $em->persist($entity);
+                                $em->flush();
                             }
                         }
                     }

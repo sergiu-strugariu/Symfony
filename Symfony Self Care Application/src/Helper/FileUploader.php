@@ -26,9 +26,9 @@ class FileUploader
 
         $this->s3Client = new S3Client([
             'version' => 'latest',
-            'region'  => $region,
+            'region' => $region,
             'credentials' => [
-                'key'    => $accessKey,
+                'key' => $accessKey,
                 'secret' => $secretKey,
             ],
             'endpoint' => $endpoint,
@@ -96,19 +96,27 @@ class FileUploader
         ];
     }
 
+
     /**
-     * @throws Exception
+     * @param string $folderPath
+     * @param string|null $fileName
+     * @return bool
      */
-    public function removeFile(string $folderPath, string $fileName): bool
+    public function removeFile(string $folderPath, string|null $fileName): bool
     {
-        try {
-            $this->s3Client->deleteObject([
-                'Bucket' => $this->bucket,
-                'Key' => $folderPath . $fileName,
-            ]);
-            return true;
-        } catch (S3Exception $e) {
-            throw new Exception("Failed to delete file from R2: " . $e->getMessage());
+        $status = true;
+
+        if (!empty($fileName)) {
+            try {
+                $this->s3Client->deleteObject([
+                    'Bucket' => $this->bucket,
+                    'Key' => $folderPath . $fileName,
+                ]);
+            } catch (S3Exception $e) {
+                $status = false;
+            }
         }
+
+        return $status;
     }
 }

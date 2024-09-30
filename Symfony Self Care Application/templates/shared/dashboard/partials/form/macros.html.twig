@@ -1,5 +1,10 @@
 {% macro input(variable, id, entity) %}
     {% set inputName ="fields[" ~ entity ~ "][" ~ id ~ "][" ~ variable['field'] ~ "]" %}
+
+    {% if variable['field'] == 'galleries' %}
+        {% set inputName = inputName ~ "[]" %}
+    {% endif %}
+
     {% if variable['isTranslated'] %}
         {% set inputName ="fields[" ~ entity ~ "][" ~ id ~ "][translations][" ~ variable['field'] ~ "]" %}
     {% endif %}
@@ -12,20 +17,50 @@
             <input
                     type="{{ variable['type'] }}"
                     {{ variable['required'] and not variable['value'] ? 'required' : '' }}
-                    value="{{ variable['value'] }}"
+                    value="{{ variable['type'] == "file" ? '' : variable['value'] }}"
                     name={{ inputName }}
                     placeholder="{{ variable['placeholder'] }}"
                     class="form-control form-control-solid form-control-lg rounded-0"
+                    {{ variable['field'] == 'galleries' ? 'multiple' : '' }}
             />
             {% if variable['type'] == "file" %}
-                {% if variable['value'] %}
-                    <div class="form-text">File uploaded:
-                        <a href="{{ asset(app_page_path ~ entity|lower ~'/'~ variable['value'], 'cloudflare') }}" target="_blank">
-                            {{ variable['value'] }}
-                        </a>
-                    </div>
+                {% if variable['field'] == "galleries" %}
+                    {% for value in variable['value'] %}
+                        <div class="d-flex justify-content-between align-items-center page-galleries" id="{{ value|replace({'.': '-'}) }}">
+                            <div class="symbol symbol-100px my-2">
+                                <div class="symbol-label"
+                                     style="background-image:url('{{ asset(app_page_widget_gallery_path ~ value, 'cloudflare') }}')">
+                                </div>
+                            </div>
+                            <a href="#removeItem"
+                               class="gallery-item"
+                               data-machine-name="{{ id }}"
+                               data-entity-name="{{ entity }}"
+                               data-file-path="{{ app_page_widget_gallery_path }}"
+                               data-file-name="{{ value }}"
+                            >
+                                <i class="ki-duotone ki-trash text-danger fs-2x">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                    <span class="path5"></span>
+                                </i>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% if variable['value'] %}
+                        <div class="form-text">File uploaded:
+                            <a href="{{ asset(app_page_path ~ entity|lower ~'/'~ variable['value'], 'cloudflare') }}"
+                               target="_blank">
+                                {{ variable['value'] }}
+                            </a>
+                        </div>
+                    {% endif %}
                 {% endif %}
-                <div class="form-text">(format acceptat: jpg, jpeg, png max. 3M)</div>
+
+                <div class="form-text">{{ 'dashboard.form.image_format'|trans }}</div>
             {% endif %}
         </div>
     </div>

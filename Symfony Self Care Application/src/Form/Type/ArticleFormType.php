@@ -134,7 +134,7 @@ class ArticleFormType extends AbstractType
                 ]
             ]);
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
     }
 
     /**

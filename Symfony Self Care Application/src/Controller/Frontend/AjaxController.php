@@ -11,6 +11,7 @@ use App\Entity\CategoryService;
 use App\Entity\CompanyReview;
 use App\Entity\County;
 use App\Entity\Company;
+use App\Entity\Event;
 use App\Entity\Favorite;
 use App\Entity\Job;
 use App\Entity\TrainingCourse;
@@ -191,6 +192,59 @@ class AjaxController extends AbstractController
         return new JsonResponse([
             'status' => true,
             'rows' => $companies,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+        ]);
+    }
+
+    #[Route('/ajax/get-filter-events', name: 'ajax_get_filter_events')]
+    public function getEvents(EntityManagerInterface $em, Request $request, LanguageHelper $languageHelper): JsonResponse
+    {
+        $eventRepo = $em->getRepository(Event::class);
+
+        $locale = $request->get('locale', $this->getParameter('default_locale'));
+        $limit = $request->get('limit', 10);
+        $sortName = $request->get('sortName', 'id');
+        $sortOrder = $request->get('sortOrder', 'DESC');
+
+        $status = $request->get('eventStatus', '');
+        $year = $request->get('year', '');
+
+        $page = $request->get('page', 1);
+
+        $offset = ($page - 1) * $limit;
+        $language = $languageHelper->getLanguageByLocale($locale);
+
+        // Get data companies by @filters
+        $events = $eventRepo->getEventsByFilters(
+            $language,
+            empty($sortName) ? 'id' : $sortName,
+            empty($sortOrder) ? 'DESC' : $sortOrder,
+            $limit,
+            $offset,
+            false,
+            $status,
+            $year,
+        );
+
+        // Get total companies by @filters
+        $countEvents = $eventRepo->getEventsByFilters(
+            $language,
+            empty($sortName) ? 'id' : $sortName,
+            empty($sortOrder) ? 'DESC' : $sortOrder,
+            $limit,
+            $offset,
+            true,
+            $status,
+            $year,
+        );
+
+        // Calculate totalPage / limit
+        $totalPages = ceil($countEvents / $limit);
+
+        return new JsonResponse([
+            'status' => true,
+            'rows' => $events,
             'currentPage' => $page,
             'totalPages' => $totalPages
         ]);
@@ -853,7 +907,6 @@ class AjaxController extends AbstractController
         ]);
     }
 
-
     #[Route('/ajax/subscribe-newsletter', name: 'ajax_subscribe_newsletter')]
     public function subscribeNewsletter(Request $request, FormValidatorHelper $validatorHelper, TranslatorInterface $translator, MailchimpAPIHelper $mailChimp): JsonResponse
     {
@@ -929,4 +982,53 @@ class AjaxController extends AbstractController
             'message' => $translator->trans(!$validate['checkErrors'] ? 'newsletter.errors.success' : 'newsletter.errors.default', [], 'messages'),
         ]);
     }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    #[Route('/ajax/send-event-details-form', name: 'ajax_send_event_details_form')]
+    public function eventDetailsForm(Request $request, FormValidatorHelper $validatorHelper, DefaultHelper $helper, TranslatorInterface $translator, MailHelper $mail): JsonResponse
+    {
+        // Init variables
+        $validate = ['checkErrors' => false, 'errors' => []];
+        $emailSend = false;
+
+        // Retrieve form data from request
+        $formData = $request->request->all();
+
+        // Process form submission
+        if ($request->isMethod('POST')) {
+            // Validate recaptcha
+            if ($helper->captchaVerify($request->get('g-recaptcha-response'))) {
+                return new JsonResponse([
+                    'status' => false,
+                    'errors' => [],
+                    'message' => $translator->trans('form.messages.form_recaptcha', [], 'messages')
+                ]);
+            }
+
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors
+            if (!$validate['checkErrors']) {
+                // Send email to @appEmail
+                $emailSend = $mail->sendMail(
+                    $this->getParameter('app_email'),
+                    $translator->trans('mail.event', [], 'messages'),
+                    'frontend/emails/event-details.html.twig', $formData
+                );
+            }
+        }
+
+        return new JsonResponse([
+            'status' => $emailSend,
+            'errors' => $validate['errors'],
+            'message' => $translator->trans($emailSend ? 'form.messages.form_details_success' : 'form.messages.form_details_error', [], 'messages')
+        ]);
+    }
+
 }

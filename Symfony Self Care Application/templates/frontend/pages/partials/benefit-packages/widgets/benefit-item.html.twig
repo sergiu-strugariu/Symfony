@@ -1,0 +1,31 @@
+<div class="packages-item">
+    <div class="section">
+        <div class="text-container">
+            {% if translation.description %}
+                {{ translation.description|sanitize_html('app.editor') }}
+            {% endif %}
+            <div class="cta-resources">
+                {% if translation.linkText %}
+                    <a href="{{ translation.link }}">
+                        {{ translation.linkText }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="section swiper-section">
+        <div class="list-wrapper">
+            <div class="common-navigation-btns">
+                <div class="common-navigation-btns__container">
+                    <div class="common-arrow swiper-button-prev"></div>
+                    <div class="common-arrow swiper-button-next"></div>
+                </div>
+            </div>
+            <div class="benefits-package-swiper swiper-one">
+                {% for gallery in widget.galleries %}
+                    <div class="data-image" data-image="{{ asset(app_page_widget_gallery_path ~ gallery, 'cloudflare') }}"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

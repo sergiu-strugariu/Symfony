@@ -9,7 +9,9 @@ use App\Entity\CategoryCourse;
 use App\Entity\CategoryJob;
 use App\Entity\CategoryService;
 use App\Entity\Company;
+use App\Entity\Event;
 use App\Entity\Job;
+use App\Entity\MembershipPackage;
 use App\Entity\Page;
 use App\Entity\TrainingCourse;
 use App\Helper\BreadcrumbsHelper;
@@ -42,7 +44,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/cautare', name: 'app_search_result')]
+    #[Route('/rezultate-search/{slug?}', name: 'app_search_result')]
     public function searchResults(EntityManagerInterface $em, Request $request, BreadcrumbsHelper $helper): Response
     {
         /** @var Page $page */
@@ -277,7 +279,7 @@ class DefaultController extends AbstractController
             'page' => $page,
             'categories' => $categories,
             'recommended' => $recommended,
-            'breadcrumbs' => $helper::COMPANIES_BREADCRUMBS
+            'breadcrumbs' => $helper::PROVIDERS_BREADCRUMBS
         ]);
     }
 
@@ -466,6 +468,82 @@ class DefaultController extends AbstractController
             'recommendedCourses' => $recommendedCourses,
             'breadcrumbs' => $breadcrumbs
         ]);
+    }
+
+    #[Route('/evenimente', name: 'app_events')]
+    public function events(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    {
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'events']);
+
+        /** @var Event $years */
+        $years = $em->getRepository(Event::class)->getYears();
+
+        return $this->render('frontend/pages/index.html.twig', [
+            'page' => $page,
+            'years' => $years,
+            'breadcrumbs' => $helper::EVENT_LISTING_BREADCRUMBS
+        ]);
+    }
+
+    #[Route('/eveniment/{slug?}', name: 'app_event_single')]
+    public function singleEvent(EntityManagerInterface $em, $slug): Response
+    {
+        $locale = $this->getParameter('default_locale');
+
+        // Check exist slug
+        if (!isset($slug)) {
+            return $this->redirectToRoute('app_events');
+        }
+
+        /**
+         * Get event by @slug
+         * @var Event $event
+         */
+        $event = $em->getRepository(Event::class)->getSingleData($slug);
+
+        // Check exist article
+        if (empty($event)) {
+            return $this->redirectToRoute('app_events');
+        }
+
+        return $this->render('frontend/pages/event.html.twig', [
+            'pageTitle' => $event->getTranslation($locale)->getTitle(),
+            'event' => $event,
+        ]);
+    }
+
+    #[Route('/pachete-beneficii', name: 'app_benefit_packages')]
+    public function benefitPackages(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    {
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'benefit-packages']);
+
+        return $this->render('frontend/pages/index.html.twig', [
+            'page' => $page,
+            'breadcrumbs' => $helper::BENEFIT_PACKAGES_BREADCRUMBS
+        ]);
+    }
+
+    #[Route('/pachete', name: 'app_packages')]
+    public function packages(EntityManagerInterface $em): Response
+    {
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'packages']);
+
+        /** @var MembershipPackage $packages */
+        $packages = $em->getRepository(MembershipPackage::class)->getAllPackages();
+
+        return $this->render('frontend/pages/index.html.twig', [
+            'page' => $page,
+            'packages' => $packages
+        ]);
+    }
+
+    #[Route('/detalii-comanda/pachet/{slug}', name: 'app_comand_detail')]
+    public function comandDetailPackage(EntityManagerInterface $em): Response
+    {
+        return $this->render('frontend/pages/index.html.twig');
     }
 
     #[Route('/trimite-feedback', name: 'app_feedback')]

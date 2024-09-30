@@ -354,4 +354,17 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getAllCourses(): array
+    {
+        return $this->createQueryBuilder('tc')
+            ->where('tc.deletedAt IS NULL')
+            ->andWhere('tc.status = :status')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->getQuery()
+            ->getResult();
+    }
 }

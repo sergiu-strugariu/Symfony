@@ -1,0 +1,12 @@
+<div class="partners">
+    <div class="inner">
+        <h2>{{ 'events.partner_sponsors_title'|trans }}</h2>
+        <ul class="partners-list">
+            {% for sponsor in event.eventPartnerSponsors %}
+                <li>
+                    <div data-image="{{ asset(app_event_partner_path ~ sponsor.fileName, 'cloudflare') }}"></div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

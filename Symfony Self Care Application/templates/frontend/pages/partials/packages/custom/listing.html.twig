@@ -1,0 +1,58 @@
+<div class="inner">
+    <div class="listing">
+        <div class="top-section">
+            <h2>{{ 'packages.choose_package'|trans }}</h2>
+            <div class="plan-switcher year" data-plan="year">
+                <p>{{ 'packages.month_plan'|trans }}</p>
+                <span></span>
+                <p>{{ 'packages.year_plan'|trans }}</p>
+            </div>
+        </div>
+        <div class="section swiper-section">
+            {% include "shared/frontend/alert.html.twig" %}
+            <div class="listing-items">
+                <div class="common-navigation-btns">
+                    <div class="common-navigation-btns__container">
+                        <div class="common-arrow swiper-button-prev"></div>
+                        <div class="common-arrow swiper-button-next"></div>
+                    </div>
+                </div>
+                <div class="packages-list-swiper">
+                    {% for package in packages %}
+                        {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_comand_detail', {'slug': package.slug}) : url('dashboard_login', {'returnUrl': path('app_packages')}) %}
+                        <div class="item" data-price="{{ package.price > 0 ? package.price : "0" }}" data-discount="{{ package.yearlyPricePerMonth }}">
+                            {% if(package.popular) %}
+                                <p class="most-popular">{{ 'packages.most_popular'|trans }}</p>
+                            {% endif %}
+                            <h3>{{ package.translation(locale).name }}</h3>
+                            <p class="discount">
+                                <span>0.00</span> {{ 'company.price_currency'|trans }}/{{ 'times.month'|trans }}
+                            </p>
+                            <p class="price">
+                                {% if(package.price > 0) %}
+                                    <span>0.00</span> {{ 'company.price_currency'|trans }}
+                                {% endif %}
+                            </p>
+                            <div class="tooltip">
+                                <small>{{ 'packages.update_package'|trans }}</small>
+                                <img src="{{ asset('assets/frontend/images/common/information-button.png') }}"
+                                     class="info-icon"
+                                     alt="info"
+                                />
+                            </div>
+                            <a href="{{ packagePath }}">
+                                {{ 'packages.choose_btn'|trans }}
+                            </a>
+                            <ul class="features-list">
+                                {{ package.translation(locale).description|sanitize_html('app.editor') }}
+                            </ul>
+                            <a href="{{ packagePath }}">
+                                {{ 'packages.choose_btn'|trans }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

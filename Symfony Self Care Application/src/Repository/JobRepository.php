@@ -361,4 +361,17 @@ class JobRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getAllJobs(): array
+    {
+        return $this->createQueryBuilder('j')
+            ->where('j.deletedAt IS NULL')
+            ->andWhere('j.status = :status')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->getQuery()
+            ->getResult();
+    }
 }

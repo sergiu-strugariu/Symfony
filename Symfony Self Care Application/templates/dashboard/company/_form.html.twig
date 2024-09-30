@@ -70,7 +70,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <!--begin::Label-->
-                            {{ form_label(form.city, 'dashboard.form.county'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            {{ form_label(form.city, 'dashboard.form.city'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
@@ -241,8 +241,10 @@
                     <!--end::Label-->
                     <!--begin::Col-->
                     <div class="col-lg-10 fv-row">
-                        {{ form_widget(form.shortDescription, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0', 'rows': '3'}}) }}
+                        {{ form_widget(form.shortDescription, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0 shortDescription', 'rows': '3'}}) }}
                         {{ form_errors(form.shortDescription) }}
+                        <p class="character-counter"><span>0</span>  {{'dashboard.common.short_description_message_length'|trans}}</p>
+
                     </div>
                     <!--end::Col-->
                 </div>

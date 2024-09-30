@@ -2,6 +2,8 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Repository\MembershipPackageRepository;
+use DateTime;
 use App\Entity\Article;
 use App\Entity\CategoryArticle;
 use App\Entity\CategoryCare;
@@ -11,6 +13,9 @@ use App\Entity\CategoryService;
 use App\Entity\City;
 use App\Entity\Company;
 use App\Entity\CompanyGallery;
+use App\Entity\Event;
+use App\Entity\EventGallery;
+use App\Entity\EventIntroGallery;
 use App\Entity\Favorite;
 use App\Entity\Job;
 use App\Entity\Menu;
@@ -26,6 +31,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\CompanyReviewRepository;
 use App\Repository\EventPartnerRepository;
+use App\Repository\EventRepository;
 use App\Repository\EventSpeakerRepository;
 use App\Repository\JobRepository;
 use App\Repository\LanguageRepository;
@@ -33,7 +39,6 @@ use App\Repository\MenuRepository;
 use App\Repository\PageRepository;
 use App\Repository\TrainingCourseRepository;
 use App\Repository\UserRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -79,6 +84,79 @@ class AjaxController extends AbstractController
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $totalDisplay,
             'data' => $menus
+        ]);
+    }
+
+    #[Route('/dashboard/ajax/admin/remove-page-item-gallery', name: 'dashboard_ajax_remove_page_item_gallery')]
+    public function pageRemoveItemGallery(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator): Response
+    {
+        $machineName = $request->get('machineName');
+        $entityName = $request->get('entityName');
+        $filePath = $request->get('filePath');
+        $fileName = $request->get('fileName');
+        $removeStatus = false;
+
+        // Create dynamic class
+        $fullClassName = sprintf("App\Entity\%s", $entityName);
+
+        if (empty($machineName) || empty($entityName) || !class_exists($fullClassName)) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => $translator->trans('controller.no_account', [], 'messages')
+            ]);
+        }
+
+        /**
+         * Get entity by @machineName
+         */
+        $entity = $em->getRepository($fullClassName)->findOneBy(['machineName' => $machineName]);
+
+        if (empty($filePath) || empty($fileName) || empty($entity)) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => $translator->trans('controller.no_gallery_file', [], 'messages')
+            ]);
+        }
+
+        //Remove file for the storage
+        $result = $fileUploader->removeFile($filePath, $fileName);
+
+        // Check result
+        if (!$result) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => $translator->trans('controller.no_gallery_file', [], 'messages')
+            ]);
+        }
+
+        // Get the current galleries field (an array of filenames)
+        $existingGalleries = $entity->getGalleries() ?? [];
+
+        // Search for the file in the galleries array and remove it
+        $fileNameKey = array_search($fileName, $existingGalleries);
+
+        if ($fileNameKey !== false) {
+            $removeStatus = true;
+
+            // Remove the file from the array
+            unset($existingGalleries[$fileNameKey]);
+
+            // Reindex the array to prevent gaps in keys
+            $existingGalleries = array_values($existingGalleries);
+
+            // Set the updated galleries back to the entity
+            $entity->setGalleries($existingGalleries);
+
+            // Persist the changes to the entity
+            $em->persist($entity);
+            $em->flush();
+        }
+
+        $message = $removeStatus ? 'controller.success_file_deleted' : 'controller.no_gallery_file';
+
+        return new JsonResponse([
+            'success' => $removeStatus,
+            'message' => $translator->trans($message, [], 'messages') . $fileName
         ]);
     }
 
@@ -190,33 +268,61 @@ class AjaxController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/ajax/company/{uuid}/upload-gallery', name: 'dashboard_ajax_company_upload_gallery')]
-    public function companyUploadGallery(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, $uuid, TranslatorInterface $translator): Response
+    #[Route('/dashboard/ajax/event/{uuid}/upload-gallery/{type}', name: 'dashboard_ajax_upload_gallery')]
+    public function eventUploadGallery(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, $uuid, $type): Response
     {
-        /**
-         * Get company by @uuid
-         * @var Company $company
-         */
-        $company = $em->getRepository(Company::class)->findOneBy(['uuid' => $uuid]);
+        $file = $request->files->get('file');
 
-        if (null === $company) {
+        $entityClass = null;
+        $galleryClass = null;
+        $path = '';
+
+        switch ($type) {
+            case DefaultHelper::EVENT_GALLERY:
+                $entityClass = Event::class;
+                $galleryClass = new EventGallery();
+
+                $path = $this->getParameter('app_event_gallery_path');
+                break;
+            case DefaultHelper::EVENT_GALLERY_INTRO:
+                $entityClass = Event::class;
+                $galleryClass = new EventIntroGallery();
+
+                $path = $this->getParameter('app_event_gallery_path');
+                break;
+            case DefaultHelper::COMPANY_GALLERY:
+                $entityClass = Company::class;
+                $galleryClass = new CompanyGallery();
+
+                $path = $this->getParameter('app_company_gallery_path');
+                break;
+        }
+
+        // Check exist type
+        if (!in_array($type, DefaultHelper::EVENT_GALLERIES)) {
             return new JsonResponse([
                 'success' => false,
                 'message' => $translator->trans('controller.no_account', [], 'messages')
             ]);
         }
 
-        // Get file
-        $file = $request->files->get('file');
+        /**
+         * Get entity by @uuid
+         */
+        $entity = $em->getRepository($entityClass)->findOneBy(['uuid' => $uuid]);
 
-        // Upload file
-        $uploadFile = $fileUploader->uploadFile(
-            $file,
-            null,
-            $this->getParameter('app_company_gallery_path')
-        );
+        // Check exist entity
+        if (empty($entity)) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => $translator->trans('controller.no_account', [], 'messages')
+            ]);
+        }
 
-        // Check and set @filename
+        // Upload file to storage
+        $uploadFile = $fileUploader->uploadFile($file, null, $path);
+
+        // Check status upload
         if (!$uploadFile['success']) {
             return new JsonResponse([
                 'success' => false,
@@ -224,33 +330,72 @@ class AjaxController extends AbstractController
             ]);
         }
 
-        $gallery = new CompanyGallery();
-        $gallery->setFileName($uploadFile['fileName']);
-        $gallery->setCompany($company);
+        /**
+         * Set @entity by @type
+         */
+        switch ($type) {
+            case DefaultHelper::EVENT_GALLERY:
+            case DefaultHelper::EVENT_GALLERY_INTRO:
+                $galleryClass->setEvent($entity);
+                break;
+            case DefaultHelper::COMPANY_GALLERY:
+                $galleryClass->setCompany($entity);
+                break;
+        }
 
-        $em->persist($gallery);
+        $galleryClass->setFileName($uploadFile['fileName']);
+        $em->persist($galleryClass);
         $em->flush();
 
         return new JsonResponse([
             'success' => true,
-            'id' => $gallery->getId(),
+            'id' => $galleryClass->getId(),
             'fileName' => $uploadFile['fileName'],
             'message' => $translator->trans('controller.success_gallery_images_upload', [], 'messages')
         ]);
     }
 
-    #[Route('/dashboard/ajax/company/{uuid}/remove-item-gallery', name: 'dashboard_ajax_company_remove_gallery')]
-    public function companyRemoveItemGallery(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, $uuid, TranslatorInterface $translator): Response
+    #[Route('/dashboard/ajax/event/{uuid}/remove-item-gallery/{type}', name: 'dashboard_ajax_remove_gallery')]
+    public function eventRemoveItemGallery(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, $uuid, $type): Response
     {
         $id = $request->get('id');
 
-        /**
-         * Get company by @uuid
-         * @var Company $company
-         */
-        $company = $em->getRepository(Company::class)->findOneBy(['uuid' => $uuid]);
+        $entityClass = null;
+        $galleryClass = null;
+        $relation = '';
+        $path = '';
 
-        if (null === $company && !isset($id)) {
+        switch ($type) {
+            case DefaultHelper::EVENT_GALLERY:
+                $entityClass = Event::class;
+                $galleryClass = EventGallery::class;
+
+                $path = $this->getParameter('app_event_gallery_path');
+                $relation = 'event';
+                break;
+            case DefaultHelper::EVENT_GALLERY_INTRO:
+                $entityClass = Event::class;
+                $galleryClass = EventIntroGallery::class;
+
+                $path = $this->getParameter('app_event_gallery_path');
+                $relation = 'event';
+                break;
+            case DefaultHelper::COMPANY_GALLERY:
+                $entityClass = Company::class;
+                $galleryClass = CompanyGallery::class;
+
+                $path = $this->getParameter('app_company_gallery_path');
+                $relation = 'company';
+                break;
+        }
+
+        /**
+         * Get entity by @uuid
+         * @var $entityClass $event
+         */
+        $entity = $em->getRepository($entityClass)->findOneBy(['uuid' => $uuid]);
+
+        if (empty($entity) || empty($id) || !in_array($type, DefaultHelper::EVENT_GALLERIES)) {
             return new JsonResponse([
                 'success' => false,
                 'message' => $translator->trans('controller.no_account', [], 'messages')
@@ -259,40 +404,34 @@ class AjaxController extends AbstractController
 
         /**
          * Get gallery by @id
-         * @var CompanyGallery $companyGallery
          */
-        $companyGallery = $em->getRepository(CompanyGallery::class)->findOneBy([
-            'id' => $id,
-            'company' => $company
-        ]);
+        $gallery = $em->getRepository($galleryClass)->findOneBy(['id' => $id, $relation => $entity]);
 
-        if (null === $companyGallery) {
+        if (empty($gallery)) {
             return new JsonResponse([
                 'success' => false,
                 'message' => $translator->trans('controller.no_gallery_file', [], 'messages')
             ]);
         }
 
-        try {
-            //Remove file for the filesystem
-            $result = $fileUploader->removeFile($this->getParameter('app_company_gallery_path'), $companyGallery->getFileName());
+        //Remove file for the storage
+        $result = $fileUploader->removeFile($path, $gallery->getFileName());
 
-            // Check result and remove item
-            if ($result) {
-                // Remove file DB
-                $em->remove($companyGallery);
-                $em->flush();
-            }
-        } catch (\Exception $e) {
+        // Check result
+        if (!$result) {
             return new JsonResponse([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $translator->trans('controller.no_gallery_file', [], 'messages')
             ]);
         }
 
+        // Remove file DB
+        $em->remove($gallery);
+        $em->flush();
+
         return new JsonResponse([
-            'success' => $result,
-            'message' => $translator->trans('controller.success_file_deleted', [], 'messages') . $companyGallery->getFileName()
+            'success' => true,
+            'message' => $translator->trans('controller.success_file_deleted', [], 'messages') . $gallery->getFileName()
         ]);
     }
 
@@ -369,6 +508,82 @@ class AjaxController extends AbstractController
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $totalDisplay,
             'data' => $articles
+        ]);
+    }
+
+    #[Route('/dashboard/ajax/admin/membership-packages', name: 'dashboard_ajax_membership_packages')]
+    public function getMembershipPackages(Request $request, MembershipPackageRepository $repository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams((array)$params, $datatableHelper::MEMBERSHIP_PACKAGE_FIELDS);
+
+        // get default language
+        $defaultLanguage = $languageHelper->getDefaultLanguage();
+
+        // filter by params
+        $packages = $repository->findPackagesByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $defaultLanguage
+        );
+
+        // get total count
+        $totalRecords = $repository->countMembershipPackages();
+
+        // get filtered count
+        $totalDisplay = count($packages);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $packages = array_splice($packages, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $packages
+        ]);
+    }
+
+    #[Route('/dashboard/ajax/admin/events', name: 'dashboard_ajax_events')]
+    public function getEvents(Request $request, EventRepository $repository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams((array)$params, $datatableHelper::EVENT_FIELDS);
+
+        // get default language
+        $defaultLanguage = $languageHelper->getDefaultLanguage();
+
+        // filter by params
+        $events = $repository->findEventsByFilters(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $defaultLanguage
+        );
+
+        // get total count
+        $totalRecords = $repository->countEvents();
+
+        // get filtered count
+        $totalDisplay = count($events);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $events = array_splice($events, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $events
         ]);
     }
 

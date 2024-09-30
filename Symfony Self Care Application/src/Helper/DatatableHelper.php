@@ -43,7 +43,6 @@ class DatatableHelper
         "status",
         "createdAt"
     ];
-
     const ARTICLE_FIELDS = [
         "id",
         "title",
@@ -51,6 +50,26 @@ class DatatableHelper
         "",
         "status",
         "",
+        "createdAt"
+    ];
+    const MEMBERSHIP_PACKAGE_FIELDS = [
+        "id",
+        "name",
+        "slug",
+        "price",
+        "discount",
+        "status",
+        "",
+        "createdAt"
+    ];
+    const EVENT_FIELDS = [
+        "id",
+        "title",
+        "slug",
+        "status",
+        "eventStatus",
+        "",
+        "startDate",
         "createdAt"
     ];
     const SPEAKER_FIELDS = [

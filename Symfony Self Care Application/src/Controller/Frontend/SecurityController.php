@@ -33,10 +33,11 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         $email = $form->get('email')->getData();
         $recaptcha = $request->get('g-recaptcha-response');
+        $returnUrl = $request->get('returnUrl');
 
         // Validate type
         if (!in_array($type, $user::getUserTypes())) {
-            return $this->redirectToRoute('app_create_account');
+            return $this->redirectToRoute('app_create_account', array_filter(['returnUrl' => $returnUrl]));
         }
 
         /** @var User $getUser */
@@ -45,7 +46,11 @@ class SecurityController extends AbstractController
         if (isset($getUser)) {
             // Set flash message
             $this->addFlash('error', $translator->trans('auth.register_double_message', [], 'messages'));
-            return $this->redirectToRoute('app_register_form', ['type' => $type]);
+
+            return $this->redirectToRoute('app_register_form', array_filter([
+                'type' => $type,
+                'returnUrl' => $returnUrl
+            ]));
         }
 
         // Form validate
@@ -55,7 +60,11 @@ class SecurityController extends AbstractController
             // Validate recaptcha
             if ($helper->captchaVerify($recaptcha)) {
                 $this->addFlash('error', $translator->trans('form.messages.form_recaptcha', [], 'messages'));
-                return $this->redirectToRoute('app_register_form', ['type' => $type]);
+
+                return $this->redirectToRoute('app_register_form', array_filter([
+                    'type' => $type,
+                    'returnUrl' => $returnUrl
+                ]));
             }
 
             // get data from the form
@@ -92,9 +101,10 @@ class SecurityController extends AbstractController
                 'frontend/emails/auth/confirm-email.html.twig',
                 [
                     'pageTitle' => $subject,
-                    'url' => $this->generateUrl('app_register_confirm', [
-                        'token' => $hash
-                    ], UrlGeneratorInterface::ABSOLUTE_URL)
+                    'url' => $this->generateUrl('app_register_confirm', array_filter([
+                        'token' => $hash,
+                        'returnUrl' => $returnUrl
+                    ]), UrlGeneratorInterface::ABSOLUTE_URL)
                 ]
             );
 
@@ -104,7 +114,11 @@ class SecurityController extends AbstractController
             // Set flash message
             $message = $emailSend ? 'auth.register_success_message' : 'form.messages.form_details_error';
             $this->addFlash($emailSend ? 'success' : 'error', $translator->trans($message, [], 'messages'));
-            return $this->redirectToRoute('app_register_form', ['type' => $type]);
+
+            return $this->redirectToRoute('app_register_form', array_filter([
+                'type' => $type,
+                'returnUrl' => $returnUrl
+            ]));
         }
 
         return $this->render('frontend/security/register.html.twig', [
@@ -117,14 +131,15 @@ class SecurityController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route(path: '/confirmare-email/{token}', name: 'app_register_confirm')]
-    public function confirmEmail(EntityManagerInterface $em, TranslatorInterface $translator, Security $security, MailHelper $mail, $token): Response
+    public function confirmEmail(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Security $security, MailHelper $mail, $token): Response
     {
+        $returnUrl = $request->get('returnUrl');
+
         /** @var User $user */
         $user = $em->getRepository(User::class)->findOneBy([
             'confirmationToken' => $token,
             'enabled' => false
         ]);
-
 
         if (isset($user)) {
             // Send email to @user
@@ -147,8 +162,12 @@ class SecurityController extends AbstractController
                 // Login user automatic
                 $security->login($user, 'form_login');
 
-                // Redirect to my account
-                return $security->login($user);
+                // Get path by params
+                $targetPath = empty($returnUrl) ? $this->generateUrl('dashboard_my_account') : $returnUrl;
+
+                // Redirect
+                $this->addFlash('success', $translator->trans('auth.confirm_email_success', [], 'messages'));
+                return $this->redirect($request->request->get('_target_path', $targetPath));
             }
         }
 

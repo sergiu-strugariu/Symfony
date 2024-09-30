@@ -1,0 +1,64 @@
+<div class="modal fade" id="modalAddCompany" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" >
+        <div class="modal-content">
+            <div class="modal-close" data-bs-dismiss="modal" aria-label="Close">
+                <img src="{{ asset('assets/dashboard/media/dashboard/modal-close.png') }}" alt="modal-close" />
+            </div>
+            <div class="modal-body">
+                <form id="modalAddCompanyForm">
+                     <!--begin::Form message-->
+                     <div class="form-message-modal"></div>
+                     <!--end::Form message-->
+                     
+                    <h3 id="modalTitle">Adauga o adresă nouă</h3>
+                    <div class="board">
+                        <label for="companyName">Nume companie</label>
+                        <input type="text" name="companyName" id="companyName" placeholder="Introdu numele" required>
+                    </div>
+                    <div class="board">
+                        <label for="cui">Cod unic de inregistrare</label>
+                        <input type="text" name="cui" id="cui" placeholder="Format din 6 cifre" required>
+                    </div>
+                    <div class="board">
+                        <label for="companyRegisterNumber">Nr. Registrul comertului</label>
+                        <input type="text" name="companyRegisterNumber" id="companyRegisterNumber" placeholder="Compus din maxim 12 caractere" required>
+                    </div>
+                    <div class="board">
+                        <label for="iban">Cont iban</label>
+                        <input type="text" name="iban" id="iban" placeholder="Introdu contul" required>
+                    </div>
+                    <p>Date contact</p>
+                    <div class="board">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" placeholder="Introdu adresă email" required>
+                    </div>
+                    <div class="board">
+                        <label for="phone">Telefon</label>
+                        <input type="text" name="phone" id="phone" placeholder="Introdu număr telefon" required>
+                    </div>
+                    <p>Sediu social</p>
+                    <div class="board board-select">
+                        <label for="regionFilter">Județ</label>
+                        <select id="regionFilter" class="region-filter counties populate-counties" name="county">
+                            <option value="">Județul tău</option>
+                          </select>
+                    </div>
+                    <div class="board board-select">
+                        <label for="city">Localitate</label>
+                        <select id="city" class="region-filter cities" name="city">
+                            <option value="">Localitate</option>
+                        </select>
+                    </div>
+                    <div class="board">
+                        <label for="address">Adresă</label>
+                        <input type="text" name="address" id="address" placeholder="ex: Strada, numar, bloc, etaj, apartament" required>
+                    </div>
+                    <ul>
+                        <li><input type="submit" class="submit-btn" value="Salvează"/></li>
+                        <li><a href="#" data-bs-dismiss="modal" aria-label="Close">Anulează</a></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

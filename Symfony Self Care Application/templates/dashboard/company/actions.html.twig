@@ -54,8 +54,10 @@
 
         {% if uuid is defined %}
         let buttonUpload = document.getElementById("uploadFiles");
-        window.removeItemGallery = "{{ path('dashboard_ajax_company_remove_gallery', {'uuid': uuid}) }}";
-        initDropZone('#kt_dropzone_gallery', '{{ path('dashboard_ajax_company_upload_gallery', {'uuid': uuid}) }}', buttonUpload);
+        window.removeItemGallery = "{{ path('dashboard_ajax_remove_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::COMPANY_GALLERY')}) }}";
+
+        initDropZone('#kt_dropzone_gallery', '{{ path('dashboard_ajax_upload_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::COMPANY_GALLERY')}) }}', buttonUpload, window.companyGalleryImagePath);
+        removeGalleryItem(window.removeItemGallery);
         {% endif %}
     </script>
 {% endblock %}

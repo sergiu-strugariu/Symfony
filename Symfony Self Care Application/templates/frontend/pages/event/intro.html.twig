@@ -1,0 +1,31 @@
+<div class="intro-section">
+    <div class="inner">
+        <div class="intro-slider">
+            {% for item in event.eventIntroGalleries %}
+                <div class="slider-item" data-image="{{ asset(app_event_gallery_path ~ item.fileName, 'cloudflare') }}">
+                    <h2>{{ event.translation(locale).title }}</h2>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="navigation-wrapper">
+            <div class="intro-prev"></div>
+            <div class="intro-next"></div>
+        </div>
+    </div>
+    <div class="inner">
+        <div class="event-details">
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/common/calendar-icon.svg') }}" alt="calendar"/>
+                <p>{{ event.createdAt|date('d M Y') }}</p>
+            </div>
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/common/location-icon.svg') }}" alt="pin"/>
+                <p>{{ event.address }}, {{ event.county.name }}, {{ event.city.name }}</p>
+            </div>
+            <div class="item">
+                <img src="{{ asset('assets/frontend/images/common/clock-icon.svg') }}" alt="clock"/>
+                <p>{{ 'dashboard.common.hour'|trans }} {{ event.createdAt|date('H:i') }}</p>
+            </div>
+        </div>
+    </div>
+</div>

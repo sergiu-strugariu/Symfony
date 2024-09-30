@@ -1,0 +1,18 @@
+<div class="card">
+    <div class="card-inner">
+        <div class="card-image">
+            {% if widget.fileName %}
+                <img src="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}"
+                     width="48"
+                     height="51"
+                     alt="{{ widget.fileName }}"
+                />
+            {% endif %}
+        </div>
+        <div class="card-info">
+            {% if translation.description %}
+                {{ translation.description|sanitize_html('app.editor') }}
+            {% endif %}
+        </div>
+    </div>
+</div>

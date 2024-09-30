@@ -38,14 +38,14 @@ class PageSection
     #[ORM\Column(length: 99)]
     private ?string $template = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
     /**
      * @var Collection<int, PageWidget>
      */
     #[ORM\OneToMany(targetEntity: PageWidget::class, mappedBy: 'pageSection', orphanRemoval: true)]
     private Collection $pageWidgets;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
     public function __construct()
     {

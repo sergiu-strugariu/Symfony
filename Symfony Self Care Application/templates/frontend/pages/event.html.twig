@@ -1,0 +1,51 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+    {% block share %}
+        <meta property="og:title" content="{{ event.translation(locale).title }}"/>
+        <meta property="og:description" content="{{ event.translation(locale).shortDescription }}"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:image" content="{{ asset(app_event_path ~ event.fileName, 'cloudflare') }}"/>
+        <meta property="og:image:width" content="1200"/>
+        <meta property="og:image:height" content="630"/>
+    {% endblock %}
+{% block content %}
+    <main class="event">
+        <!-- start::Intro -->
+        {% include "frontend/pages/event/intro.html.twig" %}
+        <!-- end::Intro -->
+
+        <!-- start::Winners -->
+        {% include "frontend/pages/event/winners.html.twig" %}
+        <!-- end::Winners -->
+
+        <!-- start::Partner sponsor -->
+        {% include "frontend/pages/event/partners.html.twig" %}
+        <!-- end::Partner sponsor -->
+
+        <!-- start::Speakers -->
+        {% include "frontend/pages/event/speakers.html.twig" %}
+        <!-- end::Speakers -->
+
+        <!-- start::Galleries -->
+        {% include "frontend/pages/event/gallery.html.twig" %}
+        <!-- end::Galleries -->
+
+        <!-- start::About -->
+        {% include "frontend/pages/event/about.html.twig" %}
+        <!-- end::About -->
+
+        <!-- start::Partner sponsor -->
+        {% include "frontend/pages/event/partners-media.html.twig" %}
+        <!-- end::Partner sponsor -->
+
+        <!-- start::Form -->
+        {% include "frontend/pages/event/form.html.twig" %}
+        <!-- end::Form -->
+
+        <!-- start::Share -->
+        {% include "frontend/pages/event/share.html.twig" %}
+        <!-- end::Share -->
+    </main>
+{% endblock %}

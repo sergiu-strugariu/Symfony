@@ -1,0 +1,46 @@
+<div class="form-section">
+    <div class="inner">
+        <div class="form-wrapper">
+            <h2>{{ 'events.contact_us'|trans }}</h2>
+            <form id="eventForm" class="event-form has-loader">
+                <input type="hidden" name="eventName" value="{{ event.translation(locale).title }}" />
+                <div class="form-message"></div>
+                <div class="row">
+                    <div class="row-half">
+                        <label for="name">{{ 'common.filter_name'|trans }}</label>
+                        <input type="text" name="name" id="name" placeholder="{{ 'form.placeholder.fullName'|trans }}"/>
+                    </div>
+                    <div class="row-half">
+                        <label for="surname">{{ 'common.filter_surname'|trans }}</label>
+                        <input type="text" name="surname" id="surname" placeholder="{{ 'form.placeholder.surname'|trans }}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row-half">
+                        <label for="emailAddress">{{ 'menu.email_link'|trans }}</label>
+                        <input type="email" name="emailAddress" id="emailAddress" placeholder="{{ 'form.placeholder.email'|trans }}"/>
+                    </div>
+                    <div class="row-half">
+                        <label for="phone">{{ 'menu.phone_link'|trans }}</label>
+                        <input type="tel" name="phone" id="phone" placeholder="{{ 'form.placeholder.phone'|trans }}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row-full">
+                        <label for="message">{{ 'form.placeholder.message'|trans }}</label>
+                        <textarea name="message" id="message"></textarea>
+                    </div>
+                    <div class="short-description">
+                        <p><span>0</span> {{ 'form.placeholder.message_length'|trans }}</p>
+                    </div>
+                </div>
+                <div class="recaptcha-wrapper">
+                    <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+                </div>
+                <div class="form-action">
+                    <input type="submit" class="submit-btn" value="{{ 'common.form_submit'|trans }}"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

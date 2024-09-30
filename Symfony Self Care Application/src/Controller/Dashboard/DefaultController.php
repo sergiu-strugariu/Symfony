@@ -78,6 +78,12 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard/my-plan', name: 'dashboard_my_plan')]
+    public function myPlan(): Response
+    {
+        return $this->render('dashboard/default/my-plan.html.twig', []);
+    }
+
     #[Route('/dashboard/cache/clear', name: 'dashboard_clear_cache')]
     public function clearCache(KernelInterface $kernel, TranslatorInterface $translator): Response
     {

@@ -90,6 +90,9 @@ form:
     required: 'Oops! Ceva nu a mers bine.'
     default_field_required: 'Acest câmp este obligatoriu'
     min_message: 'Valoarea trebuie să fie de cel puțin {{ limit }}.'
+    min: 'Valoarea nu poate fi mai mică de {{ limit }}.'
+    max: 'Valoarea nu poate fi mai mare de {{ limit }}.'
+    not_in_range: 'Valoarea trebuie să fie între {{ min }} și {{ max }}.'
   password:
     required: 'Acest câmp este obligatoriu'
     minlength: 'Parola trebuie să aibă cel puțin {{ limit }} caractere'

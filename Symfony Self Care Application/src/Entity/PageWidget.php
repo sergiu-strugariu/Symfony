@@ -32,17 +32,20 @@ class PageWidget
     #[ORM\Column(length: 99, nullable: true)]
     private ?string $fileNameMob = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $galleries = null;
+
     #[ORM\Column(length: 99)]
     private ?string $template = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
 
     /**
      * @var Collection<int, PageWidgetTranslation>
      */
     #[ORM\OneToMany(targetEntity: PageWidgetTranslation::class, mappedBy: 'pageWidget', orphanRemoval: true)]
     private Collection $pageWidgetTranslations;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
     public function __construct()
     {
@@ -176,6 +179,18 @@ class PageWidget
                 $pageWidgetTranslation->setPageWidget(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGalleries(): ?array
+    {
+        return $this->galleries;
+    }
+
+    public function setGalleries(?array $galleries): static
+    {
+        $this->galleries = $galleries;
 
         return $this;
     }

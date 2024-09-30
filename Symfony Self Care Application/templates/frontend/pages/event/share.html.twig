@@ -1,0 +1,22 @@
+<div class="share-section">
+    <div class="inner">
+        <ul>
+            <li>Distribuie:</li>
+            <li>
+                <a href="{{ facebook_share }}{{ app.request.uri }}" target="_blank">
+                    <img src="{{ asset('assets/frontend/images/common/facebook-blue.svg') }}" alt="facebook" />
+                </a>
+            </li>
+            <li>
+                <a href="{{ linkedin_share }}{{ app.request.uri }}&title={{ event.translation(locale).title }}&summary={{ event.translation(locale).shortDescription }}&source={{ app.request.host }}" target="_blank">
+                <img src="{{ asset('assets/frontend/images/common/linkedIn-blue.svg') }}" alt="linkedin" />
+                </a>
+            </li>
+            <li>
+                <a href="{{ whatsapp_share }}{{ app.request.uri }}" target="_blank">
+                    <img src="{{ asset('assets/frontend/images/common/whatsapp-blue.svg') }}" alt="whatsapp" />
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

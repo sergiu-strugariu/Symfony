@@ -94,6 +94,30 @@ class BreadcrumbsHelper
             'params' => []
         ]
     ];
+    const PROVIDERS_BREADCRUMBS = [
+        [
+            'name' => 'breadcrumb.homepage_title',
+            'route' => 'app_homepage',
+            'params' => []
+        ],
+        [
+            'name' => 'breadcrumb.provider_title',
+            'route' => 'app_company',
+            'params' => []
+        ]
+    ];
+    const BENEFIT_PACKAGES_BREADCRUMBS = [
+        [
+            'name' => 'breadcrumb.homepage_title',
+            'route' => 'app_homepage',
+            'params' => []
+        ],
+        [
+            'name' => 'breadcrumb.benefit_package_title',
+            'route' => null,
+            'params' => []
+        ]
+    ];
     const COMPANY_SINGLE_BREADCRUMBS = [
         [
             'name' => 'breadcrumb.homepage_title',
@@ -113,13 +137,8 @@ class BreadcrumbsHelper
             'params' => []
         ],
         [
-            'name' => 'breadcrumb.company_search_title',
-            'route' => 'app_provider',
-            'params' => []
-        ],
-        [
             'name' => 'breadcrumb.provider_title',
-            'route' => '',
+            'route' => 'app_provider',
             'params' => []
         ]
     ];
@@ -156,6 +175,18 @@ class BreadcrumbsHelper
         ],
         [
             'name' => 'breadcrumb.course_title',
+            'route' => null,
+            'params' => []
+        ]
+    ];
+    const EVENT_LISTING_BREADCRUMBS = [
+        [
+            'name' => 'breadcrumb.homepage_title',
+            'route' => 'app_homepage',
+            'params' => []
+        ],
+        [
+            'name' => 'breadcrumb.event_title',
             'route' => null,
             'params' => []
         ]

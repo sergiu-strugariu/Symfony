@@ -18,6 +18,13 @@ class DefaultHelper
     const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'instagramLink', 'logo', 'footerLogo', 'favicon'];
     const SETTING_FILE_FIELDS = ['logo', 'footerLogo', 'favicon'];
     const COMPANY_FILE_FIELDS = ['video' => 'videoPlaceholder', 'preview' => 'fileName', 'logo' => 'logo'];
+    const EVENT_FILE_FIELDS = ['video' => 'videoPlaceholder', 'preview' => 'fileName', 'program' => 'programFileName'];
+
+    const COMPANY_GALLERY = 'companyGallery';
+    const EVENT_GALLERY = 'eventGallery';
+    const EVENT_GALLERY_INTRO = 'eventGalleryIntro';
+
+    const EVENT_GALLERIES = [self::EVENT_GALLERY, self::EVENT_GALLERY_INTRO, self::COMPANY_GALLERY];
 
     /**
      * @var string

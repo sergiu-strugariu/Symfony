@@ -1,3 +1,5 @@
+{% set returnUrl = app.request.get('returnUrl') %}
+{% set registerPath = returnUrl is not empty ? translation.link ~ '?returnUrl=' ~ returnUrl : translation.link %}
 <div class="account-card">
     <div class="account-inner">
         {% if widget.fileName %}
@@ -7,7 +9,7 @@
             {{ translation.description|sanitize_html('app.editor') }}
         {% endif %}
         {% if translation.linkText %}
-            <a href="{{ translation.link }}">
+            <a href="{{ registerPath }}">
                 {{ translation.linkText }}
             </a>
         {% endif %}

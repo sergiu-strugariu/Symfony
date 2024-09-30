@@ -1,0 +1,30 @@
+{
+  "status" : true,
+  "companyDetails": [
+    {
+      "uuid": 1,
+      "companyName": "Company name SRL",
+      "cui" : 34762001,
+      "companyRegisterNumber": "J22/1218/2015",
+      "iban": "RO49 AAAA 1B31 0075 9384 0000",
+      "email": "SRL@gmail.com",
+      "phone": "0749610000",
+      "county": "lasi",
+      "city": "lasi",
+      "address": "Strada Barnova no. 2, block A12, stair B, apartment 69"
+    },
+    {
+      "uuid": 2,
+      "companyName": "Company name SRL 2",
+      "cui" : 24762001,
+      "companyRegisterNumber": "J22/1218/2015",
+      "iban": "RO49 AAAA 2B31 0075 9384 0000",
+      "email": "SRL2@gmail.com",
+      "phone": "0749620000",
+      "county": "2lasi",
+      "city": "2lasi",
+      "address": "2Strada Barnova no. 2, block A12, stair B, apartment 69"
+    }
+  ]
+}
+

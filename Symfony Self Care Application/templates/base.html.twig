@@ -36,8 +36,7 @@
 <!-- End Google Tag Manager -->
 
 <!--start:: Cookiebot-->
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookie_bot_id }}"
-        type="text/javascript"></script>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookie_bot_id }}" type="text/javascript"></script>
 <!--end:: Cookiebot-->
 
 <!--start:: Intercome-->
@@ -193,6 +192,7 @@
             'no_reviews_text_be_first': 'Fii primul care trimite o recenzie',
         },
         'common': {
+            'hour': '{{ "dashboard.common.hour"|trans }}',
             'view_more': '{{ "common.view_more"|trans }}',
             'view_more_review': '{{ "common.view_more_review"|trans }}',
             'asc_for_details': '{{ "common.asc_for_details"|trans }}',
@@ -215,6 +215,12 @@
             'results': '{{ "common.results"|trans }}',
             'see_all': '{{ "common.see_all"|trans }}',
             'results_for': '{{ "common.results_for"|trans }}',
+            'comapny_details_modify': '{{ "common.comapny_details_modify"|trans }}',
+            'comapny_details_add': '{{ "common.comapny_details_add"|trans }}',
+        },
+        'events': {
+            'future': '{{ "events.future"|trans }}',
+            'ended': '{{ "events.ended"|trans }}'
         },
         'form': {
             'name': {
@@ -350,6 +356,15 @@
 
     window.favoriteAjaxPath = '{{ path('account_ajax_add_to_favorites') }}';
     window.newsletterFormPath = '{{ path('ajax_subscribe_newsletter') }}';
+
+    window.eventFormPath = '{{ path('ajax_send_event_details_form') }}';
+
+    window.eventLinkPath = '{{ path('app_event_single') }}';
+    window.eventImagePath = '{{ asset(app_event_path, 'cloudflare') }}'
+    window.listingEvents = '{{ path('ajax_get_filter_events') }}';
+    window.endedEventStatus = '{{ constant('App\\Entity\\Event::STATUS_ENDED') }}';
+    window.futureEventStatus = '{{ constant('App\\Entity\\Event::STATUS_FUTURE') }}';
+    window.loadEventLimit = 2;
 </script>
 <!--End:: Translations-->
 

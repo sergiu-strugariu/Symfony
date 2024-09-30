@@ -1,0 +1,116 @@
+<div class="card mb-5 mb-lg-3 card-flush">
+    <!--begin::Form content-->
+    {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data', 'novalidate': 'novalidate'}}) }}
+    <!--begin::Card body-->
+    <div class="card-body p-9 pb-lg-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.name, 'dashboard.table.name'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.price, 'dashboard.table.price'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.price, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.price) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.discount, 'dashboard.table.discount'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.discount, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.discount) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.description, 'dashboard.form.description'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0 tinymce-editor', 'rows': '6'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.popular, 'dashboard.table.popular'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.popular, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                        {{ form_errors(form.popular) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.status, 'dashboard.table.status'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.status, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                        {{ form_errors(form.status) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.fileName, 'dashboard.form.image'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.fileName, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.fileName) }}
+                        {% if fileName is defined %}
+                            <div class="form-text">{{ 'dashboard.form.image_uploaded'|trans }}:
+                                <a href="{{ asset(app_membership_package_path ~ fileName, 'cloudflare') }}" target="_blank">
+                                    {{ fileName }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">{{ 'dashboard.form.image_format'|trans }}</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card body-->
+    <!--begin::Card footer-->
+    <div class="card-footer py-6 pt-lg-0 border-top-0 pb-lg-9 px-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                    {{ form_widget(form._token) }}
+                    <a href="{{ path('dashboard_membership_index') }}" class="btn text-uppercase fw-bolder">
+                        {{ 'dashboard.form.cancel'|trans }}
+                    </a>
+                    <button type="submit" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                        {{ 'dashboard.form.submit'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card footer-->
+    {{ form_end(form) }}
+    <!--end::Form content-->
+</div>

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Helper\DefaultHelper;
 use App\Repository\EventSpeakerRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -47,6 +49,12 @@ class EventSpeaker
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $facebook = null;
 
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'eventSpeakers')]
+    private Collection $events;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -61,6 +69,7 @@ class EventSpeaker
         $this->createdAt = new DateTime();
         $this->uuid = Uuid::v4();
         $this->status = DefaultHelper::STATUS_DRAFT;
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +111,14 @@ class EventSpeaker
         $this->surname = $surname;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->name . ' ' . $this->surname;
     }
 
     public function getRole(): ?string
@@ -220,6 +237,33 @@ class EventSpeaker
     public function setDeletedAt(?\DateTimeInterface $deletedAt): static
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->addEventSpeaker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeEventSpeaker($this);
+        }
 
         return $this;
     }

@@ -6,7 +6,10 @@ use App\Entity\City;
 use App\Entity\Company;
 use App\Entity\County;
 use App\Entity\Event;
+use App\Entity\EventPartner;
+use App\Entity\EventSpeaker;
 use App\Entity\EventTranslation;
+use App\Entity\EventWinner;
 use App\Helper\DefaultHelper;
 use App\Repository\CityRepository;
 use App\Repository\CountyRepository;
@@ -20,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -75,10 +79,6 @@ class EventForm extends AbstractType
                     new Assert\Length([
                         'min' => 2,
                         'minMessage' => 'form.name.minlength'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^[a-zA-ZăâîșțĂÂÎȘȚ\s-]+$/',
-                        'message' => 'form.name.valid_name'
                     ])
                 ]
             ])
@@ -164,7 +164,7 @@ class EventForm extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+                        'mimeTypes' => ['application/pdf'],
                         'mimeTypesMessage' => 'form.fileCv.format',
                         'maxSize' => '3M'
                     ])
@@ -203,7 +203,102 @@ class EventForm extends AbstractType
                     ])
                 ],
                 'choices' => Event::getOptionStatus()
-            ]);
+            ])
+            ->add('eventPartnerSponsors', EntityType::class, [
+                'class' => EventPartner::class,
+                'required' => true,
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ep')
+                        ->where('ep.type = :type')
+                        ->andWhere('ep.deletedAt IS NULL')
+                        ->setParameter('type', EventPartner::SPONSOR_TYPE)
+                        ->orderBy('ep.id', 'DESC');
+                },
+                'choice_label' => 'name',
+                'choice_attr' => function (EventPartner $eventPartner) {
+                    return ['data-filename' => $eventPartner->getFileName()];
+                },
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory'
+                    ]),
+                    new Assert\Count([
+                        'min' => 1,
+                        'minMessage' => 'dashboard.form.min_collection'
+                    ])
+                ]
+            ])
+            ->add('eventPartnerMedia', EntityType::class, [
+                'class' => EventPartner::class,
+                'required' => true,
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ep')
+                        ->where('ep.type = :type')
+                        ->andWhere('ep.deletedAt IS NULL')
+                        ->setParameter('type', EventPartner::MEDIA_TYPE)
+                        ->orderBy('ep.id', 'DESC');
+                },
+                'choice_label' => 'name',
+                'choice_attr' => function (EventPartner $eventPartner) {
+                    return ['data-filename' => $eventPartner->getFileName()];
+                },
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory'
+                    ]),
+                    new Assert\Count([
+                        'min' => 1,
+                        'minMessage' => 'dashboard.form.min_collection'
+                    ])
+                ]
+            ])
+            ->add('eventSpeakers', EntityType::class, [
+                'class' => EventSpeaker::class,
+                'required' => true,
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('es')
+                        ->where('es.status = :status')
+                        ->andWhere('es.deletedAt IS NULL')
+                        ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+                        ->orderBy('es.id', 'DESC');
+                },
+                'choice_label' => 'fullName',
+                'choice_attr' => function (EventSpeaker $eventSpeaker) {
+                    return ['data-filename' => $eventSpeaker->getFileName(), 'data-type' => 'speakers'];
+                },
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory'
+                    ]),
+                    new Assert\Count([
+                        'min' => 1,
+                        'minMessage' => 'dashboard.form.min_collection'
+                    ])
+                ]
+            ])
+            ->add('eventWinners', EntityType::class, [
+                'class' => Company::class,
+                'required' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'data' => $options['eventWinners'],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->leftJoin('c.eventWinners', 'w')
+                        ->where('c.status = :status')
+                        ->andWhere('c.locationType = :type')
+                        ->andWhere('c.deletedAt IS NULL')
+                        ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+                        ->setParameter('type', Company::LOCATION_TYPE_CARE)
+                        ->orderBy('w.position', 'ASC');
+                },
+                'choice_label' => 'name'
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData'])
+            ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
     }
 
     /**
@@ -245,9 +340,62 @@ class EventForm extends AbstractType
 
         if ($eventEnt->getSlug() == null && isset($data['title'])) {
             $slugger = new AsciiSlugger();
-            $slug = $slugger->slug($data['name'])->lower();
+            $slug = $slugger->slug($data['title'])->lower();
 
             $eventEnt->setSlug($slug);
+        }
+
+        if (!empty($data['videoUrl'])) {
+            $form->add('videoPlaceholder', FileType::class, [
+                'required' => true,
+                'mapped' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+                        'mimeTypesMessage' => 'form.fileCv.format',
+                        'maxSize' => '3M'
+                    ]),
+                    new Assert\Callback([
+                        'callback' => function ($value, ExecutionContextInterface $context) use ($eventEnt) {
+                            if (empty($eventEnt->getVideoPlaceholder()) && empty($value)) {
+                                $context->buildViolation('dashboard.form.field_mandatory')->addViolation();
+                            }
+                        }
+                    ])
+                ]
+            ]);
+        }
+
+        if ($data['eventStatus'] === Event::STATUS_ENDED) {
+            $form->add('eventWinners', EntityType::class, [
+                'class' => Company::class,
+                'required' => true,
+                'multiple' => true,
+                'mapped' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.status = :status')
+                        ->andWhere('c.locationType = :type')
+                        ->andWhere('c.deletedAt IS NULL')
+                        ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+                        ->setParameter('type', Company::LOCATION_TYPE_CARE)
+                        ->orderBy('c.id', 'DESC');
+                },
+                'choice_label' => 'name',
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory'
+                    ]),
+                    new Assert\Count([
+                        'min' => 3,
+                        'minMessage' => 'dashboard.form.min_collection'
+                    ]),
+                    new Assert\Count([
+                        'max' => 10,
+                        'minMessage' => 'dashboard.form.min_collection'
+                    ])
+                ]
+            ]);
         }
 
         /** @var County $county */
@@ -279,7 +427,8 @@ class EventForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
-            'language' => null,
+            'translation' => null,
+            'eventWinners' => [],
         ]);
     }
 }

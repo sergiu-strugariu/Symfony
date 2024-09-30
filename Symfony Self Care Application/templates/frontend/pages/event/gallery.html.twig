@@ -1,0 +1,47 @@
+<div class="gallery">
+    <div class="inner">
+        <h2>{{ 'events.images_event'|trans }}</h2>
+        <div class="content-wrapper">
+            <div class="swiper-section">
+                <div class="home-details-swiper-container">
+                    <div class="list-wrapper">
+                        <div class="common-navigation-btns">
+                            <div class="swiper-list-details">
+                                <span class="image-counter"></span> {{ 'company.images_counter'|trans }} |
+                                <span class="video-counter">{{ event.videoUrl is not null ? 1 : 0 }}/1</span>
+                                {{ 'company.video_counter'|trans }}
+                            </div>
+                            <div class="common-navigation-btns__container">
+                                <div class="common-arrow swiper-button-prev details-item-prev"></div>
+                                <div class="common-arrow swiper-button-next details-item-next"></div>
+                            </div>
+                        </div>
+                        <div class="home-details-swiper">
+                            {% if event.videoUrl is not null %}
+                                <div data-videoid="{{ event.videoUrl }}"
+                                     class="data-image videoOverlayContainer video-item"
+                                     data-toggle="modal" data-target="#videoModal"
+                                     data-image="{{ asset(app_event_path ~ event.videoPlaceholder, 'cloudflare') }}"
+                                     data-title="{{ 'company.video_title'|trans }} {{ event.translation(locale).title }}">
+                                </div>
+                            {% endif %}
+                            {% if event.eventGalleries %}
+                                {% for item in event.eventGalleries %}
+                                    <div class="data-image image videoOverlayContainer"
+                                         data-image="{{ asset(app_event_gallery_path ~ item.fileName, 'cloudflare') }}"
+                                         data-title="{{ 'company.image_title'|trans }} {{ event.translation(locale).title }}"
+                                         data-toggle="modal"
+                                         data-target="#videoModal">
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="video-section">
+                    {% include "frontend/pages/common/modal-video.html.twig" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

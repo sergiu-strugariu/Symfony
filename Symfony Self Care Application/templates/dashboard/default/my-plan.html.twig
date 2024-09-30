@@ -1,0 +1,189 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'dashboard.my_plan.title'|trans }} {% endblock %}
+{% block content %}
+<div class="my-plan">
+    <div class="inner">
+        <div class="content">
+            <h3>{{ 'dashboard.my_plan.title'|trans }}</h3>
+            <div class="board">
+                <div class="row">
+                    <h3>{{ 'dashboard.my_plan.plan_current'|trans }}</h3>
+                </div>
+                <div class="row">
+                    <div class="pack">
+                        <div class="img">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/icon-check-silver.png') }}"
+                                 alt="edit"
+                                 width="35"
+                                 height="35"
+                            />
+                        </div>
+                        <h4>{{ 'dashboard.my_plan.plan_name'|trans }}</h4>
+                        <p>20,00 USD {{ 'dashboard.my_plan.per_month'|trans }}</p>
+                        <p>{{ 'dashboard.my_plan.plan_auto_renewal'|trans }} 8 octombrie 2024.</p>
+                    </div>
+                    <a href="#" data-bs-toggle="modal"
+                       data-bs-target="#">{{ 'dashboard.my_plan.plan_cancel'|trans }}</a>
+                </div>
+                <div class="row ">
+                    <div class="pack">
+                        <h4>{{ 'dashboard.my_plan.plan_info'|trans }}</h4>
+                        <p><strong>{{ 'common.filter_name'|trans }}:</strong> Land of Web</p>
+                        <p><strong>{{ 'dashboard.my_plan.plan_billing_address'|trans }}:</strong> Str. Elena Doamna, nr. 20-22, et. 3, spatiul 18, 700398 Iași RO</p>
+                    </div>
+                    <a href="#" data-bs-toggle="modal"
+                       data-bs-target="#">{{ 'dashboard.my_plan.plan_billing_address_update'|trans }}</a>
+                </div>
+
+                <div class="row ">
+                    <div class="pack">
+                    <h4>{{ 'dashboard.my_plan.plan_billing_history'|trans }}</h4>
+                        <ul class="billing-history">
+                            <li>
+                                <p>8 sept. 2024</p>
+                                <p>20,00 USD</p>
+                                <p ><span class="badge badge-success">{{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li>
+                                <p>8 aug. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li>
+                                <p>8 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>18 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>28 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>38 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>48 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>58 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>68 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>78 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>88 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>8 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>8 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>8 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                            <li  >
+                                <p>8 iul. 2024</p>
+                                <p> 20,00 USD </p>
+                                <p ><span class="badge badge-success">Plătită</span> </p>
+                                <p>ChatGPT Plus Subscription</p>
+                            </li>
+                        </ul>
+                        <div class="billing-actions">
+                            <a href="#" class="view-more">{{ 'common.see_more_results'|trans }}</a>
+                            <a href="#" class="bg-danger">{{ 'auth.cancel'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="board">
+                <div class="row">
+                    <div class="pack-billing">
+                        <h3>{{ 'dashboard.common.billing_data'|trans }}</h3>
+                            <div class="billing-data">
+                            <div class="radio-btn-group" id="radioBtnGroup">
+                                <div class="radio-group has-loader">
+                                    <div class="radio-content">
+                                        <input type="radio" id="companyDetails-1" name="billingDetails" value="" required="required">
+                                        <label for="companyDetails-1">
+                                        Company name SRL
+                                        <span>Strada Barnova no. 2, block A12, stair B, apartment 69, lasi, lasi</span>
+                                        </label>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <a href="#" class="modify-company" data-index="1">Modifică</a>
+                                        <a href="#" class="delete-company" data-index="1">Șterge</a>
+                                    </div>
+                                </div>
+                                <div class="radio-group has-loader">
+                                    <div class="radio-content">
+                                        <input type="radio" id="companyDetails-2" name="billingDetails" value="" required="required">
+                                        <label for="companyDetails-2">
+                                        Company name SRL 2
+                                        <span>Strada Barnova no. 2, block A12, stair B, apartment 69, Bacau, Bacau</span>
+                                        </label>
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <a href="#" class="modify-company" data-index="2">Modifică</a>
+                                        <a href="#" class="delete-company" data-index="2">Șterge</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="add-new-company" href="#" data-bs-toggle="modal" data-bs-target="#modalAddCompany"><span>＋</span> {{ 'dashboard.common.add_new_address'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!-- Start: Modal for changing billing -->
+        {% include "dashboard/default/modals/modal-add-company.html.twig" %}
+    <!-- End: Modal for changing billing -->
+</div>
+{% endblock %}
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/profile/myPlan.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/profile/orderDetails.js') }}"></script>
+{% endblock %}

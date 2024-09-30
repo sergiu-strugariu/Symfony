@@ -73,6 +73,7 @@ class EventSpeakerController extends AbstractController
     {
         /** @var EventSpeaker $speaker */
         $speaker = $em->getRepository(EventSpeaker::class)->findOneBy(['uuid' => $uuid]);
+        $fileUploaded = true;
 
         if (null === $speaker) {
             // Set flash message
@@ -87,10 +88,11 @@ class EventSpeakerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Get data from the form
             $file = $form->get('fileName')->getData();
-            $fileUploaded = true;
 
             // Check uploaded file
             if (isset($file)) {
+                $fileUploaded = false;
+
                 // Upload file
                 $uploadFile = $fileUploader->uploadFile(
                     $file,
@@ -98,17 +100,11 @@ class EventSpeakerController extends AbstractController
                     $this->getParameter('app_event_speaker_path')
                 );
 
-                // Remove file
-                $removeCurrentFile = $fileUploader->removeFile(
-                    $this->getParameter('app_event_speaker_path'),
-                    $speaker->getFileName()
-                );
-
-                // Set status uploaded
-                $fileUploaded = $uploadFile['success'] && $removeCurrentFile;
-
                 // Check and set @filename
                 if ($uploadFile['success']) {
+                    // Remove file
+                    $fileUploaded = $fileUploader->removeFile($this->getParameter('app_event_speaker_path'), $speaker->getFileName());
+
                     $speaker->setFileName($uploadFile['fileName']);
                 }
             }

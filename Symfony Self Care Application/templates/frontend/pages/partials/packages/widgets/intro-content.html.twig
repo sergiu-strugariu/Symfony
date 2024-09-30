@@ -1,0 +1,9 @@
+{% if widget.fileName %}
+    <div class="intro-section" data-image="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}">
+        <div class="inner">
+            {% if translation.title %}
+                <h1>{{ translation.title|raw }}</h1>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

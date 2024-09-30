@@ -1,0 +1,72 @@
+<div class="modal bg-body fade" tabindex="-1" id="kt_gallery_intro_modal">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content shadow-none">
+            <div class="modal-header justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-2x">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <div class="modal-body">
+                <div class="row mb-6">
+                    <div class="col-md-12">
+                        <!--begin::Dropzone-->
+                        <form class="form" action="#" method="post">
+                            <!--begin::Input group-->
+                            <div class="fv-row">
+                                <!--begin::Dropzone-->
+                                <div class="dropzone dropzone_gallery" id="kt_dropzone_intro_gallery">
+                                    <!--begin::Message-->
+                                    <div class="dz-message needsclick align-items-center justify-content-center">
+                                        <i class="ki-duotone ki-file-up fs-3x text-primary">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        <!--begin::Info-->
+                                        <div class="ms-4">
+                                            <h3 class="fs-5 fw-bold text-gray-900 mb-1">
+                                                {{ 'dashboard.form.drag_and_drop'|trans }}
+                                            </h3>
+                                            <span class="fs-7 fw-semibold text-gray-500">
+                                                  {{ 'dashboard.form.upload_number_of_files'|trans }}
+                                            </span>
+                                        </div>
+                                        <!--end::Info-->
+                                    </div>
+                                </div>
+                                <!--end::Dropzone-->
+                            </div>
+                            <!--end::Input group-->
+                        </form>
+                        <!--end::Dropzone-->
+                        <!--start::Galleries-->
+                        <div class="mt-5">
+                            <div class="row" id="introGalleries">
+                                {% for media in galleryIntro %}
+                                    <div class="col-md-2 mb-5 item">
+                                        <img src="{{ asset(app_event_gallery_path ~ media.fileName, 'cloudflare') }}" alt="{{ media.fileName }}" class="lozad rounded img-thumbnail"/>
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-id="{{ media.id }}">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!--end::Galleries-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">{{ 'dashboard.form.close'|trans }}</button>
+                <button type="button" id="uploadIntroFiles" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder d-none">{{ 'dashboard.form.upload_files'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>

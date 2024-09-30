@@ -90,6 +90,9 @@ form:
     required: "Oops! Something didn't go right"
     default_field_required: 'This field is required'
     min_message: 'The value must be at least {{ limit }}.'
+    min: 'Value cannot be less than {{ limit }}.'
+    max: 'The value cannot be greater than {{ limit }}.'
+    not_in_range: 'The value must be between {{ min }} and {{ max }}.'
   password:
     required: 'This field is required'
     minlength: 'Password must be at least {{ limit }} characters long'

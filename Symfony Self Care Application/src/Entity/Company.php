@@ -118,15 +118,6 @@ class Company
     #[ORM\JoinTable(name: 'company_has_category_service')]
     private Collection $categoryServices;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deletedAt = null;
-
     /**
      * @var Collection<int, CompanyGallery>
      */
@@ -151,6 +142,22 @@ class Company
     #[ORM\OneToMany(targetEntity: CompanyReview::class, mappedBy: 'company', orphanRemoval: true)]
     private Collection $companyReviews;
 
+
+    /**
+     * @var Collection<int, EventWinner>
+     */
+    #[ORM\OneToMany(targetEntity: EventWinner::class, mappedBy: 'company', orphanRemoval: true)]
+    private Collection $eventWinners;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
+
     public function __construct()
     {
         $this->createdAt = new DateTime();
@@ -160,6 +167,7 @@ class Company
         $this->jobs = new ArrayCollection();
         $this->trainingCourses = new ArrayCollection();
         $this->companyReviews = new ArrayCollection();
+        $this->eventWinners = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -787,5 +795,35 @@ class Company
         }
 
         $this->averageRating = $count === 0 ? null : number_format($total / $count, 2);
+    }
+
+    /**
+     * @return Collection<int, EventWinner>
+     */
+    public function getEventWinners(): Collection
+    {
+        return $this->eventWinners;
+    }
+
+    public function addEventWinner(EventWinner $eventWinner): static
+    {
+        if (!$this->eventWinners->contains($eventWinner)) {
+            $this->eventWinners->add($eventWinner);
+            $eventWinner->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventWinner(EventWinner $eventWinner): static
+    {
+        if ($this->eventWinners->removeElement($eventWinner)) {
+            // set the owning side to null (unless already changed)
+            if ($eventWinner->getCompany() === $this) {
+                $eventWinner->setCompany(null);
+            }
+        }
+
+        return $this;
     }
 }

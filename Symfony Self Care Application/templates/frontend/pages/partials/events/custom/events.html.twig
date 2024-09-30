@@ -1,0 +1,45 @@
+<div class="prizes-agenda">
+    <div class="inner">
+        <form id="prizesAgendaForm">
+            <div class="agenda-filter-sort">
+                <div class="agenda-filter">
+                    <p>{{ 'common.filter_for'|trans }}:</p>
+                    <div class="filter-box">
+                        <select id="yearFilter" class="contract-filter year-filter" name="yearFilter">
+                            <option value="all">{{ 'common.all_years'|trans }}</option>
+                            {% for year in years %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-box">
+                        <select id="categoryFilter" class="category-filter" name="categoryFilter">
+                            <option value="all">{{ 'events.all_events'|trans }}</option>
+                            <option value="{{ constant('App\\Entity\\Event::STATUS_FUTURE') }}">
+                                {{ 'events.event_future'|trans }}
+                            </option>
+                            <option value="{{ constant('App\\Entity\\Event::STATUS_ENDED') }}">
+                                {{ 'events.event_ended'|trans }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="agenda-sort">
+                    <p>{{ 'common.sort_for'|trans }}:</p>
+                    <ul class="sorting-buttons">
+                        <li>
+                            <p data-sort="asc" data-name="startDate">{{ 'common.date'|trans }}
+                                <span>&#9650;</span>
+                                <span>&#9660;</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div class="prizes-list"></div>
+        <div class="button-wrapper">
+            <a href="#">{{ 'common.see_more_results'|trans }}</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="about">
+    <div class="inner">
+        <div class="content">
+            <h2>{{ 'events.about_event'|trans }}</h2>
+            <p>{{ event.translation(locale).description|sanitize_html('app.editor') }}</p>
+            {% if event.programFileName %}
+                <a href="{{ asset(app_event_path ~ event.programFileName, 'cloudflare') }}" download>
+                    {{ 'events.download_program'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

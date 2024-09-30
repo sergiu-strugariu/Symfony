@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EventPartnerRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -31,6 +33,18 @@ class EventPartner
     #[ORM\Column(length: 255)]
     private ?string $fileName = null;
 
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'eventPartnerSponsors')]
+    private Collection $sponsorEvents;
+
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'eventPartnerMedia')]
+    private Collection $mediaEvents;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -41,6 +55,8 @@ class EventPartner
     {
         $this->createdAt = new DateTime();
         $this->uuid = Uuid::v4();
+        $this->sponsorEvents = new ArrayCollection();
+        $this->mediaEvents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,5 +145,59 @@ class EventPartner
             self::MEDIA_TYPE => self::MEDIA_TYPE,
             self::SPONSOR_TYPE => self::SPONSOR_TYPE,
         ];
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getSponsorEvents(): Collection
+    {
+        return $this->sponsorEvents;
+    }
+
+    public function addSponsorEvent(Event $sponsorEvent): static
+    {
+        if (!$this->sponsorEvents->contains($sponsorEvent)) {
+            $this->sponsorEvents->add($sponsorEvent);
+            $sponsorEvent->addEventPartnerSponsor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSponsorEvent(Event $sponsorEvent): static
+    {
+        if ($this->sponsorEvents->removeElement($sponsorEvent)) {
+            $sponsorEvent->removeEventPartnerSponsor($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getMediaEvents(): Collection
+    {
+        return $this->mediaEvents;
+    }
+
+    public function addMediaEvent(Event $mediaEvent): static
+    {
+        if (!$this->mediaEvents->contains($mediaEvent)) {
+            $this->mediaEvents->add($mediaEvent);
+            $mediaEvent->addEventPartnerMedium($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaEvent(Event $mediaEvent): static
+    {
+        if ($this->mediaEvents->removeElement($mediaEvent)) {
+            $mediaEvent->removeEventPartnerMedium($this);
+        }
+
+        return $this;
     }
 }

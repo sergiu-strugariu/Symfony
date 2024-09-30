@@ -65,7 +65,7 @@
 
                 <!--begin:Menu items-->
                 <div data-kt-menu-trigger="click"
-                     class="menu-item here menu-accordion {{ route == 'dashboard_my_account' or route == 'dashboard_favorites' ? 'hover show' : '' }}">
+                     class="menu-item here menu-accordion {{ route == 'dashboard_my_account' or route == 'dashboard_favorites' or route == 'dashboard_my_plan' ? 'hover show' : '' }}">
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-image-v1">
@@ -95,6 +95,24 @@
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a href="{{ path('dashboard_my_plan') }}"
+                               class="menu-link {{ route == 'dashboard_my_plan' ? 'active' : '' }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                <span class="menu-title">{{ 'dashboard.my_plan.title'|trans }}</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
@@ -269,7 +287,7 @@
 
                     <!--begin:Menu items-->
                     <div data-kt-menu-trigger="click"
-                         class="menu-item here menu-accordion {{ type == 'article' or route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'hover show' : '' }}">
+                         class="menu-item here menu-accordion {{ type == 'article' or route == 'dashboard_article_index' or route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'hover show' : '' }}">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                         <span class="menu-image-v1">
@@ -287,7 +305,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link {{ route == 'dashboard_article_index' or route == 'dashboard_article_create' or route == 'dashboard_article_edit' ? 'active' : '' }}"
+                                <a class="menu-link {{ route == 'dashboard_article_index' or route == 'dashboard_generate_article_index' or route == 'dashboard_article_edit' ? 'active' : '' }}"
                                    href="{{ path('dashboard_article_index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
@@ -311,6 +329,23 @@
                                    <span class="bullet bullet-dot"></span>
                                 </span>
                                         <span class="menu-title">{{ 'blog.filter_title'|trans }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link {{ route == 'dashboard_generate_article_index' ? 'active' : '' }}"
+                                       href="{{ path('dashboard_generate_article_index') }}">
+                                    <span class="menu-bullet">
+                                       <span class="bullet bullet-dot"></span>
+                                    </span>
+                                        <span class="menu-title">Generare articol</span>
                                     </a>
                                     <!--end:Menu link-->
                                 </div>
@@ -428,11 +463,13 @@
 
                 {% if isAdmin %}
                     <!--begin:Menu items-->
-                    <div data-kt-menu-trigger="click" class="menu-item here menu-accordion {{route == 'dashboard_speaker_index' or route == 'dashboard_speaker_create' or route == 'dashboard_speaker_edit' or route == 'dashboard_partner_index' or route == 'dashboard_partner_create' or route == 'dashboard_partner_edit' ? 'hover show' : '' }}">
+                    <div data-kt-menu-trigger="click"
+                         class="menu-item here menu-accordion {{ route == 'dashboard_event_index' or route == 'dashboard_event_create' or route == 'dashboard_event_edit' or route == 'dashboard_speaker_index' or route == 'dashboard_speaker_create' or route == 'dashboard_speaker_edit' or route == 'dashboard_partner_index' or route == 'dashboard_partner_create' or route == 'dashboard_partner_edit' ? 'hover show' : '' }}">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-image-v1">
-                                <img src="{{ asset('assets/dashboard/media/dashboard/articles.svg') }}" width="28" alt="articles" />
+                                <img src="{{ asset('assets/dashboard/media/dashboard/articles.svg') }}" width="28"
+                                     alt="articles"/>
                             </span>
                             <span class="menu-title text-uppercase ps-12">
                                 {{ 'dashboard.common.events'|trans }}
@@ -445,7 +482,28 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link {{ route == 'dashboard_speaker_index' or route == 'dashboard_speaker_create' or route == 'dashboard_speaker_edit' ? 'active' : '' }}" href="{{ path('dashboard_speaker_index') }}">
+                                <a class="menu-link {{ route == 'dashboard_event_index' or route == 'dashboard_event_create' or route == 'dashboard_event_edit' ? 'active' : '' }}"
+                                   href="{{ path('dashboard_event_index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">
+                                        {{ 'dashboard.common.listing_events'|trans }}
+                                    </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ route == 'dashboard_speaker_index' or route == 'dashboard_speaker_create' or route == 'dashboard_speaker_edit' ? 'active' : '' }}"
+                                   href="{{ path('dashboard_speaker_index') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
@@ -458,12 +516,14 @@
                             <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
+
                         <!--begin:Menu sub-->
                         <div class="menu-sub menu-sub-accordion">
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link {{ route == 'dashboard_partner_index' or route == 'dashboard_partner_create' or route == 'dashboard_partner_edit' ? 'active' : '' }}" href="{{ path('dashboard_partner_index') }}">
+                                <a class="menu-link {{ route == 'dashboard_partner_index' or route == 'dashboard_partner_create' or route == 'dashboard_partner_edit' ? 'active' : '' }}"
+                                   href="{{ path('dashboard_partner_index') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
@@ -502,8 +562,7 @@
                     <!--begin:Menu tab-->
 
                     <!--begin:Menu item settings-->
-                    <div data-kt-menu-trigger="click"
-                         class="menu-item here menu-accordion {{ route == 'dashboard_lang_index' or route == 'dashboard_lang_create' or route == 'dashboard_lang_edit' or route == 'dashboard_settings_index' ? 'hover show' : '' }}">
+                    <div data-kt-menu-trigger="click" class="menu-item here menu-accordion {{ route == 'dashboard_lang_index' or route == 'dashboard_lang_create' or route == 'dashboard_lang_edit' or route == 'dashboard_settings_index' or route == 'dashboard_membership_index' or route == 'dashboard_membership_create' or route == 'dashboard_membership_edit' ? 'hover show' : '' }}">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                         <span class="menu-image-v1">
@@ -550,6 +609,20 @@
                             <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ route == 'dashboard_membership_index' or route == 'dashboard_membership_create' or route == 'dashboard_membership_edit' ? 'active' : '' }}" href="{{ path('dashboard_membership_index') }}">
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ 'dashboard.common.membership_packages'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
                     </div>
                     <!--end:Menu item settings-->
 
@@ -590,7 +663,8 @@
                     <!--begin:Menu link-->
                     <a class="menu-link" href="{{ path('dashboard_clear_cache') }}">
                         <span class="menu-image-v1">
-                            <img src="{{ asset('assets/dashboard/media/dashboard/clear-cache.svg') }}" width="28" alt="clear-cache">
+                            <img src="{{ asset('assets/dashboard/media/dashboard/clear-cache.svg') }}" width="28"
+                                 alt="clear-cache">
                         </span>
                         <span class="menu-title ps-12">{{ 'dashboard.common.clear_cache'|trans }}</span>
                     </a>

@@ -274,4 +274,17 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getAllArticles(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.deletedAt IS NULL')
+            ->andWhere('a.status = :status')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->getQuery()
+            ->getResult();
+    }
 }

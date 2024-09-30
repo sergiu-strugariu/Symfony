@@ -1,0 +1,47 @@
+{% if event.eventStatus == constant('App\\Entity\\Event::STATUS_ENDED') %}
+    {% set winNumbers = ['I', 'II', 'III'] %}
+    {% set winners = event.eventWinners|slice(3, 10) %}
+    <div class="winners">
+        <div class="inner">
+            <h2>{{ 'dashboard.table.winners'|trans }}</h2>
+            <div class="top-winners">
+                {% for winner in event.eventWinners|slice(0, 3) %}
+                    <div class="item">
+                        <div class="icon">
+                            <img src="{{ asset('assets/frontend//images/common/place-' ~  winner.position ~ '.webp') }}"
+                                 alt="{{ winner.position }}"
+                            />
+                        </div>
+                        <h4>{{ 'dashboard.table.place'|trans }} {{ winNumbers[loop.index0] }}</h4>
+                        <div class="logo"
+                             data-image="{{ asset(app_company_path ~ winner.company.fileName, 'cloudflare') }}"></div>
+                        <h3>{{ winner.company.name }}</h3>
+                        <p>{{ winner.company.shortDescription }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if winners|length > 0 %}
+            <div class="inner">
+                <div class="winners-list">
+                    {% for winner in winners %}
+                        <div class="item">
+                            <p>{{ winner.position }}</p>
+                            <div class="image" data-image="{{ asset(app_company_path ~ winner.company.fileName, 'cloudflare') }}">
+                            </div>
+                            <p>
+                                <strong>{{ winner.company.name }} - </strong>
+                                {{ winner.company.city.name }}, {{ winner.company.county.name }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <div class="btn-wrapper">
+                        <a href="{{ path('app_company') }}">
+                            {{ 'common.view_more_hostels'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

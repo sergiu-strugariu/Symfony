@@ -87,6 +87,12 @@ class Language
     #[ORM\OneToMany(targetEntity: EventTranslation::class, mappedBy: 'language', orphanRemoval: true)]
     private Collection $eventTranslations;
 
+    /**
+     * @var Collection<int, MembershipPackageTranslation>
+     */
+    #[ORM\OneToMany(targetEntity: MembershipPackageTranslation::class, mappedBy: 'language', orphanRemoval: true)]
+    private Collection $membershipPackageTranslations;
+
     public function __construct()
     {
         $this->jobTranslations = new ArrayCollection();
@@ -99,6 +105,7 @@ class Language
         $this->menuItemTranslations = new ArrayCollection();
         $this->pageWidgetTranslations = new ArrayCollection();
         $this->eventTranslations = new ArrayCollection();
+        $this->membershipPackageTranslations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -436,6 +443,36 @@ class Language
             // set the owning side to null (unless already changed)
             if ($eventTranslation->getLanguage() === $this) {
                 $eventTranslation->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MembershipPackageTranslation>
+     */
+    public function getMembershipPackageTranslations(): Collection
+    {
+        return $this->membershipPackageTranslations;
+    }
+
+    public function addMembershipPackageTranslation(MembershipPackageTranslation $membershipPackageTranslation): static
+    {
+        if (!$this->membershipPackageTranslations->contains($membershipPackageTranslation)) {
+            $this->membershipPackageTranslations->add($membershipPackageTranslation);
+            $membershipPackageTranslation->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembershipPackageTranslation(MembershipPackageTranslation $membershipPackageTranslation): static
+    {
+        if ($this->membershipPackageTranslations->removeElement($membershipPackageTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($membershipPackageTranslation->getLanguage() === $this) {
+                $membershipPackageTranslation->setLanguage(null);
             }
         }
 

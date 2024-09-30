@@ -2,11 +2,15 @@
 
 {% block title %}{{ parent() }} {{ 'menu.login_link'|trans }}{% endblock %}
 {% block content %}
+    {% set returnUrl = app.request.get('returnUrl') %}
+    {% set targetPath = returnUrl is not empty ? returnUrl :path('dashboard_my_account') %}
+    {% set registerPath = returnUrl is not empty ? url('app_create_account', {'returnUrl': returnUrl}) :path('app_create_account') %}
     <main class="login">
         <div class="container">
             <div class="form-wrapper">
                 <h1>{{ 'menu.login_link'|trans }}</h1>
                 <form method="post" id="clientLogin">
+                    <input type="hidden" name="_target_path" value="{{ targetPath }}"/>
                     {% include "shared/frontend/alert.html.twig" %}
                     {% if error %}
                         <!--begin::Form message-->
@@ -57,7 +61,7 @@
                     <div class="info-text">
                         <p>{{ 'auth.dont_have_account'|trans }}
                             <strong>
-                                <a href="{{ path('app_create_account') }}">
+                                <a href="{{ registerPath }}">
                                     {{ 'auth.create_account_title'|trans }} {{ app_name }}
                                 </a>
                             </strong>
