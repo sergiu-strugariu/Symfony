@@ -4,6 +4,9 @@ authentication:
   user_not_exists: "User does not exist."
   user_not_logged: "You are not logged in."
 
+  same_county: "Change the county."
+  same_city: "Change the city."
+
   deleted_account: "This account was deleted"
   not_enabled_account: "This account is not enalbed, check your email."
 
@@ -56,6 +59,19 @@ refund:
   fail: "An error occured."
   text: 'Refund formular'
   description: "Complete the refund formular!"
+  underForm: "<p>Return Procedure for Move On Courses and Workshops Purchased Online.</p>
+              <p>
+                  In the case of a professional training contract concluded remotely or outside Move On premises, the client has the right to withdraw within
+                  14 calendar days from the date of the contract, in accordance with consumer protection legislation and using the standard withdrawal form 
+                  provided by law, available on the website.
+              </p>
+              <p>
+                  The maximum processing time for the return is 14 days from the date we were informed of the decision to withdraw from the contract.
+              </p>
+              <p>
+                  The refund will be automatically made to the account from which the payment was made or, in exceptional cases, to the bank details provided in the return form.
+              </p>
+              <p>For any other type of return, please contact us at <a href='mailto:contact@move-on.ro'>contact@move-on.ro</a>.</p>"
 
 article:
   title: "Article"
@@ -107,6 +123,10 @@ common:
     last_name: "Last Name"
     full_name: "Name"
     email: "Email"
+    county: "County"
+    city: "City"
+    choose_county: "Choose a county"
+    choose_city: "Choose a city"
     sign_up: "Sign up"
     phone: "Phone"
     invoiceNumber: "Invoice Number"
@@ -167,11 +187,11 @@ newsletter:
   title: "Subscribe to Our Newsletter!"
   description: "Be the first to know about upcoming Move On courses, motivational articles, and expert tips."
   errors:
-      success: "You have successfully subscribed to our newsletter"
-      user_exists: "This member already subscribed to newsletter."
-      email_not_valid: "Please provide a valid email address."
-      default: "An error occured, please try again later."
-      
+    success: "You have successfully subscribed to our newsletter"
+    user_exists: "This member already subscribed to newsletter."
+    email_not_valid: "Please provide a valid email address."
+    default: "An error occured, please try again later."
+
 form_register:
   title: "Course registration"
   location: "Location"
@@ -181,6 +201,15 @@ form_register:
   payment_method: "Select method of paying:"
   card: "Online Card"
   card_avantaj: "Card Avantaj"
+  star_bt: "Star BT"
+  card_emag: "Card Emag"
+  optimo: "Card Optimo"
+  garanti: "Garanti Bonus Card"
+  unicredit: "Credit card Unicredit"
+  raiffeisen: "Credit card Raiffeisen"
+  brd: "Credit card BRD"
+  bcr: "Credit card BCR"
+  alphabank: "Credit card Alpha Bank"
   google_pay: "Google Pay"
   google_pay_invalid_token: "Please select a card assigned in Google Pay first"
   apple_pay: "Apple Pay"
@@ -276,20 +305,20 @@ mails:
     confirm_account: "Account Confirmation"
     description: "Thank you for creating a Move On account! <br /> To activate your account, please confirm your email address by clicking the link below:"
     security: "If you did not create this account, you can safely ignore this email."
-    
+
   email_update:
     title: "Confirm email update"
     description: "Please click the button below to update your email address."
     confirm_button: "Update email"
     disclaimer: "If you did not request an email address update, you can safely ignore this email."
-    
+
   wire_transfer:
     title: "Wire transfer details"
     intro: "Thank you for enrolling in %title%. We inform you that proforma invoice number %proformaInvoiceNumber% has been issued."
     details: "According to the payment method you have chosen, please send the amount of %price% RON by wire transfer, to the account indicated below:"
     disclaimer_1: "Please note: when paying by wire transfer, please mention the proforma invoice number mentioned above in the payment details."
     disclaimer_2: "As soon as the payment is confirmed in the system, you will receive the invoice by e-mail."
-    
+
   payment_reminder:
     description: "You have not completed the payment for the education %title%. Please do it as soon as possible to successfully complete the registration process."
 
@@ -302,15 +331,15 @@ team:
     not_exists: "This team member does not exists."
   button_meet: "Let's meet"
   button_team: "Our team"
-  
+
 education:
   success:
-      title: "The payment was sent successfully."
-      message: "You've received a confirmation email."
+    title: "The payment was sent successfully."
+    message: "You've received a confirmation email."
   failed:
-      title: "Payment Error."
+    title: "Payment Error."
   pending:
-      title: "The payment is in pending."
+    title: "The payment is in pending."
 
 meta.title:
   home: "Home"

@@ -20,12 +20,14 @@
 
                     <div class="group">
                         <label for="emailLogin">E-mail*</label>
-                        <input type="text" id="emailLogin" name="_username" title="{{ 'common.form_labels.email'|trans }}*" />
+                        <input type="text" id="emailLogin" name="_username"
+                               title="{{ 'common.form_labels.email'|trans }}*"/>
                     </div>
 
                     <div class="group">
                         <label for="password">{{ 'common.form_labels.password.default'|trans }}*</label>
-                        <input type="password" id="password" name="_password" title="{{ 'common.form_labels.password.default'|trans }}*" />
+                        <input type="password" id="password" name="_password"
+                               title="{{ 'common.form_labels.password.default'|trans }}*"/>
                     </div>
 
                     <div class="group-reset">
@@ -33,7 +35,7 @@
                     </div>
 
                     <div class="group-submit">
-                        <input type="submit" value="{{ 'authentication.buttons.login'|trans }}" />
+                        <input type="submit" value="{{ 'authentication.buttons.login'|trans }}"/>
                     </div>
                 </form>
 
@@ -44,64 +46,84 @@
                 <p>{{ 'authentication.register.description'|trans }}</p>
 
                 {{ form_start(registerForm, {'attr': {'class': 'contact-form has-loader', novalidate: 'novalidate', action: path('app_register')}}) }}
-                    <div class="group">
-                        {{ form_label(registerForm.firstName, 'common.form_labels.first_name'|trans ~ '*') }}
-                        {{ form_widget(registerForm.firstName, {'attr': {'class': form_errors(registerForm.firstName)|trim is not empty ? 'error' : '' }}) }}
-                        {{ form_errors(registerForm.firstName) }}
-                    </div>
-                    <div class="group">
-                        {{ form_label(registerForm.lastName, 'common.form_labels.last_name'|trans ~ '*') }}
-                        {{ form_widget(registerForm.lastName, {'attr': {'class': form_errors(registerForm.lastName)|trim is not empty ? 'error' : '' }}) }}
-                        {{ form_errors(registerForm.lastName) }}
-                    </div>
-                    <div class="group">
-                        {{ form_label(registerForm.phoneNumber, 'common.form_labels.phone'|trans ~ '*') }}
-                        {{ form_widget(registerForm.phoneNumber, {'attr': {'class': form_errors(registerForm.phoneNumber)|trim is not empty ? 'error' : '' }}) }}
-                        {{ form_errors(registerForm.phoneNumber) }}
-                    </div>
-                    <div class="group">
-                        {{ form_label(registerForm.email, 'common.form_labels.email'|trans ~ '*') }}
-                        {{ form_widget(registerForm.email, {'attr': {'class': form_errors(registerForm.email)|trim is not empty ? 'error' : '' }}) }}
-                        {{ form_errors(registerForm.email) }}
-                    </div>
+                <div class="group">
+                    {{ form_label(registerForm.firstName, 'common.form_labels.first_name'|trans ~ '*') }}
+                    {{ form_widget(registerForm.firstName, {'attr': {'class': form_errors(registerForm.firstName)|trim is not empty ? 'error' : '' }}) }}
+                    {{ form_errors(registerForm.firstName) }}
+                </div>
+                <div class="group">
+                    {{ form_label(registerForm.lastName, 'common.form_labels.last_name'|trans ~ '*') }}
+                    {{ form_widget(registerForm.lastName, {'attr': {'class': form_errors(registerForm.lastName)|trim is not empty ? 'error' : '' }}) }}
+                    {{ form_errors(registerForm.lastName) }}
+                </div>
+                <div class="group">
+                    {{ form_label(registerForm.phoneNumber, 'common.form_labels.phone'|trans ~ '*') }}
+                    {{ form_widget(registerForm.phoneNumber, {'attr': {'class': form_errors(registerForm.phoneNumber)|trim is not empty ? 'error' : '' }}) }}
+                    {{ form_errors(registerForm.phoneNumber) }}
+                </div>
+                <div class="group">
+                    {{ form_label(registerForm.email, 'common.form_labels.email'|trans ~ '*') }}
+                    {{ form_widget(registerForm.email, {'attr': {'class': form_errors(registerForm.email)|trim is not empty ? 'error' : '' }}) }}
+                    {{ form_errors(registerForm.email) }}
+                </div>
 
-                    <div class="group">
-                        {{ form_label(registerForm.plainPassword.first) }}
-                        {{ form_widget(registerForm.plainPassword.first, {'attr': {'class': form_errors(registerForm.plainPassword.first)|trim is not empty ? 'error' : '' }}) }}
-                        {{ form_errors(registerForm.plainPassword.first) }}
-                    </div>
+                <div class="group">
+                    {{ form_label(registerForm.plainPassword.first) }}
+                    {{ form_widget(registerForm.plainPassword.first, {'attr': {'class': form_errors(registerForm.plainPassword.first)|trim is not empty ? 'error' : '' }}) }}
+                    {{ form_errors(registerForm.plainPassword.first) }}
+                </div>
 
-                    <div class="group">
-                        {{ form_label(registerForm.plainPassword.second) }}
-                        {{ form_widget(registerForm.plainPassword.second, {'attr': {'class': form_errors(registerForm.plainPassword.second)|trim is not empty ? 'error' : '' }}) }}
-                       {{ form_errors(registerForm.plainPassword.second) }}
-                    </div>
+                <div class="group">
+                    {{ form_label(registerForm.plainPassword.second) }}
+                    {{ form_widget(registerForm.plainPassword.second, {'attr': {'class': form_errors(registerForm.plainPassword.second)|trim is not empty ? 'error' : '' }}) }}
+                    {{ form_errors(registerForm.plainPassword.second) }}
+                </div>
 
-                    <div class="group group-checkbox {{ form_errors(registerForm.accordGDPR)|trim is not empty ? 'error' : '' }}">
-                        {{ form_widget(registerForm.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
-                        {{ form_label(registerForm.accordGDPR, 'common.gdpr'|trans({
-                            '%terms_url%': path('app_terms'),
-                            '%privacy_url%': path('app_privacy_policy')
-                        })) }}
-                        {{ form_errors(registerForm.accordGDPR) }}
-                    </div>
-                    <div class="group group-checkbox">
-                        {{ form_widget(registerForm.newsletter, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
-                        {{ form_label(registerForm.newsletter, 'common.newsletter'|trans) }}
-                    </div>
+                <div class="group">
+                    {{ form_label(registerForm.county, 'common.form_labels.county'|trans ~ '*') }}
+                    {{ form_widget(registerForm.county, {
+                        'attr': {
+                            'class': 'counties ' ~ (form_errors(registerForm.county)|trim is not empty ? 'error' : '')
+                        }
+                    }) }}
+                    {{ form_errors(registerForm.county) }}
+                </div>
 
-                    <div class="recaptcha group group-checkbox">
-                        <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
-                    </div>
-                    <div class="group-submit">
-                        <input type="submit" value="{{ 'authentication.buttons.register'|trans }}"/>
-                    </div>
+                <div class="group">
+                    {{ form_label(registerForm.city, 'common.form_labels.city'|trans ~ '*') }}
+                    {{ form_widget(registerForm.city, {
+                        'attr': {
+                            'class': 'cities ' ~ (form_errors(registerForm.city)|trim is not empty ? 'error' : '')
+                        }
+                    }) }}
+                    {{ form_errors(registerForm.city) }}
+                </div>
+
+                <div class="group group-checkbox {{ form_errors(registerForm.accordGDPR)|trim is not empty ? 'error' : '' }}">
+                    {{ form_widget(registerForm.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                    {{ form_label(registerForm.accordGDPR, 'common.gdpr'|trans({
+                        '%terms_url%': path('app_terms'),
+                        '%privacy_url%': path('app_privacy_policy')
+                    })) }}
+                    {{ form_errors(registerForm.accordGDPR) }}
+                </div>
+                <div class="group group-checkbox">
+                    {{ form_widget(registerForm.newsletter, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+                    {{ form_label(registerForm.newsletter, 'common.newsletter'|trans) }}
+                </div>
+
+                <div class="recaptcha group group-checkbox">
+                    <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+                </div>
+                <div class="group-submit">
+                    <input type="submit" value="{{ 'authentication.buttons.register'|trans }}"/>
+                </div>
                 {{ form_end(registerForm) }}
             </div>
         </div>
 
-{#        <div class="faq-redirect">#}
-{#            <a href="#">{{ 'authentication.buttons.faq'|trans }}</a>#}
-{#        </div>#}
+        {#        <div class="faq-redirect"> #}
+        {#            <a href="#">{{ 'authentication.buttons.faq'|trans }}</a> #}
+        {#        </div> #}
     </div>
 </div>

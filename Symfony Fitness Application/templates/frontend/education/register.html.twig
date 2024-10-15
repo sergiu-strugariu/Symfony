@@ -43,7 +43,7 @@
                     <div>
                         {% for schedule in education.schedules %}
                             <div class="item">
-                                <p>{{ schedule.formattedDate(default_locale) }}</p>
+                                <p>{{ schedule.formattedDate(default_locale)|raw }}</p>
                                 {{ schedule.translation(default_locale).description|raw }}
                             </div>
                         {% endfor %}
@@ -120,7 +120,7 @@
                 </div>
                 <div class="group-details">
                     <p>{{ 'form_register.course_type'|trans }}: <span>{{ education.type|capitalize }}</span></p>
-                    <p>{{ 'form_register.price'|trans }}: <span><strong>{{ education.priceWithVAT }} RON</strong></span></p>
+                    <p>{{ 'form_register.price'|trans }}: <span><strong><span id="education-registration-price">{{ education.priceWithVAT }}</span> RON</strong></span></p>
                 </div>
                 <div class="radio-wrapper">
                     <p>{{ form_label(form.paymentMethod, 'form_register.payment_method'|trans) }}</p>
@@ -137,9 +137,7 @@
                         </div>
                     {% endfor %}
                     {{ form_errors(form.paymentMethod) }}
-
                 </div>
-
                 <div class="group group-checkbox {% if form_errors(form.accordGDPR)|trim is not empty %} error {% endif %}">
                     {{ form_widget(form.accordGDPR, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
                     {{ form_label(form.accordGDPR, 'common.newsletter'|trans) }}
@@ -165,6 +163,29 @@
 {% endblock %}
 
 {% block page_javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            const BACKEND_URL_UPDATE_PRICE = '{{ path('app_education_update_price', {'slug': education.slug}) }}';
+
+            radios.forEach(radio => {
+                radio.addEventListener('click', function () {
+                    const paymentMethod = radio.value;
+
+                    axios.post(BACKEND_URL_UPDATE_PRICE,
+                            {
+                                method: paymentMethod
+                            }
+                    ).then(function (response) {
+                        let data = response.data;
+                        if (data.success) {
+                            document.getElementById('education-registration-price').innerHTML = data.price;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
     <script>
         /**
           * Define the version of the Google Pay API referenced when creating your
@@ -413,7 +434,7 @@
                 }
             };
         })();
-        
+
         var applePayController = (function (uiController) {
             var BACKEND_URL_VALIDATE_SESSION = '{{ path('app_apple_pay_validate_session') }}';
             var applePayVersion;
@@ -444,10 +465,10 @@
                             break;
                         }
                     }
-                    
+
                     return true;
                 }
-                
+
                 return false;
             };
 
@@ -476,9 +497,9 @@
                         {
                             url: appleUrl
                         }
-                    ).then(function (response) {
-                        callback(response.data);
-                    });
+                ).then(function (response) {
+                    callback(response.data);
+                });
             };
 
             /**
@@ -525,8 +546,6 @@
                                 countryCode: config.shop.shop_localisation.countryCode,
                                 merchantCapabilities: [
                                     'supports3DS',
-                                    'supportsEMV',
-                                    'supportsCredit',
                                     'supportsDebit'
                                 ],
                                 supportedNetworks: config.payments.acceptedCardSchemes,

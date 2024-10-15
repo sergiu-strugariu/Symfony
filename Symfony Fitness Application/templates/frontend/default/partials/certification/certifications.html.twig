@@ -12,7 +12,9 @@
                             <div class="image"
                                  data-image="{{ asset(app_certificate_path ~ certification.imageName, 'cloudflare') }}"></div>
                             <div>
-                                <h3>{{ certification.translation(locale).level }}</h3>
+                                {% if certification.translation(locale).level %}
+                                    <h3>{{ certification.translation(locale).level }}</h3>
+                                {% endif %}
                                 <h2>{{ certification.translation(locale).title }}</h2>
                                 {{ certification.translation(locale).description|raw }}
                                 <a href="{{ path('app_educations', {'category' : certification.slug }) }}">{{ 'common.buttons.view_courses'|trans }}</a>

@@ -5,7 +5,7 @@ common:
   newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
   contract: "Generate Contract"
   media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"
-  max_message: "Acest câmp trebuie să aibă cel mult {{ limit }} caractere."
+  max_message: "Acest câmp trebuie să aibe maxim {{ limit }} caractere."
   not_valid:
     email: "Email invalid."
     phone: "Numar de telefon invalid."

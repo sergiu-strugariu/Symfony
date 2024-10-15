@@ -56,3 +56,36 @@
 </main>
 
 {% endblock %}
+
+
+{% block page_javascripts %}
+    <script>
+        if (document.querySelector('.counties') && document.querySelector('.cities')) {
+            let county = $('.counties');
+            let city = $('.cities');
+
+            county.on('change', function () {
+                $.ajax({
+                    method: "GET",
+                    url: window.countyCitiesPath,
+                    data: {'id': $(this).val()},
+                    cache: false,
+                    success: function (response) {
+
+                        city.empty();
+
+                        let optionTpl = `<option value="{id}">{name}</option>`;
+                        if (response.status) {
+                            response.cities.forEach(function (item) {
+                                let newTpl = optionTpl.replace('{name}', item.name)
+                                    .replace('{id}', item.id)
+                                    .replace('{name}', item.name);
+                                $(newTpl).appendTo(city);
+                            });
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+{% endblock %}

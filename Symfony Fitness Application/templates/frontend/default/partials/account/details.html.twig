@@ -47,6 +47,42 @@
         </div>
     </div>
 
+    <div class="accordion error" id="accordionLocation">
+        <div class="group" data-toggle="collapse" data-target="#collapseThree">
+            <label for="locationPreview">{{ 'course_calendar.location'|trans|capitalize }}</label>
+            <input class="disabled" type="text" id="locationPreview" name="locationPreview" value="{{ user.county is not empty ? user.county.name : '' }}, {{ user.city is not empty ? user.city.name : '' }}" />
+            <div>
+                <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            </div>
+        </div>
+        <div class="collapse has-loader" id="collapseThree" data-parent="#accordionLocation">
+            <div class="group">
+                <label for="county">{{ 'common.form_labels.county'|trans }}</label>
+                <select class="counties" id="county" name="county" title="County">
+                    <option value="" disabled selected>{{ 'common.form_labels.county'|trans }}</option>
+                    {% for county in counties %}
+                        <option value="{{ county.id }}" {{ user.county is not empty and user.county.id == county.id ? 'selected' : '' }}>{{ county.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="group">
+                <label for="city">{{ 'common.form_labels.city'|trans }}</label>
+                <select class="cities" id="city" name="city" title="City">
+                    <option value="" disabled selected>{{ 'common.form_labels.city'|trans }}</option>
+                    {% for city in cities %}
+                        <option value="{{ city.id }}" {{ user.city is not empty and user.city.id == city.id ? 'selected' : '' }}>{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <div>
+                    <a class="location-edit" href="#">{{ 'account.details.validate'|trans }}</a>
+                </div>
+            </div>
+
+            <span class="user-message"></span>
+        </div>
+    </div>
+
     <div class="accordion" id="accordionPassword">
         <div class="group" data-toggle="collapse" data-target="#collapseOne">
             <label for="name">{{ 'common.form_labels.password.first_options'|trans }}</label>
@@ -115,3 +151,7 @@
         </div>
     </div>
 </form>
+
+<script>
+
+</script>

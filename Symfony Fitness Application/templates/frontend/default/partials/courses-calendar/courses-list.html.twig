@@ -53,7 +53,7 @@
                                 <h3>{{ 'common.convention'|trans }}</h3>
                             {% endif %}
                             <h2>{{ course.translation(locale).title ?? course['title'] }}</h2>
-                                {{ course.translation(locale).shortDescription|u.truncate(270)|raw }}
+                                {{ course.translation(locale).shortDescription|u.truncate(270, '...', false)|raw }}
                             <ul>
                                 <li class="date">
                                     {{ course.formattedDate(default_locale) }}
@@ -69,7 +69,6 @@
                     </div>
                 {% endfor %}
             {% endif %}
-
         </div>
     </div>
 </div>

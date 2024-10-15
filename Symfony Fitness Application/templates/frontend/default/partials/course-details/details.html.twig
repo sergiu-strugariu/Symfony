@@ -22,8 +22,10 @@
             </div>
         </div>
 
-        <p>
-            {{ 'course_calendar.course_details.info_extra'|trans|raw }}
-        </p>
+        {% if education.translation(locale).info %}
+            <p>
+                {{ education.translation(locale).info }}
+            </p>
+        {% endif %}
     </div>
 </div>

@@ -4,6 +4,9 @@ authentication:
   user_not_exists: "Utilizatorul nu există."
   user_not_logged: "Nu esti logat."
 
+  same_county: "Schimba judetul."
+  same_city: "Schimba orasul."
+
   deleted_account: "Acest cont a fost sters"
   not_enabled_account: "Acest cont nu este activat."
 
@@ -56,6 +59,20 @@ refund:
   fail: "A intervenit o erroare la trimiterea cererii."
   text: 'Formular solicitare retur'
   description: "Completează formularul de mai jos și îți vom răspunde cât de curând posibil!"
+  underForm: " <p>Procedura de retur pentru cursurile și workshop-urile Move On cumpărate online.</p>
+            <p>
+                În cazul Contractului de formare profesională încheiat la distanță sau în afara spaţiilor Move On, clientul are dreptul de a se retrage în termen de
+                14 zile calendaristice de la data încheierii acestuia, în condițiile prevăzute de legislația privind protecția consumatorului, potrivit formularului
+                standard de retragere prevazut de lege, disponibil pe website.
+            </p>
+            <p>
+                Termenul maxim de procesare a returului este de maxim 14 zile de la data la care am fost informați cu privire la decizia de retragere din contract.
+            </p>
+            <p>
+                Returnarea banilor se face automat în contul de unde s-a efectutat plata sau, în cazuri excepționale, în datele bancare furnizate în formularul de
+                retur.
+            </p>
+            <p>Pentru orice alt tip de retur vă rugăm sa ne contactați la adresa <a href='mailto:contact@move-on.ro'>contact@move-on.ro</a>.</p>"
 
 article:
   title: "Articol"
@@ -94,7 +111,7 @@ common:
     gdpr: "Trebuie sa accepti politica GDPR."
     password_not_match: "Parolele nu coincid."
   min_message: "Acest câmp trebuie să aibe cel putin {{ limit }} caractere."
-  max_message: "Acest câmp trebuie să aibă cel mult {{ limit }} caractere."
+  max_message: "Acest câmp trebuie să aibe maxim {{ limit }} caractere."
 
   custom:
     min_message: "Mesaj invalid."
@@ -107,6 +124,10 @@ common:
     last_name: "Prenume"
     full_name: "Nume"
     email: "Email"
+    county: "Judet"
+    city: "Oras"
+    choose_county: "Alege Judetul"
+    choose_city: "Alege Orasul"
     sign_up: "Înscrie-te"
     phone: "Telefon"
     invoiceNumber: "Număr Factură"
@@ -166,11 +187,11 @@ newsletter:
   title: "Abonează-te la newsletter!"
   description: "Fii printre primii care află despre cursurile viitoare Move On, articole motivaționale și sfaturi utile de la experții noștri."
   errors:
-      success: "Te-ai inregistrat cu success."
-      user_exists: "Aceasta adresa de email este deja inscrisa in newsletter."
-      email_not_valid: "Te rugam sa introduci o adresa de email valida."
-      default: "A intervenit o erroare, te rugam sa incerci mai tarziu."
-  
+    success: "Te-ai inregistrat cu success."
+    user_exists: "Aceasta adresa de email este deja inscrisa in newsletter."
+    email_not_valid: "Te rugam sa introduci o adresa de email valida."
+    default: "A intervenit o erroare, te rugam sa incerci mai tarziu."
+
 form_register:
   title: "Înregistrare curs"
   location: "Locație"
@@ -180,6 +201,15 @@ form_register:
   payment_method: "Selectați metoda de plată:"
   card: "Card online"
   card_avantaj: "Card Avantaj"
+  star_bt: "Star BT"
+  card_emag: "Card Emag"
+  optimo: "Card Optimo"
+  garanti: "Garanti Bonus Card"
+  unicredit: "Card credit Unicredit"
+  raiffeisen: "Card credit Raiffeisen"
+  brd: "Card credit BRD"
+  bcr: "Card credit BCR"
+  alphabank: "Card credit Alpha Bank"
   google_pay: "Google Pay"
   google_pay_invalid_token: "Selectați mai întâi un card alocat în Google Pay"
   apple_pay: "Apple Pay"
@@ -283,14 +313,14 @@ mails:
     description: "Vă rugăm să apăsați pe butonul de mai jos pentru a vă actualiza adresa de email."
     confirm_button: "Actualizează adresa de email"
     disclaimer: "Dacă nu ați solicitat o actualizare a adresei de e-mail, puteți ignora acest email."
-    
+
   wire_transfer:
     title: "Date transfer bancar"
     intro: "Mulțumim pentru înscrierea la cursul %title%. Te anunțăm că s-a emis factura proforma numărul %proformaInvoiceNumber%."
     details: "Conform modalității de plată pe care ai ales-o, te rugăm să trimiți suma de %price% RON prin transfer bancar, în contul indicat mai jos:"
     disclaimer_1: "De reținut: când efectuezi plata prin transfer bancar, te rugăm să menționezi la detalii de plată numărul facturii proforme menționat mai sus."
     disclaimer_2: "De îndată ce plata va fi confirmată în sistem, vei primi pe e-mail factura fiscală."
-    
+
   payment_reminder:
     description: "Nu ai finalizat plata pentru educația %title%. Te rugăm să o faci cât mai curând pentru a finaliza cu succes procesul de înregistrare."
 
@@ -305,13 +335,13 @@ team:
   button_team: "Echipa noastră"
 
 education:
-    success:
-        title: "Plata a fost efectuată cu succes."
-        message: "Ai primit pe e-mail un mesaj de confirmare."
-    failed:
-        title: "Eroare plată."
-    pending:
-        title: Plata este în curs de procesare."
+  success:
+    title: "Plata a fost efectuată cu succes."
+    message: "Ai primit pe e-mail un mesaj de confirmare."
+  failed:
+    title: "Eroare plată."
+  pending:
+    title: Plata este în curs de procesare."
 
 meta.title:
   home: "Acasa"
