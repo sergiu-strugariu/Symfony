@@ -5,8 +5,10 @@ namespace App\Controller\Dashboard;
 use App\Entity\Article;
 use App\Entity\ArticleTranslation;
 use App\Form\Type\ArticleFormType;
+use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
+use App\Helper\MembershipHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,15 +26,31 @@ class ArticleController extends AbstractController
         return $this->render('dashboard/article/index.html.twig');
     }
 
-    #[Route('/dashboard/secure/generate-article', name: 'dashboard_generate_article_index')]
-    public function generateArticle(): Response
+    #[Route('/dashboard/generate-article', name: 'dashboard_generate_article_index')]
+    public function generateArticle(TranslatorInterface $translator, MembershipHelper $helper): Response
     {
+        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_AI_NAME);
+
+        if ($getPlan['status']) {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
+            return $this->redirectToRoute('dashboard_article_index');
+        }
+
         return $this->render('dashboard/article/generate-article.html.twig');
     }
 
     #[Route('/dashboard/article/create', name: 'dashboard_article_create')]
-    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator): Response
+    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_NAME);
+
+        // Check status plan
+        if ($getPlan['status']) {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
+            return $this->redirectToRoute('dashboard_article_index');
+        }
+
         // get default language
         $language = $languageHelper->getDefaultLanguage();
 
@@ -78,6 +96,9 @@ class ArticleController extends AbstractController
             $em->persist($articleTranslation);
             $em->flush();
 
+            // Insert item in EntityLog
+            $helper->insertEntityLog($article, Article::ENTITY_NAME);
+
             // Set flash message
             $this->addFlash('success', $translator->trans('controller.success_item_added', [], 'messages'));
 
@@ -91,13 +112,23 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/dashboard/article/{uuid}/edit', name: 'dashboard_article_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $uuid, TranslatorInterface $translator): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper, $uuid): Response
     {
+        /** @var Article $article */
         $article = $em->getRepository(Article::class)->findOneBy(['uuid' => $uuid]);
 
-        if (null === $article) {
+        if (empty($article)) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
+            return $this->redirectToRoute('dashboard_article_index');
+        }
+
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_NAME);
+
+        // Check status plan
+        if ($getPlan['status'] && $article->getStatus() !== DefaultHelper::STATUS_PUBLISHED) {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_article_index');
         }
 
@@ -173,14 +204,23 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/dashboard/article/actions/{action}/{uuid}', name: 'dashboard_article_actions')]
-    public function actions(EntityManagerInterface $em, $action, $uuid, TranslatorInterface $translator): Response
+    public function actions(EntityManagerInterface $em, $action, TranslatorInterface $translator, MembershipHelper $helper, $uuid): Response
     {
         /** @var Article $article */
         $article = $em->getRepository(Article::class)->findOneBy(['uuid' => $uuid]);
 
-        if (!isset($article)) {
+        if (empty($article)) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
+            return $this->redirectToRoute('dashboard_article_index');
+        }
+
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_NAME);
+
+        // Check status
+        if ($getPlan['status'] && $article->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === 'moderate') {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_article_index');
         }
 
@@ -188,7 +228,7 @@ class ArticleController extends AbstractController
             // Soft delete
             $article->setDeletedAt(new DateTime());
         } elseif ($action === 'moderate') {
-            $article->setStatus($article->getStatus() === Article::STATUS_DRAFT ? Article::STATUS_PUBLISHED : Article::STATUS_DRAFT);
+            $article->setStatus($article->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
         } else {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));

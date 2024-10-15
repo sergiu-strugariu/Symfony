@@ -17,6 +17,7 @@ class Article
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
     const ENTITY_NAME = 'article';
+    const ENTITY_AI_NAME = 'article-ai';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,14 +40,8 @@ class Article
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fileName = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deletedAt = null;
+    #[ORM\Column]
+    private ?bool $isGenerated = null;
 
     /**
      * @var Collection<int, ArticleTranslation>
@@ -61,12 +56,29 @@ class Article
     #[ORM\JoinTable(name: 'article_has_category')]
     private Collection $categoryArticles;
 
+    /**
+     * @var Collection<int, EntityDisplayLog>
+     */
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'article')]
+    private Collection $entityDisplayLogs;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
+
     public function __construct()
     {
         $this->articleTranslations = new ArrayCollection();
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
+        $this->isGenerated = false;
         $this->categoryArticles = new ArrayCollection();
+        $this->entityDisplayLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,6 +106,18 @@ class Article
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function isGenerated(): ?bool
+    {
+        return $this->isGenerated;
+    }
+
+    public function setGenerated(bool $isGenerated): static
+    {
+        $this->isGenerated = $isGenerated;
 
         return $this;
     }
@@ -239,6 +263,36 @@ class Article
     public function removeCategoryArticle(CategoryArticle $categoryArticle): static
     {
         $this->categoryArticles->removeElement($categoryArticle);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDisplayLog>
+     */
+    public function getEntityDisplayLogs(): Collection
+    {
+        return $this->entityDisplayLogs;
+    }
+
+    public function addEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if (!$this->entityDisplayLogs->contains($entityDisplayLog)) {
+            $this->entityDisplayLogs->add($entityDisplayLog);
+            $entityDisplayLog->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if ($this->entityDisplayLogs->removeElement($entityDisplayLog)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDisplayLog->getArticle() === $this) {
+                $entityDisplayLog->setArticle(null);
+            }
+        }
 
         return $this;
     }

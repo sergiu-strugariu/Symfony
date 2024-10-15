@@ -115,6 +115,7 @@
     window.locale = '{{ locale }}';
     window.searchApiPath = '{{ path('app_search') }}';
     window.countyApiPath = '{{ path('ajax_counties') }}';
+    window.cityApiPath =  '{{ path('dashboard_ajax_cities') }}';
     window.commonImagePath = '{{ asset('assets/frontend') }}';
     window.searchCare = '{{ path('ajax_search_cares') }}';
 
@@ -267,6 +268,7 @@
             'default': {
                 'required': '{{ "form.default.required"|trans }}',
                 'default_field_required': '{{ "form.default.default_field_required"|trans }}',
+                'default_all_field_required': '{{ "form.default.default_all_field_required"|trans }}',
             },
             'messages': {
                 'form_details_success': '{{ "form.messages.form_details_success"|trans }}',
@@ -292,6 +294,7 @@
             },
             'companyName':{
                 'required': '{{ "form.companyName.required"|trans }}',
+                'add_billing_info': '{{ "form.companyName.add_billing_info"|trans }}',
             },
             'cui': {
                 'required': '{{ "form.cui.required"|trans }}',
@@ -365,6 +368,14 @@
     window.endedEventStatus = '{{ constant('App\\Entity\\Event::STATUS_ENDED') }}';
     window.futureEventStatus = '{{ constant('App\\Entity\\Event::STATUS_FUTURE') }}';
     window.loadEventLimit = 2;
+
+    window.userBillingAddressActions = '{{ path('ajax_user_billing_address_actions') }}';
+    window.userBillingAddress = '{{ path('ajax_get_user_billing_address') }}';
+    window.userBillingAddresses = '{{ path('ajax_get_user_billing_addresses') }}';
+
+    window.packagePlan = '/?packagePlan=';
+    window.monthly = '{{ constant('App\\Entity\\MembershipPackage::MONTHLY') }}';
+    window.yearly = '{{ constant('App\\Entity\\MembershipPackage::YEARLY') }}';
 </script>
 <!--End:: Translations-->
 

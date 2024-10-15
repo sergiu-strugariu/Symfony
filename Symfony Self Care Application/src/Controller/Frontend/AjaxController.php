@@ -8,20 +8,24 @@ use App\Entity\CategoryCare;
 use App\Entity\CategoryCourse;
 use App\Entity\CategoryJob;
 use App\Entity\CategoryService;
+use App\Entity\City;
 use App\Entity\CompanyReview;
 use App\Entity\County;
 use App\Entity\Company;
 use App\Entity\Event;
 use App\Entity\Favorite;
 use App\Entity\Job;
+use App\Entity\MembershipPackage;
 use App\Entity\TrainingCourse;
 use App\Entity\User;
+use App\Entity\UserBillingData;
 use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
 use App\Helper\FormValidatorHelper;
 use App\Helper\LanguageHelper;
 use App\Helper\MailchimpAPIHelper;
 use App\Helper\MailHelper;
+use App\Helper\MembershipHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception as ExceptionAlias;
 use DateTime;
@@ -29,6 +33,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -48,12 +53,15 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/ajax/get-companies', name: 'ajax_get_company')]
-    public function getCompaniesByType(EntityManagerInterface $em, Request $request): JsonResponse
+    public function getCompaniesByType(EntityManagerInterface $em, Request $request, MembershipHelper $helper): JsonResponse
     {
-        $locationType = $request->get('locationType', Company::LOCATION_TYPE_CARE);
-        $limit = $request->get('limit', 7);
-        $categorySlug = $request->get('categorySlug', '');
+        // Default var values
         $category = null;
+        $companies = [];
+
+        $locationType = $request->get('locationType', Company::LOCATION_TYPE_CARE);
+        $limit = $request->get('limit', $locationType === Company::LOCATION_TYPE_CARE ? 7 : 4);
+        $categorySlug = $request->get('categorySlug', '');
 
         // Check exist type in array
         if (!isset($locationType) || !in_array($locationType, Company::getLocationTypes())) {
@@ -75,20 +83,38 @@ class AjaxController extends AbstractController
         }
 
         /**
-         * Get items
-         * @var Company $companies
-         */
-        $companies = $em->getRepository(Company::class)->getCompaniesByType($locationType, $category, $locationType === Company::LOCATION_TYPE_CARE ? $limit : 4);
-
-        /**
          * Get total items
          * @var Company $countCompanies
          */
-        $countCompanies = $em->getRepository(Company::class)->getCompaniesByType($locationType, $category, $locationType === Company::LOCATION_TYPE_CARE ? $limit : 4, true);
+        $countCompanies = $em->getRepository(Company::class)->getCompaniesByType($locationType, $category, $limit, '', true);
+
+        // All packages
+        $packages = MembershipPackage::getPackages();
+
+        // Exclude packages in this section
+        $excludePackages = [MembershipPackage::PACKAGE_FREE];
+
+        // Parse and call by @package
+        foreach ($packages as $package) {
+            /**
+             * Get result by @params
+             * @var Company $result
+             */
+            $result = $em->getRepository(Company::class)->getCompaniesByType($locationType, $category, $limit, $package);
+
+            // Store results in array by @package
+            $companies[$package] = $result;
+        }
+
+        // Process companies by package and limit
+        $rows = $helper->filterDataByPackages($companies, $excludePackages, $limit);
+
+        // Parse and increment entityLog
+        $helper->parseEntityLog($rows, Company::ENTITY_NAME);
 
         return new JsonResponse([
             'status' => true,
-            'rows' => $companies,
+            'rows' => $rows,
             'totalRows' => $countCompanies
         ]);
     }
@@ -1031,4 +1057,226 @@ class AjaxController extends AbstractController
         ]);
     }
 
+    #[Route('/ajax/package/get-billing-address', name: 'ajax_get_user_billing_address')]
+    public function getBillingAddress(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, TranslatorInterface $translator): JsonResponse
+    {
+        // Init variables
+        $validate = ['checkErrors' => false, 'errors' => []];
+        $company = [];
+
+        // Retrieve form data from request
+        $formData = $request->request->all();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Process form submission
+        if ($request->isMethod('POST') && !empty($user)) {
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors and exist company
+            if (!$validate['checkErrors']) {
+                $company = $em->getRepository(UserBillingData::class)->getBillingAddress($user, $formData['uuid'], true);
+
+                // Check exist data by @uuid
+                if (empty($company)) {
+                    return new JsonResponse([
+                        'status' => false,
+                        'company' => [],
+                        'errors' => $validate['errors'],
+                        'message' => $translator->trans('form.default.required', [], 'messages')
+                    ]);
+                }
+            }
+        }
+
+        return new JsonResponse([
+            'status' => !$validate['checkErrors'],
+            'errors' => $validate['errors'],
+            'company' => $company
+        ]);
+    }
+
+    #[Route('/ajax/package/get-billing-addresses', name: 'ajax_get_user_billing_addresses')]
+    public function getBillingAddresses(EntityManagerInterface $em): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (empty($user)) {
+            return new JsonResponse([
+                'status' => false,
+                'companies' => []
+            ]);
+        }
+
+        /**
+         * Get all by @user
+         * @var UserBillingData $companies
+         */
+        $companies = $em->getRepository(UserBillingData::class)->getBillingAddress($user);
+
+        return new JsonResponse([
+            'status' => true,
+            'companies' => $companies
+        ]);
+    }
+
+    #[Route('/ajax/package/user-billing-address-actions', name: 'ajax_user_billing_address_actions')]
+    public function userBillingAddressActions(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, TranslatorInterface $translator): JsonResponse
+    {
+        // Init default values
+        $validate = ['checkErrors' => false, 'errors' => []];
+
+        // Retrieve form data from request
+        $formData = $request->request->all();
+        $uuid = $formData['uuid'];
+
+        // Remove @uuid
+        unset($formData['uuid']);
+
+        // Init propertyAccess
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Get action
+        $company = !empty($uuid) ?
+            $em->getRepository(UserBillingData::class)->findOneBy(['uuid' => $uuid, 'user' => $user]) :
+            new UserBillingData();
+
+        // Process form submission
+        if ($request->isMethod('POST') && !empty($user)) {
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors and exist company
+            if (!$validate['checkErrors']) {
+                /** @var County $county */
+                $county = $em->getRepository(County::class)->findOneBy(['code' => $formData['county']]);
+
+                /** @var City $city */
+                $city = $em->getRepository(City::class)->find($formData['city']);
+
+                // Check exist city and county
+                if (empty($county) || empty($city)) {
+                    return new JsonResponse([
+                        'status' => false,
+                        'company' => [],
+                        'errors' => $validate['errors'],
+                        'message' => $translator->trans('form.default.required', [], 'messages')
+                    ]);
+                }
+
+                // Set object data
+                $formData['county'] = $county;
+                $formData['city'] = $city;
+                $formData['user'] = $user;
+
+                // Parse and set values
+                foreach ($formData as $field => $value) {
+                    $accessor->setValue($company, $field, $value);
+                }
+
+                // Parse fields and save files
+                $em->persist($company);
+                $em->flush();
+            }
+        }
+
+        return new JsonResponse([
+            'status' => !$validate['checkErrors'],
+            'uuid' => $company->getUuid(),
+            'errors' => $validate['errors'],
+            'message' => $translator->trans(!$validate['checkErrors'] ? 'form.messages.success_edit' : 'form.default.required', [], 'messages')
+        ]);
+    }
+
+    #[Route('/ajax/package/user-billing-address/{action}', name: 'ajax_get_user_billing_address_action')]
+    public function userBillingAddressAction(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, TranslatorInterface $translator, $action): JsonResponse
+    {
+        // Init variables
+        $validate = ['checkErrors' => false, 'errors' => []];
+
+        // Retrieve form data from request
+        $formData = $request->request->all();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Process form submission
+        if ($request->isMethod('POST') && !empty($user)) {
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors and exist company
+            if (!$validate['checkErrors']) {
+                /**
+                 * Get address by @user and @uuid
+                 * @var UserBillingData $company
+                 */
+                $company = $em->getRepository(UserBillingData::class)->findOneBy([
+                    'user' => $user,
+                    'uuid' => $formData['uuid']
+                ]);
+
+                // Check exist data by @uuid
+                if (empty($company)) {
+                    return new JsonResponse([
+                        'status' => false,
+                        'company' => [],
+                        'errors' => $validate['errors'],
+                        'message' => $translator->trans('form.default.required', [], 'messages')
+                    ]);
+                }
+
+                // Check type and set entity
+                switch ($action) {
+                    case 'moderate':
+                        /**
+                         * Get old item by @user
+                         * @var UserBillingData $oldCompany
+                         */
+                        $oldCompany = $em->getRepository(UserBillingData::class)->findOneBy([
+                            'user' => $user,
+                            'isFavorite' => true
+                        ]);
+
+                        // Check exist old item
+                        if (!empty($oldCompany)) {
+                            // Update old item
+                            $oldCompany->setFavorite(false);
+                            $em->persist($oldCompany);
+                        }
+
+                        // Update data
+                        $company->setFavorite(true);
+                        $em->persist($company);
+                        $em->flush();
+                        break;
+                    case 'remove':
+                        // Remove item
+                        $em->remove($company);
+                        $em->flush();
+                        break;
+                }
+            }
+        }
+
+        return new JsonResponse([
+            'status' => !$validate['checkErrors'],
+            'message' => sprintf($translator->trans('controller.success_multiple', [], 'messages'), $action === 'moderate' ? $translator->trans('controller.moderated', [], 'messages') : $translator->trans('controller.deleted', [], 'messages'))
+        ]);
+    }
 }

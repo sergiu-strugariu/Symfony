@@ -36,6 +36,7 @@ security:
         - { path: ^/dashboard/ajax/profile, roles: [ROLE_ADMIN, ROLE_COMPANY, ROLE_CLIENT] }
         - { path: ^/dashboard/cache/clear, roles: [ROLE_ADMIN, ROLE_COMPANY, ROLE_CLIENT] }
 
+
         #  ROLE_ADMIN
         - { path: ^.*/actions/remove/.+$, roles: ROLE_ADMIN }
         - { path: ^/dashboard/category, roles: ROLE_ADMIN }
@@ -51,6 +52,9 @@ security:
 
         #  ROLE_ADMIN && ROLE_COMPANY
         - { path: ^/dashboard, roles: [ROLE_ADMIN, ROLE_COMPANY] }
+        - { path: ^/ajax/package, roles: [ ROLE_ADMIN, ROLE_COMPANY ] }
+        - { path: ^/dashboard/my-abonament, roles: [ ROLE_ADMIN, ROLE_COMPANY ] }
+        - { path: ^/detalii-comanda, roles: [ ROLE_ADMIN, ROLE_COMPANY ] }
         - { path: ^/, roles: PUBLIC_ACCESS }
 when@test:
     security:

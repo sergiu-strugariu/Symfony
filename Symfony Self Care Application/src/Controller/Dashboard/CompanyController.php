@@ -3,6 +3,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Helper\DefaultHelper;
+use App\Helper\MembershipHelper;
 use DateTime;
 use App\Entity\CompanyGallery;
 use App\Entity\Company;
@@ -29,7 +30,7 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/dashboard/company/create/{locationType}', name: 'dashboard_company_create')]
-    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, LanguageHelper $languageHelper, $locationType, TranslatorInterface $translator): Response
+    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, LanguageHelper $languageHelper, TranslatorInterface $translator, MembershipHelper $helper, $locationType): Response
     {
         $company = new Company();
         $form = $this->createForm(CompanyFormType::class, $company, ['language' => $languageHelper->getDefaultLanguage(), 'locationType' => $locationType]);
@@ -69,6 +70,9 @@ class CompanyController extends AbstractController
             $company->setLocationType($locationType);
             $em->persist($company);
             $em->flush();
+
+            // Insert item in EntityLog
+            $helper->insertEntityLog($company, Company::ENTITY_NAME);
 
             // Set flash message
             $this->addFlash('success', $translator->trans('controller.success_item_added', [], 'messages'));

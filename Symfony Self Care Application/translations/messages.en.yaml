@@ -232,6 +232,7 @@ form:
   default:
     required: 'Oops! Something went wrong.'
     default_field_required: 'This field is mandatory'
+    default_all_field_required: 'All field is mandatory.'
   messages:
     form_details_success: 'Congratulations! Your request has been successfully submitted. We will get back to you as soon as possible.'
     form_review_success: 'Congratulations! Your review has been successfully submitted. We will get back to you with the validation as soon as possible.'
@@ -260,19 +261,26 @@ form:
     search_min_length: 'Enter at least 3 characters'
     terms_policy: 'By submitting my feedback, I agree to the <a href="%termPath%" target="_blank">terms and conditions</a> on seniorhelp.ro/terms. Please refer to the review policy and <a href="%privacyPath%">privacy policy</a> to see how your feedback and personal details will be processed.'
     terms_register: 'To continue, please confirm that you agree to the <a href="%termPath%" target="_blank">Terms and Conditions of SeniorHelp.ro</a>'
+    cui: 'Format of 6 digits'
+    register_number: 'Composed of a maximum of 12 characters'
+    iban_name: 'Enter account'
   user_conections:
     user_conections: 'Select connection'
   txtDateRange:
     validDateRange: 'Please enter the start and end date of your stay.'
   companyName:
     required: 'Please enter the company name'
+    add_billing_info: 'Please enter a minimum of 1 billing address.'
   cui:
+    field_name: 'Unique registration code'
     required: 'Please enter the unique registration code (CUI)'
     validCIF: "Please enter a valid CIF"
   companyRegisterNumber:
+    field_name: 'No. Trade register'
     required: "Please enter the company registration number"
     regNumber: "Please enter a valid registration number."
   iban:
+    field_name: 'Iban account'
     required: "Please enter a valid IBAN"
   county:
     required: "Please enter the county"
@@ -280,6 +288,7 @@ form:
     required:  "Please enter the city"
   address:
     required: "Please enter the address"
+    placeholder: 'ex: Street, number, block, floor, apartment'
 mail:
   hello: 'Hello'
   title: 'You have received an email from'
@@ -312,7 +321,7 @@ review:
   connection_content: 'You must have a valid connection to the care home. We cannot accept reviews from staff members or those with professional connections to the care home'
   time_title: 'What period does your review refer to?'
   evaluate_title: 'How would you rate the care home in the following areas?'
-  preview_review_text: 'The level of care provided at Premium Senior is truly commendable. The staff members are not only highly skilled, experienced, and knowledgeable but also attentive to the needs of each resident. It is evident that they prioritize the well-being and dignity of all those in their care. Every time I visit Premium Senior, I leave with a deep sense of gratitude knowing that my loved one is receiving exceptional care in such a supportive and encouraging environment. I would highly recommend Premium Senior to anyone looking for a care home that prioritizes compassion, professionalism, and resident well-being.'
+  preview_review_text: 'The level of care provided at Senior Help is truly commendable. The staff members are not only highly skilled, experienced, and knowledgeable but also attentive to the needs of each resident. It is evident that they prioritize the well-being and dignity of all those in their care. Every time I visit Senior Help, I leave with a deep sense of gratitude knowing that my loved one is receiving exceptional care in such a supportive and encouraging environment. I would highly recommend Senior Help to anyone looking for a care home that prioritizes compassion, professionalism, and resident well-being.'
   general_star: 'Overall experience'
   facility_star: 'Facilities'
   support_star: 'Care/Support'
@@ -331,7 +340,7 @@ review:
   preview_review: 'A preview of how your review will be displayed.'
   review_for: 'review from'
   send_btn: 'submit review'
-  reviews: 'reviews'
+  reviews: 'Reviews'
   single_review: 'review'
   review_from: 'from'
   back_dashboard: 'Back to reviews'
@@ -369,6 +378,9 @@ dashboard:
     slug: 'Slug'
     price: 'Price'
     discount: 'Discount'
+    max_job: 'Maximum jobs per month'
+    max_article: 'Maximum articles per month'
+    max_generate_article: 'Maximum articles generated per month'
     status: 'Status'
     popular: 'Popular'
     status_event: 'Event status'
@@ -413,6 +425,7 @@ dashboard:
     approve: 'Approve'
     hierarchy_of_links: 'Hierarchy of links'
     sign_out: 'Sign out'
+    max_plan: 'Your current plan "%s" does not allow more than %d to be published per month.'
   common:
     date: 'Date'
     hour: 'Hour'
@@ -586,13 +599,16 @@ dashboard:
     page_title: 'Create category %type%'
   my_plan:
     title: 'Membership'
-    plan_current: 'Current Plan'
+    plan_current: 'Current plan'
     plan_cancel: 'Cancel plan'
+    plan_change: 'Change plan'
+    plan_update: 'Update details'
     plan_name: 'ChatGPT Plus Subscription'
     plan_auto_renewal: 'Your plan will renew on'
     plan_info: 'Billing Information'
     plan_billing_address: 'Billing Address'
     plan_billing_address_update: 'Update information'
+    plan_billing_address_add_new: 'Add billing data for a new company'
     per_month: 'per month'
     plan_billing_history: 'Billing history'
     plan_billing_status_paid: 'Paid'
@@ -695,4 +711,17 @@ packages:
   year_plan: 'Annual plan'
   update_package: 'Auto-renew, cancel anytime'
   choose_btn: 'Choose'
+  choose_current: 'Current package'
   most_popular: 'Most Popular'
+  command_details: 'Command Details'
+  package_selected: 'Package selected'
+  select_plan: 'Select Plan'
+  card_online: 'Card online'
+  pay_method: 'Payment Method'
+  pay_description: 'Pay quickly and securely. You will be redirected to the payment page'
+  back_btn: 'Back to packages'
+  continue_to_pay: 'Continue to pay'
+  total: 'Total'
+  legal_entity: 'Add legal entity'
+  contact_data: 'Contact data'
+  region_section: 'Headquarters'

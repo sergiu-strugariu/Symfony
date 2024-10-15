@@ -231,7 +231,8 @@ form:
     not_in_range_message_front: 'Această valoare trebuie să fie între 1 și 5'
   default:
     required: 'Oops! Ceva nu a mers bine.'
-    default_field_required: 'Acest câmp este obligatoriu'
+    default_field_required: 'Acest câmp este obligatoriu.'
+    default_all_field_required: 'Toate câmpurile sunt obligatorii.'
   messages:
     form_details_success: 'Felicitări! Cererea ta a fost trimisă cu succes. Vom reveni în cel mai scurt timp posibil.'
     form_review_success: 'Felicitări! Review-ul ta a fost trimisă cu succes. Vom reveni cu validarea acestuia în cel mai scurt timp posibil.'
@@ -260,19 +261,26 @@ form:
     search_min_length: 'Introdu minim 3 caractere'
     terms_policy: 'Trimitând feedback-ul meu, sunt de acord cu <a href="%termPath%" target="_blank">termenii și condițiile</a> de pe seniorhelp.ro/termeni. Vă rugăm să consultați politica de revizuire și <a href="%privacyPath%">politica de confidențialitate</a> pentru a vedea cum vor fi procesate feedback-ul şi detaliile dvs. personale.'
     terms_register: 'Pentru a continua, te rugăm să confirmi că ești de acord cu <a href="%termPath%" target="_blank">Termenii şi condițiile SeniorHelp.ro</a>'
+    cui: 'Format din 6 cifre'
+    register_number: 'Compus din maxim 12 caractere'
+    iban_name: 'Introdu contul'
   user_conections:
     user_conections: 'Selectează conexiunea'
   txtDateRange:
     validDateRange: 'Vă rugăm să introduceți data inițială și finală a șederii dumneavoastră.'
   companyName:
     required: 'Vă rugăm să introduceți numele companiei'
+    add_billing_info: 'Vă rugăm să introduceți minim o dată de facturare'
   cui:
+    field_name: 'Cod unic de inregistrare'
     required: 'Vă rugăm să introduceți codul unic de înregistrare (CUI)'
     validCIF: "Vă rugăm să introduceți un CIF valid"
   companyRegisterNumber:
+    field_name: 'Nr. Registrul comerțului'
     required: "Vă rugăm să introduceți numărul de înregistrare al companiei"
     regNumber: "Vă rugăm să introduceți un număr de înregistrare valid."
   iban:
+    field_name: 'Cont iban'
     required: "Vă rugăm să introduceți un IBAN valid"
   county:
     required: "Vă rugăm să introduceți județul"
@@ -280,6 +288,7 @@ form:
     required:  "Vă rugăm să introduceți orașul"
   address:
     required: "Vă rugăm să introduceți adresa"
+    placeholder: 'ex: Strada, număr, bloc, etaj, apartament'
 mail:
   hello: 'Salut'
   title: 'Ai primit un mail de la'
@@ -312,7 +321,7 @@ review:
   connection_content: 'Trebuie să aveți o conexiune valabilă la casa de îngrijire. nu putem accepta recenzii de la membri sau personal sau cei cu conexiuni profesionale cu casa de îngrijire'
   time_title: 'la ce perioadă se referă recenzia dvs.?'
   evaluate_title: 'Cum ați evalua casa de îngrijire în funcție de următoarele?'
-  preview_review_text: 'Nivelul de îngrijire oferit la Premium Senior este cu adevărat lăudabil. Membrii personalului nu sunt doar cu înaltă calificare, experiență și cunoștințe, ci și atenți la nevoile fiecărui rezident. Este evident că ei acordă prioritate bunăstării și demnității tuturor celor aflați în grija lor. De fiecare dată când vizitez Premium Senior, plec cu un profund sentiment de recunoștință știind că persoana iubită primește o îngrijire excepțională într-un mediu atât de susținător și încurajator. Aș recomanda cu căldură Premium Senior oricui caută o casă de îngrijire care să acorde prioritate compasiunii, profesionalismului și bunăstării rezidenților.'
+  preview_review_text: 'Nivelul de îngrijire oferit la Senior Help este cu adevărat lăudabil. Membrii personalului nu sunt doar cu înaltă calificare, experiență și cunoștințe, ci și atenți la nevoile fiecărui rezident. Este evident că ei acordă prioritate bunăstării și demnității tuturor celor aflați în grija lor. De fiecare dată când vizitez Senior Help, plec cu un profund sentiment de recunoștință știind că persoana iubită primește o îngrijire excepțională într-un mediu atât de susținător și încurajator. Aș recomanda cu căldură Senior Help oricui caută o casă de îngrijire care să acorde prioritate compasiunii, profesionalismului și bunăstării rezidenților.'
   general_star: 'Experiență generală'
   facility_star: 'Facilități'
   support_star: 'Îngrijire/Suport'
@@ -331,7 +340,7 @@ review:
   preview_review: 'O previzualizare a modului în care va fi afișată recenzia dvs.'
   review_for: 'recenzie de la'
   send_btn: 'trimite recenzia'
-  reviews: 'recenzii'
+  reviews: 'Recenzii'
   single_review: 'recenzie'
   review_from: 'din'
   back_dashboard: 'Înapoi la recenzii'
@@ -369,6 +378,9 @@ dashboard:
     slug: 'Slug'
     price: 'Preț'
     discount: 'Discount'
+    max_job: 'Maxim joburi pe lună'
+    max_article: 'Maxim articole pe lună'
+    max_generate_article: 'Maxim articole generate pe lună'
     status: 'Stare'
     popular: 'Popular'
     status_event: 'Stare eveniment'
@@ -413,6 +425,7 @@ dashboard:
     approve: 'Aprobare'
     hierarchy_of_links: 'Ierarhia linkurilor'
     sign_out: 'Deconectare'
+    max_plan: 'Planul dvs. actual „%s” nu permite publicarea a mai mult de %d pe lună.'
   common:
     date: 'Dată'
     hour: 'Ora'
@@ -587,12 +600,15 @@ dashboard:
   my_plan:
     title: 'Abonament'
     plan_current: 'Plan Curent'
-    plan_cancel: 'Modifică pachetul'
-    plan_name: 'ChatGPT Plus Subscription'
+    plan_cancel: 'Anulează pachet'
+    plan_change: 'Modifică pachet'
+    plan_update: 'Actualizează datele'
+    plan_name: 'SeniorHelp Subscription'
     plan_auto_renewal: 'Planul dvs. se va reînnoi la data de'
     plan_info: 'Informații de facturare'
     plan_billing_address: 'Adresă de facturare'
-    plan_billing_address_update: 'Actualizare informatii'
+    plan_billing_address_update: 'Schimbă datele de facturare'
+    plan_billing_address_add_new: 'Adaugă date de facturare pentru o companie noua'
     per_month: 'pe lună'
     plan_billing_history: 'Istoric facturi'
     plan_billing_status_paid: 'Plătită'
@@ -695,4 +711,17 @@ packages:
   year_plan: 'Plan anual'
   update_package: 'Reînnoiește automat, anulează oricând'
   choose_btn: 'Alege'
+  choose_current: 'Pachetul curent'
   most_popular: 'Cel mai popular'
+  command_details: 'Detalii comandă'
+  package_selected: 'Pachetul selectat'
+  select_plan: 'Selecție plan'
+  card_online: 'Card online'
+  pay_method: 'Metodă de plată'
+  pay_description: 'Plătește rapid și în siguranță. Vei fi redirecționat către pagina de plată'
+  back_btn: 'Înapoi la pachete'
+  continue_to_pay: 'Continuă către plată'
+  total: 'Total'
+  legal_entity: 'Adaugă persoană juridică'
+  contact_data: 'Date contact'
+  region_section: 'Sediu social'

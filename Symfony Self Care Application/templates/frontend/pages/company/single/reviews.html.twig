@@ -1,10 +1,10 @@
-{% if reviews is not empty %}
+{% if company.approvedReviews is not empty %}
     <div class="home-details-reviews-container" id="reviews-container">
-        <h2>Recenzii</h2>
+        <h2>{{ 'review.reviews'|trans }}</h2>
         <div class="list-wrapper">
             <div class="common-arrow swiper-button-prev prev-review"></div>
             <div class="home-details-reviews slick-shelters">
-                {% for item in reviews %}
+                {% for item in company.approvedReviews %}
                     <div class="preview-review">
                         <div class="rating-section">
                             <span class="star {{ item.totalValuesStar >= 1 ? 'active' : '' }}" data-star="1"></span>

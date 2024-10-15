@@ -51,6 +51,39 @@
                 </div>
                 <div class="row mb-6">
                     <!--begin::Label-->
+                    {{ form_label(form.maxJobPerMonth, 'dashboard.table.max_job'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.maxJobPerMonth, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.maxJobPerMonth) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.maxArticlePerMonth, 'dashboard.table.max_article'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.maxArticlePerMonth, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.maxArticlePerMonth) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.maxGenerateArticlePerMonth, 'dashboard.table.max_generate_article'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.maxGenerateArticlePerMonth, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.maxGenerateArticlePerMonth) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
                     {{ form_label(form.popular, 'dashboard.table.popular'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
                     <!--end::Label-->
                     <!--begin::Col-->

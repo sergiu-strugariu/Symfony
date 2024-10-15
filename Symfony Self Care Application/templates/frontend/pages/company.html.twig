@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block title %}{{ parent() }} {{ company.name }}{% endblock %}
     {% block share %}
         <meta property="og:title" content="{{ company.name }}">
         <meta property="og:description" content="{{ company.shortDescription }}">
@@ -29,13 +29,21 @@
             {% include "frontend/pages/company/single/reviews.html.twig" %}
             <!-- end::Reviews -->
 
-            <!-- start::Other hostels -->
-            {% include "frontend/pages/company/single/other.html.twig" %}
-            <!-- end::Other hostels -->
+            <!-- start::Recommended county -->
+            {% include "frontend/pages/common/recomended-by-county.html.twig" with {
+                'singlePath': 'app_company_single',
+                'listingPath': 'app_company',
+                'county': company.county
+            } %}
+            <!-- end::Recommended county -->
 
-            <!-- start::Recommended services -->
-            {% include "frontend/pages/common/recomended-by-category.html.twig" with {'url': path('app_company_single'), 'categoryName': categoryName} %}
-            <!-- end::Recommended services -->
+            <!-- start::Recommended category -->
+            {% include "frontend/pages/common/recomended-by-category.html.twig" with {
+                'singlePath': 'app_company_single',
+                'listingPath': 'app_company',
+                'category': category
+            } %}
+            <!-- end::Recommended category -->
         </div>
     </main>
 {% endblock %}

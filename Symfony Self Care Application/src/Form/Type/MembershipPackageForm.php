@@ -77,6 +77,48 @@ class MembershipPackageForm extends AbstractType
                 ],
                 'attr' => ['min' => 0, 'max' => 100]
             ])
+            ->add('maxJobPerMonth', IntegerType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory',
+                    ]),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => 10,
+                        'notInRangeMessage' => 'form.default.not_in_range',
+                    ]),
+                ],
+                'attr' => ['min' => 0, 'max' => 10]
+            ])
+            ->add('maxArticlePerMonth', IntegerType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory',
+                    ]),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => 10,
+                        'notInRangeMessage' => 'form.default.not_in_range',
+                    ]),
+                ],
+                'attr' => ['min' => 0, 'max' => 10]
+            ])
+            ->add('maxGenerateArticlePerMonth', IntegerType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory',
+                    ]),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => 10,
+                        'notInRangeMessage' => 'form.default.not_in_range',
+                    ]),
+                ],
+                'attr' => ['min' => 0, 'max' => 10]
+            ])
             ->add('status', ChoiceType::class, [
                 'required' => true,
                 'placeholder' => 'common.select',

@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'packages.command_details'|trans }}{% endblock %}
+{% block content %}
+    <main class="order-details">
+        {% include "frontend/pages/package-order/order-details.html.twig" %}
+        {% include "frontend/pages/package-order/modal-add-company.html.twig" %}
+    </main>
+{% endblock %}

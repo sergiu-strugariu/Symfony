@@ -1,8 +1,9 @@
+{% set user = app.user %}
 <div class="inner">
-    <div class="listing">
+    <div class="listing" data-login="{{ is_granted('IS_AUTHENTICATED_FULLY') }}">
         <div class="top-section">
             <h2>{{ 'packages.choose_package'|trans }}</h2>
-            <div class="plan-switcher year" data-plan="year">
+            <div class="plan-switcher yearly" data-plan="yearly">
                 <p>{{ 'packages.month_plan'|trans }}</p>
                 <span></span>
                 <p>{{ 'packages.year_plan'|trans }}</p>
@@ -19,8 +20,11 @@
                 </div>
                 <div class="packages-list-swiper">
                     {% for package in packages %}
-                        {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_comand_detail', {'slug': package.slug}) : url('dashboard_login', {'returnUrl': path('app_packages')}) %}
-                        <div class="item" data-price="{{ package.price > 0 ? package.price : "0" }}" data-discount="{{ package.yearlyPricePerMonth }}">
+                        {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ?
+                            path('app_comand_detail', {'slug': package.slug}) :
+                            url('dashboard_login', {'returnUrl': path('app_packages')}) %}
+                        <div class="item" data-price="{{ package.price > 0 ? package.price : '0' }}"
+                             data-discount="{{ package.yearlyPricePerMonth }}">
                             {% if(package.popular) %}
                                 <p class="most-popular">{{ 'packages.most_popular'|trans }}</p>
                             {% endif %}
@@ -40,15 +44,29 @@
                                      alt="info"
                                 />
                             </div>
-                            <a href="{{ packagePath }}">
-                                {{ 'packages.choose_btn'|trans }}
-                            </a>
+                            {% if package.price > 0 %}
+                                <a href="{{ packagePath }}"
+                                   class="{{ user is not null and user.membershipPackage is not null and user.membershipPackage.slug == package.slug ? 'package-selected' : '' }}">
+                                    {{ user is not null and user.membershipPackage is not null and user.membershipPackage.slug == package.slug ? 'packages.choose_current'|trans : 'packages.choose_btn'|trans }}
+                                </a>
+                            {% else %}
+                                <a href="#">
+                                    {{ package.translation(locale).name }}
+                                </a>
+                            {% endif %}
                             <ul class="features-list">
                                 {{ package.translation(locale).description|sanitize_html('app.editor') }}
                             </ul>
-                            <a href="{{ packagePath }}">
-                                {{ 'packages.choose_btn'|trans }}
-                            </a>
+                            {% if package.price > 0 %}
+                                <a href="{{ packagePath }}"
+                                   class="{{ user is not null and user.membershipPackage is not null and user.membershipPackage.slug == package.slug ? 'package-selected' : '' }}">
+                                    {{ user is not null and user.membershipPackage is not null and user.membershipPackage.slug == package.slug ? 'packages.choose_current'|trans : 'packages.choose_btn'|trans }}
+                                </a>
+                            {% else %}
+                                <a href="#">
+                                    {{ package.translation(locale).name }}
+                                </a>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>

@@ -3,11 +3,173 @@
 {% block title %}{{ parent() }} Generare articole{% endblock %}
 
 {% block content %}
+    <!--begin::Page loading(append to body)-->
+    <div class="page-loader flex-column">
+        <span class="spinner-border text-primary" role="status"></span>
+        <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+    </div>
+    <!--end::Page loading-->
+    <div class="generate-article-wrapper">
+        <div class="card mb-5 mb-lg-3 card-flush has-loader">
+            <!--begin::Card body-->
+            <div class="card-body">
+                <div class="steps">
+                    <ul>
+                        <li class="active" data-step="1"><span>1</span> Generare articol</li>
+                        <li data-step="2"><span>2</span> Generare titlu si descriere</li>
+                        <li data-step="3"><span>3</span> Editeaza si salveaza</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-9 pb-lg-0">
+                <form id="generateArticleForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row mb-6">
+                                <label for="articlePrompt">Generare articol</label>
+                                <div class="col-lg-12 fv-row">
+                                    <textarea type="text" class="form-control" name="articlePromptName" id="articlePrompt" rows="5" placeholder="Ex. Scrie un articol profesionist de aproximativ 500 pana la 750 de cuvinte, despre ingrijirea batranilor."></textarea>
+                                    <p>Ex. Scrie un articol profesionist de aproximativ 500 pana la 750 de cuvinte, despre ingrijirea batranilor.</p>
+                                    <p class="error invalid-feedback" id="articlePromptError">Camp obligatoriu!</p>
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="col-lg-12">#}
+{#                            <div class="row mb-6">#}
+{#                                <label for="topicPrompt">Topic</label>#}
+{#                                <div class="col-lg-12 fv-row">#}
+{#                                    <select name="topicPrompt" id="topicPrompt" class="form-control">#}
+{#                                        <option value="">Alege un topic</option>#}
+{#                                        <option value="formal">Formal</option>#}
+{#                                        <option value="informativ">Informativ</option>#}
+{#                                        <option value="obiectiv">Obiectiv</option>#}
+{#                                        <option value="analitic">Analitic</option>#}
+{#                                        <option value="narativ">Narativ</option>#}
+{#                                        <option value="casual">Casual</option>#}
+{#                                    </select>#}
+{#                                    <p>Alege un topic pentru articol</p>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <div class="col-lg-12">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit"
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder"> Pasul urmator</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form id="generateDescriptionForm" class="d-none">
+                    <h3></h3>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row mb-6">
+                                <label for="titlePrompt">Genereaza titlu pentru articol</label>
+                                <div class="col-lg-12 fv-row">
+                                    <textarea type="text" class="form-control" id="titlePrompt" rows="2" placeholder="Ex. Scrie un titlu de maxim 60 caractere pentru articol"></textarea>
+                                    <p>Ex. Scrie un titlu de maxim 60 caractere pentru articol</p>
+                                    <p class="error invalid-feedback" id="titlePromptError">Camp obligatoriu!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row mb-6">
+                                <label for="descriptionPrompt">Genereaza o scurta descriere</label>
+                                <div class="col-lg-12 fv-row">
+                                    <textarea type="text" class="form-control" id="descriptionPrompt" rows="2" placeholder="Scrie o scurta descriere de maxim 110 caractere pentru articol"></textarea>
+                                    <p>Ex. Scrie o scurta descriere de maxim 110 caractere pentru articol</p>
+                                    <p class="error invalid-feedback" id="descriptionPromptError">Camp obligatoriu!</p>
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="col-lg-12">#}
+{#                            <div class="row mb-6">#}
+{#                                <label for="imagePrompt">Generate image</label>#}
+{#                                <div class="col-lg-12 fv-row">#}
+{#                                    <textarea type="text" class="form-control" id="imagePrompt" rows="3" placeholder="Ex. Genereaza o imagine cu dimensiunea de 1792x1024 px in format webp pentru articol"></textarea>#}
+{#                                    <p>Ex. Genereaza o imagine cu dimensiunea de 1792x1024 px in format webp pentru articol</p>#}
+{#                                    <p class="error invalid-feedback" id="imagePromptError">Camp obligatoriu!</p>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <div class="col-lg-12">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="goToStepOne" style="margin-right: 15px;"
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Pasul anterior</button>
+                                <button type="submit"
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Pasul urmator</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="generatedArticleOutput" class="pt-5 d-none">
+                    <h3>Rezultat</h3>
+                    <div class="row d-none" id="generatedTitle">
+                        <div class="col-lg-12">
+                            <div class="row mb-6">
+                                <label for="titleOutput">Titlul generat</label>
+                                <div class="col-lg-12 fv-row">
+                                    <input type="text" class="form-control" id="titleOutput"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-none" id="generatedDescription">
+                        <div class="col-lg-12">
+                            <div class="row mb-6">
+                                <label for="descriptionOutput">Descrierea generata</label>
+                                <div class="col-lg-12 fv-row">
+                                    <input type="text" class="form-control" id="descriptionOutput"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{#                    <div class="row d-none" id="generatedImage">#}
+{#                        <div class="col-lg-12">#}
+{#                            <div class="row mb-6">#}
+{#                                <label for="imageOutput">Imaginea generata</label>#}
+{#                                <div class="col-lg-12 fv-row">#}
+{#                                    <div class="img-wrapper">#}
+{#                                        <img src="" alt="image" id="imageOutput" class="img-fluid">#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="row d-none" id="generatedArticle">
+                        <div class="col-lg-12">
+                            <div class="row mb-6">
+                                <label for="bodyOutput">Continutul articolului generat</label>
+                                <div class="col-lg-12 fv-row">
+                                    <textarea name="bodyOutput" id="bodyOutput" class="form-control form-control-solid form-control-lg rounded-0 tinymce-editor" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-none" id="saveBtnWrapper">
+                        <div class="col-lg-12">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="refreshPage" style="margin-right: 15px;"
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Refresh</button>
+                                <button type="button" id="goToStepTwo" style="margin-right: 15px;"
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Pasul anterior</button>
+                                <button type="submit" id="saveBtn"
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Salveaza</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card body-->
+        </div>
 
+    </div>
 {% endblock %}
 
 {% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
     <script>
-        console.log('Test');
+      initEditor('#bodyOutput');
     </script>
+    <script src="{{ asset('assets/dashboard/js/generate-articles/main.js') }}"></script>
 {% endblock %}

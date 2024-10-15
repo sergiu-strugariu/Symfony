@@ -52,12 +52,19 @@ class City
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'city', orphanRemoval: true)]
     private Collection $events;
 
+    /**
+     * @var Collection<int, UserBillingData>
+     */
+    #[ORM\OneToMany(targetEntity: UserBillingData::class, mappedBy: 'city', orphanRemoval: true)]
+    private Collection $userBillingData;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
         $this->trainingCourses = new ArrayCollection();
         $this->companies = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->userBillingData = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,6 +234,36 @@ class City
             // set the owning side to null (unless already changed)
             if ($event->getCity() === $this) {
                 $event->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserBillingData>
+     */
+    public function getUserBillingData(): Collection
+    {
+        return $this->userBillingData;
+    }
+
+    public function addUserBillingData(UserBillingData $userBillingData): static
+    {
+        if (!$this->userBillingData->contains($userBillingData)) {
+            $this->userBillingData->add($userBillingData);
+            $userBillingData->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserBillingData(UserBillingData $userBillingData): static
+    {
+        if ($this->userBillingData->removeElement($userBillingData)) {
+            // set the owning side to null (unless already changed)
+            if ($userBillingData->getCity() === $this) {
+                $userBillingData->setCity(null);
             }
         }
 

@@ -17,13 +17,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EventSpeakerController extends AbstractController
 {
-    #[Route('/dashboard/event/speakers', name: 'dashboard_speaker_index')]
+    #[Route('/dashboard/secure/event/speakers', name: 'dashboard_speaker_index')]
     public function index(): Response
     {
         return $this->render('dashboard/speaker/index.html.twig');
     }
 
-    #[Route('/dashboard/event/speaker/create', name: 'dashboard_speaker_create')]
+    #[Route('/dashboard/secure/event/speaker/create', name: 'dashboard_speaker_create')]
     public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator): Response
     {
         $speaker = new EventSpeaker();
@@ -68,7 +68,7 @@ class EventSpeakerController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/dashboard/event/speaker/{uuid}/edit', name: 'dashboard_speaker_edit')]
+    #[Route('/dashboard/secure/event/speaker/{uuid}/edit', name: 'dashboard_speaker_edit')]
     public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, $uuid): Response
     {
         /** @var EventSpeaker $speaker */
@@ -129,7 +129,7 @@ class EventSpeakerController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/event/speaker/actions/{action}/{uuid}', name: 'dashboard_speaker_actions')]
+    #[Route('/dashboard/secure/event/speaker/actions/{action}/{uuid}', name: 'dashboard_speaker_actions')]
     public function actions(EntityManagerInterface $em, TranslatorInterface $translator, $action, $uuid): Response
     {
         /** @var EventSpeaker $speaker */

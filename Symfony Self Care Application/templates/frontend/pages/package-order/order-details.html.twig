@@ -1,0 +1,143 @@
+{% set packagePlan = app.request.get('packagePlan') %}
+{% set monthly = constant('App\\Entity\\MembershipPackage::MONTHLY') %}
+{% set yearly = constant('App\\Entity\\MembershipPackage::YEARLY') %}
+
+<div class="inner">
+    <div class="content">
+        <h1>{{ 'packages.command_details'|trans }}</h1>
+        <form action="{{ path('app_comand_detail', {'slug': package.slug}) }}" method="post" class="has-loader" id="orderDetails">
+            <!--begin::Form message-->
+            <div class="form-message-list form-message"></div>
+            <!--end::Form message-->
+
+            <!--begin::Form backend message-->
+            {% include "shared/frontend/alert.html.twig" %}
+            <!--end::Form backend message-->
+            <h2>{{ 'packages.package_selected'|trans }}:</h2>
+            <div class="selected-package">
+                <div class="payment-description">
+                    <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}"
+                         width="45"
+                         height="45"
+                         alt="icon"
+                    />
+                    <h3>{{ package.translation(locale).name }}</h3>
+                </div>
+                <h4>{{ 'packages.select_plan'|trans }}</h4>
+                <div class="radio-btn-group">
+                    <div class="radio-group">
+                        <div class="radio-content">
+                            <input type="radio"
+                                   id="month"
+                                   name="selectedPackage"
+                                   value="{{ monthly }}"
+                                   required="required"
+                                    {{ packagePlan == monthly ? 'checked' : '' }}
+                                    data-price="{{ package.price }}"
+                            />
+                            <label for="month">{{ 'packages.month_plan'|trans }}:
+                                <strong>
+                                    {{ package.price }}
+                                    {{ 'company.price_currency'|trans }}/{{ 'common.month'|trans }}
+                                </strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="radio-group">
+                        <div class="radio-content">
+                            <input type="radio"
+                                   id="year"
+                                   name="selectedPackage"
+                                   value="{{ yearly }}"
+                                   required="required"
+                                    {{ packagePlan == yearly ? 'checked' : '' }}
+                                    data-price="{{ package.yearlyPrice }}"
+                            />
+                            <label for="year">
+                                {{ 'packages.year_plan'|trans }}:
+                                <strong>
+                                    {{ package.yearlyPricePerMonth }}
+                                    {{ 'company.price_currency'|trans }}/{{ 'common.month'|trans }}
+                                </strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>{{ 'dashboard.common.billing_data'|trans }}:</h2>
+            <div class="billing-data">
+                <div class="radio-btn-group" id="radioBtnGroup">
+                    {% for item in billings %}
+                        <div class="radio-group {{ item.favorite ? 'checked-input' : '' }}">
+                            <div class="radio-content">
+                                <input type="radio" id="{{ item.uuid }}"
+                                       name="billingDetail"
+                                       value="{{ item.uuid }}"
+                                       required="required"
+                                        {{ item.favorite ? 'checked' : '' }}
+                                />
+                                <label for="{{ item.uuid }}">
+                                    {{ item.companyName }}
+                                    <span>{{ item.address }}, {{ item.county.name }}, {{ item.city.name }}</span>
+                                </label>
+                            </div>
+                            <div class="button-wrapper">
+                                <a href="#" class="modify-company" data-index="{{ item.uuid }}">
+                                    {{ 'dashboard.common.modify'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <a class="add-new-company" href="#" data-toggle="modal" data-target="#modalAddCompany">
+                    <span>＋</span>
+                    {{ 'dashboard.table.add_new_company'|trans }}
+                </a>
+            </div>
+            <h2>{{ 'packages.pay_method'|trans }}</h2>
+            <div class="payment-method">
+                <div class="radio-btn-group">
+                    <div class="radio-group">
+                        <div class="radio-content">
+                            <input type="radio" id="payment" name="paymentMethod" value="card" required="required" checked/>
+                            <label for="payment">
+                                {{ 'packages.card_online'|trans }}
+                                <span>{{ 'packages.pay_description'|trans }}</span>
+                            </label>
+                        </div>
+                        <div class="payment-icons">
+                            <img src="{{ asset('assets/frontend/images/common/icon-mastercard.svg') }}"
+                                 width="55"
+                                 height="40"
+                                 alt="mastercard"
+                            />
+                            <img src="{{ asset('assets/frontend/images/common/icon-maestro.svg') }}"
+                                 width="55"
+                                 height="40"
+                                 alt="maestro"
+                            />
+                            <img src="{{ asset('assets/frontend/images/common/icon-visa.svg') }}"
+                                 width="90"
+                                 height="50"
+                                 alt="VISA"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="total-amount">
+                {{ 'packages.total'|trans }}:
+                {{ package.price }}
+                {{ 'company.price_currency'|trans }}
+            </p>
+            <div class="payment-actions">
+                <a href="{{ path('app_packages') }}">
+                    {{ 'packages.back_btn'|trans }}
+                </a>
+                <a class="go-to-payment">
+                    {{ 'packages.continue_to_pay'|trans }}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

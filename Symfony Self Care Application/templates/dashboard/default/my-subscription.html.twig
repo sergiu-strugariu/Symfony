@@ -1,0 +1,225 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} {{ 'dashboard.my_plan.title'|trans }} {% endblock %}
+{% block content %}
+    <div class="my-plan">
+        <div class="inner">
+            <div class="content">
+                <h3>{{ 'dashboard.my_plan.title'|trans }}</h3>
+                <div class="board">
+                    <div class="row">
+                        <h3>{{ 'dashboard.my_plan.plan_current'|trans }}</h3>
+                    </div>
+                    <div class="row plan-type">
+                        <div class="pack">
+                            <div class="img">
+                                <img src="{{ asset('assets/dashboard/media/dashboard/icon-check-silver.png') }}"
+                                     alt="edit"
+                                     width="35"
+                                     height="35"
+                                />
+                            </div>
+                            <h4>{{ 'dashboard.my_plan.plan_name'|trans }}</h4>
+                            <p>20,00 RON {{ 'dashboard.my_plan.per_month'|trans }}</p>
+                            <p>{{ 'dashboard.my_plan.plan_auto_renewal'|trans }} 8 octombrie 2024.</p>
+                        </div>
+                        <div class="billing-actions">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#">
+                                {{ 'dashboard.my_plan.plan_change'|trans }}
+                            </a>
+                            <a href="#" class="bg-danger">
+                                {{ 'dashboard.my_plan.plan_cancel'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row plan-type">
+                        <div class="pack">
+                            <h4>{{ 'dashboard.my_plan.plan_info'|trans }}</h4>
+                            <p>
+                                <strong>{{ 'common.filter_name'|trans }}:</strong>
+
+                                <span class="plan-name">{{ favoriteCompany is not null ? favoriteCompany.companyName : '' }}</span>
+                            </p>
+                            <p>
+                                <strong>{{ 'dashboard.my_plan.plan_billing_address'|trans }}:</strong>
+
+                                <span class="plan-address">
+                                    {% if(favoriteCompany is not null) %}
+                                        {{ favoriteCompany.address }},
+                                        {{ favoriteCompany.county.name }},
+                                        {{ favoriteCompany.city.name }}
+
+                                    {% endif %}
+                                 </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pack">
+                            <h4>{{ 'dashboard.my_plan.plan_billing_history'|trans }}</h4>
+                            <ul class="billing-history">
+                                <li>
+                                    <p>8 sept. 2024</p>
+                                    <p>20,00 RON</p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>8 aug. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>8 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>18 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>28 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>38 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>48 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>58 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>68 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                                <li>
+                                    <p>78 iul. 2024</p>
+                                    <p> 20,00 RON </p>
+                                    <p>
+                                    <span class="badge badge-success">
+                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
+                                    </span>
+                                    </p>
+                                    <p>Silver Help</p>
+                                </li>
+                            </ul>
+                            <div class="billing-actions load-more">
+                                <a href="#" class="view-more">{{ 'common.see_more_results'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="board has-loader">
+                    <div class="row">
+                        <div class="pack-billing">
+                            <h3>{{ 'dashboard.common.billing_data'|trans }}</h3>
+                            <div class="billing-data">
+                                <div class="radio-btn-group" id="radioBtnGroup">
+                                    {% for company in companies %}
+                                        <div class="radio-group {{ company.favorite ? 'checked-input' : '' }}" data-index="{{ company.uuid }}">
+                                            <div class="radio-content">
+                                                <input type="radio" id="{{ company.uuid }}"
+                                                       name="billingDetails"
+                                                       value="{{ company.uuid }}"
+                                                       required="required"
+                                                        {{ company.favorite ? 'checked' : '' }}
+                                                        data-favorite="{{ company.favorite ? 1 : 0 }}"
+                                                />
+                                                <label for="{{ company.uuid }}">
+                                                    {{ company.companyName }}
+                                                    <span>
+                                                        {{ company.address }},
+                                                        {{ company.county.name }},
+                                                        {{ company.city.name }}
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a href="#" class="modify-company" data-index="{{ company.uuid }}">
+                                                    {{ 'dashboard.common.modify'|trans }}
+                                                </a>
+                                                <a href="#" class="delete-company" data-index="{{ company.uuid }}">
+                                                    {{ 'dashboard.common.delete'|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <a href="#" class="add-new-company" data-bs-toggle="modal"
+                                   data-bs-target="#modalAddCompany">
+                                    <span>＋</span>
+                                    {{ 'dashboard.my_plan.plan_billing_address_add_new'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Start: Modal for changing billing -->
+        {% include "frontend/pages/package-order/modal-add-company.html.twig" %}
+        <!-- End: Modal for changing billing -->
+    </div>
+{% endblock %}
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/profile/myPlan.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/profile/formMessageHelper.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/profile/validationHelper.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/profile/orderDetails.js') }}"></script>
+{% endblock %}

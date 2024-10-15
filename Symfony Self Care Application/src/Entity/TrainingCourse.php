@@ -72,6 +72,12 @@ class TrainingCourse
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startCourseDate = null;
 
+    /**
+     * @var Collection<int, EntityDisplayLog>
+     */
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'course')]
+    private Collection $entityDisplayLogs;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -99,6 +105,7 @@ class TrainingCourse
         $this->createdAt = new DateTime();
         $this->trainingCourseTranslations = new ArrayCollection();
         $this->categoryCourses = new ArrayCollection();
+        $this->entityDisplayLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -424,6 +431,36 @@ class TrainingCourse
     public function setFormat(string $format): static
     {
         $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDisplayLog>
+     */
+    public function getEntityDisplayLogs(): Collection
+    {
+        return $this->entityDisplayLogs;
+    }
+
+    public function addEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if (!$this->entityDisplayLogs->contains($entityDisplayLog)) {
+            $this->entityDisplayLogs->add($entityDisplayLog);
+            $entityDisplayLog->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if ($this->entityDisplayLogs->removeElement($entityDisplayLog)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDisplayLog->getCourse() === $this) {
+                $entityDisplayLog->setCourse(null);
+            }
+        }
 
         return $this;
     }

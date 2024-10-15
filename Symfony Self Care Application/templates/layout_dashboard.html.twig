@@ -157,6 +157,8 @@
                     'modify': '{{ 'dashboard.common.modify' | trans }}',
                     'add_new_address': '{{ 'dashboard.common.add_new_address' | trans }}',
                     'delete': '{{ 'dashboard.common.delete' | trans }}',
+                    'plan_change': '{{ 'dashboard.my_plan.plan_change'|trans }}',
+                    'plan_update': '{{ 'dashboard.my_plan.plan_update'|trans }}'
                 },
                 'actions': {
                     'load_more': '{{ 'dashboard.actions.load_more' | trans }}',
@@ -265,6 +267,13 @@
         //API counties
         window.countyApiPath = '{{ path('ajax_counties') }}';
         window.companyDetails = '{{ asset('assets/dashboard/media/my-account/companyDetails.json') }}';
+
+        window.userBillingAddressActions = '{{ path('ajax_user_billing_address_actions') }}';
+        window.userBillingAddress = '{{ path('ajax_get_user_billing_address') }}';
+        window.userBillingAddresses = '{{ path('ajax_get_user_billing_addresses') }}';
+
+        window.userBillingAddressActionModerate = '{{ path('ajax_get_user_billing_address_action', {'action': 'moderate'}) }}';
+        window.userBillingAddressActionRemove = '{{ path('ajax_get_user_billing_address_action', {'action': 'remove'}) }}';
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>

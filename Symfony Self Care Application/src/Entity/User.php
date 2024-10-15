@@ -117,6 +117,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $favorites;
 
+    /**
+     * @var Collection<int, UserBillingData>
+     */
+    #[ORM\OneToMany(targetEntity: UserBillingData::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $userBillingData;
+
+    /**
+     * @var Collection<int, Payment>
+     */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $payments;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?MembershipPackage $membershipPackage = null;
+
     public function __construct()
     {
         $this->trainingCourses = new ArrayCollection();
@@ -126,6 +141,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->companies = new ArrayCollection();
         $this->companyReviews = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->userBillingData = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -610,5 +627,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             self::USER_CLIENT => self::USER_CLIENT,
             self::USER_COMPANY => self::USER_COMPANY,
         ];
+    }
+
+    /**
+     * @return Collection<int, UserBillingData>
+     */
+    public function getUserBillingData(): Collection
+    {
+        return $this->userBillingData;
+    }
+
+    public function addUserBillingData(UserBillingData $userBillingData): static
+    {
+        if (!$this->userBillingData->contains($userBillingData)) {
+            $this->userBillingData->add($userBillingData);
+            $userBillingData->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserBillingData(UserBillingData $userBillingData): static
+    {
+        if ($this->userBillingData->removeElement($userBillingData)) {
+            // set the owning side to null (unless already changed)
+            if ($userBillingData->getUser() === $this) {
+                $userBillingData->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): static
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getUser() === $this) {
+                $payment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMembershipPackage(): ?MembershipPackage
+    {
+        return $this->membershipPackage;
+    }
+
+    public function setMembershipPackage(?MembershipPackage $membershipPackage): static
+    {
+        $this->membershipPackage = $membershipPackage;
+
+        return $this;
     }
 }

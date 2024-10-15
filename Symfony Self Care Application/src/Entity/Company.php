@@ -21,6 +21,8 @@ class Company
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
 
+    const ENTITY_NAME = 'company';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -149,6 +151,12 @@ class Company
     #[ORM\OneToMany(targetEntity: EventWinner::class, mappedBy: 'company', orphanRemoval: true)]
     private Collection $eventWinners;
 
+    /**
+     * @var Collection<int, EntityDisplayLog>
+     */
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'company')]
+    private Collection $entityDisplayLogs;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -168,6 +176,7 @@ class Company
         $this->trainingCourses = new ArrayCollection();
         $this->companyReviews = new ArrayCollection();
         $this->eventWinners = new ArrayCollection();
+        $this->entityDisplayLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -821,6 +830,36 @@ class Company
             // set the owning side to null (unless already changed)
             if ($eventWinner->getCompany() === $this) {
                 $eventWinner->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDisplayLog>
+     */
+    public function getEntityDisplayLogs(): Collection
+    {
+        return $this->entityDisplayLogs;
+    }
+
+    public function addEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if (!$this->entityDisplayLogs->contains($entityDisplayLog)) {
+            $this->entityDisplayLogs->add($entityDisplayLog);
+            $entityDisplayLog->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if ($this->entityDisplayLogs->removeElement($entityDisplayLog)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDisplayLog->getCompany() === $this) {
+                $entityDisplayLog->setCompany(null);
             }
         }
 

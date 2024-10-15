@@ -11,9 +11,17 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MembershipPackageRepository::class)]
-#[UniqueEntity(fields: ['slug'], message: 'A article with this name already exists.', errorPath: 'name')]
+#[UniqueEntity(fields: ['slug'], message: 'A package with this name already exists.', errorPath: 'name')]
 class MembershipPackage
 {
+    const MONTHLY = 'monthly';
+    const YEARLY = 'yearly';
+
+    const PACKAGE_FREE = 'gratuit';
+    const PACKAGE_SILVER = 'silver-help';
+    const PACKAGE_GOLD = 'gold-help';
+    const PACKAGE_DIAMOND = 'diamond-help';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -40,11 +48,26 @@ class MembershipPackage
     #[ORM\Column(length: 20)]
     private ?string $status = null;
 
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $maxJobPerMonth = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $maxArticlePerMonth = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $maxGenerateArticlePerMonth = null;
+
     /**
      * @var Collection<int, MembershipPackageTranslation>
      */
     #[ORM\OneToMany(targetEntity: MembershipPackageTranslation::class, mappedBy: 'membershipPackage', orphanRemoval: true)]
     private Collection $membershipPackageTranslations;
+
+    /**
+     * @var Collection<int, Payment>
+     */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'membershipPackage', orphanRemoval: true)]
+    private Collection $payments;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -52,11 +75,22 @@ class MembershipPackage
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deletedAt = null;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'membershipPackage')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->uuid = Uuid::v4();
+        $this->maxJobPerMonth = 0;
+        $this->maxArticlePerMonth = 0;
+        $this->maxGenerateArticlePerMonth = 0;
         $this->createdAt = new \DateTime();
         $this->membershipPackageTranslations = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,7 +124,7 @@ class MembershipPackage
 
     public function getPrice(): ?string
     {
-        return $this->price;
+        return round($this->price, 2);
     }
 
     public function setPrice(string $price): static
@@ -215,6 +249,26 @@ class MembershipPackage
     }
 
     /**
+     * This function calculates the discounted price per month for the yearly plan.
+     * It multiplies the monthly price by 12 to get the yearly price, then applies the discount.
+     *
+     * @return float|null
+     */
+    public function getYearlyPrice(): ?float
+    {
+        // Calculate the yearly price by multiplying the monthly price by 12
+        $yearlyPrice = $this->price * 12;
+
+        // Apply the discount if it's greater than 0
+        if ($this->discount > 0) {
+            $discountedYearlyPrice = $yearlyPrice - ($yearlyPrice * ($this->discount / 100));
+            return round($discountedYearlyPrice, 2);
+        }
+
+        return round($yearlyPrice, 2);
+    }
+
+    /**
      * @param $locale
      * @return MembershipPackageTranslation|null
      */
@@ -227,5 +281,146 @@ class MembershipPackage
         }
 
         return null;
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public static function getPlans(): array
+    {
+        return [
+            self::MONTHLY => self::MONTHLY,
+            self::YEARLY => self::YEARLY
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getPackages(): array
+    {
+        return [
+            self::PACKAGE_DIAMOND => self::PACKAGE_DIAMOND,
+            self::PACKAGE_GOLD => self::PACKAGE_GOLD,
+            self::PACKAGE_SILVER => self::PACKAGE_SILVER,
+            self::PACKAGE_FREE => self::PACKAGE_FREE
+        ];
+    }
+
+
+    /**
+     * Remove multiple packages from the array.
+     *
+     * @param $packages
+     * @param array $packagesToExclude
+     * @return string[]
+     */
+    public static function getPackagesExcluding($packages, array $packagesToExclude): array
+    {
+        // Loop through the packages to exclude and remove them
+        foreach ($packagesToExclude as $package) {
+            if (isset($packages[$package])) {
+                unset($packages[$package]);
+            }
+        }
+
+        return $packages;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setMembershipPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): static
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getMembershipPackage() === $this) {
+                $payment->setMembershipPackage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setMembershipPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getMembershipPackage() === $this) {
+                $user->setMembershipPackage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMaxJobPerMonth(): ?int
+    {
+        return $this->maxJobPerMonth;
+    }
+
+    public function setMaxJobPerMonth(int $maxJobPerMonth): static
+    {
+        $this->maxJobPerMonth = $maxJobPerMonth;
+
+        return $this;
+    }
+
+    public function getMaxArticlePerMonth(): ?int
+    {
+        return $this->maxArticlePerMonth;
+    }
+
+    public function setMaxArticlePerMonth(int $maxArticlePerMonth): static
+    {
+        $this->maxArticlePerMonth = $maxArticlePerMonth;
+
+        return $this;
+    }
+
+    public function getMaxGenerateArticlePerMonth(): ?int
+    {
+        return $this->maxGenerateArticlePerMonth;
+    }
+
+    public function setMaxGenerateArticlePerMonth(int $maxGenerateArticlePerMonth): static
+    {
+        $this->maxGenerateArticlePerMonth = $maxGenerateArticlePerMonth;
+
+        return $this;
     }
 }

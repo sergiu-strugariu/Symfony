@@ -3,11 +3,61 @@
 {% block content %}
     <div class="px-0 mt-5 favorites">
         <div class="filters">
-            <h1 class="favorite-text pb-4">{{ 'dashboard.favorites.favorite'|trans }}</h1>
-            <form id="favoriteFilter" class="mb-4">
+            <h1 class="favorite-text pb-5">{{ 'dashboard.favorites.favorite'|trans }}</h1>
+            <div class="slider-filter-anchor slick-shelters-anchor">
+                <div class="inner">
+                    <h2>Îți recomandăm:</h2>
+                    <div class="list-wrapper recommended-resources">
+                        <div class="slick-shelters has-loader">
+                            <div class="shelter" data-index="0">
+                                <div class="shelter-overlay"></div>
+                                <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
+                                    <a href="#/childcare-services" class="details-link">cere detalii</a>
+                                </div>
+                                <div class="image-content">
+                                    <h3>Azil Privat</h3>
+                                    <p>București, Bucureşti</p>
+                                </div>
+                            </div>
+                            <div class="shelter" data-index="1">
+                                <div class="shelter-overlay"></div>
+                                <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
+                                    <a href="#/seniorcare" class="details-link">cere detalii</a>
+                                </div>
+                                <div class="image-content">
+                                    <h3>Casa Del Santos</h3>
+                                    <p>Casa Fabian</p>
+                                </div>
+                            </div>
+                            <div class="shelter" data-index="2">
+                                <div class="shelter-overlay"></div>
+                               <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
+                                    <a href="#/family-care" class="details-link">cere detalii</a>
+                                </div>
+                                <div class="image-content">
+                                    <h3>Ştefăneştii De Jos, Ilfov</h3>
+                                    <p>Timişoara, Timiş</p>
+                                </div>
+                            </div>
+                            <div class="shelter" data-index="3">
+                                <div class="shelter-overlay"></div>
+                            <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
+                                    <a href="#/healthcare-solutions" class="details-link">cere detalii</a>
+                                </div>
+                                <div class="image-content">
+                                    <h3>Casa Lenalia</h3>
+                                    <p>Bistriţa, Neamt</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="favoriteFilter" class="mb-5">
                 <div class="agenda-filter-sort row align-items-center">
                     <div class="agenda-filter form-group col-md-6 ">
-                        <p class="favorite-text pb-5">{{ 'common.filter_for'|trans }}:</p>
+                        <p class="favorite-text">{{ 'common.filter_for'|trans }}:</p>
                         <div class="filter-box">
                             <select data-control="select2" id="contractFilter" class="contract-filter"
                                     name="contractFilter">
@@ -28,6 +78,27 @@
                                 </option>
                             </select>
                             <div id="contract-list" class="contract-suggestions"></div>
+                        </div>
+                        <div class="filter-box">
+                            <select data-control="select2" id="userFilter" class="user-filter"
+                                    name="userFilter">
+                                <option value="all">
+                                    User
+                                </option>
+                                <option value="id_1">
+                                   id_1
+                                </option>
+                                <option value="id_2">
+                                   id_2
+                                </option>
+                                <option value="id_3">
+                                    id_3
+                                </option>
+                                <option value="id_4">
+                                   id_4
+                                </option>
+                            </select>
+                            <div id="user-list" class="user-suggestions"></div>
                         </div>
                     </div>
                     <div class="catalogue-sort form-group col-md-6s">
@@ -51,6 +122,8 @@
         <div class="no-items-message" style="display: none;">
             {{ 'dashboard.favorites.no_items'|trans }}
         </div>
+
+       
     </div>
 {% endblock %}
 {% block page_javascripts %}

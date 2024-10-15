@@ -6,6 +6,7 @@ use App\Entity\TrainingCourse;
 use App\Entity\TrainingCourseTranslation;
 use App\Entity\User;
 use App\Form\Type\TrainingCourseFormType;
+use App\Helper\MembershipHelper;
 use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
 use DateTime;
@@ -30,7 +31,7 @@ class TrainingController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/course/create', name: 'dashboard_training_create')]
-    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator): Response
+    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
         $course = new TrainingCourse();
 
@@ -87,6 +88,10 @@ class TrainingController extends AbstractController
             $em->persist($courseTranslation);
             $em->flush();
 
+
+            // Insert item in EntityLog
+            $helper->insertEntityLog($course, TrainingCourse::ENTITY_NAME);
+
             // Set flash message
             $this->addFlash('success', $translator->trans('controller.success_item_added', [], 'messages'));
             return $this->redirectToRoute('dashboard_training_index');
@@ -102,7 +107,7 @@ class TrainingController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/course/{uuid}/edit', name: 'dashboard_training_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $uuid, TranslatorInterface $translator): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, $uuid): Response
     {
         $course = $em->getRepository(TrainingCourse::class)->findOneBy(['uuid' => $uuid]);
 
@@ -195,7 +200,7 @@ class TrainingController extends AbstractController
     }
 
     #[Route('/dashboard/course/actions/{action}/{uuid}', name: 'dashboard_training_actions')]
-    public function actions(EntityManagerInterface $em, $action, $uuid, TranslatorInterface $translator): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, $action, $uuid): Response
     {
         /** @var TrainingCourse $course */
         $course = $em->getRepository(TrainingCourse::class)->findOneBy(['uuid' => $uuid]);
@@ -221,7 +226,7 @@ class TrainingController extends AbstractController
         $em->flush();
 
         // Set flash message
-        $this->addFlash('success', sprintf($translator->trans('controller.success_multiple', [], 'messages'), $action === 'moderate' ?  $translator->trans('controller.moderated', [], 'messages') : $translator->trans('controller.deleted', [], 'messages')));
+        $this->addFlash('success', sprintf($translator->trans('controller.success_multiple', [], 'messages'), $action === 'moderate' ? $translator->trans('controller.moderated', [], 'messages') : $translator->trans('controller.deleted', [], 'messages')));
 
         // Redirect to listing page
         return $this->redirectToRoute('dashboard_training_index');

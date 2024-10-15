@@ -38,7 +38,8 @@ class MembershipPackageController extends AbstractController
         $form = $this->createForm(MembershipPackageForm::class, $package);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted() && $form->isValid() && in_array($package->getSlug(), MembershipPackage::getPackages())) {
             // get data from the form
             $file = $form->get('fileName')->getData();
 
@@ -170,7 +171,7 @@ class MembershipPackageController extends AbstractController
         switch ($action) {
             case 'remove':
                 // Soft delete
-                $package->setDeletedAt(new DateTime());
+                // $package->setDeletedAt(new DateTime());
                 break;
             case 'moderate':
                 // Update status

@@ -7,6 +7,7 @@ use App\Entity\CategoryArticle;
 use App\Entity\Language;
 use App\Entity\User;
 use App\Helper\DefaultHelper;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -286,5 +287,27 @@ class ArticleRepository extends ServiceEntityRepository
             ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param User $user
+     * @param bool $isGenerated
+     * @return int
+     */
+    public function countByUserForCurrentMonth(User $user, bool $isGenerated = false): int
+    {
+        return $this->createQueryBuilder('entity')
+            ->select('COUNT(entity.id)')
+            ->where('entity.deletedAt IS NULL')
+            ->andWhere('entity.status = :status')
+            ->andWhere('entity.user = :user')
+            ->andWhere('entity.isGenerated = :generated')
+            ->andWhere('entity.createdAt >= :startOfMonth')
+            ->setParameter('user', $user)
+            ->setParameter('generated', $isGenerated)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->setParameter('startOfMonth', new DateTime('first day of this month'))
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

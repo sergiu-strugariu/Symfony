@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Company;
 use App\Entity\CompanyReview;
 use App\Entity\County;
+use App\Entity\MembershipPackage;
 use App\Entity\User;
 use App\Helper\DefaultHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -121,12 +122,13 @@ class CompanyRepository extends ServiceEntityRepository
 
     /**
      * @param string $locationType
+     * @param string $package
      * @param object|null $category
-     * @param bool $count
      * @param int $limit
+     * @param bool $count
      * @return bool|float|int|mixed|string|null
      */
-    public function getCompaniesByType(string $locationType, object $category = null, int $limit = 7, bool $count = false): mixed
+    public function getCompaniesByType(string $locationType, object $category = null, int $limit = 7, string $package = '', bool $count = false): mixed
     {
         // Query for filter results
         $queryBuilder = $this->createQueryBuilder('c')
@@ -136,6 +138,9 @@ class CompanyRepository extends ServiceEntityRepository
             ->leftJoin('c.categoryServices', 'cs')
             ->leftJoin('c.companyGalleries', 'gal')
             ->leftJoin('c.companyReviews', 'r', 'WITH', 'r.status = :approved')
+            ->leftJoin('c.entityDisplayLogs', 'log')
+            ->leftJoin('c.user', 'user')
+            ->leftJoin('user.membershipPackage', 'package')
             ->where('c.deletedAt IS NULL')
             ->andWhere('c.status = :status')
             ->andWhere('c.locationType = :type')
@@ -159,6 +164,12 @@ class CompanyRepository extends ServiceEntityRepository
             }
         }
 
+        if (!empty($package)) {
+            $queryBuilder
+                ->andWhere('package.slug = :packageSlug')
+                ->setParameter('packageSlug', $package);
+        }
+
         if ($count) {
             return $queryBuilder
                 ->select("COUNT(DISTINCT c.id)")
@@ -167,8 +178,10 @@ class CompanyRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder
+            ->setParameter('defaultImage', $this->helper->getEnvValue('app_default_image'))
             ->select("
                 c.id,
+                package.slug as packageName,
                 c.name,
                 c.slug,
                 COALESCE(c.fileName, :defaultImage) as fileName,
@@ -177,10 +190,10 @@ class CompanyRepository extends ServiceEntityRepository
                 cty.name as county,
                 ciy.name as city"
             )
-            ->setParameter('defaultImage', $this->helper->getEnvValue('app_default_image'))
             ->setMaxResults($limit)
-            ->orderBy('c.id', 'DESC')
             ->groupBy('c.id')
+            ->orderBy('package.price', 'DESC')
+            ->addOrderBy('log.displayCount', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -209,70 +222,71 @@ class CompanyRepository extends ServiceEntityRepository
 
     /**
      * @param Company $company
-     * @param string $type
-     * @param int $limit
-     * @return mixed
-     */
-    public function getCompanyByCounty(Company $company, string $type = Company::LOCATION_TYPE_CARE, int $limit = 4): mixed
-    {
-        $queryBuilder = $this->createQueryBuilder('c')
-            ->where('c.deletedAt IS NULL')
-            ->andWhere('c.id != :id')
-            ->andWhere('c.status = :status')
-            ->andWhere('c.locationType = :type')
-            ->andWhere('c.county = :county')
-            ->setParameter('id', $company->getId())
-            ->setParameter('county', $company->getCounty())
-            ->setParameter('status', Company::STATUS_PUBLISHED)
-            ->setParameter('type', $type)
-            ->setMaxResults($limit);
-
-        // Dynamic order by
-        return $queryBuilder
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param Company $company
-     * @param object|null $category
+     * @param string $package
+     * @param bool $isCategory
+     * @param bool $isCounty
      * @param int $limit
      * @return bool|float|int|mixed|string|null
      */
-    public function getCompaniesByCategory(Company $company, object $category = null, int $limit = 4): mixed
+    public function getCompaniesByCategoryOrCounty(Company $company, string $package, bool $isCategory, bool $isCounty, int $limit): mixed
     {
         // Query for filter results
         $queryBuilder = $this->createQueryBuilder('c')
             ->leftJoin('c.county', 'cty')
             ->leftJoin('c.city', 'ciy')
+            ->leftJoin('c.entityDisplayLogs', 'log')
+            ->leftJoin('c.user', 'user')
+            ->leftJoin('user.membershipPackage', 'package')
             ->where('c.deletedAt IS NULL')
             ->andWhere('c.id != :id')
             ->andWhere('c.status = :status')
             ->andWhere('c.locationType = :type')
+            ->andWhere('package.slug = :packageSlug')
             ->setParameter('id', $company->getId())
             ->setParameter('type', $company->getLocationType())
+            ->setParameter('packageSlug', $package)
             ->setParameter('status', Company::STATUS_PUBLISHED);
 
-        // Filter by @categorySlug
-        if (!empty($category)) {
+        // Filter by @category
+        if ($isCategory) {
             switch ($company->getLocationType()) {
                 case Company::LOCATION_TYPE_CARE:
                     $queryBuilder
                         ->andWhere(':categoryCare MEMBER OF c.categoryCares')
-                        ->setParameter('categoryCare', $category);
+                        ->setParameter('categoryCare', $company->getCategoryCares()->first());
                     break;
                 case Company::LOCATION_TYPE_PROVIDER:
                     $queryBuilder
                         ->andWhere(':categoryService MEMBER OF c.categoryServices')
-                        ->setParameter('categoryService', $category);
+                        ->setParameter('categoryService', $company->getCategoryServices()->first());
                     break;
             }
         }
 
+        // Filter by @county
+        if ($isCounty) {
+            $queryBuilder
+                ->andWhere('c.county = :county')
+                ->setParameter('county', $company->getCounty());
+        }
+
         return $queryBuilder
+            ->setParameter('defaultImage', $this->helper->getEnvValue('app_default_image'))
+            ->select("
+                c.id,
+                c.name,
+                c.slug,
+                c.averageRating,
+                c.locationType,
+                cty.name as county,
+                ciy.name as city,
+                package.slug as packageName,
+                COALESCE(c.fileName, :defaultImage) as fileName"
+            )
             ->setMaxResults($limit)
-            ->orderBy('c.id', 'DESC')
             ->groupBy('c.id')
+            ->orderBy('package.price', 'DESC')
+            ->addOrderBy('log.displayCount', 'ASC')
             ->getQuery()
             ->getResult();
     }

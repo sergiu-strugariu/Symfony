@@ -2,6 +2,7 @@
 
 namespace App\Controller\Frontend;
 
+use App\Entity\MembershipPackage;
 use App\Entity\User;
 use App\Form\Type\RegisterFormType;
 use App\Helper\DefaultHelper;
@@ -152,6 +153,18 @@ class SecurityController extends AbstractController
 
             // Check email send
             if ($emailSend) {
+                // Check company ROLE
+                if ($user->hasRole(User::ROLE_COMPANY)) {
+                    /**
+                     * Get free package
+                     * @var MembershipPackage $package
+                     */
+                    $package = $em->getRepository(MembershipPackage::class)->findOneBy(['slug' => MembershipPackage::PACKAGE_FREE]);
+
+                    // Set membership
+                    $user->setMembershipPackage($package);
+                }
+
                 // Enable user account
                 $user->setEnabled(true);
                 $user->setConfirmationToken(null);

@@ -13,9 +13,14 @@ use App\Entity\Event;
 use App\Entity\Job;
 use App\Entity\MembershipPackage;
 use App\Entity\Page;
+use App\Entity\Payment;
 use App\Entity\TrainingCourse;
+use App\Entity\User;
+use App\Entity\UserBillingData;
 use App\Helper\BreadcrumbsHelper;
+use App\Helper\FormValidatorHelper;
 use App\Helper\LanguageHelper;
+use App\Helper\MembershipHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -161,38 +166,66 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/camine', name: 'app_company')]
-    public function companies(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    public function companies(EntityManagerInterface $em, MembershipHelper $helper): Response
     {
         /** @var Page $page */
-        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "companies"]);
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'companies']);
 
-        /**
-         * Get items
-         * @var Company $companies
-         */
-        $recommended = $em->getRepository(Company::class)->getCompaniesByType(Company::LOCATION_TYPE_CARE);
+        $limit = 4;
+        $companies = [];
 
+        // All packages
+        $packages = MembershipPackage::getPackages();
+
+        // Exclude packages in this section
+        $excludePackages = [MembershipPackage::PACKAGE_FREE];
+
+        /** @var CategoryCare $categories */
         $categories = $em->getRepository(CategoryCare::class)->getCategories();
+
+        // Parse and call by @package
+        foreach ($packages as $package) {
+            /**
+             * Get items by category
+             */
+            $result = $em->getRepository(Company::class)->getCompaniesByType(Company::LOCATION_TYPE_CARE, null, 4, $package);
+
+            // Store results in array by @package
+            $companies[$package] = $result;
+        }
+
+        // Process companies by package and limit
+        $recommended = $helper->filterDataByPackages($companies, $excludePackages, $limit);
+
+        // Parse and increment entityLog
+        $helper->parseEntityLog($recommended, Company::ENTITY_NAME);
 
         return $this->render('frontend/pages/index.html.twig', [
             'page' => $page,
             'categories' => $categories,
             'recommended' => $recommended,
-            'breadcrumbs' => $helper::COMPANIES_BREADCRUMBS
+            'breadcrumbs' => BreadcrumbsHelper::COMPANIES_BREADCRUMBS
         ]);
     }
 
     #[Route('/camin/{slug?}', name: 'app_company_single')]
-    public function singleCompany(EntityManagerInterface $em, BreadcrumbsHelper $helper, LanguageHelper $languageHelper, $slug): Response
+    public function singleCompany(EntityManagerInterface $em, MembershipHelper $helper, $slug): Response
     {
-        $locale = $this->getParameter('default_locale');
-        $language = $languageHelper->getLanguageByLocale($locale);
-
-        $breadcrumbs = $helper::COMPANY_SINGLE_BREADCRUMBS;
+        $breadcrumbs = BreadcrumbsHelper::COMPANY_SINGLE_BREADCRUMBS;
         $companyRepository = $em->getRepository(Company::class);
 
+        $limit = 4;
+        $categoryRecommended = [];
+        $countyRecommended = [];
+
+        // All packages
+        $packages = MembershipPackage::getPackages();
+
+        // Exclude packages in this section
+        $excludePackages = [MembershipPackage::PACKAGE_FREE];
+
         // Check exist slug
-        if (!isset($slug)) {
+        if (empty($slug)) {
             return $this->redirectToRoute('app_company');
         }
 
@@ -200,22 +233,36 @@ class DefaultController extends AbstractController
         $company = $companyRepository->getSingleCompanyBySlug($slug);
 
         // Check exist company
-        if (!isset($company)) {
+        if (empty($company)) {
             return $this->redirectToRoute('app_company');
         }
 
-        $category = $company->getCategoryCares()->first();
-        $categoryName = $category->getTranslation($language->getLocale())->getTitle();
+        // Parse and call by @package
+        foreach ($packages as $package) {
+            /**
+             * Get items by category
+             */
+            $resultCategory = $companyRepository->getCompaniesByCategoryOrCounty($company, $package, true, false, $limit);
 
-        /**
-         * Get items by category
-         * @var Company $recommended
-         */
-        $recommended = $em->getRepository(Company::class)->getCompaniesByCategory($company, $category);
+            /**
+             * Get items by county
+             */
+            $resultCounty = $companyRepository->getCompaniesByCategoryOrCounty($company, $package, false, true, $limit);
 
-        /** @var Company $otherCompanies */
-        $otherCompanies = $companyRepository->getCompanyByCounty($company);
+            // Store results in array by @package
+            $categoryRecommended[$package] = $resultCategory;
+            $countyRecommended[$package] = $resultCounty;
+        }
 
+        // Process companies by package and limit
+        $categoryRows = $helper->filterDataByPackages($categoryRecommended, $excludePackages, $limit);
+        $countyRows = $helper->filterDataByPackages($countyRecommended, $excludePackages, $limit);
+
+        // Parse and increment entityLog
+        $helper->parseEntityLog($categoryRows, Company::ENTITY_NAME);
+        $helper->parseEntityLog($countyRows, Company::ENTITY_NAME);
+
+        // Update breadcrumb page
         $breadcrumbs[] = [
             'name' => $company->getName(),
             'route' => null,
@@ -224,13 +271,11 @@ class DefaultController extends AbstractController
 
         return $this->render('frontend/pages/company.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'pageTitle' => $company->getName(),
+            'company' => $company,
             'galleryImage' => $company->getCompanyGalleries()->first(),
-            'categoryName' => $categoryName,
-            'otherCompanies' => $otherCompanies,
-            'recommended' => $recommended,
-            'reviews' => $company->getApprovedReviews(),
-            'company' => $company
+            'category' => $company->getCategoryCares()->first(),
+            'countyRecommended' => $countyRows,
+            'categoryRecommended' => $categoryRows
         ]);
     }
 
@@ -262,38 +307,65 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/furnizori', name: 'app_provider')]
-    public function providers(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    public function providers(EntityManagerInterface $em, MembershipHelper $helper): Response
     {
         /** @var Page $page */
-        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "providers"]);
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'providers']);
 
-        /**
-         * Get items
-         * @var Company $companies
-         */
-        $recommended = $em->getRepository(Company::class)->getCompaniesByType(Company::LOCATION_TYPE_PROVIDER);
+        $limit = 4;
+        $companies = [];
+
+        // All packages
+        $packages = MembershipPackage::getPackages();
+
+        // Exclude packages in this section
+        $excludePackages = [MembershipPackage::PACKAGE_FREE];
 
         $categories = $em->getRepository(CategoryService::class)->getCategories();
+
+        // Parse and call by @package
+        foreach ($packages as $package) {
+            /**
+             * Get items by category
+             */
+            $result = $em->getRepository(Company::class)->getCompaniesByType(Company::LOCATION_TYPE_PROVIDER, null, 4, $package);
+
+            // Store results in array by @package
+            $companies[$package] = $result;
+        }
+
+        // Process companies by package and limit
+        $recommended = $helper->filterDataByPackages($companies, $excludePackages, $limit);
+
+        // Parse and increment entityLog
+        $helper->parseEntityLog($recommended, Company::ENTITY_NAME);
 
         return $this->render('frontend/pages/index.html.twig', [
             'page' => $page,
             'categories' => $categories,
             'recommended' => $recommended,
-            'breadcrumbs' => $helper::PROVIDERS_BREADCRUMBS
+            'breadcrumbs' => BreadcrumbsHelper::PROVIDERS_BREADCRUMBS
         ]);
     }
 
     #[Route('/furnizor/{slug?}', name: 'app_provider_single')]
-    public function singleProvider(EntityManagerInterface $em, BreadcrumbsHelper $helper, LanguageHelper $languageHelper, $slug): Response
+    public function singleProvider(EntityManagerInterface $em, MembershipHelper $helper, $slug): Response
     {
-        $locale = $this->getParameter('default_locale');
-        $language = $languageHelper->getLanguageByLocale($locale);
-
-        $breadcrumbs = $helper::PROVIDER_SINGLE_BREADCRUMBS;
+        $breadcrumbs = BreadcrumbsHelper::PROVIDER_SINGLE_BREADCRUMBS;
         $providerRepository = $em->getRepository(Company::class);
 
+        $limit = 4;
+        $categoryRecommended = [];
+        $countyRecommended = [];
+
+        // All packages
+        $packages = MembershipPackage::getPackages();
+
+        // Exclude packages in this section
+        $excludePackages = [MembershipPackage::PACKAGE_FREE];
+
         // Check exist slug
-        if (!isset($slug)) {
+        if (empty($slug)) {
             return $this->redirectToRoute('app_provider');
         }
 
@@ -301,18 +373,35 @@ class DefaultController extends AbstractController
         $provider = $providerRepository->getSingleCompanyBySlug($slug, Company::LOCATION_TYPE_PROVIDER);
 
         // Check exist company
-        if (!isset($provider)) {
+        if (empty($provider)) {
             return $this->redirectToRoute('app_provider');
         }
 
-        $category = $provider->getCategoryServices()->first();
-        $categoryName = $category->getTranslation($language->getLocale())->getTitle();
 
-        /**
-         * Get items by category
-         * @var Company $recommended
-         */
-        $recommended = $em->getRepository(Company::class)->getCompaniesByCategory($provider, $category);
+        // Parse and call by @package
+        foreach ($packages as $package) {
+            /**
+             * Get items by category
+             */
+            $resultCategory = $providerRepository->getCompaniesByCategoryOrCounty($provider, $package, true, false, $limit);
+
+            /**
+             * Get items by county
+             */
+            $resultCounty = $providerRepository->getCompaniesByCategoryOrCounty($provider, $package, false, true, $limit);
+
+            // Store results in array by @package
+            $categoryRecommended[$package] = $resultCategory;
+            $countyRecommended[$package] = $resultCounty;
+        }
+
+        // Process companies by package and limit
+        $categoryRows = $helper->filterDataByPackages($categoryRecommended, $excludePackages, $limit);
+        $countyRows = $helper->filterDataByPackages($countyRecommended, $excludePackages, $limit);
+
+        // Parse and increment entityLog
+        $helper->parseEntityLog($categoryRows, Company::ENTITY_NAME);
+        $helper->parseEntityLog($countyRows, Company::ENTITY_NAME);
 
         $breadcrumbs[] = [
             'name' => $provider->getName(),
@@ -322,10 +411,10 @@ class DefaultController extends AbstractController
 
         return $this->render('frontend/pages/provider.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'pageTitle' => $provider->getName(),
-            'categoryName' => $categoryName,
             'provider' => $provider,
-            'recommended' => $recommended
+            'category' => $provider->getCategoryServices()->first(),
+            'countyRecommended' => $countyRows,
+            'categoryRecommended' => $categoryRows
         ]);
     }
 
@@ -541,9 +630,82 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/detalii-comanda/pachet/{slug}', name: 'app_comand_detail')]
-    public function comandDetailPackage(EntityManagerInterface $em): Response
+    public function comandDetailPackage(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, TranslatorInterface $translator, $slug): Response
     {
-        return $this->render('frontend/pages/index.html.twig');
+        $billingRepository = $em->getRepository(UserBillingData::class);
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /**
+         * Get package by @slug
+         * @var MembershipPackage $package
+         */
+        $package = $em->getRepository(MembershipPackage::class)->findOneBy(['slug' => $slug]);
+
+        // Check exist package
+        if (empty($package) || empty($user) || $package->getSlug() === MembershipPackage::PACKAGE_FREE) {
+            return $this->redirectToRoute('app_packages');
+        }
+
+        /**
+         * Get favorites @user billings
+         * @var UserBillingData $billings
+         */
+        $billings = $billingRepository->findBy(['user' => $user], ['isFavorite' => 'DESC']);
+
+        // Get method and validate fields
+        if ($request->isMethod('POST')) {
+            // Retrieve form data from request
+            $formData = $request->request->all();
+
+            // monthly and yearly
+            $packagePlan = $formData['selectedPackage'];
+
+            /**
+             * Get billing by @uuid
+             * @var UserBillingData $billing
+             */
+            $billing = $billingRepository->findOneBy(['uuid' => $formData['billingDetail']]);
+
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors
+            if ($validate['checkErrors'] || empty($billing) || !in_array($packagePlan, MembershipPackage::getPlans())) {
+                // Set flash message and redirect
+                $this->addFlash('danger', $translator->trans('form.default.default_all_field_required', [], 'messages'));
+                return $this->redirectToRoute('app_comand_detail', array_filter([
+                    'slug' => $slug,
+                    'packagePlan' => $packagePlan
+                ]));
+            }
+
+            // Insert new payment
+            $payment = new Payment();
+            $payment->setMembershipPackage($package);
+            $payment->setUserBillingData($billing);
+            $payment->setUser($user);
+            $payment->setStatus(Payment::PAYMENT_STATUS_PENDING);
+            $payment->setPrice($packagePlan === MembershipPackage::YEARLY ? $package->getYearlyPrice() : $package->getPrice());
+            $payment->setPlan($packagePlan);
+
+            // Persist and save
+            $em->persist($payment);
+            $em->flush();
+
+            // Redirect to pay
+            return $this->redirectToRoute('app_payment', ['uuid' => $payment->getUuid()]);
+        }
+
+        return $this->render('frontend/pages/package-order.html.twig', [
+            'package' => $package,
+            'user' => $user,
+            'billings' => $billings
+        ]);
     }
 
     #[Route('/trimite-feedback', name: 'app_feedback')]
@@ -585,7 +747,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/404', name: 'app_404')]
+    #[Route('/404', name: 'app_404')]
     public function error404(EntityManagerInterface $em): Response
     {
         /** @var Page $page */

@@ -45,6 +45,10 @@ parameters:
     elasticsearch_course_index: '%env(ELASTICSEARCH_COURSE_INDEX)%'
     elasticsearch_job_index: '%env(ELASTICSEARCH_JOB_INDEX)%'
     elasticsearch_company_index: '%env(ELASTICSEARCH_COMPANY_INDEX)%'
+    netopia_url: '%env(NETOPIA_URL)%'
+    netopia_signature: '%env(NETOPIA_SIGNATURE)%'
+    netopia_public_key_path: '%kernel.project_dir%/%env(NETOPIA_PUBLIC_KEY_PATH)%'
+    netopia_private_key_path: '%kernel.project_dir%/%env(NETOPIA_PRIVATE_KEY_PATH)%'
 twig:
     globals:
         app_name: '%app_name%'
@@ -127,6 +131,10 @@ services:
             $region: '%env(CLOUDFLARE_R2_REGION)%'
             $endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'
             $bucket: '%env(CLOUDFLARE_R2_BUCKET)%'
+    App\Helper\NetopiaHelper:
+        arguments:
+            $baseUrl: '%netopia_url%'
+            $signature: '%netopia_signature%'
     fos_elastica.index.article:
         class: Elastica\Index
         factory: [ '@fos_elastica.client.default', 'getIndex' ]

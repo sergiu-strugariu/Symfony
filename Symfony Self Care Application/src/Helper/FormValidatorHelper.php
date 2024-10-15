@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use App\Validator\Cui;
+use App\Validator\Iban;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -86,6 +88,14 @@ class FormValidatorHelper
                 ])
             ],
             'emailAddress' => [
+                new Assert\NotBlank([
+                    'message' => $this->translator->trans('form.email.required', [], 'messages')
+                ]),
+                new Assert\Email([
+                    'message' => $this->translator->trans('form.email.email', [], 'messages')
+                ])
+            ],
+            'email' => [
                 new Assert\NotBlank([
                     'message' => $this->translator->trans('form.email.required', [], 'messages')
                 ]),
@@ -198,6 +208,31 @@ class FormValidatorHelper
                     'message' => $this->translator->trans('form.password.required', [], 'messages')
                 ]),
                 new Callback([$this, 'validatePasswordsMatch']),
+            ],
+            'cui' => [
+                new Assert\NotBlank([
+                    'message' => $this->translator->trans('form.default.default_field_required', [], 'messages')
+                ]),
+                new Assert\Length([
+                    'min' => 3,
+                    'minMessage' => $this->translator->trans('form.name.minlength', [], 'messages')
+                ]),
+                new Cui('CUI invalid.')
+            ],
+            'companyRegisterNumber' => [
+                new Assert\NotBlank([
+                    'message' => $this->translator->trans('form.companyRegisterNumber.required', [], 'messages')
+                ]),
+                new Regex([
+                    'pattern' => '/^[JFCjfc][0-9]{2}\/[0-9]+\/(19|20)[0-9]{2}$/',
+                    'message' => $this->translator->trans('form.companyRegisterNumber.regNumber', [], 'messages')
+                ])
+            ],
+            'iban' => [
+                new Assert\NotBlank([
+                    'message' => $this->translator->trans('form.iban.required', [], 'messages')
+                ]),
+                new Iban($this->translator->trans('form.iban.required', [], 'messages'))
             ],
             'default' => [
                 new Assert\NotBlank([

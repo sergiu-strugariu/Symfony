@@ -1,0 +1,109 @@
+<div class="modal fade" id="modalAddCompany" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-close" aria-label="Close" data-dismiss="modal" data-bs-dismiss="modal">
+                <img src="{{ asset('assets/frontend/images/homepage/slider-filter-anchor/modal-close.svg') }}"
+                     width="26"
+                     height="26"
+                     alt="modal-close"
+                />
+            </div>
+            <div class="modal-body">
+                <form id="modalAddCompanyForm">
+                    <input type="hidden" name="uuid" value="0"/>
+                    <!--begin::Form message-->
+                    <div class="form-message-modal"></div>
+                    <!--end::Form message-->
+                    <h3 id="modalTitle">{{ 'packages.legal_entity'|trans }}</h3>
+                    <div class="board">
+                        <label for="companyName">{{ 'dashboard.table.care_name'|trans }}</label>
+                        <input type="text"
+                               name="companyName"
+                               id="companyName"
+                               placeholder="{{ 'form.name.required'|trans }}"
+                               required
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="cui">{{ 'form.cui.field_name'|trans }}</label>
+                        <input type="text"
+                               name="cui"
+                               id="cui"
+                               placeholder="{{ 'form.placeholder.cui'|trans }}"
+                               required
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="companyRegisterNumber">{{ 'form.companyRegisterNumber.field_name'|trans }}</label>
+                        <input type="text"
+                               name="companyRegisterNumber"
+                               id="companyRegisterNumber"
+                               placeholder="{{ 'form.placeholder.register_number'|trans }}"
+                               required
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="iban">{{ 'form.iban.field_name'|trans }}</label>
+                        <input type="text"
+                               name="iban"
+                               id="iban"
+                               placeholder="{{ 'form.placeholder.iban_name'|trans }}"
+                               required
+                        />
+                    </div>
+                    <p>{{ 'packages.contact_data'|trans }}</p>
+                    <div class="board">
+                        <label for="email">{{ 'menu.email_link'|trans }}</label>
+                        <input type="email"
+                               name="email"
+                               id="email"
+                               placeholder="{{ 'form.placeholder.email'|trans }}"
+                               required
+                        />
+                    </div>
+                    <div class="board">
+                        <label for="phone">{{ 'menu.phone_link'|trans }}</label>
+                        <input type="text"
+                               name="phone"
+                               id="phone"
+                               placeholder="{{ 'form.placeholder.phone'|trans }}"
+                               required
+                        />
+                    </div>
+                    <p>{{ 'packages.region_section'|trans }}</p>
+                    <div class="board board-select">
+                        <label for="regionFilter">{{ 'dashboard.form.county'|trans }}</label>
+                        <select id="regionFilter" class="region-filter counties populate-counties" name="county">
+                            <option value="">{{ 'search.county'|trans }}</option>
+                        </select>
+                    </div>
+                    <div class="board board-select">
+                        <label for="city">{{ 'dashboard.form.city'|trans }}</label>
+                        <select id="city" class="region-filter cities" name="city"> 
+                            <option value="">{{ 'dashboard.form.city'|trans }}</option>
+                        </select>
+                    </div>
+                    <div class="board">
+                        <label for="address">{{ 'dashboard.form.address'|trans }}</label>
+                        <input type="text"
+                               name="address"
+                               id="address"
+                               placeholder="{{ 'form.address.placeholder'|trans }}"
+                               required
+                        />
+                    </div>
+                    <ul class="btns-group">
+                        <li>
+                            <input type="submit" class="submit-btn" value="{{ 'auth.save'|trans }}"/>
+                        </li>
+                        <li>
+                            <a href="#" aria-label="Close" data-dismiss="modal" data-bs-dismiss="modal">
+                                {{ 'auth.cancel'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

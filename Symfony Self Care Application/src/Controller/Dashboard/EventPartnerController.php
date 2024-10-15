@@ -16,13 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EventPartnerController extends AbstractController
 {
-    #[Route('/dashboard/event/partners', name: 'dashboard_partner_index')]
+    #[Route('/dashboard/secure/event/partners', name: 'dashboard_partner_index')]
     public function index(): Response
     {
         return $this->render('dashboard/partner/index.html.twig');
     }
 
-    #[Route('/dashboard/event/partner/create', name: 'dashboard_partner_create')]
+    #[Route('/dashboard/secure/event/partner/create', name: 'dashboard_partner_create')]
     public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator): Response
     {
         $partner = new EventPartner();
@@ -66,7 +66,7 @@ class EventPartnerController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/dashboard/event/partner/{uuid}/edit', name: 'dashboard_partner_edit')]
+    #[Route('/dashboard/secure/event/partner/{uuid}/edit', name: 'dashboard_partner_edit')]
     public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, $uuid): Response
     {
         /** @var EventPartner $partner */
@@ -125,7 +125,7 @@ class EventPartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/event/partner/actions/{action}/{uuid}', name: 'dashboard_partner_actions')]
+    #[Route('/dashboard/secure/event/partner/actions/{action}/{uuid}', name: 'dashboard_partner_actions')]
     public function actions(EntityManagerInterface $em, TranslatorInterface $translator, $action, $uuid): Response
     {
         /** @var EventPartner $partner */

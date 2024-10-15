@@ -68,15 +68,6 @@ class Job
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fileName = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deletedAt = null;
-
     /**
      * @var Collection<int, JobTranslation>
      */
@@ -90,12 +81,28 @@ class Job
     #[ORM\JoinTable(name: 'job_has_category')]
     private Collection $categoryJobs;
 
+    /**
+     * @var Collection<int, EntityDisplayLog>
+     */
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'job')]
+    private Collection $entityDisplayLogs;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
+
     public function __construct()
     {
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
         $this->jobTranslations = new ArrayCollection();
         $this->categoryJobs = new ArrayCollection();
+        $this->entityDisplayLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -412,6 +419,36 @@ class Job
     public function setCity(?City $city): static
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDisplayLog>
+     */
+    public function getEntityDisplayLogs(): Collection
+    {
+        return $this->entityDisplayLogs;
+    }
+
+    public function addEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if (!$this->entityDisplayLogs->contains($entityDisplayLog)) {
+            $this->entityDisplayLogs->add($entityDisplayLog);
+            $entityDisplayLog->setJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDisplayLog(EntityDisplayLog $entityDisplayLog): static
+    {
+        if ($this->entityDisplayLogs->removeElement($entityDisplayLog)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDisplayLog->getJob() === $this) {
+                $entityDisplayLog->setJob(null);
+            }
+        }
 
         return $this;
     }

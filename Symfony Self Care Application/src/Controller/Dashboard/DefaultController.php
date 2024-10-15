@@ -8,6 +8,7 @@ use App\Entity\Favorite;
 use App\Entity\Job;
 use App\Entity\TrainingCourse;
 use App\Entity\User;
+use App\Entity\UserBillingData;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,10 +79,22 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/my-plan', name: 'dashboard_my_plan')]
-    public function myPlan(): Response
+    #[Route('/dashboard/my-subscription', name: 'dashboard_my_subscription')]
+    public function mySubscription(EntityManagerInterface $em): Response
     {
-        return $this->render('dashboard/default/my-plan.html.twig', []);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /** @var UserBillingData $companies */
+        $companies = $em->getRepository(UserBillingData::class)->findBy(['user' => $user], ['isFavorite' => 'DESC']);
+
+        /** @var UserBillingData $company */
+        $favoriteCompany = $em->getRepository(UserBillingData::class)->findOneBy(['user' => $user, 'isFavorite' => true]);
+
+        return $this->render('dashboard/default/my-subscription.html.twig', [
+            'companies' => $companies,
+            'favoriteCompany' => $favoriteCompany
+        ]);
     }
 
     #[Route('/dashboard/cache/clear', name: 'dashboard_clear_cache')]

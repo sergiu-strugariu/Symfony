@@ -3,6 +3,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\User;
+use App\Helper\MembershipHelper;
 use DateTime;
 use App\Entity\Job;
 use App\Entity\JobTranslation;
@@ -26,8 +27,17 @@ class JobController extends AbstractController
     }
 
     #[Route('/dashboard/job/create', name: 'dashboard_job_create')]
-    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator): Response
+    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($this->getUser(), Job::ENTITY_NAME);
+
+        // Check status plan
+        if ($getPlan['status']) {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
+            return $this->redirectToRoute('dashboard_job_index');
+        }
+
         $job = new Job();
         $benefitsArray = [];
 
@@ -84,6 +94,9 @@ class JobController extends AbstractController
             $em->persist($jobTranslation);
             $em->flush();
 
+            // Insert item in EntityLog
+            $helper->insertEntityLog($job, Job::ENTITY_NAME);
+
             // Set flash message
             $this->addFlash('success', $translator->trans('controller.success_item_added', [], 'messages'));
             return $this->redirectToRoute('dashboard_job_index');
@@ -97,7 +110,7 @@ class JobController extends AbstractController
     }
 
     #[Route('/dashboard/job/{uuid}/edit', name: 'dashboard_job_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $uuid, TranslatorInterface $translator): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper, $uuid): Response
     {
         $job = $em->getRepository(Job::class)->findOneBy(['uuid' => $uuid]);
         $benefitsArray = [];
@@ -106,6 +119,15 @@ class JobController extends AbstractController
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
 
+            return $this->redirectToRoute('dashboard_job_index');
+        }
+
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($this->getUser(), Job::ENTITY_NAME);
+
+        // Check status plan
+        if ($getPlan['status'] && $job->getStatus() !== DefaultHelper::STATUS_PUBLISHED) {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_job_index');
         }
 
@@ -195,25 +217,34 @@ class JobController extends AbstractController
     }
 
     #[Route('/dashboard/job/actions/{action}/{uuid}', name: 'dashboard_job_actions')]
-    public function actions(EntityManagerInterface $em, $action, $uuid, TranslatorInterface $translator): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, MembershipHelper $helper, $action, $uuid): Response
     {
         /** @var Job $job */
         $job = $em->getRepository(Job::class)->findOneBy(['uuid' => $uuid]);
+
+        if (empty($job)) {
+            // Set flash message
+            $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
+            return $this->redirectToRoute('dashboard_job_index');
+        }
+
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($this->getUser(), Job::ENTITY_NAME);
+
+        // Check status
+        if ($getPlan['status'] && $job->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === 'moderate') {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
+            return $this->redirectToRoute('dashboard_job_index');
+        }
 
         if ($action === 'remove') {
             // Soft delete
             $job->setDeletedAt(new DateTime());
         } elseif ($action === 'moderate') {
-            $job->setStatus($job->getStatus() === Job::STATUS_DRAFT ? Job::STATUS_PUBLISHED : Job::STATUS_DRAFT);
+            $job->setStatus($job->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
         } else {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
-            return $this->redirectToRoute('dashboard_job_index');
-        }
-
-        if (!isset($job)) {
-            // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_job_index');
         }
 
