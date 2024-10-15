@@ -234,9 +234,9 @@ class EducationType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
-            ->add('omcCode', TextType::class, [
-                'required' => false
-            ])
+//            ->add('omcCode', TextType::class, [
+//                'required' => false
+//            ])
             ->add('allowRegistrations', CheckboxType::class, [
                 'required' => false
             ])
@@ -253,7 +253,13 @@ class EducationType extends AbstractType
             ])
             ->add('invoiceServiceName', TextareaType::class, [
                 'required' => false
-            ]);
+            ])
+            ->add('info', TextareaType::class, [
+                'required' => false,
+                'mapped' => false,
+                'data' => !empty($translation) ? $translation->getInfo() : '',
+            ])
+        ;
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData'])

@@ -20,6 +20,26 @@ class EducationRegistration
     const PAYMENT_TYPE_APPLE_PAY = 'APPLE_PAY';
     const PAYMENT_TYPE_CARD_AVANTAJ = 'CARD_AVANTAJ';
     const PAYMENT_TYPE_STAR_BT = 'STAR_BT';
+    const PAYMENY_TYPE_CARD_EMAG = 'CARD_EMAG';
+    const PAYMENY_TYPE_OPTIMO = 'OPTIMO';
+    const PAYMENY_TYPE_GARANTI = 'GARANTI_RO';
+    const PAYMENY_TYPE_UNICREDIT = 'UNICREDIT';
+    const PAYMENY_TYPE_RAIFFEISEN = 'RAIFFEISEN';
+    const PAYMENY_TYPE_BRD = 'BRD_INSTALLMENTS';
+    const PAYMENY_TYPE_BCR = 'BCR_INSTALLMENTS';
+    const PAYMENY_TYPE_ALPHABANK = 'ALPHABANK_INSTALLMENTS';
+    const COMMISSIONS = [
+        self::PAYMENT_TYPE_CARD_AVANTAJ => 5,
+        self::PAYMENT_TYPE_STAR_BT => 5,
+        self::PAYMENY_TYPE_CARD_EMAG => 5,
+        self::PAYMENY_TYPE_OPTIMO => 5,
+        self::PAYMENY_TYPE_GARANTI => 5,
+        self::PAYMENY_TYPE_UNICREDIT => 5,
+        self::PAYMENY_TYPE_RAIFFEISEN => 5,
+        self::PAYMENY_TYPE_BRD => 5,
+        self::PAYMENY_TYPE_BCR => 5,
+        self::PAYMENY_TYPE_ALPHABANK => 5
+    ];
 
     const PAYMENT_STATUS_PENDING = 'pending';
     const PAYMENT_STATUS_SUCCESS = 'success';
@@ -491,12 +511,6 @@ class EducationRegistration
 
         return $this;
     }
-    
-    public function getPaymentWithVAT() {
-        $price = $this->paymentAmount;
-        
-        return round($price * (1 + $this->paymentVat / 100), 2);
-    }
 
     public function getContractNumber(): ?int
     {
@@ -534,13 +548,39 @@ class EducationRegistration
         return $this;
     }
     
+    public function getPaymentWithVAT() {
+        $price = $this->paymentAmount;
+        
+        return round($price * (1 + $this->paymentVat / 100), 0);
+    }
+    
     public static function getPaymentMethods() {
         return [
             'form_register.card' => self::PAYMENT_TYPE_CARD,
             'form_register.card_avantaj' => self::PAYMENT_TYPE_CARD_AVANTAJ,
+            'form_register.star_bt' => self::PAYMENT_TYPE_STAR_BT,
+            'form_register.card_emag' => self::PAYMENY_TYPE_CARD_EMAG,
+            'form_register.optimo' => self::PAYMENY_TYPE_OPTIMO,
+            'form_register.garanti' => self::PAYMENY_TYPE_GARANTI,
+            'form_register.unicredit' => self::PAYMENY_TYPE_UNICREDIT,
+            'form_register.raiffeisen' => self::PAYMENY_TYPE_RAIFFEISEN,
+            'form_register.brd' => self::PAYMENY_TYPE_BRD,
+            'form_register.bcr' => self::PAYMENY_TYPE_BCR,
+            'form_register.alphabank' => self::PAYMENY_TYPE_ALPHABANK,
             'form_register.bank' => self::PAYMENT_TYPE_WIRE,
             'form_register.google_pay' => self::PAYMENT_TYPE_GOOGLE_PAY,
             'form_register.apple_pay' => self::PAYMENT_TYPE_APPLE_PAY
         ];
+    }
+    
+    public static function calculatePriceWithCommission($basePrice, $paymentMethod) {
+        $commissions = self::COMMISSIONS;
+        
+        $commission = 0;
+        if (isset($commissions[$paymentMethod])) {
+            $commission = $commissions[$paymentMethod];
+        }
+        
+        return round($basePrice * (1 + $commission / 100), 0);
     }
 }

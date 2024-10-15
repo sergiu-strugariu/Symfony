@@ -33,6 +33,7 @@ class SecurityController extends AbstractController
         $registerForm->handleRequest($request);
 
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
+
             $recaptcha = $request->get('g-recaptcha-response');
 
             if ($helper->captchaVerify($recaptcha)) {

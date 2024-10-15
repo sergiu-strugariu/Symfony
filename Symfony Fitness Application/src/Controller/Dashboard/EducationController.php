@@ -133,6 +133,7 @@ class EducationController extends AbstractController
             $educationTranslation->setShortDescription($form->get('shortDescription')->getData());
             $educationTranslation->setAdditionalInfo($form->get('additionalInfo')->getData());
             $educationTranslation->setImportantInfo($form->get('importantInfo')->getData());
+            $educationTranslation->setInfo($form->get('info')->getData());
 
             $file = $form->get('image')->getData();
 

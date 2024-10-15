@@ -20,7 +20,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        // TODO language
+
 //        if (!$request->hasPreviousSession()) {
 //            return;
 //        }

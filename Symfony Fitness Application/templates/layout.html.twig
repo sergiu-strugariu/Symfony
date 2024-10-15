@@ -85,9 +85,12 @@
         let baseUrl = "";
         window.profileImageUploadUrl = "/ajax/update-user-picture";
         window.editAccountDetails = "/ajax/update-user-details";
+        window.editLocationData = "/ajax/update-user-location";
         window.editPassword = "/ajax/update-user-password";
         window.editCompanyData = "/ajax/update-user-company";
         window.newsletterEmail = "/ajax/subscribe/member";
+        window.countyCitiesPath = "{{ path('ajax_cities') }}";
+
     </script>
     <script src="{{ asset('assets/frontend/scripts/bundle.min.js') }}"></script>
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_id }}"  type="text/javascript"></script>

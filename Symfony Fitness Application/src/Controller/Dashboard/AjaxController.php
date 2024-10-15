@@ -482,27 +482,6 @@ class AjaxController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/ajax/county/cities', name: 'dashboard_ajax_cities')]
-    public function getCitiesByCounty(Request $request, EntityManagerInterface $em): JsonResponse
-    {
-        $id = $request->get('id');
-
-        if (!isset($id)) {
-            return new JsonResponse([
-                'status' => false,
-                'cities' => []
-            ]);
-        }
-
-        /** Get city by @id */
-        $cities = $em->getRepository(City::class)->findCitiesByCounty($id);
-
-        return new JsonResponse([
-            'status' => true,
-            'cities' => $cities
-        ]);
-    }
-
     #[Route('/dashboard/ajax/education/schedule/{id}/delete', name: 'dashboard_ajax_education_schedule_delete')]
     public function deleteSchedule(EntityManagerInterface $em, $id): Response
     {

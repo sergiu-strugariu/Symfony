@@ -106,11 +106,13 @@ services:
             $proformaInvoiceSeriesName: '%smartbill_proforma_invoice_series_name%'
             $username: '%smartbill_username%'
             $token: '%smartbill_token%'
+
     App\EventSubscriber\PageNotFoundListener:
         arguments:
             $urlGenerator: '@router'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
     App\Helper\FileUploader:
         arguments:
             $slugger: '@slugger'

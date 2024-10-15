@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -41,9 +42,15 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/language/{_locale}', name: 'app_language')]
-    public function language(): Response
+    public function language(Request $request, string $_locale): Response
     {
-        return $this->redirectToRoute("app_index");
+        $previousUrl = $request->headers->get('referer');
+
+        if (!$previousUrl) {
+            $previousUrl = $this->generateUrl('app_index', ['_locale' => $_locale]);
+        }
+
+        return $this->redirect($previousUrl);
     }
 
     #[Route('/despre-noi', name: 'app_about_us')]

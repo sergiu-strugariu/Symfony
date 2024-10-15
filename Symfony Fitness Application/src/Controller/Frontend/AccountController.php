@@ -2,6 +2,7 @@
 
 namespace App\Controller\Frontend;
 
+use App\Entity\County;
 use App\Entity\EducationRegistration;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,12 +56,22 @@ class AccountController extends AbstractController
     }
 
     #[Route('/contul-meu/detalii', name: 'app_my_account_details')]
-    public function details(EntityManagerInterface $em): Response
+    public function details(EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
+        $counties = $manager->getRepository(County::class)->findAll();
+
+        $userCounty = $user->getCounty();
+        $cities = [];
+
+        if (null !== $userCounty) {
+            $cities = $manager->getRepository(County::class)->find($user->getCounty())->getCities();
+        }
 
         return $this->render('frontend/default/account.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'counties' => $counties,
+            'cities' => $cities
         ]);
     }
 

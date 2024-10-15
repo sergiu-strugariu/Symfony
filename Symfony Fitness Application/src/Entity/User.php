@@ -87,9 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $bankAccount = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $city = null;
-
     #[ORM\Column(length: 20, options: ['default' => self::INVOICE_TYPE_INDIVIDUAL])]
     private ?string $invoiceType = self::INVOICE_TYPE_INDIVIDUAL;
 
@@ -116,6 +113,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $tempEmail = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?County $county = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?City $city = null;
 
     public function __construct()
     {
@@ -481,18 +484,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): static
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getInvoiceType(): ?string
     {
         return $this->invoiceType;
@@ -550,6 +541,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTempEmail(?string $tempEmail): static
     {
         $this->tempEmail = $tempEmail;
+
+        return $this;
+    }
+
+    public function getCounty(): ?County
+    {
+        return $this->county;
+    }
+
+    public function setCounty(?County $county): static
+    {
+        $this->county = $county;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

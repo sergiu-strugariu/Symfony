@@ -39,6 +39,9 @@ class EducationTranslation
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $importantInfo = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $info = null;
     
     public function __construct()
     {
@@ -142,6 +145,18 @@ class EducationTranslation
     public function setImportantInfo(?string $importantInfo): static
     {
         $this->importantInfo = $importantInfo;
+
+        return $this;
+    }
+
+    public function getInfo(): ?string
+    {
+        return $this->info;
+    }
+
+    public function setInfo(?string $info): static
+    {
+        $this->info = $info;
 
         return $this;
     }

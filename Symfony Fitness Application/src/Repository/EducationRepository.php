@@ -66,7 +66,10 @@ class EducationRepository extends ServiceEntityRepository
             ->join('e.county', 'c')
             ->where('e.deletedAt IS NULL')
             ->andWhere('et.language = :language')
-            ->setParameter('language', $language);
+            ->andWhere('e.startDate >= CURRENT_DATE()')
+            ->setParameter('language', $language)
+            ->orderBy('e.startDate', 'ASC')
+        ;
 
         if ($query) {
             if (null !== $category && $category !== 'all') {
@@ -107,6 +110,7 @@ class EducationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 
     public function searchEducation(string $query, Language $language, int $limit = 4, int $offset = 0, bool $count = false)
     {

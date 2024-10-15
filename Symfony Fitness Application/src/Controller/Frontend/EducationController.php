@@ -17,6 +17,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -140,13 +141,15 @@ class EducationController extends AbstractController
 
                 $uuid = Uuid::v4();
                 $educationVat = $education->getVat();
-
+                $educationBasePrice = $education->getBasePrice();
+                $paymentAmountWithCommission = EducationRegistration::calculatePriceWithCommission($educationBasePrice, $paymentMethod);
+                
                 $educationRegistration->setUuid($uuid);
                 $educationRegistration->setEducation($education);
                 $educationRegistration->setUser($user);
                 $educationRegistration->setContract(true);
                 $educationRegistration->setPaymentStatus(EducationRegistration::PAYMENT_STATUS_PENDING);
-                $educationRegistration->setPaymentAmount($education->getBasePrice());
+                $educationRegistration->setPaymentAmount($paymentAmountWithCommission);
                 $educationRegistration->setPaymentVat($educationVat);
 
                 $em->persist($educationRegistration);
@@ -268,7 +271,7 @@ class EducationController extends AbstractController
                         [
                             'name' => $education->getTranslation($defaultLocale)->getTitle(),
                             'sku' => $education->getId(),
-                            'unitPrice' => $education->getPriceWithVAT(),
+                            'unitPrice' => $educationRegistration->getPaymentWithVAT(),
                             'quantity' => 1,
                             'vat' => $educationVat
                         ]
@@ -486,6 +489,35 @@ class EducationController extends AbstractController
         }
 
         return new Response('');
+    }
+    
+    #[Route('/educatie/{slug}/actualizare-pret', name: 'app_education_update_price')]
+    public function updatePrice(Request $request, EntityManagerInterface $em, $slug): Response {
+        $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
+        if (null === $education) {
+            return new JsonResponse([
+                'success' => false
+            ]);
+        }
+        
+        $params = json_decode($request->getContent(), true);
+        
+        if (!isset($params['method']) || empty($params['method'])) {
+            return new JsonResponse([
+                'success' => false
+            ]);
+        }
+        
+        $educationBasePrice = $education->getBasePrice();
+        $vat = $education->getVat();
+        $paymentAmountWithCommission = EducationRegistration::calculatePriceWithCommission($educationBasePrice, $params['method']); 
+        
+        $updatedPrice = round($paymentAmountWithCommission * (1 + $vat / 100), 0);
+                
+        return new JsonResponse([
+            'success' => true,
+            'price' => $updatedPrice
+        ]);
     }
     
 }

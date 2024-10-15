@@ -77,6 +77,7 @@ class EducationCategoryRepository extends ServiceEntityRepository
 
         $translationFields = match ($column) {
             'title' => 'ct.' . $column,
+            'description' => 'ct.' . $column,
             default => 'c.' . $column,
         };
 

@@ -2,6 +2,8 @@
 
 namespace App\Controller\Frontend;
 
+use App\Entity\City;
+use App\Entity\County;
 use App\Entity\User;
 use App\Form\Type\ChangePasswordType;
 use App\Helper\FileUploader;
@@ -149,6 +151,47 @@ class AjaxController extends AbstractController
         ]);
     }
 
+    #[Route('/ajax/update-user-location', name: 'ajax_update_user_location', methods: ['POST'])]
+    public function ajaxUpdateUserLocation(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailHelper $mailHelper, DefaultHelper $defaultHelper, ValidatorInterface $validator): JsonResponse
+    {
+        $county = $request->get('county');
+        $county = $em->getRepository(County::class)->findOneBy(['id' => $county]);
+        if (null == $county) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => $translator->trans('authentication.same_county')
+            ]);
+        }
+
+        $city = $request->get('city');
+        $city = $em->getRepository(City::class)->findOneBy(['id' => $city]);
+        if (null == $city) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => $translator->trans('authentication.same_city')
+            ]);
+        }
+
+        $user = $this->getUser();
+        if (null === $user) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => $translator->trans('authentication.user_not_logged')
+            ]);
+        }
+
+        $user->setCounty($county);
+        $user->setCity($city);
+
+        $em->persist($user);
+        $em->flush();
+
+        return new JsonResponse([
+            'status' => 'success',
+            'message' => $translator->trans('authentication.account.success')
+        ]);
+    }
+
     #[Route('/ajax/update-user-details', name: 'ajax_update_user_details', methods: ['POST'])]
     public function ajaxUpdateUserDetails(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailHelper $mailHelper, DefaultHelper $defaultHelper, ValidatorInterface $validator): JsonResponse
     {
@@ -184,20 +227,19 @@ class AjaxController extends AbstractController
                 ]);
             }
 
-            // Generate hash by request data
             $hash = $defaultHelper->generateHash($value);
 
             $sent = $mailHelper->sendMail(
-                    $value, 
-                    $translator->trans('mails.email_update.title'),
-                    'frontend/emails/update-email.html.twig', 
-                    [
-                        'title' => $translator->trans('mails.email_update.title'),
-                        'user' => $user,
-                        'confirmEmailUpdateUrl' => $this->generateUrl('app_confirm_email_update', [
-                            'token' => $hash
-                                ], UrlGeneratorInterface::ABSOLUTE_URL)
-                    ]
+                $value,
+                $translator->trans('mails.email_update.title'),
+                'frontend/emails/update-email.html.twig',
+                [
+                    'title' => $translator->trans('mails.email_update.title'),
+                    'user' => $user,
+                    'confirmEmailUpdateUrl' => $this->generateUrl('app_confirm_email_update', [
+                        'token' => $hash
+                    ], UrlGeneratorInterface::ABSOLUTE_URL)
+                ]
             );
 
             if (!$sent) {
@@ -206,13 +248,13 @@ class AjaxController extends AbstractController
                     'message' => $translator->trans('authentication.account.default_password_error')
                 ]);
             }
-            
+
             $user->setTempEmail($value);
             $user->setConfirmationToken($hash);
 
             $em->persist($user);
             $em->flush();
-            
+
             return new JsonResponse([
                 'status' => 'success',
                 'message' => $translator->trans('account.details.confirm_email_update')
@@ -244,6 +286,15 @@ class AjaxController extends AbstractController
         }
 
         $accessor = PropertyAccess::createPropertyAccessor();
+
+        if ($key === 'county') {
+            $value = $em->getRepository(County::class)->findOneBy(['name' => $value]);
+        }
+
+        if ($key === 'city') {
+            $value = $em->getRepository(City::class)->findOneBy(['name' => $value]);
+        }
+
         $accessor->setValue($user, $key, $value);
 
         $em->persist($user);
@@ -298,19 +349,19 @@ class AjaxController extends AbstractController
             'message' => $translator->trans('authentication.account.success')
         ]);
     }
-    
+
     #[Route('/ajax/subscribe/member', name: 'ajax_subscribe_member')]
     public function ajaxSubscribeMember(Request $request, MailchimpAPIHelper $mailChimp, TranslatorInterface $translator): JsonResponse
     {
         $email = $request->get('email');
-        
+
         if (null === $email) {
             return new JsonResponse([
                 'status' => 'error',
                 'message' => $translator->trans('authentification.not_valid.email')
             ]);
         }
-        
+
         try {
             $response = $mailChimp->addListMember($email, 'pending');
         } catch (ClientException $ex) {
@@ -323,36 +374,36 @@ class AjaxController extends AbstractController
                     'message' => $translator->trans('newsletter.errors.default')
                 ]);
             }
-            
-            if (isset($errorResponse['title'])){
-               switch ($errorResponse['title']) {
-                case 'Member Exists': 
-                    return new JsonResponse([
-                        'status' => 'error',
-                        'message' => $translator->trans('newsletter.errors.user_exists')
-                    ]);
-                    break;
-                case 'Invalid Resource':
-                    return new JsonResponse([
-                        'status' => 'error',
-                        'message' => $translator->trans('newsletter.errors.email_not_valid')
-                    ]);
-                    break;
-               case 'Forgotten Email Not Subscribed':
-                   return new JsonResponse([
-                       'status' => 'error',
-                       'message' => $translator->trans('newsletter.errors.user_exists')
-                   ]);
-                   break;
-                default:
-                    return new JsonResponse([
-                        'status' => 'error',
-                        'message' => $translator->trans('newsletter.errors.default')
-                    ]);
-                    break;
+
+            if (isset($errorResponse['title'])) {
+                switch ($errorResponse['title']) {
+                    case 'Member Exists':
+                        return new JsonResponse([
+                            'status' => 'error',
+                            'message' => $translator->trans('newsletter.errors.user_exists')
+                        ]);
+                        break;
+                    case 'Invalid Resource':
+                        return new JsonResponse([
+                            'status' => 'error',
+                            'message' => $translator->trans('newsletter.errors.email_not_valid')
+                        ]);
+                        break;
+                    case 'Forgotten Email Not Subscribed':
+                        return new JsonResponse([
+                            'status' => 'error',
+                            'message' => $translator->trans('newsletter.errors.user_exists')
+                        ]);
+                        break;
+                    default:
+                        return new JsonResponse([
+                            'status' => 'error',
+                            'message' => $translator->trans('newsletter.errors.default')
+                        ]);
+                        break;
                 }
             }
-            
+
             return new JsonResponse([
                 'status' => 'error',
                 'message' => $translator->trans('newsletter.errors.default')
@@ -363,10 +414,31 @@ class AjaxController extends AbstractController
                 'message' => $translator->trans('newsletter.errors.default')
             ]);
         }
-        
+
         return new JsonResponse([
             'status' => 'success',
             'message' => $translator->trans('newsletter.errors.success')
+        ]);
+    }
+
+    #[Route('/ajax/county/cities', name: 'ajax_cities')]
+    public function getCitiesByCounty(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $id = $request->get('id');
+
+        if (!isset($id)) {
+            return new JsonResponse([
+                'status' => false,
+                'cities' => []
+            ]);
+        }
+
+        /** Get city by @id */
+        $cities = $em->getRepository(City::class)->findCitiesByCounty($id);
+
+        return new JsonResponse([
+            'status' => true,
+            'cities' => $cities
         ]);
     }
 }
