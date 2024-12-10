@@ -76,7 +76,6 @@
           "label": "Link Text",
           "placeholder": "Link Text",
           "value": "",
-          "isTranslated": true,
           "required": true,
           "editable": true
         },
@@ -158,7 +157,6 @@
               "label": "Link Text",
               "placeholder": "Link Text",
               "value": "",
-              "isTranslated": true,
               "required": true,
               "editable": true
             },
@@ -234,7 +232,6 @@
               "label": "Link Text",
               "placeholder": "Link Text",
               "value": "",
-              "isTranslated": true,
               "required": true,
               "editable": true
             },

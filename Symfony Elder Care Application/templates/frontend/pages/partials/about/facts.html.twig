@@ -1,0 +1,12 @@
+<div class="facts section">
+    <div class="inner">
+        <div class="left">
+            <div class="image" data-image="{{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }}"></div>
+        </div>
+        <div class="right">
+            <h2>{{ section.name }}</h2>
+            <a href="{{ section.link }}" class="border-btn">{{ section.linkText }}</a>
+            {{ section.description|raw }}
+        </div>
+    </div>
+</div>

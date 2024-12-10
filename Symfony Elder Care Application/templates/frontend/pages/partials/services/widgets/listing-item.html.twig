@@ -1,0 +1,9 @@
+<div class="wrapper">
+    <div class="left">
+        {{ widget.description|raw }}
+    </div>
+    <div class="right">
+{#        <div class="image" data-image="../images/services/services-image-1.webp"></div>#}
+        <div class="image" data-image="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}"></div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<section class="services-listing section" id="administrativ">
+    <div class="inner">
+        <h2>{{ section.name }}</h2>
+        {{ section.description|raw }}
+
+        {% for widget in section.pageWidgets %}
+            {% include 'frontend/pages/partials/services/widgets/' ~ widget.template ignore missing %}
+        {% endfor %}
+    </div>
+</section>

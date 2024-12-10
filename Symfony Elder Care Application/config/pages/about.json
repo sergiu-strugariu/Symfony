@@ -1,0 +1,398 @@
+{
+  "entity": "Page",
+  "name": "About",
+  "machineName": "about",
+  "url": "/about",
+  "classes": "about",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Despre NursingHelp",
+      "machineName": "about_section_video_intro",
+      "template": "video-intro.html.twig",
+      "weight": 1,
+      "variables": [
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "linkText",
+          "type": "text",
+          "label": "Link Text",
+          "placeholder": "Link Text",
+          "value": "",
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "link",
+          "type": "url",
+          "label": "Link",
+          "placeholder": "Link",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Maximizează eficiența și minimizează costurile cu NursingHelp",
+      "machineName": "about_section_facts",
+      "template": "facts.html.twig",
+      "weight": 2,
+      "variables": [
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "linkText",
+          "type": "text",
+          "label": "Link Text",
+          "placeholder": "Link Text",
+          "value": "",
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "link",
+          "type": "url",
+          "label": "Link",
+          "placeholder": "Link",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Partenerul tău de încredere",
+      "machineName": "about_section_description_top_one",
+      "template": "description.html.twig",
+      "weight": 3,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Descriere top - Image",
+      "machineName": "about_section_description_top_two",
+      "template": "description-image.html.twig",
+      "weight": 4,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Viitorul NursingHelp",
+      "machineName": "about_section_description_top_three",
+      "template": "description.html.twig",
+      "weight": 5,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Cum te ajutăm să îți dezvolți business-ul?",
+      "machineName": "about_section_how_do_we_help",
+      "template": "how-do-we-help.html.twig",
+      "weight": 6,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "about_help_widget_one",
+          "template": "help-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "about_help_widget_two",
+          "template": "help-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "about_help_widget_three",
+          "template": "help-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "about_help_widget_four",
+          "template": "help-item.html.twig",
+          "weight": 4,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Soluțiile NursingHelp pentru provocările îngrijirii vârstnicilor",
+      "machineName": "about_section_description_bottom",
+      "template": "description.html.twig",
+      "weight": 7,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

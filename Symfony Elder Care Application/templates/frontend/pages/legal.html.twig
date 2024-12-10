@@ -7,7 +7,7 @@
             {% include "frontend/common/breadcrumbs.html.twig" %}
 
             {% for section in page.pageSections %}
-                {% include 'frontend/pages/partials/' ~ page.machineName ~ '/' ~ section.template ignore missing %}
+                {% include 'frontend/pages/partials/legal/' ~ section.template ignore missing %}
             {% endfor %}
         </main>
     {% endif %}

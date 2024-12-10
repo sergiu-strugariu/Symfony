@@ -1,0 +1,68 @@
+{
+  "entity": "Page",
+  "name": "Cookies",
+  "machineName": "cookies",
+  "url": "/cookies",
+  "classes": "legal cookies-page",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Politica de cookies",
+      "machineName": "cookies_section_content",
+      "template": "cookies.html.twig",
+      "weight": 1,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        }
+      ]
+    }
+  ]
+}
