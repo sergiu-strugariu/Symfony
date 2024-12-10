@@ -1,60 +1,60 @@
-Here’s a professional and visually appealing layout for your GitHub README file, showcasing your Symfony projects effectively:
+Here's the updated layout for your GitHub README file with adjusted key features for each project:  
 
 ---
 
-# Symfony Projects
+# Symfony Projects  
 
-Welcome to my collection of Symfony-based applications. Below is a showcase of my work, each project demonstrating a unique use case and functionality tailored to its audience.
+Welcome to my collection of Symfony-based applications. Below is a showcase of my work, each project demonstrating a unique use case and functionality tailored to its audience.  
 
----
+---  
 
 ## 🌿 [Self Care Application](https://seniorhelp.ro/)  
 **Description**: A platform dedicated to promoting self-care practices for individuals, offering a range of tools and resources to improve mental and physical well-being.  
 
 **Key Features**:  
-- Personalized self-care plans  
-- Tracking daily habits  
-- Community forums for peer support  
+- Daily habit tracking  
+- Personalized dashboards for progress monitoring  
+- Access to expert advice and resources  
 
 **Tech Stack**: Symfony, Twig, MySQL  
 
----
+---  
 
 ## 🏋️ [Fitness Application](https://www.move-on.ro/)  
 **Description**: A modern fitness application designed to help users track workouts, monitor progress, and achieve their fitness goals.  
 
 **Key Features**:  
-- Customizable workout plans  
-- Progress tracking with visual analytics  
-- Integration with fitness devices  
+- Interactive workout logging  
+- Goal-setting and achievement tracking  
+- Visual progress reports and analytics  
 
-**Tech Stack**: Symfony, Vue.js, PostgreSQL  
+**Tech Stack**: Symfony, Twig, MySQL  
 
----
+---  
 
 ## 🤝 [Elder Care Application](https://www.asertivo.ro/)  
 **Description**: A comprehensive application aimed at improving the quality of life for elderly individuals by connecting them with caregivers and essential services.  
 
 **Key Features**:  
-- Easy caregiver booking system  
-- Secure medical records management  
-- Tools for monitoring health and well-being  
+- Caregiver and service matching system  
+- Monitoring of medical and daily care needs  
+- Integration with scheduling and reminders  
 
-**Tech Stack**: Symfony, Bootstrap, MariaDB  
+**Tech Stack**: Symfony, Twig, MySQL  
 
----
+---  
 
 ## 🛠️ About Me  
 
 I'm a passionate full-stack developer specializing in Symfony projects, dedicated to building applications that make a difference in people's lives.  
 Feel free to explore these projects and reach out if you have any questions or feedback!  
 
----
+---  
 
 ### Connect with Me  
 - 💼 [LinkedIn](https://www.linkedin.com/in/sergiustrugariu/)  
 - 🌐 [GitHub](https://github.com/sergiu-strugariu)  
 
----
+---  
 
-Feel free to adjust the descriptions, features, or tech stacks as needed. Let me know if you'd like further customization!
+Let me know if you'd like any further edits!
