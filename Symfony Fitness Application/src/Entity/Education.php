@@ -121,13 +121,13 @@ class Education
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $contractDuration = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $invoiceServiceName = null;
-
     private $defaultLocale = 'ro';
 
     #[ORM\ManyToOne(inversedBy: 'education')]
     private ?EducationCategory $category = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $zohoCode = null;
 
 
 
@@ -393,6 +393,11 @@ class Education
         return round($price * (1 + $this->vat / 100), 0);
     }
 
+    public function getPriceWithVATWithoutDiscount()
+    {
+        return round($this->price * (1 + $this->vat / 100), 0);
+    }
+
     public function getVATAddedValue()
     {
         $basePrice = $this->getBasePrice();
@@ -548,18 +553,6 @@ class Education
         return $this;
     }
 
-    public function getInvoiceServiceName(): ?string
-    {
-        return $this->invoiceServiceName;
-    }
-
-    public function setInvoiceServiceName(?string $invoiceServiceName): static
-    {
-        $this->invoiceServiceName = $invoiceServiceName;
-
-        return $this;
-    }
-
     public function getFormattedDate($locale = 'ro')
     {
         $startDate = $this->getStartDate();
@@ -624,6 +617,18 @@ class Education
         }
 
         return [];
+    }
+
+    public function getZohoCode(): ?string
+    {
+        return $this->zohoCode;
+    }
+
+    public function setZohoCode(?string $zohoCode): static
+    {
+        $this->zohoCode = $zohoCode;
+
+        return $this;
     }
 
 }

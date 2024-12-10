@@ -62,7 +62,9 @@
                                     {{ course.county.name }}
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_education_details', {'slug': course.slug}) }}">{{ 'common.buttons.view_details'|trans }}</a>
+                                    <a href="{{ path('app_education_details', {'slug': course.slug}) }}">
+                                        {{ 'common.buttons.view_details'|trans }}
+                                    </a>
                                 </li>
                             </ul>
                         </div>

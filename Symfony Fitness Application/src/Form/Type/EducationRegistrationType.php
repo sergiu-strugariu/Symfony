@@ -24,8 +24,6 @@ class EducationRegistrationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $data = $options['data'];
-
         $builder
             ->add('firstName', TextType::class, [
                 'required' => true,
@@ -65,7 +63,7 @@ class EducationRegistrationType extends AbstractType
                     ])
                 ]
             ])
-            ->add('phone', NumberType::class, [
+            ->add('phone', TextType::class, [
                 'required' => true,
                 'disabled' => true,
                 'constraints' => [
@@ -76,6 +74,23 @@ class EducationRegistrationType extends AbstractType
                         'pattern' => '/^(\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|\-)?([0-9]{3}(\s|\.|\-|)){2}$/',
                         'message' => 'common.not_valid.phone'
                     ]),
+                ]
+            ])
+            ->add('cnp', TextType::class, [
+                'required' => true,
+                'disabled' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'common.not_blank'
+                    ]),
+                    new Length([
+                        'min' => 13,
+                        'minMessage' => 'common.cnp_message'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[1-9]\d{12}$/',
+                        'message' => 'common.custom.cnp'
+                    ])
                 ]
             ])
             ->add('companyName', TextType::class, [
@@ -141,8 +156,8 @@ class EducationRegistrationType extends AbstractType
             ->add('paymentMethod', ChoiceType::class, [
                 'disabled' => true,
                 'choices' => EducationRegistration::getPaymentMethods(),
-                'expanded' => false, 
-                'multiple' => false, 
+                'expanded' => false,
+                'multiple' => false,
                 'constraints' => [
                     new Choice([
                         'choices' => [true, false],
@@ -244,7 +259,7 @@ class EducationRegistrationType extends AbstractType
                     'Yes' => true,
                     'No' => false,
                 ],
-                'expanded' => false, 
+                'expanded' => false,
                 'multiple' => false,
                 'constraints' => [
                     new Choice([
@@ -261,8 +276,8 @@ class EducationRegistrationType extends AbstractType
                     'Yes' => true,
                     'No' => false,
                 ],
-                'expanded' => false, 
-                'multiple' => false, 
+                'expanded' => false,
+                'multiple' => false,
                 'constraints' => [
                     new Choice([
                         'choices' => [true, false],

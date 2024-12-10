@@ -168,25 +168,26 @@
     </div>
     <div class="row">
         <div class="col-lg-12 mb-5">
-            {{ form_label(form.invoiceServiceName, 'Services name (for invoices)', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
-            {{ form_widget(form.invoiceServiceName, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '3'}}) }}
-            {{ form_errors(form.invoiceServiceName) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 mb-5">
             {{ form_label(form.info, 'Certification details', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.info, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '5'}}) }}
             {{ form_errors(form.info) }}
         </div>
     </div>
     <div class="row">
-{#        <div class="col-lg-6 mb-5">#}
-{#            {{ form_label(form.omcCode, 'OMC code', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}#}
-{#            {{ form_widget(form.omcCode, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}#}
-{#            {{ form_errors(form.omcCode) }}#}
-{#        </div>#}
         <div class="col-lg-6 mb-5">
+            {{ form_label(form.omcCode, 'OMC code', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.omcCode, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.omcCode) }}
+        </div>
+        <div class="col-lg-6 mb-5">
+            {{ form_label(form.zohoCode, 'Zoho code', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.zohoCode, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.zohoCode) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 mb-5">
             {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
             {{ form_widget(form.image, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
             {{ form_errors(form.image) }}

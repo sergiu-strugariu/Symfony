@@ -33,6 +33,14 @@
             </div>
 
             <div class="group">
+                {{ form_label(form.email, 'common.form_labels.email'|trans) }}
+                {{ form_widget(form.email) }}
+                <span class="error">
+                    {{ form_errors(form.email) }}
+                </span>
+            </div>
+
+            <div class="group">
                 {{ form_label(form.cnp, 'CNP') }}
                 {{ form_widget(form.cnp) }}
                 <span class="error">

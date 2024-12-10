@@ -22,7 +22,6 @@ use App\Repository\FaqRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\GalleryRepository;
 use App\Repository\LanguageRepository;
-use App\Repository\LeadRepository;
 use App\Repository\MenuRepository;
 use App\Repository\PageRepository;
 use App\Repository\RefundRepository;
@@ -237,25 +236,6 @@ class AjaxController extends AbstractController
         );
 
         return $this->getFilteredData($FAQRepository, $faqs, $params);
-    }
-
-    #[Route('/dashboard/ajax/leads', name: 'dashboard_ajax_leads')]
-    public function getLeads(Request $request, LeadRepository $leadRepository, DatatableHelper $datatableHelper): JsonResponse
-    {
-        // get all params from the request
-        $params = $request->query->all();
-
-        // get sortable fields
-        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::LEAD_FIELDS);
-
-        // filter by params
-        $leads = $leadRepository->findByFilters(
-            $tableParams['column'],
-            $tableParams['dir'],
-            $tableParams['keyword']
-        );
-
-        return $this->getFilteredData($leadRepository, $leads, $params);
     }
 
     #[Route('/dashboard/ajax/team-members', name: 'dashboard_ajax_team_members')]
@@ -613,5 +593,92 @@ class AjaxController extends AbstractController
                 'values' => $dataWorkshop['values'] ?? []
             ],
         ]);
+    }
+
+    #[Route('/dashboard/ajax/user/{uuid}/contracts', name: 'dashboard_ajax_user_contracts')]
+    public function getUserContracts(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    {
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_CONTRACTS_FIELDS);
+
+        $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+
+        // filter by params
+        $contracts = $repository->getContracts(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $user
+        );
+
+        return $this->getFilteredData($repository, $contracts, $params);
+    }
+
+    #[Route('/dashboard/ajax/user/{uuid}/invoices', name: 'dashboard_ajax_user_invoices')]
+    public function getUserInvoices(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_INVOICES_FIELDS);
+
+        $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+
+        // filter by params
+        $invoices = $repository->getInvoices(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $user
+        );
+
+        return $this->getFilteredData($repository, $invoices, $params);
+    }
+
+    #[Route('/dashboard/ajax/user/{uuid}/courses', name: 'dashboard_ajax_user_courses')]
+    public function getUserCourses(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_COURSES_FIELDS);
+
+        $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+
+        // filter by params
+        $courses = $repository->getCourses(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $user
+        );
+
+        return $this->getFilteredData($repository, $courses, $params);
+    }
+
+    #[Route('/dashboard/ajax/user/{uuid}/certifications', name: 'dashboard_ajax_user_certifications')]
+    public function getUserCertifications(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    {
+        // get all params from the request
+        $params = $request->query->all();
+
+        // get sortable fields
+        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_CERTIFICATIONS_FIELDS);
+
+        $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+
+        // filter by params
+        $certifications = $repository->getUserCertifications(
+            $tableParams['column'],
+            $tableParams['dir'],
+            $tableParams['keyword'],
+            $user
+        );
+
+        return $this->getFilteredData($repository, $certifications, $params);
     }
 }

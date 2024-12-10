@@ -8,9 +8,11 @@ use App\Form\LoginType;
 use App\Form\Type\UserType;
 use App\Helper\DefaultHelper;
 use App\Helper\MailHelper;
+use App\Helper\ZohoAPIHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -24,7 +26,7 @@ class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
     #[Route('/register', name: 'app_register')]
-    public function authentication(Request $request, AuthenticationUtils $authenticationUtils, MailHelper $mail, EntityManagerInterface $em, TranslatorInterface $translator, Security $security, UserPasswordHasherInterface $userPasswordHasher, DefaultHelper $helper): Response
+    public function authentication(Request $request, AuthenticationUtils $authenticationUtils, MailHelper $mail, EntityManagerInterface $em, TranslatorInterface $translator, ZohoAPIHelper $zohoAPIHelper, UserPasswordHasherInterface $userPasswordHasher, DefaultHelper $helper): Response
     {
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "authentication"]);
 
@@ -78,6 +80,23 @@ class SecurityController extends AbstractController
 
             $em->persist($user);
             $em->flush();
+
+            $data = [
+                'data' => [
+                    'FirstName' => $user->getFirstName(),
+                    'LastName' => $user->getLastName(),
+                    'Email' => $user->getEmail(),
+                    'Phone' => $user->getPhoneNumber(),
+                    'County' => $user->getCounty()->getName(),
+                    'City' => $user->getCity()->getName(),
+                    'SubscribeNewsletter' => $user->isNewsletter(),
+                    'FormName' => 'register'
+                ]
+            ];
+
+            try {
+                $zohoAPIHelper->sendRequest($data);
+            } catch (\Exception $exception) {}
 
             $this->addFlash('success', $translator->trans('authentication.success'));
             return $this->redirectToRoute('app_login');

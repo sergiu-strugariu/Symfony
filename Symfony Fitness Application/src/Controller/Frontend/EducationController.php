@@ -11,6 +11,7 @@ use App\Helper\LanguageHelper;
 use App\Helper\MailHelper;
 use App\Helper\PayUAPIHelper;
 use App\Helper\SmartBillAPIHelper;
+use App\Helper\ZohoAPIHelper;
 use App\Repository\EducationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -61,23 +62,25 @@ class EducationController extends AbstractController
         ]);
     }
 
-    #[Route('/educatie/{slug}', name: 'app_education_details')]
-    public function educationDetails(EntityManagerInterface $em, LanguageHelper $helper ,$slug): Response
+    #[Route('/educatie/{slug}', name: 'app_education_details', requirements: ['slug' => '[a-zA-Z0-9\-]+'])]
+    public function educationDetails(EntityManagerInterface $em, LanguageHelper $helper, $slug): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
         $locale = $helper->getLocaleFromRequest();
+
         if (null === $education) {
-           return $this->redirectToRoute('app_educations'); 
+            return $this->redirectToRoute('app_educations');
         }
 
         return $this->render('frontend/education/details.html.twig', [
             'education' => $education,
-            'locale' => $locale
+            'locale' => $locale,
         ]);
     }
-    
+
+
     #[Route('/educatie/{slug}/inregistrare', name: 'app_education_register')]
-    public function educationRegister(Request $request, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $translator, PayUAPIHelper $payUAPIHelper, SmartBillAPIHelper $smartBillAPIHelper, DefaultHelper $helper, LoggerInterface $payuLogger, LoggerInterface $smartbillLogger, $slug): Response
+    public function educationRegister(Request $request, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $translator, PayUAPIHelper $payUAPIHelper, SmartBillAPIHelper $smartBillAPIHelper, DefaultHelper $helper, LoggerInterface $payuLogger, ZohoAPIHelper $zohoAPIHelper, LoggerInterface $smartbillLogger, $slug): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
         if (null === $education) {
@@ -156,7 +159,12 @@ class EducationController extends AbstractController
                 $em->flush();
                 
                 if (EducationRegistration::PAYMENT_TYPE_WIRE == $paymentMethod) {
-                    $service = $education->getInvoiceServiceName();
+                    $educationTranslation = $education->getTranslation($this->getParameter('default_locale'));
+                    $educationTitle = $educationTranslation->getTitle();
+                    $educationStartDate = $education->getStartDate()->format('d-m-Y');
+                    $educationEndDate = $education->getEndDate()->format('d-m-Y');
+                    $service = sprintf('%s (%s - %s)', $educationTitle, $educationStartDate, $educationEndDate);
+
                     $isInvoicingPerLegalEntity = $educationRegistration->isInvoicingPerLegalEntity();
                     
                     $data = [
@@ -165,20 +173,23 @@ class EducationController extends AbstractController
                         'isDraft' => false,
                         'client' => [
                             'name' => $isInvoicingPerLegalEntity ? $educationRegistration->getCompanyName() : $educationRegistration->getFullName(),
-                            'vatCode' => $isInvoicingPerLegalEntity ? $educationRegistration->getCui() : '',
+                            'vatCode' => $isInvoicingPerLegalEntity ? $educationRegistration->getCui() : $educationRegistration->getCnp(),
                             'address' => $isInvoicingPerLegalEntity ? $educationRegistration->getCompanyAddress() : '',
                             'country' => 'Romania',
+                            'county' => $educationRegistration->getCounty()->getName(),
+                            'city' => $educationRegistration->getCity()->getName(),
                             'email' => $educationRegistration->getEmail(),
                             'saveToDb' => false
                         ],
                         'products' => [
                             [
                                 'name' => $service,
+                                'productDescription' => $education->getOmcCode(),
                                 'measuringUnitName' => 'buc',
                                 'currency' => 'RON',
                                 'quantity' => 1,
-                                'price' => $educationRegistration->getPaymentAmount(),
-                                'isTaxIncluded' => false,
+                                'price' => $educationRegistration->getPaymentWithVAT(),
+                                'isTaxIncluded' => true,
                                 'taxPercentage' => $educationRegistration->getPaymentVat(),
                                 'isService' => true,
                                 'saveToDb' => false
@@ -236,6 +247,8 @@ class EducationController extends AbstractController
                                     ], 
                                     $attachments
                             );
+
+                            $this->sendZohoRequest($zohoAPIHelper, $education, $educationRegistration, $paymentMethod);
                         }
                     }
 
@@ -306,23 +319,11 @@ class EducationController extends AbstractController
 
                 if (isset($response['code']) && $response['code'] == 200) {
                     if (isset($response['paymentResult']) && isset($response['paymentResult']['url'])) {
+                        $this->sendZohoRequest($zohoAPIHelper, $education, $educationRegistration, $paymentMethod);
                         return new RedirectResponse($response['paymentResult']['url']);
                     }
-                    
-                    return new RedirectResponse($returnUrl);
 
-                    // send confirmation email
-                    /*$mail->sendMail(
-                            $educationRegistration->getEmail(),
-                            'Inregistrare Curs', 
-                            'frontend/emails/email-notifications.html.twig', 
-                            [
-                                'name' => $user->getFullName(),
-                                'description' => "Te-ai inregistrat cu success la cursul ",
-                                'educationName' => $education->getTranslation('ro')->getTitle(),
-                                'generatedUrl' => $this->generateUrl('app_education_details', ['slug' => $education->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
-                            ]
-                    );*/
+                    return new RedirectResponse($returnUrl);
                 } else {
                     $payuLogger->error($response['message'], ['id' => $educationRegistration->getId()]);
                     $this->addFlash('error', $response['message']);
@@ -452,10 +453,11 @@ class EducationController extends AbstractController
     public function educationRegistrationInvoice(EntityManagerInterface $em, SmartBillAPIHelper $smartBillAPIHelper, LoggerInterface $smartbillLogger, $slug, $uuid): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['slug' => $slug]);
+
         if (null === $education) {
             return new Response('');
         }
-        
+
         $educationRegistration = $em->getRepository(EducationRegistration::class)->findOneBy(['uuid' => $uuid]);
         if (null === $educationRegistration) {
             return new Response('');
@@ -519,5 +521,56 @@ class EducationController extends AbstractController
             'price' => $updatedPrice
         ]);
     }
-    
+
+    private function sendZohoRequest($zohoAPIHelper, Education $education, EducationRegistration $educationRegistration, $paymentMethod): void
+    {
+        $educationTranslation = $education->getTranslation($this->getParameter('default_locale'));
+        $educationTeamMembers = $education->getTeamMembers();
+
+        $instructors = [];
+        foreach ($educationTeamMembers as $educationTeamMember) {
+            $instructors[] = [
+                'id' => $educationTeamMember->getId(),
+                'FullName' => $educationTeamMember->getName()
+            ];
+        }
+
+        $zohoData = [
+            'data' => [
+                'FirstName' => $educationRegistration->getFirstName(),
+                'LastName' => $educationRegistration->getLastName(),
+                'Email' => $educationRegistration->getEmail(),
+                'Phone' => $educationRegistration->getPhone(),
+                'CNP' => $educationRegistration->getCnp(),
+                'InvoicingPerLegalEntity' => $educationRegistration->isInvoicingPerLegalEntity(),
+                'CompanyName' => $educationRegistration->getCompanyName(),
+                'CUI' => $educationRegistration->getCui(),
+                'BankName' => $educationRegistration->getBankName(),
+                'CompanyAddress' => $educationRegistration->getCompanyName(),
+                'RegistrationNumber' => $educationRegistration->getRegistrationNumber(),
+                'BankAccount' => $educationRegistration->getBankAccount(),
+                'CourseType' => $zohoAPIHelper->getEducationMappingByType($education->getType()),
+                'Category' => $education->getCategory()->getTranslation('ro')->getTitle(),
+                'Certification' => $education->getCertification()->getTranslation('ro')->getTitle(),
+                'StandardPrice' => $education->getPriceWithVATWithoutDiscount(),
+                'DiscountedPrice' => $educationRegistration->getPaymentWithVAT(),
+                'PaidValue' => $educationRegistration->getPaymentWithVAT(),
+                'SubscribeNewsletter' => $educationRegistration->isAccordGDPR(),
+                'CourseName' => $educationTranslation->getTitle(),
+                'IdCourse' => $education->getId(),
+                'IdZoho' => $education->getZohoCode(),
+                'Instructors' => $instructors,
+                'CourseCity' => $education->getCity()->getName(),
+                'CourseStartDate' => $education->getStartDate()->format('d-m-Y'),
+                'CourseEndDate' => $education->getEndDate()->format('d-m-Y'),
+                'IdEducationPurchase' => $educationRegistration->getId(),
+                'PaymentMethod' => $educationRegistration->getEducationPaymentMethod(),
+                'FormName' => 'educationpurchase'
+            ]
+        ];
+
+        try {
+            $zohoAPIHelper->sendRequest($zohoData);
+        } catch (\Exception $exception) {}
+    }
 }

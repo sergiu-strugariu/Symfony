@@ -21,7 +21,7 @@ class MenuItemRepository extends ServiceEntityRepository
         parent::__construct($registry, MenuItem::class);
     }
 
-        public function findByWeightDesc($language, $menuUuid = null): array
+    public function findByWeightDesc($language, $menuUuid = null): array
     {
         $qb = $this->createQueryBuilder('m')
             ->select(

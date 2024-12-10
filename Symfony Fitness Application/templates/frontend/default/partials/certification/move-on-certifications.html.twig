@@ -1,0 +1,23 @@
+{% set locale = languageHelper.getLocaleFromRequest %}
+
+{% for widget in section.pageWidgets %}
+    {% set translation = widget.translation(locale) %}
+
+    <div class="move-on-certifications">
+        <div class="inner">
+            <h2>{{ translation.title }}</h2>
+            <p></p>
+            <div>
+                <div class="item">
+                    <div class="image" data-image="{{ asset('assets/files/page/pagewidget/' ~ widget.fileName, 'cloudflare') }}"></div>
+
+                    <div>
+                        {{ translation.description|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+

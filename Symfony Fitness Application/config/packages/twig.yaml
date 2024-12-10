@@ -18,8 +18,6 @@ twig:
         google_pay_merchant_id: '%google_pay_merchant_id%'
         app_gallery_path: '%app_gallery_path%'
         app_diploma_path: '%app_diploma_path%'
-        intercom_app_id: '%intercom_app_id%'
-        intercom_hash: '%intercom_hash%'
         onesignal_app_id: '%onesignal_app_id%'
         onesignal_safari_web_id: '%onesignal_safari_web_id%'
         settingService: '@App\Service\SettingService'

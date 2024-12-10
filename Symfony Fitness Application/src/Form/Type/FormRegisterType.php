@@ -2,7 +2,13 @@
 
 namespace App\Form\Type;
 
+use App\Entity\City;
+use App\Entity\County;
 use App\Entity\EducationRegistration;
+use App\Repository\CityRepository;
+use App\Repository\CountyRepository;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -12,9 +18,12 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -23,6 +32,19 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class FormRegisterType extends AbstractType
 {
+    protected CityRepository $cityRepository;
+    protected CountyRepository $countyRepository;
+
+    /**
+     * @param CityRepository $cityRepository
+     * @param CountyRepository $countyRepository
+     */
+    public function __construct(CityRepository $cityRepository, CountyRepository $countyRepository)
+    {
+        $this->cityRepository = $cityRepository;
+        $this->countyRepository = $countyRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $options['user'];
@@ -62,6 +84,23 @@ class FormRegisterType extends AbstractType
                     ])
                 ]
             ])
+            ->add('cnp', TextType::class, [
+                'required' => true,
+                'data' => null === $user ? '' : $user->getCnp(),
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'common.not_blank'
+                    ]),
+                    new Length([
+                        'min' => 13,
+                        'minMessage' => 'common.cnp_message'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[1-9]\d{12}$/',
+                        'message' => 'common.custom.cnp'
+                    ])
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'required' => true,
                 'data' => null === $user ? '' : $user->getEmail(),
@@ -87,13 +126,30 @@ class FormRegisterType extends AbstractType
                     ]),
                 ]
             ])
-
+            ->add('county', EntityType::class, [
+                'class' => County::class,
+                'required' => true,
+                'placeholder' => 'common.form_labels.choose_county',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')->orderBy('c.id', 'ASC');
+                },
+                'choice_label' => 'name',
+                'data' => $user->getCounty(),
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'common.not_blank'
+                    ])
+                ]
+            ])
             ->add('invoicingPerLegalEntity', CheckboxType::class, [
                 'required' => false
             ])
             ->add('companyName', TextType::class, [
                 'required' => false,
                 'data' => null === $user ? '' : $user->getCompanyName(),
+                'attr' => [
+                    'readonly' => true,
+                ],
                 'constraints' => [
                     new Length([
                         'min' => 3,
@@ -103,6 +159,9 @@ class FormRegisterType extends AbstractType
             ])
             ->add('companyAddress', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
                 'data' => null === $user ? '' : $user->getCompanyAddress(),
                 'constraints' => [
                     new Length([
@@ -113,6 +172,9 @@ class FormRegisterType extends AbstractType
             ])
             ->add('cui', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
                 'data' => null === $user ? '' : $user->getCui(),
                 'constraints' => [
                     new Length([
@@ -123,6 +185,9 @@ class FormRegisterType extends AbstractType
             ])
             ->add('registrationNumber', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
                 'data' => null === $user ? '' : $user->getRegistrationNumber(),
                 'constraints' => [
                     new Length([
@@ -133,6 +198,9 @@ class FormRegisterType extends AbstractType
             ])
             ->add('bankName', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
                 'data' => null === $user ? '' : $user->getBankName(),
                 'constraints' => [
                     new Length([
@@ -143,6 +211,9 @@ class FormRegisterType extends AbstractType
             ])
             ->add('bankAccount', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
                 'data' => null === $user ? '' : $user->getBankAccount(),
                 'constraints' => [
                     new Length([
@@ -151,7 +222,6 @@ class FormRegisterType extends AbstractType
                     ])
                 ]
             ])
-
             ->add('paymentMethod', ChoiceType::class, [
                 'required' => true,
                 'choices' => EducationRegistration::getPaymentMethods(),
@@ -184,27 +254,60 @@ class FormRegisterType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
+        $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData'])
+            ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
     }
 
-    public function onPostSubmit(PostSubmitEvent $event): void
+    /**
+     * @param FormEvent $event
+     * @return void
+     */
+    public function onPreSubmit(FormEvent $event): void
     {
-        $entity = $event->getData();
+        $data = $event->getData();
         $form = $event->getForm();
 
-        if ($entity->isInvoicingPerLegalEntity()) {
-            $requiredFields = EducationRegistration::COMPANY_FIELDS;
+        $county = $this->countyRepository->findOneBy(['id' => $data['county']]);
+        $this->addElements($form, $county);
+    }
 
-            foreach ($requiredFields as $field) {
+    /**
+     * @param FormInterface $form
+     * @param County|null $county
+     * @return void
+     */
+    protected function addElements(FormInterface $form, County $county = null, City $city = null): void
+    {
+        $cities = $this->cityRepository->findBy(['county' => $county], ['name' => 'ASC']);
 
-                $accessor = PropertyAccess::createPropertyAccessor();
-                $values = $accessor->getValue($entity, $field);
+        $form->add('city', EntityType::class, [
+            'required' => true,
+            'class' => City::class,
+            'choices' => $cities,
+            'placeholder' => 'common.form_labels.choose_city',
+            'choice_label' => 'name',
+            'data' => $city,
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'common.not_blank'
+                ])
+            ]
+        ]);
+    }
 
-                if (empty($values)) {
-                    $form->get($field)->addError(new FormError($this->translator->trans('common.not_blank')));
-                }
-            }
-        }
+    /**
+     * @param FormEvent $event
+     * @return void
+     */
+    public function onPreSetData(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        $user = $form->getConfig()->getOption('user');
+        $county = $user->getCounty();
+        $city = $user->getCity();
+
+        $this->addElements($event->getForm(), $county, $city);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -71,7 +71,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $counts;
     }
 
-    public function findTotalCount(string $role): float|bool|int|string|null
+    public function findTotalCount(string $role = "ROLE_USER"): float|bool|int|string|null
     {
         return $this->createQueryBuilder('u')
             ->select('COUNT(u.id)')
@@ -148,5 +148,4 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
-
 }

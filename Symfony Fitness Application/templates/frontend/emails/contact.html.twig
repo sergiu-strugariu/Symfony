@@ -1,5 +1,21 @@
-<p>{{ name }}</p>
-<p>{{ emailAddress }}</p>
-<p>{{ phone }}</p>
-<p>{{ message }}</p>
-<p>{{ accordGDPR }}</p>
+<div class="form-item">
+    <span class="form-label">Nume :</span> {{ firstName }}
+</div>
+<div class="form-item">
+    <span class="form-label">Prenume:</span> {{ lastName }}
+</div>
+<div class="form-item">
+    <span class="form-label">Email:</span> {{ emailAddress }}
+</div>
+<div class="form-item">
+    <span class="form-label">Telefon:</span> {{ phone }}
+</div>
+<div class="form-item">
+    <span class="form-label">Mesaj:</span> {{ message }}
+</div>
+<div class="form-item">
+    <span class="form-label">Accord GDPR:</span> {{ accordGDPR == 1 ? 'Da' : 'Nu' }}
+</div>
+<div class="form-item">
+    <span class="form-label">Județ:</span> {{ county.name }}
+</div>

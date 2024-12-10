@@ -48,6 +48,18 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $data = $options['data'];
+
+        $passwordConstraints = [
+            new NotBlank([
+                'message' => 'common.not_blank'
+            ]),
+            new Assert\Length([
+                'min' => 6,
+                'minMessage' => 'common.min_message'
+            ])
+        ];
+
         $builder
             ->add('firstName', TextType::class, [
                 'required' => true,
@@ -106,21 +118,13 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('plainPassword', RepeatedType::class, [
-                'required' => true,
+                'required' => null === $data->getId() ? true : false,
                 'type' => PasswordType::class,
                 'mapped' => false,
                 'invalid_message' => 'common.not_valid.password_not_match',
                 'first_options'  => ['label' => 'common.form_labels.password.first_options'],
                 'second_options' => ['label' => 'common.form_labels.password.second_options'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'common.not_blank'
-                    ]),
-                    new Assert\Length([
-                        'min' => 6,
-                        'minMessage' => 'common.min_message'
-                    ])
-                ],
+                'constraints' => null === $data->getId() ? $passwordConstraints : []
             ])
             ->add('county', EntityType::class, [
                 'class' => County::class,
@@ -137,6 +141,7 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('accordGDPR', CheckboxType::class, [
+                'required' => null === $data->getId() ? true : false,
                 'attr' => ['class' => 'form-control form-control-solid form-control-lg'],
                 'label' => 'form_register.invoice',
                 'label_html' => true

@@ -2,7 +2,7 @@
   "entity": "Page",
   "name": "Certificate",
   "machineName": "certification",
-  "url": "/",
+  "url": "/certificari",
   "classes": "certification",
   "variables": [
     {
@@ -157,6 +157,66 @@
               "placeholder": "Widget Description",
               "value": "",
               "isTranslated": true,
+              "required": true,
+              "editable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "ACREDITARE MOVE ON",
+      "machineName": "certificate_section_6",
+      "template": "move-on-certifications.html.twig",
+      "classes": "",
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Section Name",
+          "placeholder": "Section Name",
+          "value": "",
+          "isTranslated": false,
+          "required": true,
+          "editable": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "entityTranslation": "PageWidgetTranslation",
+          "machineName": "certificate_section_6_widget_1",
+          "template": "",
+          "classes": "item",
+          "variables": [
+            {
+              "field": "title",
+              "type": "text",
+              "label": "Widget Title",
+              "placeholder": "Widget Title",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Widget Description",
+              "placeholder": "Widget Description",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Widget Image",
+              "placeholder": "Widget Image",
+              "value": "",
+              "isTranslated": false,
               "required": true,
               "editable": true
             }

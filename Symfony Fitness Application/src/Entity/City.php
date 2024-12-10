@@ -40,10 +40,17 @@ class City
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'city')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, EducationRegistration>
+     */
+    #[ORM\OneToMany(targetEntity: EducationRegistration::class, mappedBy: 'city')]
+    private Collection $educationRegistrations;
+
     public function __construct()
     {
         $this->educations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->educationRegistrations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,6 +160,36 @@ class City
             // set the owning side to null (unless already changed)
             if ($user->getCity() === $this) {
                 $user->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EducationRegistration>
+     */
+    public function getEducationRegistrations(): Collection
+    {
+        return $this->educationRegistrations;
+    }
+
+    public function addEducationRegistration(EducationRegistration $educationRegistration): static
+    {
+        if (!$this->educationRegistrations->contains($educationRegistration)) {
+            $this->educationRegistrations->add($educationRegistration);
+            $educationRegistration->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEducationRegistration(EducationRegistration $educationRegistration): static
+    {
+        if ($this->educationRegistrations->removeElement($educationRegistration)) {
+            // set the owning side to null (unless already changed)
+            if ($educationRegistration->getCity() === $this) {
+                $educationRegistration->setCity(null);
             }
         }
 

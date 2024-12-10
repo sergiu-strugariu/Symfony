@@ -30,12 +30,7 @@ parameters:
     payu_base_url: '%env(PAYU_BASE_URL)%'
     payu_secret_key: '%env(PAYU_SECRET_KEY)%'
     payu_merchant_code: '%env(PAYU_MERCHANT_CODE)%'
-    mailchimp_api_key: '%env(MAILCHIMP_API_KEY)%'
-    mailchimp_server_prefix: '%env(MAILCHIMP_API_SERVER_PREFIX)%'
-    mailchimp_list_id: '%env(MAILCHIMP_LIST_ID)%'
     contract_number_start: '%env(CONTRACT_NUMBER_START)%'
-    intercom_app_id: '%env(INTERCOM_APP_ID)%'
-    intercom_hash: '%env(INTERCOM_HASH)%'
     onesignal_app_id: '%env(ONESIGNAL_APP_ID)%'
     onesignal_safari_web_id: '%env(ONESIGNAL_SAFARI_WEB_ID)%'
     smartbill_cif: '%env(SMARTBILL_CIF)%'
@@ -44,6 +39,7 @@ parameters:
     smartbill_username: '%env(SMARTBILL_USERNAME)%'
     smartbill_token: '%env(SMARTBILL_TOKEN)%'
     cookiebot_id: '%env(COOKIEBOT_ID)%'
+    zoho_api_key: '%env(ZOHO_API_KEY)%'
 
 twig:
     globals:
@@ -77,10 +73,6 @@ services:
         arguments:
             $defaultLocale: '%default_locale%'
 
-    App\Helper\DefaultHelper:
-        arguments:
-            $intercomHash: '%intercom_hash%'
-
     App\Helper\MenuHelper:
         public: true
 
@@ -92,12 +84,6 @@ services:
             $baseUrl: '%payu_base_url%'
             $secretKey: '%payu_secret_key%'
             $merchantCode: '%payu_merchant_code%'
-    
-    App\Helper\MailchimpAPIHelper:
-        arguments:
-            $apiKey: '%mailchimp_api_key%'
-            $serverPrefix: '%mailchimp_server_prefix%'
-            $listId: '%mailchimp_list_id%'
             
     App\Helper\SmartBillAPIHelper:
         arguments:
@@ -122,3 +108,7 @@ services:
             $region: '%env(CLOUDFLARE_R2_REGION)%'
             $bucket: '%env(CLOUDFLARE_R2_BUCKET)%'
             $endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'
+
+    App\Helper\ZohoAPIHelper:
+        arguments:
+            $zohoApiKey: '%zoho_api_key%'

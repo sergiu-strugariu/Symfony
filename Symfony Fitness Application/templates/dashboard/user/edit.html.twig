@@ -39,6 +39,18 @@
                     </div>
                     <div class="row mb-6">
                         <div class="col-md-6">
+                            {{ form_label(form.county, 'County', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.county, {'attr': {'class': 'counties form-select form-select-solid form-select-lg', 'data-control': 'select2', 'data-placeholder': 'Select city'}}) }}
+                            {{ form_errors(form.county) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.city, 'City', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.city, {'attr': {'class': 'cities form-select form-select-solid form-select-lg', 'data-control': 'select2', 'data-placeholder': 'Select city'}}) }}
+                            {{ form_errors(form.city) }}
+                        </div>
+                    </div>
+                    <div class="row mb-6">
+                        <div class="col-md-6">
                             {{ form_label(form.plainPassword.first, 'Password', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
                             {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
                             {{ form_errors(form.plainPassword.first) }}
@@ -66,26 +78,179 @@
                             {{ form_errors(form.newsletter) }}
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <!--begin::Card footer-->
-        <div class="card-footer py-6 px-9">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="d-flex justify-content-end">
-                        {{ form_widget(form._token) }}
-                        <a href="{{ path('dashboard_user_index') }}" class="btn btn-light btn-active-light-primary me-2">
-                            Cancel
-                        </a>
-                        <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-stretch">
+                            <div class="card-title">
+                                <h3 class="m-0 text-gray-800">Contracts</h3>
+                            </div>
+                        </div>
+                        <table id="kt_datatable_user_contracts"
+                               class="table align-middle table-row-dashed fs-6 gy-5 px-10">
+                            <thead>
+                            <tr>
+                                <th class="min-w-175px ps-9">Date</th>
+                                <th class="min-w-150px px-0">Number</th>
+                                <th class="min-w-350px">Education</th>
+                                <th class="min-w-125px text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-stretch">
+                            <div class="card-title">
+                                <h3 class="m-0 text-gray-800">Invoices</h3>
+                            </div>
+                        </div>
+                        <table id="kt_datatable_user_invoices"
+                               class="table align-middle table-row-dashed fs-6 gy-5 px-10">
+                            <thead>
+                            <tr>
+                                <th class="min-w-175px ps-9">Date</th>
+                                <th class="min-w-150px px-0">Invoice Series Name</th>
+                                <th class="min-w-150px px-0">Invoice Number</th>
+                                <th class="min-w-350px">Education</th>
+                                <th class="min-w-125px text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-stretch">
+                            <div class="card-title">
+                                <h3 class="m-0 text-gray-800">Courses</h3>
+                            </div>
+                        </div>
+                        <table id="kt_datatable_user_courses"
+                               class="table align-middle table-row-dashed fs-6 gy-5 px-10">
+                            <thead>
+                            <tr>
+                                <th class="min-w-175px ps-9">Date</th>
+                                <th class="min-w-350px">Course</th>
+                                <th class="min-w-125px text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-stretch">
+                            <div class="card-title">
+                                <h3 class="m-0 text-gray-800">Certifications</h3>
+                            </div>
+                        </div>
+                        <table id="kt_datatable_user_certifications"
+                               class="table align-middle table-row-dashed fs-6 gy-5 px-10">
+                            <thead>
+                            <tr>
+                                <th class="min-w-175px ps-9">Date</th>
+                                <th class="min-w-350px">Course</th>
+                                <th class="min-w-125px text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-stretch">
+                            <div class="card-title">
+                                <h3 class="m-0 text-gray-800">Refunds</h3>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="kt_datatable_user_refunds"
+                                   class="table align-middle table-row-dashed fs-6 gy-5 px-10">
+                                <thead>
+                                <tr>
+                                    <th class="min-w-175px ps-9">Date</th>
+                                    <th class="min-w-200px">AMOUNT</th>
+                                    <th class="min-w-200px">Invoice Date</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-gray-600 fw-semibold">
+                                    {% for refund in refunds %}
+                                        <tr>
+                                            <td class="ps-9">{{ refund.createdAt|date('M d, Y') }}</td>
+                                            <td>{{ refund.amount }}</td>
+                                            <td>{{ refund.invoiceDate|date('M d, Y') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--end::Card footer-->
-        <!--end::Card body-->
-        {{ form_end(form) }}
     </div>
+    <!--begin::Card footer-->
+    <div class="card-footer py-6 px-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                    {{ form_widget(form._token) }}
+                    <a href="{{ path('dashboard_user_index') }}" class="btn btn-light btn-active-light-primary me-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-brand btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card footer-->
+    <!--end::Card body-->
+    {{ form_end(form) }}
     <!--end::Card-->
+{% endblock %}
+
+{% block page_javascripts %}
+
+    <script>
+        window.userContracts = "{{ path('dashboard_ajax_user_contracts', {'uuid': uuid}) }}";
+        window.userInvoices = "{{ path('dashboard_ajax_user_invoices', {'uuid': uuid}) }}";
+        window.userCourses = "{{ path('dashboard_ajax_user_courses', {'uuid': uuid}) }}";
+        window.userCertifications = "{{ path('dashboard_ajax_user_certifications', {'uuid': uuid}) }}";
+    </script>
+
+    <script src="{{ asset('assets/dashboard/js/datatables/contracts.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/invoices.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/courses.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/datatables/user-certifications.js') }}"></script>
+
+    <script>
+        if (document.querySelector('.counties') && document.querySelector('.cities')) {
+            let county = $('.counties');
+            let city = $('.cities');
+
+            county.on('change', function () {
+                $.ajax({
+                    method: "GET",
+                    url: window.countyCitiesPath,
+                    data: {'id': $(this).val()},
+                    cache: false,
+                    success: function (response) {
+
+                        city.empty();
+
+                        let optionTpl = `<option value="{id}">{name}</option>`;
+                        if (response.status) {
+                            response.cities.forEach(function (item) {
+                                let newTpl = optionTpl.replace('{name}', item.name)
+                                    .replace('{id}', item.id)
+                                    .replace('{name}', item.name);
+                                $(newTpl).appendTo(city);
+                            });
+                        }
+                    }
+                });
+            });
+        }
+    </script>
 {% endblock %}

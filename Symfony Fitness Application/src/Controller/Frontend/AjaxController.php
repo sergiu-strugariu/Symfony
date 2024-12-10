@@ -10,7 +10,7 @@ use App\Helper\FileUploader;
 use App\Helper\DefaultHelper;
 use App\Helper\LanguageHelper;
 use App\Helper\MailHelper;
-use App\Helper\MailchimpAPIHelper;
+use App\Helper\ZohoAPIHelper;
 use App\Repository\EducationRepository;
 use App\Validator\ValidationConstraints;
 use GuzzleHttp\Exception\ClientException;
@@ -351,7 +351,7 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/ajax/subscribe/member', name: 'ajax_subscribe_member')]
-    public function ajaxSubscribeMember(Request $request, MailchimpAPIHelper $mailChimp, TranslatorInterface $translator): JsonResponse
+    public function ajaxSubscribeMember(Request $request, TranslatorInterface $translator, ZohoAPIHelper $zohoAPIHelper): JsonResponse
     {
         $email = $request->get('email');
 
@@ -362,53 +362,16 @@ class AjaxController extends AbstractController
             ]);
         }
 
+        $data = [
+            'data' => [
+                'Email' => $email,
+                'FormName' => 'newsletter'
+            ]
+        ];
+
         try {
-            $response = $mailChimp->addListMember($email, 'pending');
-        } catch (ClientException $ex) {
-            $contents = $ex->getResponse()->getBody()->getContents();
-            $errorResponse = json_decode($contents, true);
-
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                return new JsonResponse([
-                    'status' => 'error',
-                    'message' => $translator->trans('newsletter.errors.default')
-                ]);
-            }
-
-            if (isset($errorResponse['title'])) {
-                switch ($errorResponse['title']) {
-                    case 'Member Exists':
-                        return new JsonResponse([
-                            'status' => 'error',
-                            'message' => $translator->trans('newsletter.errors.user_exists')
-                        ]);
-                        break;
-                    case 'Invalid Resource':
-                        return new JsonResponse([
-                            'status' => 'error',
-                            'message' => $translator->trans('newsletter.errors.email_not_valid')
-                        ]);
-                        break;
-                    case 'Forgotten Email Not Subscribed':
-                        return new JsonResponse([
-                            'status' => 'error',
-                            'message' => $translator->trans('newsletter.errors.user_exists')
-                        ]);
-                        break;
-                    default:
-                        return new JsonResponse([
-                            'status' => 'error',
-                            'message' => $translator->trans('newsletter.errors.default')
-                        ]);
-                        break;
-                }
-            }
-
-            return new JsonResponse([
-                'status' => 'error',
-                'message' => $translator->trans('newsletter.errors.default')
-            ]);
-        } catch (\Exception $ex) {
+            $zohoAPIHelper->sendRequest($data);
+        } catch (\Exception $exception) {
             return new JsonResponse([
                 'status' => 'error',
                 'message' => $translator->trans('newsletter.errors.default')
@@ -420,6 +383,7 @@ class AjaxController extends AbstractController
             'message' => $translator->trans('newsletter.errors.success')
         ]);
     }
+
 
     #[Route('/ajax/county/cities', name: 'ajax_cities')]
     public function getCitiesByCounty(Request $request, EntityManagerInterface $em): JsonResponse

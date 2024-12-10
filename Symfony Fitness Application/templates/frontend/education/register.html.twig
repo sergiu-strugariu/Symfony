@@ -76,6 +76,33 @@
                         <label class="error">{{ form_errors(form.phone) }}</label>
                     </div>
                 </div>
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.county, 'common.form_labels.county'|trans ~ '*') }}
+                        {{ form_widget(form.county, {
+                            'attr': {
+                                'class': 'counties ' ~ (form_errors(form.county)|trim is not empty ? 'error' : '')
+                            }
+                        }) }}
+                        {{ form_errors(form.county) }}
+                    </div>
+                    <div class="group">
+                        {{ form_label(form.city, 'common.form_labels.city'|trans ~ '*') }}
+                        {{ form_widget(form.city, {
+                            'attr': {
+                                'class': 'cities ' ~ (form_errors(form.city)|trim is not empty ? 'error' : '')
+                            }
+                        }) }}
+                        {{ form_errors(form.city) }}
+                    </div>
+                </div>
+                <div class="group-row">
+                    <div class="group">
+                        {{ form_label(form.cnp, 'common.form_labels.cnp'|trans ~ '*') }}
+                        {{ form_widget(form.cnp, {'attr': {'class': form_errors(form.cnp)|trim is not empty ? 'error' : '' }}) }}
+                        {{ form_errors(form.cnp) }}
+                    </div>
+                </div>
                 <div class="group group-checkbox-invoicePJ">
                     {{ form_widget(form.invoicingPerLegalEntity, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
                     {{ form_label(form.invoicingPerLegalEntity, 'form_register.invoice'|trans) }}
@@ -118,9 +145,19 @@
                         {{ form_errors(form.bankAccount) }}
                     </div>
                 </div>
+                <div>
+                    <h6>
+                        {{
+                            'form_register.payment_method_company_warning'|trans({
+                                '%account_details%': path('app_my_account_details')
+                            })|raw
+                        }}
+                    </h6>
+                </div>
                 <div class="group-details">
                     <p>{{ 'form_register.course_type'|trans }}: <span>{{ education.type|capitalize }}</span></p>
                     <p>{{ 'form_register.price'|trans }}: <span><strong><span id="education-registration-price">{{ education.priceWithVAT }}</span> RON</strong></span></p>
+                    <h6>{{ 'form_register.payment_method_warning'|trans }}</h6>
                 </div>
                 <div class="radio-wrapper">
                     <p>{{ form_label(form.paymentMethod, 'form_register.payment_method'|trans) }}</p>

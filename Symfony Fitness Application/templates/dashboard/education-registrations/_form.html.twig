@@ -39,6 +39,14 @@
             {{ form_errors(form.phone) }}
         </div>
     </div>
+        
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            {{ form_label(form.cnp, 'CNP', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+            {{ form_widget(form.cnp, {'attr': {'class': 'form-control form-control-solid form-control-lg'}}) }}
+            {{ form_errors(form.cnp) }}
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-6 mb-5">

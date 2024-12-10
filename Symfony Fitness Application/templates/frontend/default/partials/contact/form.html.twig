@@ -11,13 +11,23 @@
             {% include "shared/frontend/alert.html.twig" %}
 
             {{ form_start(form, {'attr': {'class': 'contact-form has-loader', novalidate: 'novalidate', 'id': 'contactFrom'}}) }}
-            <div class="group {% if (form_errors(form.name)) %} error {% endif %}">
-                {{ form_label(form.name, 'contact.name'|trans) }}
-                {{ form_widget(form.name) }}
-                <span class="error">
-                    {{ form_errors(form.name) }}
+            <div class="row">
+                <div class="group {% if (form_errors(form.firstName)) %} error {% endif %}">
+                    {{ form_label(form.firstName, 'common.form_labels.first_name'|trans) }}
+                    {{ form_widget(form.firstName) }}
+                    <span class="error">
+                    {{ form_errors(form.firstName) }}
                 </span>
+                </div>
+                <div class="group {% if (form_errors(form.lastName)) %} error {% endif %}">
+                    {{ form_label(form.lastName, 'common.form_labels.last_name'|trans) }}
+                    {{ form_widget(form.lastName) }}
+                    <span class="error">
+                    {{ form_errors(form.lastName) }}
+                </span>
+                </div>
             </div>
+
             <div class="row">
                 <div class="group {% if (form_errors(form.emailAddress)) %} error {% endif %}">
                     {{ form_label(form.emailAddress, 'common.form_labels.email'|trans) }}
@@ -33,6 +43,13 @@
                         {{ form_errors(form.phone) }}
                     </span>
                 </div>
+            </div>
+            <div class="group {% if (form_errors(form.county)) %} error {% endif %}">
+                {{ form_label(form.county, 'common.form_labels.county'|trans) }}
+                {{ form_widget(form.county) }}
+                <span class="error">
+                    {{ form_errors(form.county) }}
+                </span>
             </div>
             <div class="group group-textarea {% if (form_errors(form.message)) %} error {% endif %}">
                 {{ form_label(form.message, 'contact.message'|trans) }}

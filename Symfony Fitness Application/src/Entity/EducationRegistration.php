@@ -14,6 +14,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[AppAssert\RegistrationCui]
 class EducationRegistration
 {
+    const PAYMENT_METHOD_WIRE= 'Transfer bancar';
+    const PAYMENT_METHOD_CARD = 'Card online';
     const PAYMENT_TYPE_WIRE = 'WIRE';
     const PAYMENT_TYPE_CARD = 'CCVISAMC';
     const PAYMENT_TYPE_GOOGLE_PAY = 'GOOGLE_PAY';
@@ -149,6 +151,20 @@ class EducationRegistration
 
     #[ORM\Column(options: ['default' => 0])]
     private ?bool $reminderSent = false;
+
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $cnp = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?int $payuPaymentInstallmentsNumber = null;
+
+    #[ORM\ManyToOne(inversedBy: 'educationRegistrations')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?County $county = null;
+
+    #[ORM\ManyToOne(inversedBy: 'educationRegistrations')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?City $city = null;
     
     public function __construct() {
         $this->createdAt = new \DateTime();
@@ -464,6 +480,15 @@ class EducationRegistration
         return $this->getFirstName() . " " . $this->getLastName();
     }
 
+    public function getEducationPaymentMethod(): string
+    {
+        if ($this->paymentMethod === self::PAYMENT_TYPE_WIRE) {
+            return self::PAYMENT_METHOD_WIRE;
+        }
+
+        return self::PAYMENT_METHOD_CARD;
+    }
+
     public function getInvoiceNumber(): ?string
     {
         return $this->invoiceNumber;
@@ -582,5 +607,53 @@ class EducationRegistration
         }
         
         return round($basePrice * (1 + $commission / 100), 0);
+    }
+
+    public function getCnp(): ?string
+    {
+        return $this->cnp;
+    }
+
+    public function setCnp(string $cnp): static
+    {
+        $this->cnp = $cnp;
+
+        return $this;
+    }
+    
+    public function getPayuPaymentInstallmentsNumber(): ?int
+    {
+        return $this->payuPaymentInstallmentsNumber;
+    }
+
+    public function setPayuPaymentInstallmentsNumber(?int $payuPaymentInstallmentsNumber): static
+    {
+        $this->payuPaymentInstallmentsNumber = $payuPaymentInstallmentsNumber;
+
+        return $this;
+    }
+
+    public function getCounty(): ?County
+    {
+        return $this->county;
+    }
+
+    public function setCounty(?County $county): static
+    {
+        $this->county = $county;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
+
+        return $this;
     }
 }

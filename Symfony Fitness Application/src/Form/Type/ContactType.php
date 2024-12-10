@@ -2,6 +2,9 @@
 
 namespace App\Form\Type;
 
+use App\Entity\County;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -21,7 +24,23 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add('firstName', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'common.not_blank'
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'common.min_message',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z\s]+$/',
+                        'message' => 'common.custom.name'
+                    ])
+                ]
+            ])
+            ->add('lastName', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -70,6 +89,20 @@ class ContactType extends AbstractType
                     new Length([
                         'min' => 20,
                         'minMessage' => 'common.min_message',
+                    ])
+                ]
+            ])
+            ->add('county', EntityType::class, [
+                'class' => County::class,
+                'required' => true,
+                'placeholder' => 'common.form_labels.choose_county',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')->orderBy('c.id', 'ASC');
+                },
+                'choice_label' => 'name',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'common.not_blank'
                     ])
                 ]
             ])

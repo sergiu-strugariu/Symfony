@@ -9,6 +9,7 @@ use App\Entity\EducationTranslation;
 use App\Helper\LanguageHelper;
 use App\Helper\FileUploader;
 use App\Form\Type\EducationType;
+use App\Helper\ZohoAPIHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +21,9 @@ use Symfony\Component\Uid\Uuid;
 
 class EducationController extends AbstractController
 {
-    
+
     #[Route('/dashboard/education/create/{type}', name: 'dashboard_education_create', requirements: ['type' => 'course|workshop|convention'])]
-    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $type): Response
+    public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, ZohoAPIHelper $zohoAPIHelper, $type): Response
     {
         $languages = $languageHelper->getAllLanguages();
 
@@ -36,14 +37,16 @@ class EducationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $education->setUuid(Uuid::v4());
             $education->setType($type);
+            $educationTitle = $form->get('title')->getData();
+            $educationDescription = $form->get('description')->getData();
 
             foreach ($languages as $language) {
                 $educationTranslation = new EducationTranslation();
 
                 $educationTranslation->setEducation($education);
                 $educationTranslation->setLanguage($language);
-                $educationTranslation->setTitle($form->get('title')->getData());
-                $educationTranslation->setDescription($form->get('description')->getData());
+                $educationTranslation->setTitle($educationTitle);
+                $educationTranslation->setDescription($educationDescription);
                 $educationTranslation->setShortDescription($form->get('shortDescription')->getData());
                 $educationTranslation->setAdditionalInfo($form->get('additionalInfo')->getData());
                 $educationTranslation->setImportantInfo($form->get('importantInfo')->getData());
@@ -86,6 +89,8 @@ class EducationController extends AbstractController
 
             $em->flush();
 
+            $this->sendZohoRequest($zohoAPIHelper, $education, $form, 'create');
+
             $this->addFlash('success', 'Congratulations, you have successfully added a new education.');
             return $this->redirectToRoute($listingRoute);
         }
@@ -96,15 +101,15 @@ class EducationController extends AbstractController
             'editMode' => false
         ]);
     }
-    
+
     #[Route('/dashboard/education/{uuid}/edit', name: 'dashboard_education_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, ZohoAPIHelper $zohoAPIHelper, $uuid): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['uuid' => $uuid]);
         if (null === $education) {
             return $this->redirectToRoute('dashboard_index');
         }
-            
+
         $listingRoute = $this->getListingRouteByEducationType($education->getType());
         $locale = $request->get('locale', $this->getParameter('default_locale'));
         $language = $languageHelper->getLanguageByLocale($locale);
@@ -202,10 +207,12 @@ class EducationController extends AbstractController
 
             $em->flush();
 
+            $this->sendZohoRequest($zohoAPIHelper, $education, $form, 'update');
+
             $this->addFlash('success', 'You have successfully edited the education');
             return $this->redirectToRoute($listingRoute);
         }
-       
+
         return $this->render('dashboard/education/management.html.twig', [
             'form' => $form->createView(),
             'listing_route' => $listingRoute,
@@ -256,5 +263,46 @@ class EducationController extends AbstractController
         }
 
         return $route;
+    }
+
+    private function sendZohoRequest($zohoAPIHelper, Education $education, $form, $operation): void
+    {
+        $educationTitle = $form->get('title')->getData();
+        $educationDescription = $form->get('description')->getData();
+
+        $educationTeamMembers = $education->getTeamMembers();
+
+        $instructors = [];
+        foreach ($educationTeamMembers as $educationTeamMember) {
+            $instructors[] = [
+                'id' => $educationTeamMember->getId(),
+                'FullName' => $educationTeamMember->getName()
+            ];
+        }
+
+        $data = [
+            'data' => [
+                'CourseName' => $educationTitle,
+                'IdCourse' => $education->getId(),
+                'IdZoho' => $education->getZohoCode(),
+                'CourseStartDate' => $education->getStartDate()->format('d-m-Y'),
+                'CourseEndDate' => $education->getEndDate()->format('d-m-Y'),
+                'CourseType' => $zohoAPIHelper->getEducationMappingByType($education->getType()),
+                'Category' => $education->getCategory()->getTranslation('ro')->getTitle(),
+                'Certification' => $education->getCertification()->getTranslation('ro')->getTitle(),
+                'StandardPrice' => $education->getPriceWithVATWithoutDiscount(),
+                'DiscountedPrice' => $education->getPriceWithVAT(),
+                'Price' => $education->getPriceWithVAT(),
+                'CourseCity' => $education->getCity()->getName(),
+                'Instructors' => $instructors,
+                'Description' => strip_tags($educationDescription),
+                'Action' => 'NewCoursePlanned',
+                'Operation' => $operation
+            ]
+        ];
+
+        try {
+            $zohoAPIHelper->sendRequest($data);
+        } catch (\Exception $exception) {}
     }
 }

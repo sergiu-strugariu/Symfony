@@ -5,19 +5,21 @@ common:
   newsletter: "Sunt de acord să primesc noutăți și informații comerciale (newsletter) din partea Move On."
   contract: "Generate Contract"
   media: "Îmi dau acordul pentru filmare/fotografiere în cadrul educației"
-  max_message: "Acest câmp trebuie să aibe maxim {{ limit }} caractere."
+  max_message: "Acest câmp trebuie să aiba maxim {{ limit }} caractere."
+  cnp_message: "Acest câmp trebuie să aiba {{ limit }} caractere."
   not_valid:
     email: "Email invalid."
     phone: "Numar de telefon invalid."
     gdpr: "Trebuie sa accepti politica GDPR."
     password_not_match: "Parolele nu coincid."
-  min_message: "Acest câmp trebuie să aibe cel putin {{ limit }} caractere."
+  min_message: "Acest câmp trebuie să aiba cel putin {{ limit }} caractere."
 
   custom:
     min_message: "Mesaj invalid."
     name: "Nume invalid."
     first_name: "Nume invalid."
     last_name: "Prenume invalid."
+    cnp: "CNP Invalid."
 
   form_labels:
     first_name: "Nume"

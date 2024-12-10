@@ -6,6 +6,7 @@ common:
   contract: "Generate Contract."
   media: "I give my consent for filming/photographing in education."
   max_message: "This field must be at most {{ limit }} characters long."
+  cnp_message: "This field must be {{ limit }} characters long."
   not_valid:
     email: "Please enter a valid email."
     phone: "Invalid phone number."
@@ -18,6 +19,7 @@ common:
     name: "Invalid name."
     first_name: "Invalid first name."
     last_name: "Invalid last name."
+    cnp: "Invalid CNP."
 
   form_labels:
     first_name: "First Name"

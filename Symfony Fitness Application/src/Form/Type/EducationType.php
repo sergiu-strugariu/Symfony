@@ -27,6 +27,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EducationType extends AbstractType
 {
@@ -34,14 +36,17 @@ class EducationType extends AbstractType
     protected CityRepository $cityRepository;
     protected CountyRepository $countyRepository;
 
+    private TranslatorInterface $translator;
+
     /**
      * @param CityRepository $cityRepository
      * @param CountyRepository $countyRepository
      */
-    public function __construct(CityRepository $cityRepository, CountyRepository $countyRepository)
+    public function __construct(CityRepository $cityRepository, CountyRepository $countyRepository, TranslatorInterface $translator)
     {
         $this->cityRepository = $cityRepository;
         $this->countyRepository = $countyRepository;
+        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -234,9 +239,18 @@ class EducationType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
-//            ->add('omcCode', TextType::class, [
-//                'required' => false
-//            ])
+            ->add('omcCode', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Length([
+                        'max' => 25,
+                        'maxMessage' => $this->translator->trans('common.max_message')
+                    ])
+                ]
+            ])
+            ->add('zohoCode', TextType::class, [
+                'required' => true
+            ])
             ->add('allowRegistrations', CheckboxType::class, [
                 'required' => false
             ])
@@ -249,9 +263,6 @@ class EducationType extends AbstractType
                 'required' => false
             ])
             ->add('contractDuration', TextareaType::class, [
-                'required' => false
-            ])
-            ->add('invoiceServiceName', TextareaType::class, [
                 'required' => false
             ])
             ->add('info', TextareaType::class, [
@@ -316,17 +327,22 @@ class EducationType extends AbstractType
 
         $entity = $event->getForm()->getData();
 
-        if (null === $entity->getSlug() && isset($data['title'])) {
+        if (null === $entity->getSlug() && isset($data['title']) && isset($data['startDate'])) {
             $slugger = new AsciiSlugger();
-            $slug = $slugger->slug($data['title'])->lower();
+
+            $startDate = new \DateTime($data['startDate']);
+            $formattedDate = $startDate->format('d-M-Y');
+
+            $link = sprintf('%s-%s', $data['title'], strtolower($formattedDate));
+            $slug = $slugger->slug($link)->lower();
 
             $entity->setSlug($slug);
         }
 
         $county = $this->countyRepository->findOneBy(['id' => $data['county']]);
         $this->addElements($form, $county);
-
     }
+
 
     /**
      * @param FormEvent $event

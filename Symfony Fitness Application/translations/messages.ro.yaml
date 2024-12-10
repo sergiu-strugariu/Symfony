@@ -110,27 +110,30 @@ common:
     phone: "Numar de telefon invalid."
     gdpr: "Trebuie sa accepti politica GDPR."
     password_not_match: "Parolele nu coincid."
-  min_message: "Acest câmp trebuie să aibe cel putin {{ limit }} caractere."
-  max_message: "Acest câmp trebuie să aibe maxim {{ limit }} caractere."
+  min_message: "Acest câmp trebuie să aiba cel putin {{ limit }} caractere."
+  max_message: "Acest câmp trebuie să aiba maxim {{ limit }} caractere."
+  cnp_message: "Acest câmp trebuie să aiba {{ limit }} caractere."
 
   custom:
     min_message: "Mesaj invalid."
     name: "Nume invalid."
     first_name: "Nume invalid."
     last_name: "Prenume invalid."
+    cnp: "CNP invalid."
 
   form_labels:
     first_name: "Nume"
     last_name: "Prenume"
     full_name: "Nume"
     email: "Email"
+    cnp: "CNP"
     county: "Judet"
     city: "Oras"
-    choose_county: "Alege Judetul"
-    choose_city: "Alege Orasul"
+    choose_county: "Alege judetul"
+    choose_city: "Alege orasul"
     sign_up: "Înscrie-te"
     phone: "Telefon"
-    invoiceNumber: "Număr Factură"
+    invoiceNumber: "Număr factură"
     invoiceDate: "Dată facturare"
     paymentDate: "Dată plată"
     reason: "Motiv"
@@ -199,6 +202,8 @@ form_register:
   price: "Preț"
   form_recaptcha: 'Nu uita să bifezi recaptcha.'
   payment_method: "Selectați metoda de plată:"
+  payment_method_warning: "*În cazul achitării online cu carduri de beneficii, comisionul perceput este de 5% aplicat la valoarea cursului."
+  payment_method_company_warning: '*În cazul în care se dorește modificarea datelor de companie această operațiune se poate realiza exclusiv în <a href="%account_details%">contul de membru</a>.'
   card: "Card online"
   card_avantaj: "Card Avantaj"
   star_bt: "Star BT"
@@ -298,7 +303,7 @@ mails:
     title: "Notificare"
     notification_text: "Ai primit o nouă notificare pe"
     verify: "Verifică detaliile mai jos:"
-    informations: "Pentru mai multe informații, accesează contul tău pe"
+    information: "Pentru mai multe informații, accesează contul tău pe"
     already_sent: "Ai facut deja o cerere pentru resetarea parolei, incearca mai tarziu."
 
   email_account_confirmation:

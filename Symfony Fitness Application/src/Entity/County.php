@@ -39,11 +39,18 @@ class County
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'county')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, EducationRegistration>
+     */
+    #[ORM\OneToMany(targetEntity: EducationRegistration::class, mappedBy: 'county')]
+    private Collection $educationRegistrations;
+
     public function __construct()
     {
         $this->cities = new ArrayCollection();
         $this->educations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->educationRegistrations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +166,36 @@ class County
             // set the owning side to null (unless already changed)
             if ($user->getCounty() === $this) {
                 $user->setCounty(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EducationRegistration>
+     */
+    public function getEducationRegistrations(): Collection
+    {
+        return $this->educationRegistrations;
+    }
+
+    public function addEducationRegistration(EducationRegistration $educationRegistration): static
+    {
+        if (!$this->educationRegistrations->contains($educationRegistration)) {
+            $this->educationRegistrations->add($educationRegistration);
+            $educationRegistration->setCounty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEducationRegistration(EducationRegistration $educationRegistration): static
+    {
+        if ($this->educationRegistrations->removeElement($educationRegistration)) {
+            // set the owning side to null (unless already changed)
+            if ($educationRegistration->getCounty() === $this) {
+                $educationRegistration->setCounty(null);
             }
         }
 

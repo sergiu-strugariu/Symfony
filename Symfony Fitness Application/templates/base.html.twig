@@ -18,7 +18,11 @@
                     safari_web_id: "{{ onesignal_safari_web_id }}",
                     notifyButton: {
                         enable: true,
-                    },
+                        offset: {
+                            bottom: '80px',
+                            right: '15px'
+                        }
+                    }
                 });
             });
         </script>
@@ -60,7 +64,7 @@
         {% endblock %}
         {% block page_javascripts %}
         {% endblock %}
-        {% block intercom %}
+        {% block zoho %}
         {% endblock %}
     </body>
 </html>

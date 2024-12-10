@@ -111,18 +111,21 @@ common:
     password_not_match: "The passwords do not match"
   min_message: "This field must be at least {{ limit }} characters long."
   max_message: "This field must be at most {{ limit }} characters long."
+  cnp_message: "This field must be {{ limit }} characters long."
 
   custom:
     min_message: "Invalid message."
     name: "Invalid name."
     first_name: "Invalid first name."
     last_name: "Invalid last name."
+    cnp: "Invalid CNP."
 
   form_labels:
     first_name: "First Name"
     last_name: "Last Name"
     full_name: "Name"
     email: "Email"
+    cnp: "CNP"
     county: "County"
     city: "City"
     choose_county: "Choose a county"
@@ -199,6 +202,8 @@ form_register:
   price: "Price"
   form_recaptcha: "Don't forget to check recaptcha"
   payment_method: "Select method of paying:"
+  payment_method_warning: "*In case of online payment using benefit cards, a 5% fee is applied to the exchange rate value."
+  payment_method_company_warning: "*If you wish to modify company details, this operation can only be performed in your <a href=\"%account_details%\">member account</a>."
   card: "Online Card"
   card_avantaj: "Card Avantaj"
   star_bt: "Star BT"
@@ -368,3 +373,6 @@ paymentReminder:
   description_2: "UPS! It looks like you haven't completed the order.."
   description_3: "Complete your order now and begin your educational journey to inspire others toward an active and healthy lifestyle! 😊"
   card: "🛒 Your cart contains:"
+authentification:
+  not_valid:
+    email: 'messages'

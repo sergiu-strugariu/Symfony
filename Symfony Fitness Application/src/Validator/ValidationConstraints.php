@@ -47,6 +47,19 @@ class ValidationConstraints
                     'message' => $this->translator->trans('common.custom.last_name')
                 ])
             ],
+            'cnp' => [
+                new NotBlank([
+                    'message' => $this->translator->trans('common.not_blank')
+                ]),
+                new Length([
+                    'min' => 13,
+                    'minMessage' => $this->translator->trans('common.cnp_message'),
+                ]),
+                new Regex([
+                    'pattern' => '/^[1-9]\d{12}$/',
+                    'message' => $this->translator->trans('common.custom.cnp')
+                ])
+            ],
             'email' => [
                 new Email([
                     'message' => $this->translator->trans('common.not_valid.email')
@@ -77,6 +90,8 @@ class ValidationConstraints
                 new Length([
                     'min' => 3,
                     'minMessage' => $this->translator->trans('common.min_message'),
+                    'max' => 100,
+                    'maxMessage' => $this->translator->trans('common.max_message')
                 ])
             ],
             'companyAddress' => [

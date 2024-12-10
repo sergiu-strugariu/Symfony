@@ -54,16 +54,6 @@ class DatatableHelper
         "question",
         "createdAt"
     ];
-
-    const LEAD_FIELDS = [
-        "id",
-        "firstName",
-        "lastName",
-        "email",
-        "phone",
-        "companyDetails",
-        "interests"
-    ];
     
     const TEAM_MEMBER_FIELDS = [
         "id",
@@ -120,6 +110,34 @@ class DatatableHelper
         "id",
         "title",
         "description"
+    ];
+
+    const USER_CONTRACTS_FIELDS = [
+        "createdAt",
+        "contractNumber",
+        "educationTitle"
+    ];
+
+    const USER_INVOICES_FIELDS = [
+        "createdAt",
+        "invoiceSeriesName",
+        "invoiceNumber",
+        "educationTitle"
+    ];
+
+    const USER_COURSES_FIELDS = [
+        "createdAt",
+        "educationTitle"
+    ];
+
+    const USER_CERTIFICATIONS_FIELDS = [
+        "createdAt",
+        "certificationName"
+    ];
+
+    const USER_REFOUNDS_FIELDS = [
+        "createdAt",
+        "certificationName"
     ];
 
     /**

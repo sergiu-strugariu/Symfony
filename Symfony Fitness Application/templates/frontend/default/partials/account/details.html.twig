@@ -47,6 +47,17 @@
         </div>
     </div>
 
+    <div class="group has-loader">
+        <label for="name">{{ 'common.form_labels.cnp'|trans }}</label>
+        <input class="disabled" type="text" id="name" name="cnp" title="CNP" value="{{ user.cnp }}" />
+        <span class="user-message"></span>
+        <div>
+            <a class="edit-btn" href="#">{{ 'account.details.edit'|trans }}</a>
+            <a class="close-btn d-none" href="#">&times;</a>
+            <a class="save-btn d-none" href="#">{{ 'account.details.save'|trans }}</a>
+        </div>
+    </div>
+
     <div class="accordion error" id="accordionLocation">
         <div class="group" data-toggle="collapse" data-target="#collapseThree">
             <label for="locationPreview">{{ 'course_calendar.location'|trans|capitalize }}</label>
@@ -151,7 +162,3 @@
         </div>
     </div>
 </form>
-
-<script>
-
-</script>

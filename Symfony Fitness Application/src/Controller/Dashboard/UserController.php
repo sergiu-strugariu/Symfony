@@ -2,6 +2,8 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\EducationRegistration;
+use App\Entity\Refund;
 use App\Entity\User;
 use App\Form\Type\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +23,7 @@ class UserController extends AbstractController
             'range' => $range
         ]);
     }
-    
+
     #[Route('/dashboard/user/{uuid}/edit', name: 'dashboard_user_edit')]
     public function edit(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, $uuid): Response
     {
@@ -29,7 +31,7 @@ class UserController extends AbstractController
         if (null === $user) {
             return $this->redirectToRoute('dashboard_user_index');
         }
-        
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -43,22 +45,28 @@ class UserController extends AbstractController
                     $plainPassword
                 ));
             }
-            
+
             // save changes to DB
             $em->persist($user);
             $em->flush();
 
             // Set flash message
             $this->addFlash('success', 'You have successfully edited the user');
-            
+
             return $this->redirectToRoute('dashboard_user_index');
-        } 
-        
+        }
+
+        $refunds = $em->getRepository(Refund::class)->findBy([
+            'email' => $user->getEmail()
+        ]);
+
         return $this->render('dashboard/user/edit.html.twig', [
-             'form' => $form->createView()
+            'form' => $form->createView(),
+            'refunds' => $refunds,
+            'uuid' => $uuid
         ]);
     }
-    
+
     #[Route('/dashboard/user/{uuid}/delete', name: 'dashboard_user_delete')]
     public function delete(EntityManagerInterface $em, $uuid): Response
     {
@@ -66,17 +74,17 @@ class UserController extends AbstractController
         if (null === $user) {
             return $this->redirectToRoute('dashboard_user_index');
         }
-        
+
         // soft delete
         $user->setDeletedAt(new \DateTime());
 
         // save changes to DB
         $em->persist($user);
         $em->flush();
-        
+
         // Set flash message
         $this->addFlash('success', 'You have successfully deleted the user');
-        
+
         return $this->redirectToRoute('dashboard_user_index');
     }
 }

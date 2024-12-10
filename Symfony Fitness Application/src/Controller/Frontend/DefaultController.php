@@ -15,10 +15,12 @@ use App\Form\Type\RefundUserType;
 use App\Helper\DefaultHelper;
 use App\Helper\LanguageHelper;
 use App\Helper\MailHelper;
+use App\Helper\ZohoAPIHelper;
 use App\Repository\ArticleRepository;
 use App\Repository\GalleryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -30,7 +32,7 @@ use Symfony\Component\Uid\Uuid;
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(EntityManagerInterface $em, TranslatorInterface $translator): Response
+    public function index(EntityManagerInterface $em, TranslatorInterface $translator, ZohoAPIHelper $helper): Response
     {
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "homepage"]);
         $categories = $em->getRepository(EducationCategory::class)->getCategories();
@@ -109,7 +111,7 @@ class DefaultController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route('/contact', name: 'app_contact')]
-    public function contact(EntityManagerInterface $em, Request $request, MailHelper $mail, TranslatorInterface $translator, DefaultHelper $helper): Response
+    public function contact(EntityManagerInterface $em, Request $request, MailHelper $mail, TranslatorInterface $translator, DefaultHelper $helper, ZohoAPIHelper $zohoAPIHelper): Response
     {
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "contact"]);
         $form = $this->createForm(ContactType::class);
@@ -135,6 +137,22 @@ class DefaultController extends AbstractController
                 $this->addFlash('error', $translator->trans('authentication.mail.fail'));
                 return $this->redirectToRoute('app_contact');
             }
+
+            $data = [
+                'data' => [
+                    'FirstName' => $form->get('firstName')->getData(),
+                    'LastName' => $form->get('lastName')->getData(),
+                    'Email' => $form->get('emailAddress')->getData(),
+                    'Phone' => $form->get('phone')->getData(),
+                    'County' => $form->get('county')->getData()->getName(),
+                    'Message' => $form->get('message')->getData(),
+                    'FormName' => 'lead'
+                ]
+            ];
+
+            try {
+                $zohoAPIHelper->sendRequest($data);
+            } catch (\Exception $exception) {}
 
             $this->addFlash('success', $translator->trans('authentication.mail.success'));
             return $this->redirectToRoute('app_contact');

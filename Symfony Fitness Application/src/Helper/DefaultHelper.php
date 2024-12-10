@@ -14,17 +14,15 @@ class DefaultHelper
      * @var KernelInterface
      */
     private KernelInterface $kernel;
-    private $intercomHash;
 
     private ParameterBagInterface $parameterBag;
 
     /**
      * @param KernelInterface $kernel
      */
-    public function __construct(KernelInterface $kernel, $intercomHash, ParameterBagInterface $parameterBag)
+    public function __construct(KernelInterface $kernel, ParameterBagInterface $parameterBag)
     {
         $this->kernel = $kernel;
-        $this->intercomHash = $intercomHash;
         $this->parameterBag = $parameterBag;
     }
 
@@ -230,15 +228,6 @@ class DefaultHelper
         }
 
         return $c1 === $c2;
-    }
-
-    public function intercomGetHash($id)
-    {
-        return hash_hmac(
-            'sha256',
-            $id,
-            $this->intercomHash
-        );
     }
 
     /**
