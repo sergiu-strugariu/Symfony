@@ -15,6 +15,7 @@ class EventPartner
 {
     const SPONSOR_TYPE = 'sponsor';
     const MEDIA_TYPE = 'media';
+    const ENTITY_NAME = 'event-partner';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

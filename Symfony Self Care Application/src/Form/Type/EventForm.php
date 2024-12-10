@@ -121,6 +121,7 @@ class EventForm extends AbstractType
             ->add('startDate', TextType::class, [
                 'required' => true,
                 'mapped' => false,
+                'data' => empty($event->getId()) ? null : $event->getStartDate()->format('d.m.Y'),
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'dashboard.form.field_mandatory'

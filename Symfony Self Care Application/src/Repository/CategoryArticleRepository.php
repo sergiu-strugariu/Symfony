@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Article;
 use App\Entity\CategoryArticle;
 use App\Entity\Language;
+use App\Helper\DefaultHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -109,7 +110,7 @@ class CategoryArticleRepository extends ServiceEntityRepository
             ->andWhere('cat.status = :status')
             ->andWhere('art.status = :status')
             ->andWhere('art.id IS NOT NULL')
-            ->setParameter('status', Article::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('cat.id', 'DESC')
             ->groupBy('cat.id')
             ->getQuery()

@@ -46,7 +46,7 @@
     <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
     <script>
         {% set date = startDate is defined ? startDate : '' %}
-        flatpickrInit("{{ date }}", true, 'd.m.Y H:i');
+        flatpickrInit("{{ date }}", false, true, 'd.m.Y H:i');
         initEditor('#event_form_description');
 
         {% if uuid is defined %}

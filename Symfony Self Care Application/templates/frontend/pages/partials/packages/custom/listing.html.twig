@@ -50,7 +50,7 @@
                                     {{ user is not null and user.membershipPackage is not null and user.membershipPackage.slug == package.slug ? 'packages.choose_current'|trans : 'packages.choose_btn'|trans }}
                                 </a>
                             {% else %}
-                                <a href="#">
+                                <a href="#" style="pointer-events: none;" class="{{ user.membershipPackage.slug == package.slug ? 'package-selected' : '' }}">
                                     {{ package.translation(locale).name }}
                                 </a>
                             {% endif %}
@@ -63,7 +63,7 @@
                                     {{ user is not null and user.membershipPackage is not null and user.membershipPackage.slug == package.slug ? 'packages.choose_current'|trans : 'packages.choose_btn'|trans }}
                                 </a>
                             {% else %}
-                                <a href="#">
+                                <a href="#" style="pointer-events: none;" class="{{ user.membershipPackage.slug == package.slug ? 'package-selected' : '' }}">
                                     {{ package.translation(locale).name }}
                                 </a>
                             {% endif %}

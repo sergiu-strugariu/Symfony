@@ -36,20 +36,6 @@
                 </div>
                 <!--end::title & startDate-->
 
-                <!--start::address-->
-                <div class="row mb-6">
-                    <!--begin::Label-->
-                    {{ form_label(form.address, 'dashboard.form.address'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
-                    <!--end::Label-->
-                    <!--begin::Col-->
-                    <div class="col-lg-10 fv-row">
-                        {{ form_widget(form.address, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
-                        {{ form_errors(form.address) }}
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::address-->
-
                 <!--start::county & city-->
                 <div class="row mb-6">
                     <div class="col-md-6">
@@ -68,7 +54,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <!--begin::Label-->
-                            {{ form_label(form.city, 'dashboard.form.county'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            {{ form_label(form.city, 'dashboard.form.city'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
@@ -80,6 +66,20 @@
                     </div>
                 </div>
                 <!--end::county & city-->
+
+                <!--start::address-->
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.address, 'dashboard.form.address'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.address, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.address) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::address-->
 
                 <!--start::eventPartnerSponsors-->
                 <div class="row mb-6">

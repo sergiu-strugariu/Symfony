@@ -14,6 +14,8 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: EventSpeakerRepository::class)]
 class EventSpeaker
 {
+    const ENTITY_NAME = 'event-speaker';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

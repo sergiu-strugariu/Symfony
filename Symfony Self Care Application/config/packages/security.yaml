@@ -38,7 +38,7 @@ security:
 
 
         #  ROLE_ADMIN
-        - { path: ^.*/actions/remove/.+$, roles: ROLE_ADMIN }
+        - { path: ^.*/actions/moderate/.+$, roles: ROLE_ADMIN }
         - { path: ^/dashboard/category, roles: ROLE_ADMIN }
         - { path: ^/dashboard/setting, roles: ROLE_ADMIN }
         - { path: ^/dashboard/language, roles: ROLE_ADMIN }

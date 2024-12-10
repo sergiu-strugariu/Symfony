@@ -37,21 +37,7 @@ class FavoriteRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
-     * @return float|bool|int|string|null
-     */
-    public function countFavorites(User $user): float|bool|int|string|null
-    {
-        return $this->createQueryBuilder('f')
-            ->select('COUNT(f.id)')
-            ->andWhere('f.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
-    /**
-     * @param User $user
+     * @param User|null $user
      * @param string $type
      * @param string $sortName
      * @param string $sortOrder
@@ -60,26 +46,30 @@ class FavoriteRepository extends ServiceEntityRepository
      * @param bool $isCount
      * @return mixed
      */
-    public function getFavoritesByFilters(User $user, string $type = '', string $sortName = 'createdAt', string $sortOrder = 'DESC', int $limit = 9, int $offset = 0, bool $isCount = false): mixed
+    public function getFavoritesByFilters(User $user = null, string $type = '', string $sortName = 'createdAt', string $sortOrder = 'ASC', int $limit = 4, int $offset = 0, bool $isCount = false): mixed
     {
         $defaultImage = $this->helper->getEnvValue('app_default_image');
 
-        $queryBuilder = $this
-            ->createQueryBuilder('f')
-            ->where('f.user = :user')
-            ->setParameter('user', $user);
+        $queryBuilder = $this->createQueryBuilder('f');
 
-        // Filter by @categorySlug
+        // Filter by user
+        if (!empty($user)) {
+            $queryBuilder
+                ->where('f.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        // Filter by @type
         if (!empty($type)) {
             $queryBuilder
                 ->andWhere('f.type = :type')
                 ->setParameter('type', $type);
         }
 
-
+        // Total items
         if ($isCount) {
             return $queryBuilder
-                ->select("COUNT(DISTINCT f.id)")
+                ->select("COUNT(DISTINCT f.entityId)")
                 ->getQuery()
                 ->getSingleScalarResult();
         }
@@ -87,27 +77,24 @@ class FavoriteRepository extends ServiceEntityRepository
         $queryBuilder
             ->leftJoin('App\Entity\Company', 'c', 'WITH', 'c.id = f.entityId AND f.type = :careType')
             ->leftJoin('App\Entity\Company', 'p', 'WITH', 'p.id = f.entityId AND f.type = :providerType')
-            ->leftJoin('App\Entity\Job', 'j', 'WITH', 'j.id = f.entityId AND f.type = :jobType')
-            ->leftJoin('App\Entity\JobTranslation', 'jt', 'WITH', "jt.job = j.id")
-            ->leftJoin('App\Entity\TrainingCourse', 't', 'WITH', 't.id = f.entityId AND f.type = :courseType')
-            ->leftJoin('App\Entity\TrainingCourseTranslation', 'ct', 'WITH', "ct.trainingCourse = t.id")
             ->setParameter('careType', Favorite::CARE_FAVORITE)
-            ->setParameter('providerType', Favorite::PROVIDER_FAVORITE)
-            ->setParameter('jobType', Favorite::JOB_FAVORITE)
-            ->setParameter('courseType', Favorite::COURSE_FAVORITE);
+            ->setParameter('providerType', Favorite::PROVIDER_FAVORITE);
 
         return $queryBuilder
             ->select("
             f.uuid, 
             f.type, 
-            COALESCE(c.name, p.name, jt.title, ct.title)  as name,
-            COALESCE(c.slug, p.slug, j.slug, t.slug)  as slug,
-            COALESCE(c.fileName, p.fileName, j.fileName, t.fileName, '$defaultImage')  as image,
-            COALESCE(c.address, p.address, j.address, t.address)  as address,
+            f.entityId, 
+            COALESCE(c.name, p.name)  as name,
+            COALESCE(c.slug, p.slug)  as slug,
+            COALESCE(c.fileName, p.fileName, '$defaultImage')  as image,
+            COALESCE(c.address, p.address)  as address,
+            COUNT(f.id) AS totalFavorites,
             DATE_FORMAT(f.createdAt, '%d-%m-%Y') as createdAt
         ")
-            ->groupBy('f.id')
+            ->groupBy('f.entityId')
             ->orderBy("f.$sortName", $sortOrder)
+            ->addOrderBy('totalFavorites', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->getQuery()

@@ -29,8 +29,12 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
+        if ($user->getDeletedAt() !== null) {
+            throw new CustomUserMessageAccountStatusException($this->translator->trans('auth.error_delete_account', [], 'messages'));
+        }
+
         if (!$user->isEnabled()) {
-            throw new CustomUserMessageAccountStatusException($this->translator->trans('auth.register_subject_mail', [], 'messages'));
+            throw new CustomUserMessageAccountStatusException($this->translator->trans('auth.error_enable_account', [], 'messages'));
         }
     }
 

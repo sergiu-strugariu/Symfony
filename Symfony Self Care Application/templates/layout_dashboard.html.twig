@@ -113,6 +113,7 @@
         window.coursePath = '{{ path('app_course_single') }}';
         window.courseAjaxPath = "{{ path('dashboard_ajax_training_course') }}";
 
+        window.articlesPath = "{{ path('dashboard_article_index') }}";
         window.articleAjaxPath = "{{ path('dashboard_ajax_articles') }}";
         window.articleImagePath = "{{ asset(app_article_path, 'cloudflare') }}";
         window.userImagePath = "{{ asset(app_user_path, 'cloudflare') }}";
@@ -143,7 +144,7 @@
         window.translations = {
             'dashboard': {
                 'common': {
-                    'error_message': '{{ 'dashboard.common.error_message' | trans }}',
+                    'error_message': '{{ 'form.messages.form_details_error' | trans }}',
                     'error_no_data_in_table': '{{ 'dashboard.common.error_no_data_in_table' | trans }}',
                     'are_you_sure_delete': '{{ 'dashboard.common.are_you_sure_delete' | trans }}',
                     'are_you_sure_deactivate': '{{ 'dashboard.common.are_you_sure_deactivate' | trans }}',
@@ -243,6 +244,9 @@
                     'required': '{{ 'form.city.required' | trans }}',
                 },
 
+            },
+            'packages': {
+                'remove_package_message': '{{ 'packages.remove_package_message' | trans }}'
             }
         };
 
@@ -274,6 +278,9 @@
 
         window.userBillingAddressActionModerate = '{{ path('ajax_get_user_billing_address_action', {'action': 'moderate'}) }}';
         window.userBillingAddressActionRemove = '{{ path('ajax_get_user_billing_address_action', {'action': 'remove'}) }}';
+        window.userCancelMembership = '{{ path('app_payment_cancel') }}';
+        window.chatGPTUrl = '{{ path('dashboard_ajax_generate_article') }}';
+        window.saveArticleChatGPT = '{{ path('dashboard_ajax_save_generate_article') }}';
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>

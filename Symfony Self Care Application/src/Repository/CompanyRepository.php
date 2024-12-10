@@ -146,7 +146,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->andWhere('c.locationType = :type')
             ->setParameter('type', $locationType)
             ->setParameter('approved', CompanyReview::STATUS_APPROVED)
-            ->setParameter('status', Company::STATUS_PUBLISHED);
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
         // Filter by @categorySlug
         if (!empty($category)) {
@@ -211,7 +211,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->andWhere('c.status = :status')
             ->andWhere('c.locationType = :type')
             ->setParameter('slug', $slug)
-            ->setParameter('status', Company::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('type', $type);
 
         // Dynamic order by
@@ -245,7 +245,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->setParameter('id', $company->getId())
             ->setParameter('type', $company->getLocationType())
             ->setParameter('packageSlug', $package)
-            ->setParameter('status', Company::STATUS_PUBLISHED);
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
         // Filter by @category
         if ($isCategory) {
@@ -312,7 +312,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->where('c.deletedAt IS NULL')
             ->andWhere('c.status = :status')
             ->andWhere('c.locationType = :type')
-            ->setParameter('status', Company::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('approved', CompanyReview::STATUS_APPROVED)
             ->setParameter('type', $locationType);
 
@@ -394,7 +394,7 @@ class CompanyRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder
-            ->setParameter('status', Company::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('locationType', $locationType)
             ->setParameter('year', $year)
             ->groupBy('year, month')
@@ -415,7 +415,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->andWhere('entity.deletedAt IS NULL')
             ->andWhere('entity.locationType = :locationType')
             ->setParameter('locationType', $locationType)
-            ->setParameter('status', Company::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('year', 'desc')
             ->getQuery()
             ->getSingleColumnResult();

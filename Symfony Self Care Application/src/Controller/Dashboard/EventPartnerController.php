@@ -4,8 +4,9 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\EventPartner;
 use App\Form\Type\EventPartnerForm;
+use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
-use DateTime;
+use App\Helper\UserHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,7 +68,7 @@ class EventPartnerController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/secure/event/partner/{uuid}/edit', name: 'dashboard_partner_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, UserHelper $userHelper, $uuid): Response
     {
         /** @var EventPartner $partner */
         $partner = $em->getRepository(EventPartner::class)->findOneBy(['uuid' => $uuid]);
@@ -100,8 +101,10 @@ class EventPartnerController extends AbstractController
 
                 // Check and set @filename
                 if ($uploadFile['success']) {
-                    // Remove file
-                    $fileUploaded = $fileUploader->removeFile($this->getParameter('app_event_partner_path'), $partner->getFileName());
+                    // Remove old file
+                    $userHelper->removeEntityFiles($partner, EventPartner::ENTITY_NAME);
+
+                    // Set fileName
                     $partner->setFileName($uploadFile['fileName']);
                 }
             }
@@ -126,20 +129,20 @@ class EventPartnerController extends AbstractController
     }
 
     #[Route('/dashboard/secure/event/partner/actions/{action}/{uuid}', name: 'dashboard_partner_actions')]
-    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, $action, $uuid): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, UserHelper $userHelper, $action, $uuid): Response
     {
         /** @var EventPartner $partner */
         $partner = $em->getRepository(EventPartner::class)->findOneBy(['uuid' => $uuid]);
 
-        if (!isset($partner)) {
+        if ($partner === null) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_partner_index');
         }
 
-        if ($action === 'remove') {
-            // Soft delete
-            $partner->setDeletedAt(new DateTime());
+        if ($action === DefaultHelper::ACTION_REMOVE) {
+            // Remove storage files
+            $userHelper->removeEntityFiles($partner, EventPartner::ENTITY_NAME);
         } else {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
@@ -147,13 +150,11 @@ class EventPartnerController extends AbstractController
         }
 
         // Update data
-        $em->persist($partner);
+        $em->remove($partner);
         $em->flush();
 
         // Set flash message
         $this->addFlash('success', sprintf($translator->trans('controller.success_multiple', [], 'messages'), $action === 'moderate' ? $translator->trans('controller.moderated', [], 'messages') : $translator->trans('controller.deleted', [], 'messages')));
-
-        // Redirect to listing page
         return $this->redirectToRoute('dashboard_partner_index');
     }
 }

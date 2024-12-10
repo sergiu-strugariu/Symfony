@@ -14,6 +14,12 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class MembershipHelper
 {
+    const FILTER_COMPANY_RECOMMENDED = 'company-recommended';
+    const FILTER_COMPANY_CATEGORY_RECOMMENDED = 'company-category-recommended';
+    const FILTER_COMPANY_COUNTY_RECOMMENDED = 'company-county-recommended';
+    const FILTER_JOB_RECOMMENDED = 'job-recommended';
+    const FILTER_COURSE_RECOMMENDED = 'course-recommended';
+
     /**
      * @var EntityManagerInterface
      */
@@ -47,7 +53,7 @@ class MembershipHelper
         $total = 0;
 
         // Check @role
-        if ($this->security->isGranted('ROLE_COMPANY')) {
+        if ($user->hasRole('ROLE_COMPANY')) {
             /** @var MembershipPackage $membership */
             $membership = $user->getMembershipPackage();
 
@@ -62,17 +68,22 @@ class MembershipHelper
 
             switch ($entity) {
                 case Job::ENTITY_NAME:
-                    /** @var Job $getTotalCreated */
+                    /** @var Job $total */
                     $total = $this->em->getRepository(Job::class)->countByUserForCurrentMonth($user);
                     $max = $membership->getMaxJobPerMonth();
                     break;
+                case TrainingCourse::ENTITY_NAME:
+                    /** @var TrainingCourse $total */
+                    $total = $this->em->getRepository(TrainingCourse::class)->countByUserForCurrentMonth($user);
+                    $max = $membership->getMaxCoursePerMonth();
+                    break;
                 case Article::ENTITY_NAME:
-                    /** @var Article $getTotalCreated */
+                    /** @var Article $total */
                     $total = $this->em->getRepository(Article::class)->countByUserForCurrentMonth($user);
                     $max = $membership->getMaxArticlePerMonth();
                     break;
                 case Article::ENTITY_AI_NAME:
-                    /** @var Article $getTotalCreated */
+                    /** @var Article $total */
                     $total = $this->em->getRepository(Article::class)->countByUserForCurrentMonth($user, true);
                     $max = $membership->getMaxGenerateArticlePerMonth();
                     break;
@@ -157,6 +168,7 @@ class MembershipHelper
      */
     public function filterDataByPackages(array $packages, array $excludePackages, int $limit): array
     {
+        $i = 0;
         $finalResults = [];
         $totalResults = 0;
         $remainingLimit = $limit;
@@ -173,6 +185,7 @@ class MembershipHelper
 
         // Calculate how many packages we have
         $packageCount = count($validPackages);
+        $totalElements = array_sum(array_map('count', $packages));
 
         // Check empty array
         if ($packageCount > 0) {
@@ -181,8 +194,14 @@ class MembershipHelper
 
             // Loop through each package
             foreach ($packages as $package) {
+                $packageLimit = $perPackageLimit;
+                if ($totalElements >= $limit && $i === 0) {
+                    $packageLimit = $limit > 4 ? 3 : 2;
+                    $i++;
+                }
+
                 // Take the minimum between the number of results available and the calculated limit per package
-                $takeFromPackage = min(count((array)$package), $perPackageLimit);
+                $takeFromPackage = min(count((array)$package), $packageLimit);
 
                 // Add results from the current package to the final array
                 $finalResults = array_merge($finalResults, array_slice((array)$package, 0, $takeFromPackage));
@@ -216,5 +235,119 @@ class MembershipHelper
         }
 
         return $finalResults;
+    }
+
+    /**
+     * @param string $type
+     * @param string $entityName
+     * @param array $excludePackages
+     * @param array $filterParams
+     * @param int $limit
+     * @return array
+     */
+    public function filterDataByPackage(string $type, string $entityName, array $excludePackages, array $filterParams, int $limit): array
+    {
+        $items = [];
+
+        $companyRepository = $this->em->getRepository(Company::class);
+        $jobRepository = $this->em->getRepository(Job::class);
+        $courseRepository = $this->em->getRepository(TrainingCourse::class);
+
+        $category = $filterParams['category'] ?? null;
+        $locationType = $filterParams['locationType'] ?? null;
+        $company = $filterParams['company'] ?? null;
+
+        $language = $filterParams['language'] ?? null;
+        $job = $filterParams['job'] ?? null;
+        $course = $filterParams['course'] ?? null;
+        $offset = $filterParams['offset'] ?? 0;
+
+        // Parse and call by @package
+        foreach (MembershipPackage::getPackages() as $package) {
+            switch ($type) {
+                case self::FILTER_COMPANY_RECOMMENDED:
+                    /**
+                     * Get items by @locationType and @category
+                     */
+                    $result = $companyRepository->getCompaniesByType($locationType, $category, $limit, $package);
+
+                    // Store results in array by @package
+                    $items[$package] = $result;
+                    break;
+                case self::FILTER_COMPANY_CATEGORY_RECOMMENDED:
+                    /**
+                     * Get items by @company and @isCategory
+                     */
+                    $result = $companyRepository->getCompaniesByCategoryOrCounty($company, $package, true, false, $limit);
+
+                    // Store results in array by @package
+                    $items[$package] = $result;
+                    break;
+                case self::FILTER_COMPANY_COUNTY_RECOMMENDED:
+                    /**
+                     * Get items by @company and @isCounty
+                     */
+                    $result = $companyRepository->getCompaniesByCategoryOrCounty($company, $package, false, true, $limit);
+
+                    // Store results in array by @package
+                    $items[$package] = $result;
+                    break;
+
+                case self::FILTER_JOB_RECOMMENDED:
+                    /**
+                     * Get items by @company and @isCounty
+                     */
+                    $result = $jobRepository->getRecommendedJobs($language, $package, $job, $limit, $offset);
+
+                    // Store results in array by @package
+                    $items[$package] = $result;
+                    break;
+                case self::FILTER_COURSE_RECOMMENDED:
+                    /**
+                     * Get items by @company and @isCounty
+                     */
+                    $result = $courseRepository->getRecommendedCourses($language, $package, $course, $limit, $offset);
+                    // Store results in array by @package
+                    $items[$package] = $result;
+                    break;
+            }
+        }
+
+        $rows = $this->filterDataByPackages($items, $excludePackages, $limit);
+
+        // Parse and increment entityLog
+        $this->parseEntityLog($rows, $entityName);
+
+        return $rows;
+    }
+
+    /**
+     * @param string $entityName
+     * @param User|null $user
+     * @return int
+     */
+    public function changeEntitiesStatus(string $entityName = Article::ENTITY_NAME, ?User $user = null): int
+    {
+        $total = 0;
+
+        $items = match ($entityName) {
+            Article::ENTITY_NAME => $this->em->getRepository(Article::class)->getExpireItems($user),
+            Job::ENTITY_NAME => $this->em->getRepository(Job::class)->getExpireItems($user),
+            TrainingCourse::ENTITY_NAME => $this->em->getRepository(TrainingCourse::class)->getExpireItems($user)
+        };
+
+        /**
+         * Parse and change status
+         */
+        foreach ($items as $item) {
+            $item->setStatus(DefaultHelper::STATUS_DRAFT);
+            $total++;
+
+            // Persist and save
+            $this->em->persist($item);
+            $this->em->flush();
+        }
+
+        return $total;
     }
 }

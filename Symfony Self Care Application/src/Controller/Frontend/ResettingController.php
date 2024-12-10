@@ -7,6 +7,7 @@ use App\Form\Type\ResetPasswordType;
 use App\Form\Type\ForgotPasswordType;
 use App\Helper\DefaultHelper;
 use App\Helper\MailHelper;
+use App\Helper\UserHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +46,7 @@ class ResettingController extends AbstractController
             $formData = $form->getData();
 
             // Get user by @request data
-            $user = $em->getRepository(User::class)->findOneBy(['email' => $formData['email'], 'enabled' => true]);
+            $user = $em->getRepository(User::class)->findOneBy(['email' => $formData['email']]);
 
             if (!empty($user)) {
                 // Generate hash by request data
@@ -73,6 +74,7 @@ class ResettingController extends AbstractController
                 // Update @user data
                 $user->setPasswordRequestedAt(new \DateTime());
                 $user->setConfirmationToken($hash);
+                $user->setDeletedAt(null);
 
                 $em->persist($user);
                 $em->flush();
@@ -89,12 +91,11 @@ class ResettingController extends AbstractController
 
 
     #[Route('/resetting/reset/{token}', name: 'app_resetting_reset_password')]
-    public function resetPassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TranslatorInterface $translator, DefaultHelper $helper, $token): RedirectResponse|Response
+    public function resetPassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TranslatorInterface $translator, DefaultHelper $helper, UserHelper $userHelper, $token): RedirectResponse|Response
     {
         /** @var User $user */
         $user = $em->getRepository(User::class)->findOneBy([
-            'confirmationToken' => $token,
-            'enabled' => true
+            'confirmationToken' => $token
         ]);
 
         if (isset($user) && $user->getPasswordRequestedAt() > (new \DateTime())->modify("-2 hours")) {
@@ -102,6 +103,7 @@ class ResettingController extends AbstractController
             $form = $this->createForm(ResetPasswordType::class);
             $form->handleRequest($request);
             $recaptcha = $request->get('g-recaptcha-response');
+            $isValid = true;
 
             // Validate form
             if ($form->isSubmitted() && $form->isValid()) {
@@ -111,22 +113,36 @@ class ResettingController extends AbstractController
                     return $this->redirectToRoute('app_resetting_reset_password', ['token' => $token]);
                 }
 
+                // Form data
                 $formData = $form->getData();
 
-                // Update password
-                $user->setPassword($passwordEncoder->hashPassword($user, $formData['password']));
-                $user->setPasswordChangedAt(new \DateTime());
+                try {
+                    // Parse all user items and remove for softDelete
+                    $userHelper->parseUserItems($user, false);
+                } catch (\Exception $e) {
+                    $isValid = false;
+                }
 
-                // Reset data
-                $user->setConfirmationToken(null);
-                $user->setPasswordRequestedAt(null);
+                if ($isValid) {
+                    // Update password
+                    $user->setPassword($passwordEncoder->hashPassword($user, $formData['password']));
+                    $user->setPasswordChangedAt(new \DateTime());
+                    $user->setEnabled(true);
 
-                // Persist and save
-                $em->persist($user);
-                $em->flush();
+                    // Reset data
+                    $user->setConfirmationToken(null);
+                    $user->setPasswordRequestedAt(null);
+                    $user->setReasonForDeletion(null);
 
-                $this->addFlash('success', $translator->trans('auth.reset_success', [], 'messages'));
-                return $this->redirectToRoute('dashboard_login');
+                    // Persist and save
+                    $em->persist($user);
+                    $em->flush();
+
+                    $this->addFlash('success', $translator->trans('auth.reset_success', [], 'messages'));
+                    return $this->redirectToRoute('dashboard_login');
+                }
+
+                $this->addFlash('error', $translator->trans('form.default.required', [], 'messages'));
             }
 
             return $this->render('frontend/resetting/reset_password.html.twig', [

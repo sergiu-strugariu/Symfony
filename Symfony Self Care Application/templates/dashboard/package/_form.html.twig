@@ -62,6 +62,17 @@
                 </div>
                 <div class="row mb-6">
                     <!--begin::Label-->
+                    {{ form_label(form.maxCoursePerMonth, 'dashboard.table.max_course'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.maxCoursePerMonth, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.maxCoursePerMonth) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
                     {{ form_label(form.maxArticlePerMonth, 'dashboard.table.max_article'|trans , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
                     <!--end::Label-->
                     <!--begin::Col-->

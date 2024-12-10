@@ -6,9 +6,11 @@ use App\Entity\TrainingCourse;
 use App\Entity\TrainingCourseTranslation;
 use App\Entity\User;
 use App\Form\Type\TrainingCourseFormType;
+use App\Helper\DefaultHelper;
 use App\Helper\MembershipHelper;
 use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
+use App\Helper\UserHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -16,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TrainingController extends AbstractController
@@ -33,21 +34,31 @@ class TrainingController extends AbstractController
     #[Route('/dashboard/course/create', name: 'dashboard_training_create')]
     public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         $course = new TrainingCourse();
 
-        /** @var User $user */
-        $user = $this->isGranted('ROLE_ADMIN') ? null : $this->getUser();
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($user, TrainingCourse::ENTITY_NAME);
 
-        $form = $this->createForm(TrainingCourseFormType::class, $course, ['language' => $languageHelper->getDefaultLanguage(), 'user' => $user]);
+        // Check status plan
+        if ($getPlan['status']) {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
+            return $this->redirectToRoute('dashboard_training_index');
+        }
+
+        /** @var User $userAdm */
+        $userAdm = $this->isGranted('ROLE_ADMIN') ? null : $user;
+
+        $form = $this->createForm(TrainingCourseFormType::class, $course, [
+            'language' => $languageHelper->getDefaultLanguage(),
+            'user' => $userAdm
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $uuid = Uuid::v4();
-
-            // Generate and set unique UUID
-            $course->setUuid($uuid);
-            $course->setUser($this->getUser());
-
             // Get data from the form
             $file = $form->get('fileName')->getData();
 
@@ -65,8 +76,10 @@ class TrainingController extends AbstractController
             $courseTranslation->setBody($form->get('body')->getData());
             $courseTranslation->setShortDescription($form->get('shortDescription')->getData());
 
+            $course->setUser($user);
             $course->addTrainingCourseTranslation($courseTranslation);
             $course->setStartCourseDate(new DateTime($form->get('startCourseDate')->getData()));
+            $course->setEndedAt(new DateTime($form->get('endedAt')->getData()));
 
             if (isset($file)) {
                 // Upload company file
@@ -107,11 +120,15 @@ class TrainingController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/course/{uuid}/edit', name: 'dashboard_training_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, UserHelper $userHelper, $uuid): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /** @var TrainingCourse $course */
         $course = $em->getRepository(TrainingCourse::class)->findOneBy(['uuid' => $uuid]);
 
-        if (null === $course) {
+        if (empty($course)) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
 
@@ -130,14 +147,14 @@ class TrainingController extends AbstractController
 
         $courseTranslation = $courseTranslation ?? new TrainingCourseTranslation();
 
-        /** @var User $user */
-        $user = $this->isGranted('ROLE_ADMIN') ? null : $this->getUser();
+        /** @var User $userAdm */
+        $userAdm = $this->isGranted('ROLE_ADMIN') ? null : $user;
 
         // init form & handle request data
         $form = $this->createForm(TrainingCourseFormType::class, $course, [
             'translation' => $courseTranslation,
             'language' => $languageHelper->getDefaultLanguage(),
-            'user' => $user
+            'user' => $userAdm
         ]);
 
         $form->handleRequest($request);
@@ -159,6 +176,7 @@ class TrainingController extends AbstractController
             $courseTranslation->setLanguage($language);
 
             $course->setStartCourseDate(new DateTime($form->get('startCourseDate')->getData()));
+            $course->setEndedAt(new DateTime($form->get('endedAt')->getData()));
             $course->setUpdatedAt(new DateTime());
 
             // Check uploaded file
@@ -175,6 +193,10 @@ class TrainingController extends AbstractController
 
                 // Check and set @filename
                 if ($uploadFile['success']) {
+                    // Remove old file
+                    $userHelper->removeEntityFiles($course, TrainingCourse::ENTITY_NAME);
+
+                    // Set fileName
                     $course->setFileName($uploadFile['fileName']);
                 }
             }
@@ -196,33 +218,53 @@ class TrainingController extends AbstractController
             'pageTitle' => $translator->trans('controller.edit_course', [], 'messages'),
             'image' => $course->getFileName(),
             'startCourseDate' => $course->getStartCourseDate()->format('d.m.Y'),
+            'endedAt' => $course->getEndedAt()->format('d.m.Y')
         ]);
     }
 
     #[Route('/dashboard/course/actions/{action}/{uuid}', name: 'dashboard_training_actions')]
-    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, $action, $uuid): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, MembershipHelper $helper, UserHelper $userHelper, $action, $uuid): Response
     {
         /** @var TrainingCourse $course */
         $course = $em->getRepository(TrainingCourse::class)->findOneBy(['uuid' => $uuid]);
-        if ($action === 'remove') {
-            // Soft delete
-            $course->setDeletedAt(new DateTime());
-        } elseif ($action === 'moderate') {
-            $course->setStatus($course->getStatus() === TrainingCourse::STATUS_DRAFT ? TrainingCourse::STATUS_PUBLISHED : TrainingCourse::STATUS_DRAFT);
-        } else {
+
+        if ($course === null || $course->getCompany() === null && $action === DefaultHelper::ACTION_MODERATE) {
             // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
+            $this->addFlash('danger', $translator->trans($course->getCompany() === null ? 'controller.no_company' : 'controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_training_index');
         }
 
-        if (!isset($course)) {
-            // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
-            return $this->redirectToRoute('dashboard_training_index');
+        /** @var User $user */
+        $user = $course->getUser();
+
+        // Get membership by @user
+        $getPlan = $helper->checkMembership($user, TrainingCourse::ENTITY_NAME);
+
+        // Check status
+        if ($getPlan['status'] && $course->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === 'moderate') {
+            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
+            return $this->redirectToRoute('dashboard_article_index');
+        }
+
+        switch ($action) {
+            case DefaultHelper::ACTION_REMOVE:
+                // Remove storage files
+                $userHelper->removeEntityFiles($course, TrainingCourse::ENTITY_NAME);
+
+                // Remove item
+                $em->remove($course);
+                break;
+            case DefaultHelper::ACTION_MODERATE:
+                $course->setStatus($course->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
+                $em->persist($course);
+                break;
+            default:
+                // Set flash message
+                $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
+                return $this->redirectToRoute('dashboard_training_index');
         }
 
         // Update data
-        $em->persist($course);
         $em->flush();
 
         // Set flash message

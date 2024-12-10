@@ -4,11 +4,12 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Company;
 use App\Entity\CompanyReview;
+use App\Helper\DefaultHelper;
 use App\Helper\MailHelper;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,15 +17,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CompanyReviewController extends AbstractController
 {
     #[Route('/dashboard/review', name: 'dashboard_review_index')]
-    public function index(): Response
+    public function index(TranslatorInterface $tr): Response
     {
         return $this->render('dashboard/company/reviews/index.html.twig', [
-            'pageTitle' => 'Reviews'
+            'pageTitle' => $tr->trans('dashboard.common.listing_reviews', [], 'messages')
         ]);
     }
 
     #[Route('/dashboard/review/{uuid}', name: 'dashboard_review_preview')]
-    public function preview(EntityManagerInterface $em, $uuid, TranslatorInterface $translator)
+    public function preview(EntityManagerInterface $em, TranslatorInterface $translator, $uuid): RedirectResponse|Response
     {
         /** @var CompanyReview $review */
         $review = $em->getRepository(CompanyReview::class)->findOneBy(['uuid' => $uuid]);
@@ -42,23 +43,24 @@ class CompanyReviewController extends AbstractController
     }
 
     /**
-     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws TransportExceptionInterface
      */
     #[Route('/dashboard/review/actions/{action}/{uuid}', name: 'dashboard_review_actions')]
-    public function actions(EntityManagerInterface $em, $action, $uuid, TranslatorInterface $translator, MailHelper $mail): RedirectResponse
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, MailHelper $mail, $action, $uuid): RedirectResponse
     {
         /** @var CompanyReview $review */
         $review = $em->getRepository(CompanyReview::class)->findOneBy(['uuid' => $uuid]);
+
         $subject = $translator->trans('mail.subject_published_review', [], 'messages');
 
-        if (!isset($review)) {
+        if ($review === null) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_review_index');
         }
 
         switch ($action) {
-            case 'moderate':
+            case DefaultHelper::ACTION_MODERATE:
                 // Send email only published review
                 if ($review->getStatus() !== CompanyReview::STATUS_APPROVED && !$review->isEmailSent()) {
                     // Send email to @user
@@ -87,12 +89,14 @@ class CompanyReviewController extends AbstractController
                 }
 
                 $review->setStatus($review->getStatus() === CompanyReview::STATUS_APPROVED ? CompanyReview::STATUS_PENDING : CompanyReview::STATUS_APPROVED);
+                $em->persist($review);
                 break;
-            case 'draft':
+            case DefaultHelper::STATUS_DRAFT:
                 $review->setStatus(CompanyReview::STATUS_DRAFT);
+                $em->persist($review);
                 break;
-            case 'remove':
-                $review->setDeletedAt(new DateTime());
+            case DefaultHelper::ACTION_REMOVE:
+                $em->remove($review);
                 break;
             default:
                 // Set flash message
@@ -101,7 +105,6 @@ class CompanyReviewController extends AbstractController
         }
 
         // Update data
-        $em->persist($review);
         $em->flush();
 
         /** @var Company $company */

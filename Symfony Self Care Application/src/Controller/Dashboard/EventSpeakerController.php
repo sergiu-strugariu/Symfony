@@ -6,6 +6,7 @@ use App\Entity\EventSpeaker;
 use App\Form\Type\EventSpeakerForm;
 use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
+use App\Helper\UserHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -69,7 +70,7 @@ class EventSpeakerController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/secure/event/speaker/{uuid}/edit', name: 'dashboard_speaker_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, TranslatorInterface $translator, UserHelper $userHelper, $uuid): Response
     {
         /** @var EventSpeaker $speaker */
         $speaker = $em->getRepository(EventSpeaker::class)->findOneBy(['uuid' => $uuid]);
@@ -102,9 +103,10 @@ class EventSpeakerController extends AbstractController
 
                 // Check and set @filename
                 if ($uploadFile['success']) {
-                    // Remove file
-                    $fileUploaded = $fileUploader->removeFile($this->getParameter('app_event_speaker_path'), $speaker->getFileName());
+                    // Remove old file
+                    $userHelper->removeEntityFiles($speaker, EventSpeaker::ENTITY_NAME);
 
+                    // Set fileName
                     $speaker->setFileName($uploadFile['fileName']);
                 }
             }
@@ -130,36 +132,40 @@ class EventSpeakerController extends AbstractController
     }
 
     #[Route('/dashboard/secure/event/speaker/actions/{action}/{uuid}', name: 'dashboard_speaker_actions')]
-    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, $action, $uuid): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, UserHelper $userHelper, $action, $uuid): Response
     {
         /** @var EventSpeaker $speaker */
         $speaker = $em->getRepository(EventSpeaker::class)->findOneBy(['uuid' => $uuid]);
 
-        if (!isset($speaker)) {
+        if ($speaker === null) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_speaker_index');
         }
 
-        if ($action === 'remove') {
-            // Soft delete
-            $speaker->setDeletedAt(new DateTime());
-        } elseif ($action === 'moderate') {
-            $speaker->setStatus($speaker->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
-        } else {
-            // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
-            return $this->redirectToRoute('dashboard_speaker_index');
+        switch ($action) {
+            case DefaultHelper::ACTION_REMOVE:
+                // Remove storage files
+                $userHelper->removeEntityFiles($speaker, EventSpeaker::ENTITY_NAME);
+
+                // Remove item
+                $em->remove($speaker);
+                break;
+            case DefaultHelper::ACTION_MODERATE:
+                $speaker->setStatus($speaker->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
+                $em->persist($speaker);
+                break;
+            default:
+                // Set flash message
+                $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
+                return $this->redirectToRoute('dashboard_speaker_index');
         }
 
         // Update data
-        $em->persist($speaker);
         $em->flush();
 
         // Set flash message
         $this->addFlash('success', sprintf($translator->trans('controller.success_multiple', [], 'messages'), $action === 'moderate' ? $translator->trans('controller.moderated', [], 'messages') : $translator->trans('controller.deleted', [], 'messages')));
-
-        // Redirect to listing page
         return $this->redirectToRoute('dashboard_speaker_index');
     }
 }

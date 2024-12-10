@@ -166,19 +166,22 @@ class CompanyFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'dashboard.form.field_mandatory'
+                        'message' => 'dashboard.form.field_mandatory',
+                        'groups' => [Company::LOCATION_TYPE_CARE]
                     ]),
                     new Assert\Range([
                         'min' => 1,
                         'minMessage' => 'form.default.min_message'
-                    ]),
-                ],
+                    ])
+                ]
             ])
             ->add('admissionCriteria', ChoiceType::class, [
                 'required' => true,
+                'placeholder' => 'common.select',
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'dashboard.form.field_mandatory'
+                        'message' => 'dashboard.form.field_mandatory',
+                        'groups' => [Company::LOCATION_TYPE_CARE]
                     ])
                 ],
                 'choices' => Company::getAdmissionCriteriaRange()
@@ -265,16 +268,6 @@ class CompanyFormType extends AbstractType
                         'maxSize' => '3M'
                     ])
                 ]
-            ])
-            ->add('status', ChoiceType::class, [
-                'required' => true,
-                'placeholder' => 'common.select',
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'dashboard.form.field_mandatory'
-                    ])
-                ],
-                'choices' => Company::getStatuses()
             ])
             ->add('categoryCares', EntityType::class, [
                 'class' => CategoryCare::class,

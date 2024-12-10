@@ -10,6 +10,7 @@ use App\Entity\TrainingCourse;
 use App\Entity\TrainingCourseTranslation;
 use App\Entity\Company;
 use App\Entity\User;
+use App\Helper\DefaultHelper;
 use App\Repository\CityRepository;
 use App\Repository\CountyRepository;
 use Doctrine\ORM\EntityRepository;
@@ -66,6 +67,9 @@ class TrainingCourseFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var TrainingCourse $course */
+        $course = $options['data'];
+
         /** @var TrainingCourseTranslation $translation */
         $translation = $options['translation'];
 
@@ -143,7 +147,7 @@ class TrainingCourseFormType extends AbstractType
                     $queryBuilder = $er->createQueryBuilder('c')
                         ->where('c.deletedAt IS NULL')
                         ->andWhere('c.status = :status')
-                        ->setParameter('status', Company::STATUS_PUBLISHED);
+                        ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
                     if (isset($user)) {
                         $queryBuilder
@@ -166,9 +170,20 @@ class TrainingCourseFormType extends AbstractType
             ->add('startCourseDate', TextType::class, [
                 'required' => true,
                 'mapped' => false,
+                'data' => empty($course->getId()) ? null : $course->getStartCourseDate()->format('d.m.Y'),
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'dashboard.form.field_mandatory'
+                        'message' => 'dashboard.form.field_mandatory',
+                    ])
+                ]
+            ])
+            ->add('endedAt', TextType::class, [
+                'required' => true,
+                'mapped' => false,
+                'data' => empty($course->getId()) ? null : $course->getEndedAt()->format('d.m.Y'),
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'dashboard.form.field_mandatory',
                     ])
                 ]
             ])
@@ -249,16 +264,6 @@ class TrainingCourseFormType extends AbstractType
                         'message' => 'dashboard.form.field_mandatory'
                     ])
                 ]
-            ])
-            ->add('status', ChoiceType::class, [
-                'required' => true,
-                'placeholder' => 'common.select',
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'dashboard.form.field_mandatory'
-                    ])
-                ],
-                'choices' => TrainingCourse::getStatuses()
             ])
             ->add('fileName', FileType::class, [
                 'required' => false,

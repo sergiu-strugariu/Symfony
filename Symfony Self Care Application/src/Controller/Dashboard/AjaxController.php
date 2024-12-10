@@ -2,7 +2,12 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\ArticleTranslation;
+use App\Helper\ChatGPTHelper;
+use App\Helper\MembershipHelper;
+use App\Helper\UserHelper;
 use App\Repository\MembershipPackageRepository;
+use Aws\ElasticsearchService\Exception\ElasticsearchServiceException;
 use DateTime;
 use App\Entity\Article;
 use App\Entity\CategoryArticle;
@@ -40,6 +45,8 @@ use App\Repository\PageRepository;
 use App\Repository\TrainingCourseRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,6 +56,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AjaxController extends AbstractController
@@ -511,6 +519,107 @@ class AjaxController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard/ajax/generate-article', name: 'dashboard_ajax_generate_article')]
+    public function generateArticle(Request $request, ChatGPTHelper $helper, LoggerInterface $logger, MembershipHelper $membershipHelper): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Decode boy data
+        $data = json_decode($request->getContent(), true);
+
+        $prompt = $data['prompt'] ?? '';
+        $limit = $data['limit'] ?? 100;
+        $result = ['ok' => false];
+
+        $getPlan = $membershipHelper->checkMembership($user, Article::ENTITY_AI_NAME);
+
+        if (!empty($prompt) && !$getPlan['status']) {
+            try {
+                $result = $helper->callOpenAiApi($prompt, $limit);
+            } catch (Exception $e) {
+                $logger->error('Chat GPT Error: ' . $e->getMessage(), ['prompt' => $prompt]);
+            }
+        }
+
+        return new JsonResponse($result);
+    }
+
+    #[Route('/dashboard/ajax/save-generate-article', name: 'dashboard_ajax_save_generate_article')]
+    public function saveGenerateArticle(Request $request, MembershipHelper $membershipHelper, FormValidatorHelper $validatorHelper, TranslatorInterface $tr, EntityManagerInterface $em, LanguageHelper $languageHelper): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $date = new DateTime();
+
+        // Init variables
+        $validate = ['checkErrors' => false, 'errors' => []];
+
+        // Retrieve form data from request
+        $formData = $request->request->all();
+
+        // Get default language
+        $language = $languageHelper->getDefaultLanguage();
+
+        $getPlan = $membershipHelper->checkMembership($user, Article::ENTITY_AI_NAME);
+
+        // Process form submission
+        if ($request->isMethod('POST') && !$getPlan['status']) {
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors and exist company
+            if (!$validate['checkErrors']) {
+                $slugger = new AsciiSlugger();
+                $slug = $slugger->slug($formData['title'])->lower();
+
+                /** @var CategoryArticle $category */
+                $category = $em->getRepository(CategoryArticle::class)->findOneBy(['uuid' => $formData['selectCategory']]);
+
+                /** @var Article $getArticle */
+                $getArticle = $em->getRepository(Article::class)->findOneBy(['slug' => $slug]);
+
+                $validate['checkErrors'] = null !== $getArticle;
+
+                if (isset($category) && !$validate['checkErrors']) {
+                    $article = new Article();
+                    $article->setSlug($slug);
+                    $article->setEndedAt($date->modify('+7 days'));
+                    $article->setUser($user);
+                    $article->setStatus(DefaultHelper::STATUS_DRAFT);
+                    $article->setGenerated(true);
+                    $article->addCategoryArticle($category);
+
+                    // create translation and set data
+                    $articleTranslation = new ArticleTranslation();
+                    $articleTranslation->setArticle($article);
+                    $articleTranslation->setLanguage($language);
+                    $articleTranslation->setTitle($formData['title']);
+                    $articleTranslation->setBody($formData['messageText']);
+                    $articleTranslation->setShortDescription($formData['shortDescription']);
+                    $article->addArticleTranslation($articleTranslation);
+
+                    // save new item to DB
+                    $em->persist($article);
+                    $em->persist($articleTranslation);
+                    $em->flush();
+
+                    // Insert item in EntityLog
+                    $membershipHelper->insertEntityLog($article, Article::ENTITY_NAME);
+                }
+            }
+        }
+
+        return new JsonResponse([
+            'status' => !$validate['checkErrors'],
+            'errors' => $validate['errors'],
+            'message' => $tr->trans(!$validate['checkErrors'] ? 'form.messages.success_edit' : 'form.messages.form_details_error', [], 'messages')
+        ]);
+    }
+
     #[Route('/dashboard/ajax/admin/membership-packages', name: 'dashboard_ajax_membership_packages')]
     public function getMembershipPackages(Request $request, MembershipPackageRepository $repository, DatatableHelper $datatableHelper, LanguageHelper $languageHelper): JsonResponse
     {
@@ -899,31 +1008,46 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/dashboard/ajax/profile/get-favorites', name: 'dashboard_ajax_favorites')]
-    public function getFavorites(EntityManagerInterface $em, Request $request): JsonResponse
+    public function getFavorites(EntityManagerInterface $em, Request $request, Security $security): JsonResponse
     {
-        $limit = $request->get('limit', 10);
+        $favoriteRepository = $em->getRepository(Favorite::class);
+        $limit = $request->get('limit', 3);
         $page = $request->get('page', 1);
         $sortName = $request->get('sortName', 'createdAt');
         $sortOrder = $request->get('sortOrder', 'DESC');
         $type = $request->get('type', '');
+        $uuid = $request->get('uuid', '');
+        $isAdmin = $security->isGranted('ROLE_ADMIN');
 
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->getUser();
+
+        // Check if the user is an admin
+        if ($isAdmin) {
+            if (!empty($uuid)) {
+                // If UUID is provided, find the user by UUID
+                $user = $em->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
+            } else {
+                // If no UUID is provided, reset $user to null
+                $user = null;
+            }
+        }
 
         // Calculate offset
         $offset = ($page - 1) * $limit;
 
         // Get data favorites by @filters
-        $favorites = $em->getRepository(Favorite::class)->getFavoritesByFilters($user, $type, $sortName, $sortOrder, $limit, $offset);
+        $favorites = $favoriteRepository->getFavoritesByFilters($user, $type, $sortName, $sortOrder, $limit, $offset);
 
         // Get total favorites by @filters
-        $countFavorites = $em->getRepository(Favorite::class)->getFavoritesByFilters($user, $type, $sortName, $sortOrder, $limit, $offset, true);
+        $countFavorites = $favoriteRepository->getFavoritesByFilters($user, $type, $sortName, $sortOrder, $limit, $offset, true);
 
         // Calculate totalPage / limit
         $totalPages = ceil($countFavorites / $limit);
 
         return new JsonResponse([
             'status' => true,
+            'isAdmin' => $isAdmin,
             'rows' => $favorites,
             'currentPage' => $page,
             'totalPages' => $totalPages
@@ -933,12 +1057,12 @@ class AjaxController extends AbstractController
     #[Route('/dashboard/ajax/profile/remove-favorites', name: 'dashboard_ajax_remove_favorite')]
     public function removeFavorites(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): JsonResponse
     {
-        $uuid = $request->get('uuid');
+        $entityId = $request->get('entityId');
 
         /** @var User $user */
         $user = $this->getUser();
 
-        if (empty($uuid)) {
+        if (empty($entityId)) {
             return new JsonResponse([
                 'status' => false,
                 'message' => $translator->trans('form.default.required', [], 'messages')
@@ -949,7 +1073,7 @@ class AjaxController extends AbstractController
          * Check favorite by @user and @uuid
          * @var Favorite $favorite
          */
-        $favorite = $em->getRepository(Favorite::class)->findOneBy(['user' => $user, 'uuid' => $uuid]);
+        $favorite = $em->getRepository(Favorite::class)->findOneBy(['user' => $user, 'entityId' => $entityId]);
 
         // Check exist favorite
         if (empty($favorite)) {
@@ -964,7 +1088,8 @@ class AjaxController extends AbstractController
         $em->flush();
 
         return new JsonResponse([
-            'status' => true
+            'status' => true,
+            'message' => $translator->trans('form.messages.success_edit', [], 'messages')
         ]);
     }
 
@@ -1112,97 +1237,6 @@ class AjaxController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/ajax/profile/delete-account', name: 'dashboard_ajax_delete_account')]
-    public function deleteAccount(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, TranslatorInterface $translator): JsonResponse
-    {
-        // Init variables
-        $validate = ['checkErrors' => false, 'errors' => []];
-
-        // Retrieve form data from request
-        $formData = $request->request->all();
-
-        // Process form submission
-        if ($request->isMethod('POST')) {
-            /**
-             * Validate fields by @formData
-             * @var FormValidatorHelper $validator
-             */
-            $validate = $validatorHelper->validate($formData);
-
-            // Check errors
-            if (!$validate['checkErrors'] && !$this->isGranted('ROLE_ADMIN')) {
-                /** @var User $user */
-                $user = $this->getUser();
-
-                // User dates
-                $articles = $user->getArticles();
-                $courses = $user->getTrainingCourses();
-                $jobs = $user->getJobs();
-                $companies = $user->getCompanies();
-
-                /**
-                 * Parse and delete articles
-                 * @var Article $article
-                 */
-                foreach ($articles as $article) {
-                    $article->setDeletedAt(new \DateTime());
-                    $article->setStatus(Article::STATUS_DRAFT);
-
-                    $em->persist($article);
-                    $em->flush();
-                }
-
-                /**
-                 * Parse and delete courses
-                 * @var TrainingCourse $course
-                 */
-                foreach ($courses as $course) {
-                    $course->setDeletedAt(new \DateTime());
-                    $course->setStatus(TrainingCourse::STATUS_DRAFT);
-
-                    $em->persist($course);
-                    $em->flush();
-                }
-
-                /**
-                 * Parse and delete jobs
-                 * @var Job $job
-                 */
-                foreach ($jobs as $job) {
-                    $job->setDeletedAt(new \DateTime());
-                    $job->setStatus(Job::STATUS_DRAFT);
-
-                    $em->persist($job);
-                    $em->flush();
-                }
-
-                /**
-                 * Parse and delete companies
-                 * @var Company $company
-                 */
-                foreach ($companies as $company) {
-                    $company->setDeletedAt(new \DateTime());
-                    $company->setStatus(Company::STATUS_DRAFT);
-
-                    $em->persist($company);
-                    $em->flush();
-                }
-
-                $user->setReasonForDeletion($formData['option'] ?? $formData['shortMessage']);
-                $user->setDeletedAt(new \DateTime());
-                $user->setEnabled(false);
-                $em->persist($user);
-                $em->flush();
-            }
-        }
-
-        return new JsonResponse([
-            'status' => !$validate['checkErrors'],
-            'errors' => $validate['errors'],
-            'message' => $translator->trans(!$validate['checkErrors'] ? 'form.messages.success_deleted' : 'form.default.required', [], 'messages')
-        ]);
-    }
-
     #[Route('/dashboard/ajax/chart/get-users', name: 'dashboard_ajax_get_users')]
     public function getUsersByYear(EntityManagerInterface $em, Request $request): JsonResponse
     {
@@ -1279,6 +1313,57 @@ class AjaxController extends AbstractController
                 'labels' => $dataProvider['labels'],
                 'values' => $dataProvider['values']
             ]
+        ]);
+    }
+
+    #[Route('/dashboard/ajax/profile/delete-account', name: 'dashboard_ajax_delete_account')]
+    public function deleteAccount(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, UserHelper $userHelper, TranslatorInterface $translator): JsonResponse
+    {
+        // Init variables
+        $validate = ['checkErrors' => false, 'errors' => []];
+
+        // Retrieve form data from request
+        $formData = $request->request->all();
+
+        // Process form submission
+        if ($request->isMethod('POST')) {
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors
+            if (!$validate['checkErrors'] && !$this->isGranted('ROLE_ADMIN')) {
+                /** @var User $user */
+                $user = $this->getUser();
+
+                try {
+                    // Parse all user items and remove for softDelete
+                    $userHelper->parseUserItems($user, true);
+                } catch (Exception $e) {
+                    $validate['checkErrors'] = true;
+                }
+
+                if (!$validate['checkErrors']) {
+                    // Reset payment data
+                    $user->setPaymentToken(null);
+                    $user->setPaymentTokenExpirationDate(null);
+                    $user->setMembershipCancel(true);
+
+                    $user->setReasonForDeletion($formData['option'] ?? $formData['shortMessage']);
+                    $user->setDeletedAt(new \DateTime());
+                    $user->setEnabled(false);
+                    $em->persist($user);
+                    $em->flush();
+                }
+            }
+        }
+
+        return new JsonResponse([
+            'status' => !$validate['checkErrors'],
+            'errors' => $validate['errors'],
+            'message' => $translator->trans(!$validate['checkErrors'] ? 'form.messages.success_deleted' : 'form.default.required', [], 'messages')
         ]);
     }
 }

@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
 
 {% block content %}
+    {% set companyTypeTitle = locationType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') ? 'company.company_add'|trans : 'company.service_add'|trans %}
     <!--begin::Users-->
     <div class="card card-flush">
         <!--begin::Card header-->
@@ -28,7 +29,7 @@
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <a href="{{ path('dashboard_company_create', {'locationType': locationType}) }}" class="btn btn-brand btn-md rounded-0 fw-bold btn-primary text-uppercase">
-                    {{ 'dashboard.table.add_new_company'|trans }}
+                    {{ companyTypeTitle }}
                 </a>
             </div>
             <!--end::Actions-->

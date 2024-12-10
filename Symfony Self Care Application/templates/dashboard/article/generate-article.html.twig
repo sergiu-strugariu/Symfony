@@ -1,23 +1,35 @@
 {% extends 'layout_dashboard.html.twig' %}
 
-{% block title %}{{ parent() }} Generare articole{% endblock %}
+{% block title %}{{ parent() }} {{ 'dashboard.article.generate_article_title'|trans }}{% endblock %}
 
 {% block content %}
     <!--begin::Page loading(append to body)-->
     <div class="page-loader flex-column">
         <span class="spinner-border text-primary" role="status"></span>
-        <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+        <span class="text-muted fs-6 fw-semibold mt-5">
+            {{ 'dashboard.article.generate_article_loading'|trans }}...
+        </span>
     </div>
     <!--end::Page loading-->
+
     <div class="generate-article-wrapper">
         <div class="card mb-5 mb-lg-3 card-flush has-loader">
             <!--begin::Card body-->
             <div class="card-body">
                 <div class="steps">
                     <ul>
-                        <li class="active" data-step="1"><span>1</span> Generare articol</li>
-                        <li data-step="2"><span>2</span> Generare titlu si descriere</li>
-                        <li data-step="3"><span>3</span> Editeaza si salveaza</li>
+                        <li class="active" data-step="1">
+                            <span>1</span>
+                            {{ 'dashboard.article.generate_article_title'|trans }}
+                        </li>
+                        <li data-step="2">
+                            <span>2</span>
+                            {{ 'dashboard.article.generate_title_description'|trans }}
+                        </li>
+                        <li data-step="3">
+                            <span>3</span>
+                            {{ 'dashboard.article.generate_article_edit_save'|trans }}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -26,35 +38,46 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row mb-6">
-                                <label for="articlePrompt">Generare articol</label>
+                                <label for="articlePrompt">
+                                    {{ 'dashboard.article.generate_article_title'|trans }}
+                                </label>
                                 <div class="col-lg-12 fv-row">
-                                    <textarea type="text" class="form-control" name="articlePromptName" id="articlePrompt" rows="5" placeholder="Ex. Scrie un articol profesionist de aproximativ 500 pana la 750 de cuvinte, despre ingrijirea batranilor."></textarea>
-                                    <p>Ex. Scrie un articol profesionist de aproximativ 500 pana la 750 de cuvinte, despre ingrijirea batranilor.</p>
-                                    <p class="error invalid-feedback" id="articlePromptError">Camp obligatoriu!</p>
+                                    <textarea type="text"
+                                              class="form-control"
+                                              name="articlePromptName"
+                                              id="articlePrompt"
+                                              rows="5"
+                                              placeholder="{{ 'dashboard.article.generate_article_description_placeholder'|trans }}"></textarea>
+                                    <p>{{ 'dashboard.article.generate_article_description_placeholder'|trans }}</p>
+                                    <p class="error invalid-feedback" id="articlePromptError">
+                                        {{ 'form.default.default_field_required'|trans }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
-{#                        <div class="col-lg-12">#}
-{#                            <div class="row mb-6">#}
-{#                                <label for="topicPrompt">Topic</label>#}
-{#                                <div class="col-lg-12 fv-row">#}
-{#                                    <select name="topicPrompt" id="topicPrompt" class="form-control">#}
-{#                                        <option value="">Alege un topic</option>#}
-{#                                        <option value="formal">Formal</option>#}
-{#                                        <option value="informativ">Informativ</option>#}
-{#                                        <option value="obiectiv">Obiectiv</option>#}
-{#                                        <option value="analitic">Analitic</option>#}
-{#                                        <option value="narativ">Narativ</option>#}
-{#                                        <option value="casual">Casual</option>#}
-{#                                    </select>#}
-{#                                    <p>Alege un topic pentru articol</p>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="col-lg-12"> #}
+                        {#                            <div class="row mb-6"> #}
+                        {#                                <label for="topicPrompt">Topic</label> #}
+                        {#                                <div class="col-lg-12 fv-row"> #}
+                        {#                                    <select name="topicPrompt" id="topicPrompt" class="form-control"> #}
+                        {#                                        <option value="">Alege un topic</option> #}
+                        {#                                        <option value="formal">Formal</option> #}
+                        {#                                        <option value="informativ">Informativ</option> #}
+                        {#                                        <option value="obiectiv">Obiectiv</option> #}
+                        {#                                        <option value="analitic">Analitic</option> #}
+                        {#                                        <option value="narativ">Narativ</option> #}
+                        {#                                        <option value="casual">Casual</option> #}
+                        {#                                    </select> #}
+                        {#                                    <p>Alege un topic pentru articol</p> #}
+                        {#                                </div> #}
+                        {#                            </div> #}
+                        {#                        </div> #}
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-end">
                                 <button type="submit"
-                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder"> Pasul urmator</button>
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                                    {{ 'dashboard.article.generate_article_next'|trans }}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -64,52 +87,91 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row mb-6">
-                                <label for="titlePrompt">Genereaza titlu pentru articol</label>
+                                <label for="titlePrompt">
+                                    {{ 'dashboard.article.generate_article'|trans }}
+                                </label>
                                 <div class="col-lg-12 fv-row">
-                                    <textarea type="text" class="form-control" id="titlePrompt" rows="2" placeholder="Ex. Scrie un titlu de maxim 60 caractere pentru articol"></textarea>
-                                    <p>Ex. Scrie un titlu de maxim 60 caractere pentru articol</p>
-                                    <p class="error invalid-feedback" id="titlePromptError">Camp obligatoriu!</p>
+                                    <textarea
+                                            type="text"
+                                            class="form-control"
+                                            id="titlePrompt"
+                                            rows="2"
+                                            placeholder="{{ 'dashboard.article.generate_article_placeholder'|trans }}"></textarea>
+                                    <p>{{ 'dashboard.article.generate_article_placeholder'|trans }}</p>
+                                    <p class="error invalid-feedback" id="titlePromptError">
+                                        {{ 'form.default.default_field_required'|trans }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="row mb-6">
-                                <label for="descriptionPrompt">Genereaza o scurta descriere</label>
+                                <label for="descriptionPrompt">
+                                    {{ 'dashboard.article.generate_article_short_description'|trans }}
+                                </label>
                                 <div class="col-lg-12 fv-row">
-                                    <textarea type="text" class="form-control" id="descriptionPrompt" rows="2" placeholder="Scrie o scurta descriere de maxim 110 caractere pentru articol"></textarea>
-                                    <p>Ex. Scrie o scurta descriere de maxim 110 caractere pentru articol</p>
-                                    <p class="error invalid-feedback" id="descriptionPromptError">Camp obligatoriu!</p>
+                                    <textarea type="text"
+                                              class="form-control shortDescription"
+                                              id="descriptionPrompt"
+                                              rows="2"
+                                              placeholder="{{ 'dashboard.article.generate_article_short_description_placeholder'|trans }}"></textarea>
+                                    <p>{{ 'dashboard.article.generate_article_short_description_placeholder'|trans }}</p>
+                                    <p class="error invalid-feedback" id="descriptionPromptError">
+                                        {{ 'form.default.default_field_required'|trans }}
+                                    </p>
+                                    <p class="character-counter">
+                                        <span>0</span> caractere (minimum 20, maximum 110)</p>
                                 </div>
                             </div>
                         </div>
-{#                        <div class="col-lg-12">#}
-{#                            <div class="row mb-6">#}
-{#                                <label for="imagePrompt">Generate image</label>#}
-{#                                <div class="col-lg-12 fv-row">#}
-{#                                    <textarea type="text" class="form-control" id="imagePrompt" rows="3" placeholder="Ex. Genereaza o imagine cu dimensiunea de 1792x1024 px in format webp pentru articol"></textarea>#}
-{#                                    <p>Ex. Genereaza o imagine cu dimensiunea de 1792x1024 px in format webp pentru articol</p>#}
-{#                                    <p class="error invalid-feedback" id="imagePromptError">Camp obligatoriu!</p>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="col-lg-12"> #}
+                        {#                            <div class="row mb-6"> #}
+                        {#                                <label for="imagePrompt">Generate image</label> #}
+                        {#                                <div class="col-lg-12 fv-row"> #}
+                        {#                                    <textarea type="text" class="form-control" id="imagePrompt" rows="3" placeholder="Ex. Genereaza o imagine cu dimensiunea de 1792x1024 px in format webp pentru articol"></textarea> #}
+                        {#                                    <p>Ex. Genereaza o imagine cu dimensiunea de 1792x1024 px in format webp pentru articol</p> #}
+                        {#                                    <p class="error invalid-feedback" id="imagePromptError">Camp obligatoriu!</p> #}
+                        {#                                </div> #}
+                        {#                            </div> #}
+                        {#                        </div> #}
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-end">
                                 <button type="button" id="goToStepOne" style="margin-right: 15px;"
-                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Pasul anterior</button>
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                                    {{ 'dashboard.article.generate_article_back'|trans }}
+                                </button>
                                 <button type="submit"
-                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Pasul urmator</button>
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                                    {{ 'dashboard.article.generate_article_next'|trans }}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div id="generatedArticleOutput" class="pt-5 d-none">
-                    <h3>Rezultat</h3>
+                    <h3>{{ 'dashboard.article.generate_article_result'|trans }}</h3>
                     <div class="row d-none" id="generatedTitle">
                         <div class="col-lg-12">
                             <div class="row mb-6">
-                                <label for="titleOutput">Titlul generat</label>
+                                <label for="titleOutput">
+                                    {{ 'dashboard.article.generate_article_result_title'|trans }}
+                                </label>
                                 <div class="col-lg-12 fv-row">
-                                    <input type="text" class="form-control" id="titleOutput"/>
+                                    <input type="text" class="form-control" id="titleOutput" name="title"/>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label for="titleOutput">
+                                    {{ 'blog.filter_title'|trans }}
+                                </label>
+                                <div class="col-lg-12 fv-row">
+                                    <select name="selectCategory" id="category" class="form-control">
+                                        {% for category in categories %}
+                                            <option value="{{ category.uuid }}">
+                                                {{ category.translation(locale).title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -117,31 +179,40 @@
                     <div class="row d-none" id="generatedDescription">
                         <div class="col-lg-12">
                             <div class="row mb-6">
-                                <label for="descriptionOutput">Descrierea generata</label>
+                                <label for="descriptionOutput">
+                                    {{ 'dashboard.article.generate_article_result_short_description'|trans }}
+                                </label>
                                 <div class="col-lg-12 fv-row">
-                                    <input type="text" class="form-control" id="descriptionOutput"/>
+                                    <input type="text" class="form-control shortDescription generatedShortDescription" id="descriptionOutput" name="shortDescription"/>
                                 </div>
+                                <p class="character-counter">
+                                    <span>0</span> caractere (minimum 20, maximum 110)</p>
                             </div>
                         </div>
                     </div>
-{#                    <div class="row d-none" id="generatedImage">#}
-{#                        <div class="col-lg-12">#}
-{#                            <div class="row mb-6">#}
-{#                                <label for="imageOutput">Imaginea generata</label>#}
-{#                                <div class="col-lg-12 fv-row">#}
-{#                                    <div class="img-wrapper">#}
-{#                                        <img src="" alt="image" id="imageOutput" class="img-fluid">#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    {#                    <div class="row d-none" id="generatedImage"> #}
+                    {#                        <div class="col-lg-12"> #}
+                    {#                            <div class="row mb-6"> #}
+                    {#                                <label for="imageOutput">Imaginea generata</label> #}
+                    {#                                <div class="col-lg-12 fv-row"> #}
+                    {#                                    <div class="img-wrapper"> #}
+                    {#                                        <img src="" alt="image" id="imageOutput" class="img-fluid"> #}
+                    {#                                    </div> #}
+                    {#                                </div> #}
+                    {#                            </div> #}
+                    {#                        </div> #}
+                    {#                    </div> #}
                     <div class="row d-none" id="generatedArticle">
                         <div class="col-lg-12">
                             <div class="row mb-6">
-                                <label for="bodyOutput">Continutul articolului generat</label>
+                                <label for="bodyOutput">
+                                    {{ 'dashboard.article.generate_article_result_description'|trans }}
+                                </label>
                                 <div class="col-lg-12 fv-row">
-                                    <textarea name="bodyOutput" id="bodyOutput" class="form-control form-control-solid form-control-lg rounded-0 tinymce-editor" rows="10"></textarea>
+                                    <textarea name="message"
+                                              id="bodyOutput"
+                                              class="form-control form-control-solid form-control-lg rounded-0 tinymce-editor"
+                                              rows="10"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -150,11 +221,17 @@
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-end">
                                 <button type="button" id="refreshPage" style="margin-right: 15px;"
-                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Refresh</button>
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                                    {{ 'dashboard.article.generate_article_result_refresh'|trans }}
+                                </button>
                                 <button type="button" id="goToStepTwo" style="margin-right: 15px;"
-                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Pasul anterior</button>
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                                    {{ 'dashboard.article.generate_article_back'|trans }}
+                                </button>
                                 <button type="submit" id="saveBtn"
-                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">Salveaza</button>
+                                        class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                                    {{ 'dashboard.article.generate_article_result_save'|trans }}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -168,8 +245,7 @@
 
 {% block page_javascripts %}
     <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
-    <script>
-      initEditor('#bodyOutput');
-    </script>
+    <script>initEditor('#bodyOutput');</script>
+    <script src="{{ asset('assets/dashboard/js/profile/formMessageHelper.js') }}"></script>
     <script src="{{ asset('assets/dashboard/js/generate-articles/main.js') }}"></script>
 {% endblock %}

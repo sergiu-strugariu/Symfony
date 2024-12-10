@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Helper\DefaultHelper;
 use App\Helper\ElasticSearchHelper;
 use App\Helper\LanguageHelper;
+use Exception;
 use FOS\ElasticaBundle\Elastica\Index;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,6 +49,9 @@ class ElasticSearchController extends AbstractController
         $this->companyFinder = $companyFinder;
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/ajax/elastic-search', name: 'app_search')]
     public function index(Request $request, LanguageHelper $helper, ElasticSearchHelper $searchHelper): JsonResponse
     {

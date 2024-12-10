@@ -44,5 +44,8 @@
         let benefits = JSON.parse(benefitsJson);
 
         initTagify(document.querySelector("#job_form_benefits"), benefits);
+
+        {% set date = endedAt is defined ? endedAt : ''%}
+        flatpickrInit("{{ date }}", false);
     </script>
 {% endblock %}

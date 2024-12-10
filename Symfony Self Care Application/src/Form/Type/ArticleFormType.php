@@ -3,14 +3,12 @@
 namespace App\Form\Type;
 
 use App\Entity\Article;
+use App\Entity\ArticleTranslation;
 use App\Entity\CategoryArticle;
-use App\Entity\Job;
-use App\Entity\JobTranslation;
 use App\Entity\Language;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -20,7 +18,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ArticleFormType extends AbstractType
 {
@@ -29,12 +26,12 @@ class ArticleFormType extends AbstractType
      * @param array $options
      * @return void
      */
-    public function buildForm(FormBuilderInterface $builder,  array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var Job $data */
-        $data = $options['data'];
+        /** @var Article $article */
+        $article = $options['data'];
 
-        /** @var JobTranslation $translation */
+        /** @var ArticleTranslation $translation */
         $translation = $options['translation'];
 
         /** @var Language $language */
@@ -53,7 +50,7 @@ class ArticleFormType extends AbstractType
             ])
             ->add('categoryArticles', EntityType::class, [
                 'class' => CategoryArticle::class,
-                'placeholder' =>  'common.select',
+                'placeholder' => 'common.select',
                 'required' => true,
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $er) use ($language) {
@@ -76,23 +73,23 @@ class ArticleFormType extends AbstractType
                 },
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' =>  'dashboard.form.field_mandatory'
+                        'message' => 'dashboard.form.field_mandatory'
                     ]),
                     new Assert\Count([
                         'min' => 1,
-                        'minMessage' =>  'dashboard.form.min_select'
+                        'minMessage' => 'dashboard.form.min_select'
                     ])
                 ]
             ])
-            ->add('status', ChoiceType::class, [
+            ->add('endedAt', TextType::class, [
                 'required' => true,
-                'placeholder' => 'common.select',
+                'mapped' => false,
+                'data' => empty($article->getId()) ? null : $article->getEndedAt()->format('d.m.Y'),
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'dashboard.form.field_mandatory'
+                        'message' => 'dashboard.form.field_mandatory',
                     ])
-                ],
-                'choices' => Article::getStatuses()
+                ]
             ])
             ->add('fileName', FileType::class, [
                 'required' => false,

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\DefaultHelper;
 use App\Repository\ArticleRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,13 +10,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[UniqueEntity(fields: ['slug'], message: 'A article with this name already exists.', errorPath: 'title')]
 class Article
 {
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
     const ENTITY_NAME = 'article';
     const ENTITY_AI_NAME = 'article-ai';
 
@@ -59,11 +59,14 @@ class Article
     /**
      * @var Collection<int, EntityDisplayLog>
      */
-    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'article')]
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'article', orphanRemoval: true)]
     private Collection $entityDisplayLogs;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
@@ -73,6 +76,8 @@ class Article
 
     public function __construct()
     {
+        $this->uuid = Uuid::v4();
+        $this->status = DefaultHelper::STATUS_DRAFT;
         $this->articleTranslations = new ArrayCollection();
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
@@ -158,6 +163,18 @@ class Article
         return $this;
     }
 
+    public function getEndedAt(): ?\DateTimeInterface
+    {
+        return $this->endedAt;
+    }
+
+    public function setEndedAt(\DateTimeInterface $endedAt): static
+    {
+        $this->endedAt = $endedAt;
+
+        return $this;
+    }
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -210,14 +227,6 @@ class Article
         }
 
         return $this;
-    }
-
-    public static function getStatuses()
-    {
-        return [
-            self::STATUS_DRAFT => self::STATUS_DRAFT,
-            self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
-        ];
     }
 
     public function getTranslation($locale): ?ArticleTranslation
@@ -297,4 +306,11 @@ class Article
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getMembershipPrice(): ?string
+    {
+        return $this->getUser()->getMembershipPackage()->getPrice();
+    }
 }

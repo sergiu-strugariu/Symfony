@@ -52,6 +52,9 @@ class MembershipPackage
     private ?int $maxJobPerMonth = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $maxCoursePerMonth = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
     private ?int $maxArticlePerMonth = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -69,22 +72,23 @@ class MembershipPackage
     #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'membershipPackage', orphanRemoval: true)]
     private Collection $payments;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deletedAt = null;
-
     /**
      * @var Collection<int, User>
      */
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'membershipPackage')]
     private Collection $users;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deletedAt = null;
+
     public function __construct()
     {
         $this->uuid = Uuid::v4();
         $this->maxJobPerMonth = 0;
+        $this->maxCoursePerMonth = 0;
         $this->maxArticlePerMonth = 0;
         $this->maxGenerateArticlePerMonth = 0;
         $this->createdAt = new \DateTime();
@@ -269,6 +273,17 @@ class MembershipPackage
     }
 
     /**
+     * @param $price
+     * @return float
+     */
+    public function getPriceByTva($price): float
+    {
+        $priceWithTva = $price * 1.19;
+        return round($priceWithTva, 2);
+    }
+
+
+    /**
      * @param $locale
      * @return MembershipPackageTranslation|null
      */
@@ -396,6 +411,18 @@ class MembershipPackage
     public function setMaxJobPerMonth(int $maxJobPerMonth): static
     {
         $this->maxJobPerMonth = $maxJobPerMonth;
+
+        return $this;
+    }
+
+    public function getMaxCoursePerMonth(): ?int
+    {
+        return $this->maxCoursePerMonth;
+    }
+
+    public function setMaxCoursePerMonth(int $maxCoursePerMonth): static
+    {
+        $this->maxCoursePerMonth = $maxCoursePerMonth;
 
         return $this;
     }

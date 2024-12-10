@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\DefaultHelper;
 use App\Repository\JobRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,14 +11,12 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
 #[UniqueEntity(fields: ['slug'], message: 'A job with this title already exists.', errorPath: 'title')]
 class Job
 {
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
-
     const TYPE_PART_TYME = 'Part-Time';
     const TYPE_FULL_TYME = 'Full-Time';
 
@@ -36,7 +35,7 @@ class Job
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'jobs')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Company $company = null;
 
     #[ORM\ManyToOne(inversedBy: 'jobs')]
@@ -84,11 +83,14 @@ class Job
     /**
      * @var Collection<int, EntityDisplayLog>
      */
-    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'job')]
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'job', orphanRemoval: true)]
     private Collection $entityDisplayLogs;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
@@ -98,6 +100,8 @@ class Job
 
     public function __construct()
     {
+        $this->uuid = Uuid::v4();
+        $this->status = DefaultHelper::STATUS_DRAFT;
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
         $this->jobTranslations = new ArrayCollection();
@@ -242,6 +246,18 @@ class Job
         return $this;
     }
 
+    public function getEndedAt(): ?\DateTimeInterface
+    {
+        return $this->endedAt;
+    }
+
+    public function setEndedAt(\DateTimeInterface $endedAt): static
+    {
+        $this->endedAt = $endedAt;
+
+        return $this;
+    }
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -294,17 +310,6 @@ class Job
         }
 
         return $this;
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getStatuses(): array
-    {
-        return [
-            self::STATUS_DRAFT => self::STATUS_DRAFT,
-            self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
-        ];
     }
 
     /**
@@ -366,7 +371,7 @@ class Job
     public function getFirstCategory(): mixed
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('status', self::STATUS_PUBLISHED))
+            ->andWhere(Criteria::expr()->eq('status', DefaultHelper::STATUS_PUBLISHED))
             ->orderBy(['createdAt' => 'DESC'])
             ->setMaxResults(1);
 
@@ -451,5 +456,13 @@ class Job
         }
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMembershipPrice(): ?string
+    {
+        return $this->getUser()->getMembershipPackage()->getPrice();
     }
 }

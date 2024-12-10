@@ -2,19 +2,29 @@
 
 namespace App\Controller\Frontend;
 
+use App\Entity\Article;
+use App\Entity\Job;
 use App\Entity\MembershipPackage;
 use App\Entity\Payment;
 use App\Entity\User;
+use App\Helper\MailHelper;
+use App\Helper\MembershipHelper;
 use App\Helper\NetopiaHelper;
+use App\Helper\SmartBillAPIHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Netopia\Payment\Address;
 use Netopia\Payment\Invoice;
 use Netopia\Payment\Request\Card;
 use Netopia\Payment\Request\PaymentAbstract;
+use SoapFault;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,7 +34,11 @@ class PaymentController extends AbstractController
     /** @var string */
     private string $cipher;
 
+    /**
+     * @var null
+     */
     private $iv;
+
     /** @var int */
     private int $errorType;
 
@@ -96,7 +110,7 @@ class PaymentController extends AbstractController
             $data = $paymentRequest->getEncData();
             $cipher = $paymentRequest->getCipher();
             $iv = $paymentRequest->getIv();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Set flash message and redirect
             $this->addFlash('danger', $translator->trans('form.default.required', [], 'messages'));
             $netopiaLogger->error($e->getMessage(), ['uuid' => $uuid]);
@@ -117,7 +131,7 @@ class PaymentController extends AbstractController
     }
 
     #[Route(path: '/payment/ipn', name: 'app_payment_ipn')]
-    public function ipn(Request $request, EntityManagerInterface $em, LoggerInterface $netopiaLogger): Response
+    public function ipn(Request $request, EntityManagerInterface $em, LoggerInterface $netopiaLogger, SmartBillAPIHelper $smartBillAPIHelper, MembershipHelper $helper, MailHelper $mail, TranslatorInterface $translator): Response
     {
         if ($request->isMethod('POST')) {
             $postData = $request->request->all();
@@ -142,12 +156,17 @@ class PaymentController extends AbstractController
                         $this->iv
                     );
 
-                    $this->processNotification($paymentRequestIpn, $em, $netopiaLogger);
-                } catch (\Exception $e) {
+                    // Process notification
+                    $this->processNotification($paymentRequestIpn, $em, $netopiaLogger, $smartBillAPIHelper, $helper, $mail, $translator);
+                } catch (Exception $e) {
                     $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_TEMPORARY;
                     $this->errorCode = $e->getCode();
                     $this->errorMessage = $e->getMessage();
                     $netopiaLogger->error($this->errorMessage);
+                } catch (TransportExceptionInterface $e) {
+                    $message = $e->getMessage();
+                    $this->setPermanentError(PaymentAbstract::ERROR_CONFIRM_INVALID_POST_METHOD, $message);
+                    $netopiaLogger->error($message);
                 }
             } else {
                 $message = 'mobilpay.ro posted invalid parameters';
@@ -162,122 +181,253 @@ class PaymentController extends AbstractController
 
         return $this->generateXmlResponse();
     }
-    
+
     #[Route(path: '/payment/confirm', name: 'app_payment_confirm')]
     public function confirm(Request $request, EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         $orderId = $request->get('orderId');
+        $error = false;
+
         if (null === $orderId) {
             return $this->redirectToRoute('app_homepage');
         }
-        
+
+        /** @var Payment $payment */
         $payment = $em->getRepository(Payment::class)->findOneBy(['uuid' => $orderId]);
+
         if (null === $payment) {
             return $this->redirectToRoute('app_homepage');
         }
-        
-        $paymentStatus = $payment->getStatus();
-        $title = '';
-        $subtitle = '';
-        $error = false;
-        
-        switch ($paymentStatus)  {
+
+        switch ($payment->getStatus()) {
             case Payment::PAYMENT_STATUS_PAID:
             case Payment::PAYMENT_STATUS_PENDING:
-                $title = 'Mulţumim pentru comandă!';
-                $subtitle = 'Plata este în curs de procesare. Dacă ai întrebări sau nevoie de asistență suplimentară, suntem aici să te ajutăm.';
+                $title = $translator->trans('packages.payment_pending_title', [], 'messages');
+                $subtitle = $translator->trans('packages.payment_pending_message', [], 'messages');
                 break;
             case Payment::PAYMENT_STATUS_CONFIRMED:
-                $title = 'Mulţumim pentru comandă!';
-                $subtitle = 'Vei primi în curând toate detaliile pe email. Dacă ai întrebări sau nevoie de asistență suplimentară, suntem aici să te ajutăm.';
+                $title = $translator->trans('packages.payment_pending_title', [], 'messages');
+                $subtitle = $translator->trans('packages.payment_confirmed_message', [], 'messages');
                 break;
             case Payment::PAYMENT_STATUS_CANCELED:
             case Payment::PAYMENT_STATUS_FAILED:
             default:
-                $title = 'Ne pare rău, a apărut o eroare';
-                $subtitle = 'Te rugăm să încerci din nou sau să ne contactezi pentru asistenţă. Suntem aici să te ajutăm şi ne dorim să rezolvăm situaţia cât mai rapid. Îți mulțumim pentru înţelegere!';
+                $title = $translator->trans('packages.payment_failed_title', [], 'messages');
+                $subtitle = $translator->trans('packages.payment_failed_message', [], 'messages');
                 $error = true;
                 break;
         }
-        
+
         return $this->render('frontend/payment/confirm.html.twig', [
             'title' => $title,
             'subtitle' => $subtitle,
             'error' => $error
         ]);
     }
-    
+
+    /**
+     * @throws SoapFault
+     * @throws TransportExceptionInterface
+     */
+    #[Route(path: '/dashboard/payment/cancel', name: 'app_payment_cancel')]
+    public function cancel(NetopiaHelper $netopia, EntityManagerInterface $em, MailHelper $mail, TranslatorInterface $tr): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->getMembershipPackage()->getSlug() === MembershipPackage::PACKAGE_FREE && $user->getPaymentToken() === null) {
+            return new JsonResponse([
+                'status' => false,
+                'message' => $tr->trans('form.default.required', [], 'messages'),
+            ]);
+        }
+
+        /** @var NetopiaHelper $cancelResponse */
+        $cancelResponse = $netopia->cancelToken($user->getPaymentToken());
+        $expireDate = $user->getMembershipExpiresAt();
+        $sendMail = false;
+
+        if ($cancelResponse) {
+            // Send confirm email
+            $sendMail = $mail->sendMail(
+                $user->getEmail(),
+                $tr->trans('email.payment.cancel_order', [], 'messages'),
+                'frontend/emails/payment/email-order-cancel.html.twig',
+                [
+                    'pageTitle' => $tr->trans('email.payment.cancel_order', [], 'messages'),
+                    'expireDate' => $expireDate->format('d M Y')
+                ]
+            );
+        }
+
+        // Check email success send
+        if ($sendMail) {
+            // Reset values
+            $user->setPaymentToken(null);
+            $user->setPaymentTokenExpirationDate(null);
+            $user->setMembershipCancel(true);
+
+            // Persist and save
+            $em->persist($user);
+            $em->flush();
+        }
+
+        return new JsonResponse([
+            'status' => $sendMail,
+            'message' => $sendMail ? $tr->trans('email.payment.cancel_info_message', ['%expireDate%' => $expireDate->format('d M Y')], 'messages') : $tr->trans('form.default.required', [], 'messages')
+        ]);
+    }
+
+
+    #[Route(path: '/dashboard/payment/invoice/{uuid}', name: 'app_payment_invoice')]
+    public function getInvoice(SmartBillAPIHelper $helper, EntityManagerInterface $em, TranslatorInterface $tr, $uuid): RedirectResponse|Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /** @var Payment $payment */
+        $payment = $em->getRepository(Payment::class)->findOneBy(['uuid' => $uuid, 'user' => $user]);
+
+        // Check exist payment
+        if ($payment === null) {
+            return $this->redirectToRoute('dashboard_my_subscription');
+        }
+
+        // Get number and name
+        $invoiceNumber = $payment->getInvoiceNumber();
+        $invoiceName = $payment->getInvoiceSeriesName();
+
+        // Check exist values
+        if ($invoiceNumber === null || $invoiceName === null) {
+            $this->addFlash('danger', $tr->trans('form.default.required', [], 'messages'));
+            return $this->redirectToRoute('dashboard_my_subscription');
+        }
+
+        // Generate pdf file
+        $pdfResponse = $helper->getInvoiceAsPDF(
+            $uuid,
+            $payment->getInvoiceNumber(),
+            ['Accept: application/octet-stream']
+        );
+
+        // Generate filename
+        $fileName = sprintf('Factura_%s_%s.pdf', $payment->getInvoiceSeriesName(), $payment->getInvoiceNumber());
+
+        // Check status generated
+        if (!$pdfResponse['status'] || json_decode($pdfResponse['file']) !== null) {
+            $this->addFlash('danger', $tr->trans('form.default.required', [], 'messages'));
+            return $this->redirectToRoute('dashboard_my_subscription');
+        }
+
+        return new Response($pdfResponse['file'], Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $fileName)
+        ]);
+    }
+
     /**
      * Process the payment notification received from Netopia.
+     * @throws Exception
+     * @throws TransportExceptionInterface
      */
-    private function processNotification($paymentRequestIpn, $em, $netopiaLogger): void
+    private function processNotification($paymentRequestIpn, $em, $netopiaLogger, SmartBillAPIHelper $smartBill, MembershipHelper $helper, MailHelper $mail, TranslatorInterface $translator): void
     {
+        // Get IPN @orderId
         $orderId = $paymentRequestIpn->orderId;
+
+        /**
+         * Get payment by @uuid
+         * @var Payment $payment
+         */
         $payment = $em->getRepository(Payment::class)->findOneBy(['uuid' => $orderId]);
-        
+
+        // Check exist payment
         if (null === $payment) {
             $message = 'Payment not found';
             $this->setPermanentError(PaymentAbstract::ERROR_CONFIRM_INVALID_ACTION, $message);
             $netopiaLogger->error($message, ['uuid' => $orderId]);
         }
-        
+
         if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
             switch ($paymentRequestIpn->objPmNotify->action) {
                 case 'confirmed':
+                    /** @var User $user */
+                    $user = $payment->getUser();
+
+                    /**
+                     * Generate invoice by @payment
+                     * @var SmartBillAPIHelper $generateInvoice
+                     */
+                    $generateInvoice = $smartBill->generateInvoice($payment);
+
+                    // Check invoice status
+                    if ($generateInvoice['status']) {
+                        $payment->setInvoiceNumber($generateInvoice['response']['number']);
+                        $payment->setInvoiceSeriesName($generateInvoice['response']['series']);
+                    }
+
+                    // Check change membership
+                    if ($user->getMembershipPackage()->getSlug() !== $payment->getMembershipPackage()->getSlug()) {
+                        // Change status in @draft
+                        $helper->changeEntitiesStatus(Article::ENTITY_NAME, $user);
+                        $helper->changeEntitiesStatus(Job::ENTITY_NAME, $user);
+                    }
+
+                    // Update DB: status = "confirmed/captured"
+                    $membershipExpiresAt = $payment->getPlan() === MembershipPackage::MONTHLY ? new \DateTime('+1 month') : new \DateTime('+1 year');
                     $message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    $plan = $payment->getPlan();
-                    $subscriptionExpireAt = $plan === MembershipPackage::MONTHLY ? new \DateTime('+1 month') : new \DateTime('+1 year');
-                    // update DB: status = "confirmed/captured"
                     $payment->setStatus(Payment::PAYMENT_STATUS_CONFIRMED);
                     $payment->setPaymentMessage($message);
-                    $payment->setPaymentToken($paymentRequestIpn->objPmNotify->token_id);
-                    $payment->setPaymentTokenExpirationDate(new \DateTime($paymentRequestIpn->objPmNotify->token_expiration_date));
-                    $payment->setSubscriptionExpireAt($subscriptionExpireAt);
-                    // update membership on user
-                    $user = $payment->getUser();
-                    $user->setMembershipPackage($payment->getMembershipPackage());
+                    $payment->setMembershipExpiresAt($membershipExpiresAt);
+                    $payment->setUpdatedAt(new \DateTime());
 
-                    $em->persist($payment);
+                    // Update membership & token on user
+                    $user->setMembershipPackage($payment->getMembershipPackage());
+                    $user->setPaymentToken($paymentRequestIpn->objPmNotify->token_id);
+                    $user->setPaymentTokenExpirationDate(new \DateTime($paymentRequestIpn->objPmNotify->token_expiration_date));
+                    $user->setMembershipExpiresAt($membershipExpiresAt);
+                    $user->setMembershipCancel(false);
                     $em->persist($user);
+
+                    // TODO: Testing
+                    $em->persist($payment);
                     $em->flush();
-                    $this->errorMessage = $message;
+
+                    // Send confirm email
+                    $mail->sendMail(
+                        $user->getEmail(),
+                        $translator->trans('email.payment.confirm_order', [], 'messages'),
+                        'frontend/emails/payment/email-order-confirmation.html.twig',
+                        [
+                            'pageTitle' => $translator->trans('email.payment.confirm_order', [], 'messages'),
+                            'payment' => $payment
+                        ]
+                    );
                     break;
                 case 'paid_pending':
                 case 'confirmed_pending':
+                    // Update DB: status = "pending"
                     $message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    // update DB: status = "pending"
                     $payment->setStatus(Payment::PAYMENT_STATUS_PENDING);
                     $payment->setPaymentMessage($message);
-                    $em->persist($payment);
-                    $em->flush();
-                    $this->errorMessage = $message;
                     break;
                 case 'paid':
+                    // Update DB: status = "open/preauthorized"
                     $message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    // update DB: status = "open/preauthorized"
                     $payment->setStatus(Payment::PAYMENT_STATUS_PAID);
                     $payment->setPaymentMessage($message);
-                    $em->persist($payment);
-                    $em->flush();
-                    $this->errorMessage = $message;
                     break;
                 case 'canceled':
+                    // Update DB: status = "canceled"
                     $message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    // update DB: status = "canceled"
                     $payment->setStatus(Payment::PAYMENT_STATUS_CANCELED);
                     $payment->setPaymentMessage($message);
-                    $em->persist($payment);
-                    $em->flush();
-                    $this->errorMessage = $message;
                     break;
                 case 'credit':
-                    $message = $paymentRequestIpn->objPmNotify->errorMessage;
                     // update DB: status = "refunded"
+                    $message = $paymentRequestIpn->objPmNotify->errorMessage;
                     $payment->setStatus(Payment::PAYMENT_STATUS_REFUNDED);
                     $payment->setPaymentMessage($message);
-                    $em->persist($payment);
-                    $em->flush();
-                    $this->errorMessage = $message;
                     break;
                 default:
                     $message = 'Invalid mobilpay reference action';
@@ -285,15 +435,18 @@ class PaymentController extends AbstractController
                     $netopiaLogger->error($message, ['uuid' => $orderId]);
             }
         } else {
+            // Update DB: status = "rejected"
             $message = $paymentRequestIpn->objPmNotify->errorMessage;
-            // update DB: status = "rejected"
             $payment->setStatus(Payment::PAYMENT_STATUS_FAILED);
             $payment->setPaymentMessage($message);
-            $em->persist($payment);
-            $em->flush();
-            $this->errorMessage = $message;
+
+            // Set error in logger
             $netopiaLogger->error($message, ['uuid' => $orderId]);
         }
+
+        $this->errorMessage = $message;
+        $em->persist($payment);
+        $em->flush();
     }
 
     /**
@@ -322,5 +475,4 @@ class PaymentController extends AbstractController
         $response->headers->set('Content-Type', 'application/xml');
         return $response;
     }
-
 }

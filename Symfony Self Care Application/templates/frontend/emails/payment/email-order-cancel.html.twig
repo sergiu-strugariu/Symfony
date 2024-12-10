@@ -1,0 +1,41 @@
+{% extends 'layout-email.html.twig' %}
+
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block content %}
+    {% set phone = settingService.getService('phone') %}
+    {% set email = settingService.getService('email') %}
+    <tr>
+        <td style="padding: 0">
+            <img src="{{ absolute_url(asset('assets/frontend/images/email/email_intro_shelter.webp')) }}"
+                 alt="email_intro_shelter"
+                 style="width: 100%; max-width: 650px; height: auto; display: block;"
+            />
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;padding: 0">
+            <h1 style="padding: 20px 0; color: #1B3A4F;">{{ 'email.payment.cancel_order'|trans }}</h1>
+            <p style="padding: 20px 0 10px;text-align: left">
+                {{ 'email.payment.cancel_message'|trans }}
+            </p>
+            <p style="padding: 20px 0 10px;text-align: left">
+                {{ 'email.payment.cancel_info_message'|trans({'%expireDate%': expireDate}) }}
+            </p>
+            <p style="padding: 18px 0; display: block;"> {{ 'email.reset_password.general_info'|trans }}
+                <a href="mailto:{{ email }}" style="text-decoration: underline;display: inline;">
+                    {{ email }}
+                </a>
+                {{ 'email.reset_password.or'|trans }}
+                <a href="tel:{{ phone }}" style="display: inline; text-decoration: none;">
+                    {{ phone }}
+                </a>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 20px 10px 50px 10px; text-align: left">
+            <p>{{ 'email.common.with_respect'|trans }},</p>
+            <p>{{ 'email.common.team'|trans }} {{ app_name }}</p>
+        </td>
+    </tr>
+{% endblock %}

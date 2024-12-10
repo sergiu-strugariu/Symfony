@@ -8,7 +8,6 @@ use App\Entity\Language;
 use App\Entity\User;
 use App\Helper\DefaultHelper;
 use DateTime;
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -141,7 +140,7 @@ class ArticleRepository extends ServiceEntityRepository
 
         // Dynamic order by
         return $queryBuilder
-            ->setParameter('status', Article::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
@@ -163,7 +162,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->andWhere('at.language = :language')
             ->andWhere('a.status = :status')
             ->setParameter('language', $language)
-            ->setParameter('status', Article::STATUS_PUBLISHED);
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
         // Filter by @categorySlug
         if (!empty($category)) {
@@ -201,7 +200,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->andWhere('a.deletedAt IS NULL')
             ->andWhere('a.status = :status')
             ->setParameter('slug', $slug)
-            ->setParameter('status', Article::STATUS_PUBLISHED);
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
         // Dynamic order by
         return $queryBuilder
@@ -225,7 +224,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->andWhere('art.status = :status')
             ->setParameter('id', $article->getId())
             ->setParameter('categories', $article->getCategoryArticles())
-            ->setParameter('status', $article::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('art.id', $order)
             ->setMaxResults(1)
             ->getQuery()
@@ -253,7 +252,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder
-            ->setParameter('status', Article::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('year', $year)
             ->groupBy('year, month')
             ->orderBy('year, month')
@@ -270,7 +269,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->select('DISTINCT YEAR(entity.createdAt) as year')
             ->andWhere('entity.deletedAt IS NULL')
             ->andWhere('entity.status = :status')
-            ->setParameter('status', Article::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('year', 'desc')
             ->getQuery()
             ->getSingleColumnResult();
@@ -309,5 +308,29 @@ class ArticleRepository extends ServiceEntityRepository
             ->setParameter('startOfMonth', new DateTime('first day of this month'))
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @param User|null $user
+     * @return mixed
+     */
+    public function getExpireItems(?User $user = null): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('entity')
+            ->where('entity.deletedAt IS NULL')
+            ->andWhere('entity.status = :status')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
+
+        if ($user === null) {
+            $queryBuilder
+                ->andWhere('entity.endedAt < :today')
+                ->setParameter('today', new DateTime('today 00:00:00'));
+        } else {
+            $queryBuilder
+                ->andWhere('entity.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -13,7 +13,7 @@
 
         {% set classes = { care: 'catalogue', provider: 'care-resources', job: 'jobs resultsList-filter-county', course: 'jobs courses-forming resultsList-filter-county', article: 'blog'} %}
 
-        <main class="{{ classes[searchType] ?? '' }}">
+        <main class="{{ classes[searchType] ?? '' }} results-list">
             {% for section in page.pageSections %}
                 {% include 'frontend/pages/' ~ page.machineName ~ '/' ~ section.template ignore missing with {'care': care, 'provider': provider, 'job': job, 'course': course, 'article': article} %}
             {% endfor %}

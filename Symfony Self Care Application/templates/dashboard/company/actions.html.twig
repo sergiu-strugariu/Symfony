@@ -31,7 +31,7 @@
             {% include 'dashboard/company/_form.html.twig' %}
             <!--end::Form-->
 
-            {% if uuid is defined %}
+            {% if company.uuid is defined %}
                 <!--start::Modal-->
                 {% include 'dashboard/company/_gallery-modal.html.twig' with {'galleries': galleries} %}
                 <!--end::Modal-->
@@ -52,11 +52,11 @@
         initTagify(document.querySelector("#company_form_availableServices"), services);
         initEditor('#company_form_description');
 
-        {% if uuid is defined %}
+        {% if company.uuid is defined %}
         let buttonUpload = document.getElementById("uploadFiles");
-        window.removeItemGallery = "{{ path('dashboard_ajax_remove_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::COMPANY_GALLERY')}) }}";
+        window.removeItemGallery = "{{ path('dashboard_ajax_remove_gallery', {'uuid': company.uuid, 'type': constant('App\\Helper\\DefaultHelper::COMPANY_GALLERY')}) }}";
 
-        initDropZone('#kt_dropzone_gallery', '{{ path('dashboard_ajax_upload_gallery', {'uuid': uuid, 'type': constant('App\\Helper\\DefaultHelper::COMPANY_GALLERY')}) }}', buttonUpload, window.companyGalleryImagePath);
+        initDropZone('#kt_dropzone_gallery', '{{ path('dashboard_ajax_upload_gallery', {'uuid': company.uuid, 'type': constant('App\\Helper\\DefaultHelper::COMPANY_GALLERY')}) }}', buttonUpload, window.companyGalleryImagePath);
         removeGalleryItem(window.removeItemGallery);
         {% endif %}
     </script>

@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} {{ 'dashboard.my_plan.title'|trans }} {% endblock %}
 {% block content %}
+    {% set pending = constant('App\\Entity\\Payment::PAYMENT_STATUS_PENDING') %}
+    {% set confirmed = constant('App\\Entity\\Payment::PAYMENT_STATUS_CONFIRMED') %}
     <div class="my-plan">
         <div class="inner">
             <div class="content">
@@ -13,23 +15,49 @@
                     <div class="row plan-type">
                         <div class="pack">
                             <div class="img">
-                                <img src="{{ asset('assets/dashboard/media/dashboard/icon-check-silver.png') }}"
+                                <img src="{{ asset(app_membership_package_path ~ app.user.membershipPackage.fileName, 'cloudflare') }}"
                                      alt="edit"
                                      width="35"
                                      height="35"
                                 />
                             </div>
-                            <h4>{{ 'dashboard.my_plan.plan_name'|trans }}</h4>
-                            <p>20,00 RON {{ 'dashboard.my_plan.per_month'|trans }}</p>
-                            <p>{{ 'dashboard.my_plan.plan_auto_renewal'|trans }} 8 octombrie 2024.</p>
+                            <h4>
+                                {{ app.user.membershipPackage.translation(locale).name }}
+                            </h4>
+                            {% if app.user.paymentToken is not null %}
+                                <p class="remove-package-info">
+                                    {{ app.user.membershipPackage.price }}
+                                    {{ 'company.price_currency'|trans }}
+                                    {{ 'dashboard.my_plan.per_month'|trans }}
+                                </p>
+                                <p class="remove-package-info">
+                                    {{ 'dashboard.my_plan.plan_auto_renewal'|trans }}
+                                    {{ app.user.membershipExpiresAt|date('d M Y') }}.
+                                </p>
+                            {% endif %}
+
+                            {% if app.user.membershipExpiresAt is not null and app.user.paymentToken is null %}
+                                <p class="remove-package-info">
+                                    {{ app.user.membershipPackage.price }}
+                                    {{ 'company.price_currency'|trans }}
+                                    {{ 'dashboard.my_plan.per_month'|trans }}
+                                </p>
+                                <p class="remove-package-info">
+                                    {{ 'dashboard.my_plan.plan_cancel_renewal'|trans }}
+                                    {{ app.user.membershipExpiresAt|date('d M Y') }}.
+                                </p>
+                            {% endif %}
                         </div>
                         <div class="billing-actions">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#">
+                            <a href="{{ path('app_packages') }}">
                                 {{ 'dashboard.my_plan.plan_change'|trans }}
                             </a>
-                            <a href="#" class="bg-danger">
-                                {{ 'dashboard.my_plan.plan_cancel'|trans }}
-                            </a>
+                            {% if (app.user.membershipPackage.slug != constant('App\\Entity\\MembershipPackage::PACKAGE_FREE') and app.user.paymentToken is not null) %}
+                                <a href="#" class="bg-danger" id="remove-package"
+                                   data-package="{{ app.user.membershipPackage.translation(locale).name }}">
+                                    {{ 'dashboard.my_plan.plan_cancel'|trans }}
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row plan-type">
@@ -37,133 +65,48 @@
                             <h4>{{ 'dashboard.my_plan.plan_info'|trans }}</h4>
                             <p>
                                 <strong>{{ 'common.filter_name'|trans }}:</strong>
-
-                                <span class="plan-name">{{ favoriteCompany is not null ? favoriteCompany.companyName : '' }}</span>
+                                <span class="plan-name">
+                                    {{ favoriteCompany is not null ? favoriteCompany.companyName : '' }}
+                                </span>
                             </p>
                             <p>
                                 <strong>{{ 'dashboard.my_plan.plan_billing_address'|trans }}:</strong>
-
                                 <span class="plan-address">
                                     {% if(favoriteCompany is not null) %}
                                         {{ favoriteCompany.address }},
                                         {{ favoriteCompany.county.name }},
                                         {{ favoriteCompany.city.name }}
-
                                     {% endif %}
                                  </span>
                             </p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="pack">
-                            <h4>{{ 'dashboard.my_plan.plan_billing_history'|trans }}</h4>
-                            <ul class="billing-history">
-                                <li>
-                                    <p>8 sept. 2024</p>
-                                    <p>20,00 RON</p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>8 aug. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>8 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>18 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>28 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>38 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>48 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>58 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>68 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                                <li>
-                                    <p>78 iul. 2024</p>
-                                    <p> 20,00 RON </p>
-                                    <p>
-                                    <span class="badge badge-success">
-                                        {{ 'dashboard.my_plan.plan_billing_status_paid'|trans }}
-                                    </span>
-                                    </p>
-                                    <p>Silver Help</p>
-                                </li>
-                            </ul>
-                            <div class="billing-actions load-more">
-                                <a href="#" class="view-more">{{ 'common.see_more_results'|trans }}</a>
+                    {% if invoices is not empty %}
+                        <div class="row">
+                            <div class="pack">
+                                <h4>{{ 'dashboard.my_plan.plan_billing_history'|trans }}</h4>
+                                <ul class="billing-history">
+                                    {% for invoice in invoices %}
+                                        <li>
+                                            <p>{{ invoice.membershipPackage.translation(locale).name }}</p>
+                                            <p>{{ invoice.price }} {{ 'company.price_currency'|trans }}</p>
+                                            <p>
+                                                {% set badgeClass = invoice.status == pending ? 'badge-warning' : (invoice.status == confirmed ? 'badge-success' : 'badge-danger') %}
+                                                <span class="badge {{ badgeClass }}">{{ invoice.status }}</span>
+                                            </p>
+                                            <p>{{ invoice.updatedAt|date('d M. Y H:i') }}</p>
+                                            <a href="{{ path('app_payment_invoice', {'uuid': invoice.uuid}) }}" class="{{ invoice.status != confirmed ? 'disabled' : '' }}">
+                                                {{ 'common.view_more'|trans }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="billing-actions load-more">
+                                    <a href="#" class="view-more">{{ 'common.see_more_results'|trans }}</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
                 <div class="board has-loader">
                     <div class="row">
@@ -172,14 +115,15 @@
                             <div class="billing-data">
                                 <div class="radio-btn-group" id="radioBtnGroup">
                                     {% for company in companies %}
-                                        <div class="radio-group {{ company.favorite ? 'checked-input' : '' }}" data-index="{{ company.uuid }}">
+                                        <div class="radio-group {{ company.favorite ? 'checked-input' : '' }}"
+                                             data-index="{{ company.uuid }}">
                                             <div class="radio-content">
                                                 <input type="radio" id="{{ company.uuid }}"
                                                        name="billingDetails"
                                                        value="{{ company.uuid }}"
                                                        required="required"
                                                         {{ company.favorite ? 'checked' : '' }}
-                                                        data-favorite="{{ company.favorite ? 1 : 0 }}"
+                                                       data-favorite="{{ company.favorite ? 1 : 0 }}"
                                                 />
                                                 <label for="{{ company.uuid }}">
                                                     {{ company.companyName }}
@@ -201,8 +145,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <a href="#" class="add-new-company" data-bs-toggle="modal"
-                                   data-bs-target="#modalAddCompany">
+                                <a href="#" class="add-new-company" data-bs-toggle="modal" data-bs-target="#modalAddCompany">
                                     <span>＋</span>
                                     {{ 'dashboard.my_plan.plan_billing_address_add_new'|trans }}
                                 </a>

@@ -8,9 +8,25 @@
 {% set classes = {care: 'catalogue-list-wrapper', provider: 'resources-list-wrapper', job: 'resultsList-filter-county jobs-agenda', course: 'resultsList-filter-county jobs-agenda courses-agenda', article: 'articles-list'} %}
 {% set listClasses = { care: 'catalogue-list has-loader', provider: 'resources-list has-loader', job: 'agenda-list has-loader', course: 'agenda-list has-loader', article: 'row has-loader'} %}
 
+{% if (searchType == care) %}
+    {% include 'frontend/pages/common/recommended-company-swiper.html.twig' with {
+        'sectionTitle': 'homepage.recommended_care'|trans,
+        'singlePath': 'app_company_single'
+    } %}
+{% elseif (searchType == provider) %}
+    {% include 'frontend/pages/common/recommended-company-swiper.html.twig' with {
+        'sectionTitle': 'homepage.recommended_service'|trans,
+        'singlePath': 'app_provider_single'
+    } %}
+{% elseif (searchType == job) %}
+    {% include "frontend/pages/partials/jobs/custom/recommended.html.twig" %}
+{% elseif (searchType == course) %}
+    {% include "frontend/pages/partials/courses/custom/recommended.html.twig" %}
+{% endif %}
 <div class="{{ classes[searchType] ?? '' }}">
     <div class="inner">
-        <form id="catalogueForm" class="{{ searchType == constant('App\\Entity\\Article::ENTITY_NAME') ? 'd-none': '' }}">
+        <form id="catalogueForm"
+              class="{{ searchType == constant('App\\Entity\\Article::ENTITY_NAME') ? 'd-none': '' }}">
             <div class="catalogue-filter-sort">
                 <div class="catalogue-filter">
                     <p>{{ 'common.filter_for'|trans }}:</p>

@@ -31,6 +31,7 @@ fos_elastica:
         price: { type: 'text' }
         locationType: { type: 'keyword' }
         status: { type: 'keyword' }
+        membershipPrice: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
         county:
           type: nested
@@ -65,6 +66,7 @@ fos_elastica:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
         fileName: { type: 'text' }
         status: { type: 'keyword' }
+        membershipPrice: { type: 'keyword' }
         jobType: { type: 'text' }
         countyName: { type: 'text' }
         cityName: { type: 'text' }
@@ -119,6 +121,7 @@ fos_elastica:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
         fileName: { type: 'text' }
         status: { type: 'keyword' }
+        membershipPrice: { type: 'keyword' }
         price: { type: 'text' }
         countyName: { type: 'text' }
         cityName: { type: 'text' }
@@ -175,6 +178,7 @@ fos_elastica:
         slug: { type: 'text', analyzer: 'custom_analyzer' }
         fileName: { type: 'text' }
         status: { type: 'keyword' }
+        membershipPrice: { type: 'keyword' }
         deletedAt: { type: 'keyword' }
         articleTranslations:
           type: nested

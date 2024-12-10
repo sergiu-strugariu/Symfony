@@ -20,13 +20,13 @@
                 </p>
             </div>
         {% endif %}
-        <div class="form-wrapper has-loader">
+        <div class="form-wrapper ">
             {% if review is not defined %}
                 <div class="form-title">
                     <h2>{{ 'review.info_title'|trans }}</h2>
                 </div>
             {% endif %}
-            <form id="reviewForm" class="not-search">
+            <form id="reviewForm" class="not-search has-loader">
                 <input type="hidden" name="companySlug" value="{{ company.slug }}"/>
                 <div class="row">
                     <!--begin::Form message-->
@@ -68,7 +68,7 @@
                         </div>
                         <select id="houseConnections" class="houseConnections" name="houseConnections">
                             <option value="" disabled hidden>{{ 'common.select'|trans }}</option>
-                            {% for item in connections %}
+                            {% for item in connections[locale] %}
                                 <option value="{{ item }}">{{ item }}</option>
                             {% endfor %}
                         </select>

@@ -4,63 +4,39 @@
     <div class="px-0 mt-5 favorites">
         <div class="filters">
             <h1 class="favorite-text pb-5">{{ 'dashboard.favorites.favorite'|trans }}</h1>
-            <div class="slider-filter-anchor slick-shelters-anchor">
-                <div class="inner">
-                    <h2>Îți recomandăm:</h2>
-                    <div class="list-wrapper recommended-resources">
-                        <div class="slick-shelters has-loader">
-                            <div class="shelter" data-index="0">
-                                <div class="shelter-overlay"></div>
-                                <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
-                                    <a href="#/childcare-services" class="details-link">cere detalii</a>
-                                </div>
-                                <div class="image-content">
-                                    <h3>Azil Privat</h3>
-                                    <p>București, Bucureşti</p>
-                                </div>
-                            </div>
-                            <div class="shelter" data-index="1">
-                                <div class="shelter-overlay"></div>
-                                <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
-                                    <a href="#/seniorcare" class="details-link">cere detalii</a>
-                                </div>
-                                <div class="image-content">
-                                    <h3>Casa Del Santos</h3>
-                                    <p>Casa Fabian</p>
-                                </div>
-                            </div>
-                            <div class="shelter" data-index="2">
-                                <div class="shelter-overlay"></div>
-                               <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
-                                    <a href="#/family-care" class="details-link">cere detalii</a>
-                                </div>
-                                <div class="image-content">
-                                    <h3>Ştefăneştii De Jos, Ilfov</h3>
-                                    <p>Timişoara, Timiş</p>
-                                </div>
-                            </div>
-                            <div class="shelter" data-index="3">
-                                <div class="shelter-overlay"></div>
-                            <div class="image" style="background-image: url({{ asset('assets/dashboard/media/auth/bg4.jpg') }})">
-                                    <a href="#/healthcare-solutions" class="details-link">cere detalii</a>
-                                </div>
-                                <div class="image-content">
-                                    <h3>Casa Lenalia</h3>
-                                    <p>Bistriţa, Neamt</p>
-                                </div>
+            {% if companies is not empty %}
+                <div class="slider-filter-anchor slick-shelters-anchor">
+                    <div class="inner">
+                        <h2>{{ 'company.recommended'|trans }}:</h2>
+                        <div class="list-wrapper recommended-resources">
+                            <div class="slick-shelters has-loader">
+                                {% for item in companies %}
+                                    <div class="shelter" data-index="{{ loop.index }}">
+                                        <div class="shelter-overlay"></div>
+                                        <div class="image"
+                                             style="background-image: url('{{ asset(app_company_path ~ item.fileName, 'cloudflare') }}')">
+                                            <a href="{{ path(item.locationType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') ? 'app_company_single' : 'app_provider_single', {'slug': item.slug}) }}"
+                                               class="details-link">
+                                                {{ 'common.view_more'|trans }}
+                                            </a>
+                                        </div>
+                                        <div class="image-content">
+                                            <h3>{{ item.name }}</h3>
+                                            <p>{{ item.county }}, {{ item.city }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            {% endif %}
             <form id="favoriteFilter" class="mb-5">
                 <div class="agenda-filter-sort row align-items-center">
                     <div class="agenda-filter form-group col-md-6 ">
                         <p class="favorite-text">{{ 'common.filter_for'|trans }}:</p>
                         <div class="filter-box">
-                            <select data-control="select2" id="contractFilter" class="contract-filter"
-                                    name="contractFilter">
+                            <select data-control="select2" id="contractFilter" class="contract-filter" name="contractFilter">
                                 <option value="all">
                                     {{ 'blog.filter_all'|trans }}
                                 </option>
@@ -70,43 +46,29 @@
                                 <option value="{{ constant('App\\Entity\\Company::LOCATION_TYPE_PROVIDER') }}">
                                     {{ 'breadcrumb.provider_title'|trans }}
                                 </option>
-                                <option value="{{ constant('App\\Entity\\Favorite::COURSE_FAVORITE') }}">
-                                    {{ 'common.courses'|trans }}
-                                </option>
-                                <option value="{{ constant('App\\Entity\\Favorite::JOB_FAVORITE') }}">
-                                    {{ 'common.jobs'|trans }}
-                                </option>
                             </select>
                             <div id="contract-list" class="contract-suggestions"></div>
                         </div>
-                        <div class="filter-box">
-                            <select data-control="select2" id="userFilter" class="user-filter"
-                                    name="userFilter">
-                                <option value="all">
-                                    User
-                                </option>
-                                <option value="id_1">
-                                   id_1
-                                </option>
-                                <option value="id_2">
-                                   id_2
-                                </option>
-                                <option value="id_3">
-                                    id_3
-                                </option>
-                                <option value="id_4">
-                                   id_4
-                                </option>
-                            </select>
-                            <div id="user-list" class="user-suggestions"></div>
-                        </div>
+                        {% if(is_granted('ROLE_ADMIN')) %}
+                            <div class="filter-box">
+                                <select data-control="select2" id="userFilter" class="user-filter" name="userFilter">
+                                    <option value="all">{{ 'common.all_users'|trans }}</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.uuid }}">
+                                            {{ user.name ~ ' ' ~ user.surname }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <div id="user-list" class="user-suggestions"></div>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="catalogue-sort form-group col-md-6s">
                         <p class="favorite-text pt-9 pb-5">{{ 'dashboard.favorites.sort_for'|trans }}</p>
                         <ul class="sorting-buttons list-inline mb-0 ps-2 ps-md-0 pe-md-3">
                             <li class="list-inline-item">
                                 <h3 data-sort="asc" class="sort-date" data-name="createdAt">
-                                    {{ 'dashboard.common.date'|trans }}  <span>&#9660;</span> <span>&#9650;</span>
+                                    {{ 'dashboard.common.date'|trans }} <span>&#9660;</span> <span>&#9650;</span>
                                 </h3>
                             </li>
                         </ul>
@@ -122,8 +84,6 @@
         <div class="no-items-message" style="display: none;">
             {{ 'dashboard.favorites.no_items'|trans }}
         </div>
-
-       
     </div>
 {% endblock %}
 {% block page_javascripts %}

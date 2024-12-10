@@ -4,17 +4,20 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Article;
 use App\Entity\ArticleTranslation;
+use App\Entity\CategoryArticle;
+use App\Entity\User;
 use App\Form\Type\ArticleFormType;
 use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
 use App\Helper\MembershipHelper;
+use App\Helper\UserHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -27,23 +30,37 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/dashboard/generate-article', name: 'dashboard_generate_article_index')]
-    public function generateArticle(TranslatorInterface $translator, MembershipHelper $helper): Response
+    public function generateArticle(EntityManagerInterface $em, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
-        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_AI_NAME);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $getPlan = $helper->checkMembership($user, Article::ENTITY_AI_NAME);
 
         if ($getPlan['status']) {
             $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_article_index');
         }
 
-        return $this->render('dashboard/article/generate-article.html.twig');
+        /** @var CategoryArticle $categories */
+        $categories = $em->getRepository(CategoryArticle::class)->findBy(['status' => DefaultHelper::STATUS_PUBLISHED], ['createdAt' => 'desc']);
+
+        return $this->render('dashboard/article/generate-article.html.twig', [
+            'categories' => $categories
+        ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/dashboard/article/create', name: 'dashboard_article_create')]
     public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         // Get membership by @user
-        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_NAME);
+        $getPlan = $helper->checkMembership($user, Article::ENTITY_NAME);
 
         // Check status plan
         if ($getPlan['status']) {
@@ -59,9 +76,8 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // generate and set unique UUID
-            $article->setUuid(Uuid::v4());
-            $article->setUser($this->getUser());
+            $article->setUser($user);
+            $article->setEndedAt(new DateTime($form->get('endedAt')->getData()));
 
             // get data from the form
             $file = $form->get('fileName')->getData();
@@ -111,24 +127,21 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/dashboard/article/{uuid}/edit', name: 'dashboard_article_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, UserHelper $userHelper, $uuid): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         /** @var Article $article */
         $article = $em->getRepository(Article::class)->findOneBy(['uuid' => $uuid]);
 
         if (empty($article)) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
-            return $this->redirectToRoute('dashboard_article_index');
-        }
-
-        // Get membership by @user
-        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_NAME);
-
-        // Check status plan
-        if ($getPlan['status'] && $article->getStatus() !== DefaultHelper::STATUS_PUBLISHED) {
-            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_article_index');
         }
 
@@ -158,6 +171,7 @@ class ArticleController extends AbstractController
             $fileUploaded = true;
 
             $article->setUpdatedAt(new DateTime());
+            $article->setEndedAt(new DateTime($form->get('endedAt')->getData()));
             $articleTranslation->setTitle($form->get('title')->getData());
             $articleTranslation->setBody($form->get('body')->getData());
             $articleTranslation->setShortDescription($form->get('shortDescription')->getData());
@@ -179,6 +193,10 @@ class ArticleController extends AbstractController
 
                 // Check and set @filename
                 if ($uploadFile['success']) {
+                    // Remove old file
+                    $userHelper->removeEntityFiles($article, Article::ENTITY_NAME);
+
+                    // Set new fileName
                     $article->setFileName($uploadFile['fileName']);
                 }
             }
@@ -199,44 +217,53 @@ class ArticleController extends AbstractController
         return $this->render('dashboard/article/actions.html.twig', [
             'form' => $form->createView(),
             'pageTitle' => $translator->trans('controller.edit_article', [], 'messages'),
-            'image' => $article->getFileName()
+            'image' => $article->getFileName(),
+            'endedAt' => $article->getEndedAt()->format('d.m.Y')
         ]);
     }
 
     #[Route('/dashboard/article/actions/{action}/{uuid}', name: 'dashboard_article_actions')]
-    public function actions(EntityManagerInterface $em, $action, TranslatorInterface $translator, MembershipHelper $helper, $uuid): Response
+    public function actions(EntityManagerInterface $em, $action, TranslatorInterface $translator, MembershipHelper $helper, UserHelper $userHelper, $uuid): Response
     {
         /** @var Article $article */
         $article = $em->getRepository(Article::class)->findOneBy(['uuid' => $uuid]);
 
-        if (empty($article)) {
-            // Set flash message
+        if ($article === null) {
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_article_index');
         }
 
+        /** @var User $user */
+        $user = $article->getUser();
+
         // Get membership by @user
-        $getPlan = $helper->checkMembership($this->getUser(), Article::ENTITY_NAME);
+        $getPlan = $helper->checkMembership($user, Article::ENTITY_NAME);
 
         // Check status
-        if ($getPlan['status'] && $article->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === 'moderate') {
+        if ($getPlan['status'] && $article->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === DefaultHelper::ACTION_MODERATE) {
             $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_article_index');
         }
 
-        if ($action === 'remove') {
-            // Soft delete
-            $article->setDeletedAt(new DateTime());
-        } elseif ($action === 'moderate') {
-            $article->setStatus($article->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
-        } else {
-            // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
-            return $this->redirectToRoute('dashboard_article_index');
+        switch ($action) {
+            case DefaultHelper::ACTION_REMOVE:
+                // Remove storage files
+                $userHelper->removeEntityFiles($article, Article::ENTITY_NAME);
+
+                // Remove item
+                $em->remove($article);
+                break;
+            case DefaultHelper::ACTION_MODERATE:
+                $article->setStatus($article->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
+                $em->persist($article);
+                break;
+            default:
+                // Set flash message
+                $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
+                return $this->redirectToRoute('dashboard_article_index');
         }
 
         // Update data
-        $em->persist($article);
         $em->flush();
 
         // Set flash message

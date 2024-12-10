@@ -46,23 +46,26 @@ class Payment
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
     private ?string $price = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $paymentMessage = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $membershipExpiresAt = null;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private ?bool $processed = false;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $invoiceSeriesName = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $invoiceNumber = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $subscriptionExpireAt = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $paymentMessage = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $paymentToken = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $paymentTokenExpirationDate = null;
 
     public function __construct()
     {
@@ -171,18 +174,6 @@ class Payment
         return $this;
     }
 
-    public function getSubscriptionExpireAt(): ?\DateTimeInterface
-    {
-        return $this->subscriptionExpireAt;
-    }
-
-    public function setSubscriptionExpireAt(?\DateTimeInterface $subscriptionExpireAt): static
-    {
-        $this->subscriptionExpireAt = $subscriptionExpireAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -207,28 +198,51 @@ class Payment
         return $this;
     }
 
-    public function getPaymentToken(): ?string
+    public function getMembershipExpiresAt(): ?\DateTimeInterface
     {
-        return $this->paymentToken;
+        return $this->membershipExpiresAt;
     }
 
-    public function setPaymentToken(?string $paymentToken): static
+    public function setMembershipExpiresAt(?\DateTimeInterface $membershipExpiresAt): static
     {
-        $this->paymentToken = $paymentToken;
+        $this->membershipExpiresAt = $membershipExpiresAt;
 
         return $this;
     }
 
-    public function getPaymentTokenExpirationDate(): ?\DateTimeInterface
+    public function isProcessed(): ?bool
     {
-        return $this->paymentTokenExpirationDate;
+        return $this->processed;
     }
 
-    public function setPaymentTokenExpirationDate(?\DateTimeInterface $paymentTokenExpirationDate): static
+    public function setProcessed(bool $processed): static
     {
-        $this->paymentTokenExpirationDate = $paymentTokenExpirationDate;
+        $this->processed = $processed;
 
         return $this;
     }
 
+    public function getInvoiceNumber(): ?string
+    {
+        return $this->invoiceNumber;
+    }
+
+    public function setInvoiceNumber(?string $invoiceNumber): static
+    {
+        $this->invoiceNumber = $invoiceNumber;
+
+        return $this;
+    }
+
+    public function getInvoiceSeriesName(): ?string
+    {
+        return $this->invoiceSeriesName;
+    }
+
+    public function setInvoiceSeriesName(?string $invoiceSeriesName): static
+    {
+        $this->invoiceSeriesName = $invoiceSeriesName;
+
+        return $this;
+    }
 }

@@ -8,7 +8,7 @@ use App\Entity\Language;
 use App\Entity\TrainingCourse;
 use App\Entity\User;
 use App\Helper\DefaultHelper;
-use DateTimeInterface;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -168,7 +168,7 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->where('course.deletedAt IS NULL')
             ->andWhere('translation.language = :language')
             ->andWhere('course.status = :status')
-            ->setParameter('status', TrainingCourse::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('language', $language);
 
         // Filter by @category
@@ -229,13 +229,14 @@ class TrainingCourseRepository extends ServiceEntityRepository
 
     /**
      * @param Language $language
+     * @param string $package
      * @param TrainingCourse|null $course
      * @param int $limit
      * @param int $offset
      * @param bool $isCount
      * @return bool|float|int|mixed|string|null
      */
-    public function getRecommendedCourses(Language $language, TrainingCourse $course = null, int $limit = 6, int $offset = 0, bool $isCount = false): mixed
+    public function getRecommendedCourses(Language $language, string $package = '', TrainingCourse $course = null, int $limit = 6, int $offset = 0, bool $isCount = false): mixed
     {
         $defaultImage = $this->helper->getEnvValue('app_default_image');
 
@@ -246,10 +247,13 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->leftJoin('c.county', 'cty')
             ->leftJoin('c.city', 'ciy')
             ->leftJoin('c.company', 'company')
+            ->leftJoin('c.entityDisplayLogs', 'log')
+            ->leftJoin('c.user', 'user')
+            ->leftJoin('user.membershipPackage', 'package')
             ->where('c.deletedAt IS NULL')
             ->andWhere('tc.language = :language')
             ->andWhere('c.status = :status')
-            ->setParameter('status', TrainingCourse::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('language', $language);
 
         // Filter by @category
@@ -259,6 +263,12 @@ class TrainingCourseRepository extends ServiceEntityRepository
                 ->andWhere('c.id != :id')
                 ->setParameter('categoryCourse', $course->getCategoryCourses()->first())
                 ->setParameter('id', $course->getId());
+        }
+
+        if (!empty($package)) {
+            $queryBuilder
+                ->andWhere('package.slug = :packageSlug')
+                ->setParameter('packageSlug', $package);
         }
 
         if ($isCount) {
@@ -288,9 +298,11 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->setParameter('physical', $this->translator->trans('physical', [], 'messages'))
             ->setParameter('online', $this->translator->trans('online', [], 'messages'))
             ->setParameter('defaultImage', $defaultImage)
-            ->groupBy('c.id')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->groupBy('c.id')
+            ->orderBy('package.price', 'DESC')
+            ->addOrderBy('log.displayCount', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -306,7 +318,7 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->andWhere('c.deletedAt IS NULL')
             ->andWhere('c.status = :status')
             ->setParameter('slug', $slug)
-            ->setParameter('status', TrainingCourse::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -332,7 +344,7 @@ class TrainingCourseRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder
-            ->setParameter('status', TrainingCourse::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('year', $year)
             ->groupBy('year, month')
             ->orderBy('year, month')
@@ -349,7 +361,7 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->select('DISTINCT YEAR(entity.createdAt) as year')
             ->andWhere('entity.status = :status')
             ->andWhere('entity.deletedAt IS NULL')
-            ->setParameter('status', TrainingCourse::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('year', 'desc')
             ->getQuery()
             ->getSingleColumnResult();
@@ -366,5 +378,48 @@ class TrainingCourseRepository extends ServiceEntityRepository
             ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function countByUserForCurrentMonth(User $user): int
+    {
+        return $this->createQueryBuilder('entity')
+            ->select('COUNT(entity.id)')
+            ->where('entity.deletedAt IS NULL')
+            ->andWhere('entity.status = :status')
+            ->andWhere('entity.user = :user')
+            ->andWhere('entity.createdAt >= :startOfMonth')
+            ->setParameter('user', $user)
+            ->setParameter('startOfMonth', new DateTime('first day of this month'))
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param User|null $user
+     * @return mixed
+     */
+    public function getExpireItems(?User $user = null): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('entity')
+            ->where('entity.deletedAt IS NULL')
+            ->andWhere('entity.status = :status')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
+
+        if ($user === null) {
+            $queryBuilder
+                ->andWhere('entity.endedAt < :today')
+                ->setParameter('today', new DateTime('today 00:00:00'));
+        } else {
+            $queryBuilder
+                ->andWhere('entity.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

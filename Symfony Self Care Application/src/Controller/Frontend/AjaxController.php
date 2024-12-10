@@ -27,8 +27,8 @@ use App\Helper\MailchimpAPIHelper;
 use App\Helper\MailHelper;
 use App\Helper\MembershipHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception as ExceptionAlias;
 use DateTime;
+use Exception as ExceptionAlias;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,11 +57,13 @@ class AjaxController extends AbstractController
     {
         // Default var values
         $category = null;
-        $companies = [];
 
         $locationType = $request->get('locationType', Company::LOCATION_TYPE_CARE);
         $limit = $request->get('limit', $locationType === Company::LOCATION_TYPE_CARE ? 7 : 4);
         $categorySlug = $request->get('categorySlug', '');
+
+        // Exclude packages in this section
+        $excludePackages = [MembershipPackage::PACKAGE_FREE];
 
         // Check exist type in array
         if (!isset($locationType) || !in_array($locationType, Company::getLocationTypes())) {
@@ -88,29 +90,13 @@ class AjaxController extends AbstractController
          */
         $countCompanies = $em->getRepository(Company::class)->getCompaniesByType($locationType, $category, $limit, '', true);
 
-        // All packages
-        $packages = MembershipPackage::getPackages();
-
-        // Exclude packages in this section
-        $excludePackages = [MembershipPackage::PACKAGE_FREE];
-
-        // Parse and call by @package
-        foreach ($packages as $package) {
-            /**
-             * Get result by @params
-             * @var Company $result
-             */
-            $result = $em->getRepository(Company::class)->getCompaniesByType($locationType, $category, $limit, $package);
-
-            // Store results in array by @package
-            $companies[$package] = $result;
-        }
-
         // Process companies by package and limit
-        $rows = $helper->filterDataByPackages($companies, $excludePackages, $limit);
-
-        // Parse and increment entityLog
-        $helper->parseEntityLog($rows, Company::ENTITY_NAME);
+        $rows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['locationType' => $locationType, 'category' => $category],
+            $limit
+        );
 
         return new JsonResponse([
             'status' => true,
@@ -325,22 +311,25 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/ajax/get-recommended-jobs', name: 'ajax_get_recommended_jobs')]
-    public function getRecommendedJobs(EntityManagerInterface $em, Request $request, LanguageHelper $languageHelper): JsonResponse
+    public function getRecommendedJobs(EntityManagerInterface $em, Request $request, LanguageHelper $languageHelper, MembershipHelper $helper): JsonResponse
     {
-        $jobRepo = $em->getRepository(Job::class);
-
         $page = $request->get('page', 1);
-        $limit = $request->get('limit', 6);
+        $limit = $request->get('limit', 3);
+
         $locale = $request->get('locale', $this->getParameter('default_locale'));
         $offset = ($page - 1) * $limit;
 
         $language = $languageHelper->getLanguageByLocale($locale);
 
-        /** @var Job $jobs */
-        $jobs = $jobRepo->getRecommendedJobs($language, null, $limit, $offset);
+        // Process data by package and limit
+        $jobs = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_JOB_RECOMMENDED,
+            Job::ENTITY_NAME, [],
+            ['language' => $language, 'offset' => $offset], $limit
+        );
 
         /** @var Job $countJobs */
-        $countJobs = $jobRepo->getRecommendedJobs($language, null, $limit, $offset, true);
+        $countJobs = $em->getRepository(Job::class)->getRecommendedJobs($language, '',null, $limit, $offset, true);
 
         // Calculate totalPage / limit
         $totalPages = ceil($countJobs / $limit);
@@ -503,22 +492,25 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/ajax/get-recommended-courses', name: 'ajax_get_recommended_courses')]
-    public function getRecommendedCourses(EntityManagerInterface $em, Request $request, LanguageHelper $languageHelper): JsonResponse
+    public function getRecommendedCourses(EntityManagerInterface $em, Request $request, LanguageHelper $languageHelper, MembershipHelper $helper): JsonResponse
     {
-        $courseRepo = $em->getRepository(TrainingCourse::class);
-
         $page = $request->get('page', 1);
-        $limit = $request->get('limit', 6);
+        $limit = $request->get('limit', 4);
         $locale = $request->get('locale', $this->getParameter('default_locale'));
         $offset = ($page - 1) * $limit;
 
         $language = $languageHelper->getLanguageByLocale($locale);
 
-        /** @var TrainingCourse $courses */
-        $courses = $courseRepo->getRecommendedCourses($language, null, $limit, $offset);
+
+        // Process data by package and limit
+        $courses = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COURSE_RECOMMENDED,
+            TrainingCourse::ENTITY_NAME, [],
+            ['language' => $language, 'offset' => $offset], $limit
+        );
 
         /** @var TrainingCourse $countJobs */
-        $countCourse = $courseRepo->getRecommendedCourses($language, null, $limit, $offset, true);
+        $countCourse = $em->getRepository(TrainingCourse::class)->getRecommendedCourses($language, '',null, $limit, $offset, true);
 
         // Calculate totalPage / limit
         $totalPages = ceil($countCourse / $limit);
@@ -890,8 +882,8 @@ class AjaxController extends AbstractController
          * @var $getEntity
          */
         $getEntity = match ($type) {
-            Favorite::COURSE_FAVORITE => $em->getRepository(TrainingCourse::class)->find($id),
-            Favorite::JOB_FAVORITE => $em->getRepository(Job::class)->find($id),
+        // Favorite::COURSE_FAVORITE => $em->getRepository(TrainingCourse::class)->find($id),
+        // Favorite::JOB_FAVORITE => $em->getRepository(Job::class)->find($id),
             Favorite::PROVIDER_FAVORITE, Favorite::CARE_FAVORITE => $em->getRepository(Company::class)->findOneBy(['id' => $id, 'locationType' => $type])
         };
 

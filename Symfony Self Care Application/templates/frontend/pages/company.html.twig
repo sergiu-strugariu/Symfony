@@ -2,11 +2,11 @@
 
 {% block title %}{{ parent() }} {{ company.name }}{% endblock %}
     {% block share %}
-        <meta property="og:title" content="{{ company.name }}">
-        <meta property="og:description" content="{{ company.shortDescription }}">
+        <meta property="og:title" content="{{ company.name }}"/>
+        <meta property="og:description" content="{{ company.shortDescription }}"/>
         <meta property="og:type" content="website"/>
         <meta property="og:url" content=""/>
-        <meta property="og:image" content="{{ asset(app_company_path ~ company.fileName, 'cloudflare') }}">
+        <meta property="og:image" content="{{ asset(app_company_path ~ company.fileName, 'cloudflare') }}"/>
         <meta property="og:image:width" content="1200"/>
         <meta property="og:image:height" content="630"/>
     {% endblock %}
@@ -30,20 +30,33 @@
             <!-- end::Reviews -->
 
             <!-- start::Recommended county -->
-            {% include "frontend/pages/common/recomended-by-county.html.twig" with {
+            {% include "frontend/pages/common/recomended-company.html.twig" with {
+                'recommended': countyRecommended,
                 'singlePath': 'app_company_single',
                 'listingPath': 'app_company',
-                'county': company.county
+                'sectionName': 'company.other_hostels'|trans,
+                'sectionTitle': company.county.name,
+                'filterParam': {'county': company.county.code}
             } %}
             <!-- end::Recommended county -->
 
             <!-- start::Recommended category -->
-            {% include "frontend/pages/common/recomended-by-category.html.twig" with {
+            {% include "frontend/pages/common/recomended-company.html.twig" with {
+                'recommended': categoryRecommended,
                 'singlePath': 'app_company_single',
                 'listingPath': 'app_company',
-                'category': category
+                'sectionName': 'homepage.company_by_category'|trans,
+                'sectionTitle': category.translation(locale).title,
+                'filterParam': {'category': category.slug}
             } %}
             <!-- end::Recommended category -->
+
+            <!-- start::Care jobs-->
+            {% include "frontend/pages/common/recomended-jobs.html.twig" with {
+                'sectionTitle': 'company.care_jobs'|trans,
+                'recommended': jobs
+            } %}
+            <!-- end::Care jobs-->
         </div>
     </main>
 {% endblock %}

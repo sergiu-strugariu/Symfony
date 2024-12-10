@@ -49,7 +49,8 @@
                     <div class="col-md-6">
                         <div class="row">
                             <!--begin::Label-->
-                            {{ form_label(form.startCourseDate, 'common.start_date'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}                            <!--end::Label-->
+                            {{ form_label(form.startCourseDate, 'common.start_date'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
                                 {{ form_widget(form.startCourseDate, {'attr': {'class': 'flatpickr-init form-control form-control-solid form-control-lg rounded-0'}}) }}
@@ -224,12 +225,12 @@
                 </div>
                 <div class="row mb-6">
                     <!--begin::Label-->
-                    {{ form_label(form.status, 'dashboard.table.status'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    {{ form_label(form.endedAt, 'common.end_date'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
                     <!--end::Label-->
                     <!--begin::Col-->
                     <div class="col-lg-10 fv-row">
-                        {{ form_widget(form.status, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
-                        {{ form_errors(form.status) }}
+                        {{ form_widget(form.endedAt, {'attr': {'class': 'flatpickr-new form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.endedAt) }}
                     </div>
                     <!--end::Col-->
                 </div>

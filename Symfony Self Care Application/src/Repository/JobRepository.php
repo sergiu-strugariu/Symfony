@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\CategoryJob;
+use App\Entity\Company;
 use App\Entity\County;
 use App\Entity\Job;
 use App\Entity\Language;
 use App\Entity\User;
 use App\Helper\DefaultHelper;
 use DateTime;
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -153,16 +153,7 @@ class JobRepository extends ServiceEntityRepository
      * @return bool|float|int|mixed|string|null
      * @throws Exception
      */
-    public function getJobsByFilters(
-        Language    $language,
-        CategoryJob $category = null,
-        County      $county = null,
-        string      $sort = 'id',
-        string      $order = 'DESC',
-        string      $contractType = '',
-        int         $limit = 6,
-        int         $offset = 0,
-        bool        $isCount = false): mixed
+    public function getJobsByFilters(Language $language, CategoryJob $category = null, County $county = null, string $sort = 'id', string $order = 'DESC', string $contractType = '', int $limit = 6, int $offset = 0, bool $isCount = false): mixed
     {
         $defaultImage = $this->helper->getEnvValue('app_default_image');
 
@@ -176,7 +167,7 @@ class JobRepository extends ServiceEntityRepository
             ->where('j.deletedAt IS NULL')
             ->andWhere('jt.language = :language')
             ->andWhere('j.status = :status')
-            ->setParameter('status', Job::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('language', $language);
 
         // Filter by @category
@@ -240,13 +231,14 @@ class JobRepository extends ServiceEntityRepository
 
     /**
      * @param Language $language
+     * @param string $package
      * @param Job|null $job
      * @param int $limit
      * @param int $offset
      * @param bool $isCount
      * @return bool|float|int|mixed|string|null
      */
-    public function getRecommendedJobs(Language $language, Job $job = null, int $limit = 6, int $offset = 0, bool $isCount = false): mixed
+    public function getRecommendedJobs(Language $language, string $package = '', Job $job = null, int $limit = 6, int $offset = 0, bool $isCount = false): mixed
     {
         $defaultImage = $this->helper->getEnvValue('app_default_image');
 
@@ -257,10 +249,13 @@ class JobRepository extends ServiceEntityRepository
             ->leftJoin('j.county', 'cty')
             ->leftJoin('j.city', 'ciy')
             ->leftJoin('j.company', 'c')
+            ->leftJoin('j.entityDisplayLogs', 'log')
+            ->leftJoin('j.user', 'user')
+            ->leftJoin('user.membershipPackage', 'package')
             ->where('j.deletedAt IS NULL')
             ->andWhere('jt.language = :language')
             ->andWhere('j.status = :status')
-            ->setParameter('status', Job::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('language', $language);
 
         // Filter by @category
@@ -270,6 +265,12 @@ class JobRepository extends ServiceEntityRepository
                 ->andWhere('j.id != :id')
                 ->setParameter('categoryJob', $job->getCategoryJobs()->first())
                 ->setParameter('id', $job->getId());
+        }
+
+        if (!empty($package)) {
+            $queryBuilder
+                ->andWhere('package.slug = :packageSlug')
+                ->setParameter('packageSlug', $package);
         }
 
         if ($isCount) {
@@ -293,9 +294,55 @@ class JobRepository extends ServiceEntityRepository
                 ciy.name as city,
                 ctr.title as category"
             )
-            ->groupBy('j.id')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->groupBy('j.id')
+            ->orderBy('package.price', 'DESC')
+            ->addOrderBy('log.displayCount', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Language $language
+     * @param Company $company
+     * @return bool|float|int|mixed|string|null
+     */
+    public function getCareJobs(Language $language, Company $company): mixed
+    {
+        $defaultImage = $this->helper->getEnvValue('app_default_image');
+
+        $queryBuilder = $this->createQueryBuilder('j')
+            ->leftJoin('j.jobTranslations', 'jt')
+            ->leftJoin('j.categoryJobs', 'cat')
+            ->leftJoin('cat.categoryJobTranslations', 'ctr')
+            ->leftJoin('j.county', 'cty')
+            ->leftJoin('j.city', 'ciy')
+            ->leftJoin('j.company', 'c')
+            ->where('j.deletedAt IS NULL')
+            ->andWhere('jt.language = :language')
+            ->andWhere('j.status = :status')
+            ->andWhere('j.company = :company')
+            ->setParameter('company', $company)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
+            ->setParameter('language', $language);
+
+        return $queryBuilder
+            ->select("
+                j.id,
+                jt.title,
+                j.slug,
+                j.jobType,
+                jt.shortDescription,
+                j.address,
+                c.name as companyName,
+                COALESCE(c.logo, '$defaultImage') as fileName,
+                cty.name as county,
+                ciy.name as city,
+                ctr.title as category"
+            )
+            ->groupBy('j.id')
+            ->orderBy('j.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -311,7 +358,7 @@ class JobRepository extends ServiceEntityRepository
             ->andWhere('j.deletedAt IS NULL')
             ->andWhere('j.status = :status')
             ->setParameter('slug', $slug)
-            ->setParameter('status', Job::STATUS_PUBLISHED);
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
         // Dynamic order by
         return $queryBuilder
@@ -340,7 +387,7 @@ class JobRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder
-            ->setParameter('status', Job::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->setParameter('year', $year)
             ->groupBy('year, month')
             ->orderBy('year, month')
@@ -357,7 +404,7 @@ class JobRepository extends ServiceEntityRepository
             ->select('DISTINCT YEAR(entity.createdAt) as year')
             ->andWhere('entity.deletedAt IS NULL')
             ->andWhere('entity.status = :status')
-            ->setParameter('status', Job::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('year', 'desc')
             ->getQuery()
             ->getSingleColumnResult();
@@ -393,5 +440,29 @@ class JobRepository extends ServiceEntityRepository
             ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @param User|null $user
+     * @return mixed
+     */
+    public function getExpireItems(?User $user = null): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('entity')
+            ->where('entity.deletedAt IS NULL')
+            ->andWhere('entity.status = :status')
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
+
+        if ($user === null) {
+            $queryBuilder
+                ->andWhere('entity.endedAt < :today')
+                ->setParameter('today', new DateTime('today 00:00:00'));
+        } else {
+            $queryBuilder
+                ->andWhere('entity.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

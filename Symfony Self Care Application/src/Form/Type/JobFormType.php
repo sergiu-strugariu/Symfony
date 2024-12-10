@@ -10,6 +10,7 @@ use App\Entity\Job;
 use App\Entity\JobTranslation;
 use App\Entity\Language;
 use App\Entity\User;
+use App\Helper\DefaultHelper;
 use App\Repository\CityRepository;
 use App\Repository\CountyRepository;
 use Doctrine\ORM\EntityRepository;
@@ -66,6 +67,9 @@ class JobFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var Job $job */
+        $job = $options['data'];
+
         /** @var JobTranslation $translation */
         $translation = $options['translation'];
 
@@ -94,7 +98,7 @@ class JobFormType extends AbstractType
                     $queryBuilder = $er->createQueryBuilder('c')
                         ->where('c.deletedAt IS NULL')
                         ->andWhere('c.status = :status')
-                        ->setParameter('status', Company::STATUS_PUBLISHED);
+                        ->setParameter('status', DefaultHelper::STATUS_PUBLISHED);
 
                     if (isset($user)) {
                         $queryBuilder
@@ -147,7 +151,7 @@ class JobFormType extends AbstractType
                     return $er->createQueryBuilder('c')
                         ->where('c.status = :published')
                         ->andWhere('c.deletedAt IS NULL')
-                        ->setParameter('published', CategoryJob::STATUS_PUBLISHED)
+                        ->setParameter('published', DefaultHelper::STATUS_PUBLISHED)
                         ->orderBy('c.id', 'ASC');
                 },
                 'choice_label' => function (CategoryJob $categoryJob) use ($language) {
@@ -222,15 +226,15 @@ class JobFormType extends AbstractType
                     ])
                 ]
             ])
-            ->add('status', ChoiceType::class, [
+            ->add('endedAt', TextType::class, [
                 'required' => true,
-                'placeholder' => 'common.select',
+                'mapped' => false,
+                'data' => empty($job->getId()) ? null : $job->getEndedAt()->format('d.m.Y'),
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'dashboard.form.field_mandatory',
                     ])
-                ],
-                'choices' => Job::getStatuses()
+                ]
             ])
             ->add('fileName', FileType::class, [
                 'required' => false,

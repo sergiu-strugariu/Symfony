@@ -1,0 +1,39 @@
+{% if (recommended is not empty) %}
+    <div class="recommended-resources">
+        <div class="inner">
+            <h2>
+                {{ sectionName }}
+                <span>&bdquo;</span>
+                {{ sectionTitle }}
+                <span>&rdquo;</span>
+            </h2>
+            <div class="list">
+                {% for item in recommended %}
+                    <div class="shelter">
+                        <div class="shelter-overlay"></div>
+                        <div class="image" style="background-image: url('{{ asset(app_company_path ~ item.fileName, 'cloudflare') }}')">
+                            <a href="{{ path(singlePath, {'slug': item.slug}) }}" class="details-link">
+                                {{ 'common.view_more'|trans }}
+                            </a>
+                        </div>
+                        <div class="image-content">
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.county }}, {{ item.city }}</p>
+                            {% if item.averageRating is not null %}
+                                <span>
+                                    {{ item.averageRating }}
+                                    <img src="{{ asset('assets/frontend/images/common/star.png') }}" alt="rating-star"/>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="cta-resources">
+            <a href="{{ path(listingPath, filterParam) }}">
+                {{ 'common.view_more_hostels'|trans }}
+            </a>
+        </div>
+    </div>
+{% endif %}

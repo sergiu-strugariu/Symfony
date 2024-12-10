@@ -129,9 +129,18 @@ class FormValidatorHelper
                     'minMessage' => $this->translator->trans('form.message.minMessage', [], 'messages')
                 ]),
                 new Assert\Length([
-                    'max' => 1000,
+                    'max' => 1500,
                     'minMessage' => $this->translator->trans('form.message.maxMessage', [], 'messages')
                 ]),
+            ],
+            'messageText' => [
+                new Assert\NotBlank([
+                    'message' => $this->translator->trans('form.message.required', [], 'messages')
+                ]),
+                new Assert\Length([
+                    'min' => 200,
+                    'minMessage' => $this->translator->trans('form.message.minMessage', [], 'messages')
+                ])
             ],
             'shortMessage' => [
                 new Assert\NotBlank([
@@ -143,6 +152,19 @@ class FormValidatorHelper
                 ]),
                 new Assert\Length([
                     'max' => 250,
+                    'minMessage' => $this->translator->trans('form.message.maxMessage', [], 'messages')
+                ]),
+            ],
+            'shortDescription' => [
+                new Assert\NotBlank([
+                    'message' => $this->translator->trans('form.message.required', [], 'messages')
+                ]),
+                new Assert\Length([
+                    'min' => 20,
+                    'minMessage' => $this->translator->trans('form.message.minMessage', [], 'messages')
+                ]),
+                new Assert\Length([
+                    'max' => 110,
                     'minMessage' => $this->translator->trans('form.message.maxMessage', [], 'messages')
                 ]),
             ],

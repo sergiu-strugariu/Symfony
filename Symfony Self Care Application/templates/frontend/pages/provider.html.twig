@@ -26,18 +26,24 @@
             <!-- end::Content -->
 
             <!-- start::Recommended county -->
-            {% include "frontend/pages/common/recomended-by-county.html.twig" with {
+            {% include "frontend/pages/common/recomended-company.html.twig" with {
+                'recommended': countyRecommended,
                 'singlePath': 'app_provider_single',
                 'listingPath': 'app_provider',
-                'county': provider.county
+                'sectionName': 'company.other_services'|trans,
+                'sectionTitle': provider.county.name,
+                'filterParam': {'county': provider.county.code},
             } %}
             <!-- end::Recommended county -->
 
             <!-- start::Recommended category -->
-            {% include "frontend/pages/common/recomended-by-category.html.twig" with {
+            {% include "frontend/pages/common/recomended-company.html.twig" with {
+                'recommended': categoryRecommended,
                 'singlePath': 'app_provider_single',
                 'listingPath': 'app_provider',
-                'category': category
+                'sectionName': 'homepage.recommended_by_category'|trans,
+                'sectionTitle': category.translation(locale).title,
+                'filterParam': {'category': category.slug},
             } %}
             <!-- end::Recommended category -->
         </div>

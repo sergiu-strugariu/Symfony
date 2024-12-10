@@ -21,6 +21,7 @@ class DatatableHelper
         "enabled",
         "",
         "",
+        "reasonForDeletion",
         "createdAt",
         "lastLoginAt"
     ];

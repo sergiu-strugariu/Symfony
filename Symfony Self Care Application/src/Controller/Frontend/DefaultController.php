@@ -21,6 +21,7 @@ use App\Helper\BreadcrumbsHelper;
 use App\Helper\FormValidatorHelper;
 use App\Helper\LanguageHelper;
 use App\Helper\MembershipHelper;
+use App\Helper\DefaultHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,18 +51,31 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/rezultate-search/{slug?}', name: 'app_search_result')]
-    public function searchResults(EntityManagerInterface $em, Request $request, BreadcrumbsHelper $helper): Response
+    public function searchResults(EntityManagerInterface $em, Request $request, MembershipHelper $helper): Response
     {
+        $recommended = [];
+        $type = $request->get('type');
         /** @var Page $page */
-        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "search"]);
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'search']);
 
-        if (empty($request->get('type')) && empty($request->get('search'))) {
+        if (empty($type) && empty($request->get('search'))) {
             return $this->redirectToRoute('app_homepage');
+        }
+
+        if ($type === Company::LOCATION_TYPE_CARE || $type === Company::LOCATION_TYPE_PROVIDER) {
+            // Process companies by package and limit
+            $recommended = $helper->filterDataByPackage(
+                MembershipHelper::FILTER_COMPANY_RECOMMENDED,
+                Company::ENTITY_NAME, [MembershipPackage::PACKAGE_FREE],
+                ['locationType' => $type === Company::LOCATION_TYPE_CARE ? Company::LOCATION_TYPE_CARE : Company::LOCATION_TYPE_PROVIDER],
+                4
+            );
         }
 
         return $this->render('frontend/pages/search.html.twig', [
             'page' => $page,
-            'breadcrumbs' => $helper::SEARCH_BREADCRUMBS
+            'recommended' => $recommended,
+            'breadcrumbs' => BreadcrumbsHelper::SEARCH_BREADCRUMBS
         ]);
     }
 
@@ -171,34 +185,20 @@ class DefaultController extends AbstractController
         /** @var Page $page */
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'companies']);
 
-        $limit = 4;
-        $companies = [];
-
-        // All packages
-        $packages = MembershipPackage::getPackages();
-
         // Exclude packages in this section
         $excludePackages = [MembershipPackage::PACKAGE_FREE];
+        $limit = 4;
 
         /** @var CategoryCare $categories */
         $categories = $em->getRepository(CategoryCare::class)->getCategories();
 
-        // Parse and call by @package
-        foreach ($packages as $package) {
-            /**
-             * Get items by category
-             */
-            $result = $em->getRepository(Company::class)->getCompaniesByType(Company::LOCATION_TYPE_CARE, null, 4, $package);
-
-            // Store results in array by @package
-            $companies[$package] = $result;
-        }
-
         // Process companies by package and limit
-        $recommended = $helper->filterDataByPackages($companies, $excludePackages, $limit);
-
-        // Parse and increment entityLog
-        $helper->parseEntityLog($recommended, Company::ENTITY_NAME);
+        $recommended = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['locationType' => Company::LOCATION_TYPE_CARE],
+            $limit
+        );
 
         return $this->render('frontend/pages/index.html.twig', [
             'page' => $page,
@@ -209,17 +209,15 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/camin/{slug?}', name: 'app_company_single')]
-    public function singleCompany(EntityManagerInterface $em, MembershipHelper $helper, $slug): Response
+    public function singleCompany(Request $request, EntityManagerInterface $em, MembershipHelper $helper, LanguageHelper $languageHelper, $slug): Response
     {
         $breadcrumbs = BreadcrumbsHelper::COMPANY_SINGLE_BREADCRUMBS;
         $companyRepository = $em->getRepository(Company::class);
 
-        $limit = 4;
-        $categoryRecommended = [];
-        $countyRecommended = [];
+        $locale = $request->get('locale', $this->getParameter('default_locale'));
+        $language = $languageHelper->getLanguageByLocale($locale);
 
-        // All packages
-        $packages = MembershipPackage::getPackages();
+        $limit = 4;
 
         // Exclude packages in this section
         $excludePackages = [MembershipPackage::PACKAGE_FREE];
@@ -237,30 +235,26 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('app_company');
         }
 
-        // Parse and call by @package
-        foreach ($packages as $package) {
-            /**
-             * Get items by category
-             */
-            $resultCategory = $companyRepository->getCompaniesByCategoryOrCounty($company, $package, true, false, $limit);
-
-            /**
-             * Get items by county
-             */
-            $resultCounty = $companyRepository->getCompaniesByCategoryOrCounty($company, $package, false, true, $limit);
-
-            // Store results in array by @package
-            $categoryRecommended[$package] = $resultCategory;
-            $countyRecommended[$package] = $resultCounty;
-        }
-
         // Process companies by package and limit
-        $categoryRows = $helper->filterDataByPackages($categoryRecommended, $excludePackages, $limit);
-        $countyRows = $helper->filterDataByPackages($countyRecommended, $excludePackages, $limit);
+        $categoryRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_CATEGORY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['company' => $company],
+            $limit
+        );
 
-        // Parse and increment entityLog
-        $helper->parseEntityLog($categoryRows, Company::ENTITY_NAME);
-        $helper->parseEntityLog($countyRows, Company::ENTITY_NAME);
+        $countyRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_COUNTY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['company' => $company],
+            $limit
+        );
+
+        /**
+         * Get jobs by @company
+         * @var Job $jobs
+         */
+        $jobs = $em->getRepository(Job::class)->getCareJobs($language, $company);
 
         // Update breadcrumb page
         $breadcrumbs[] = [
@@ -275,7 +269,8 @@ class DefaultController extends AbstractController
             'galleryImage' => $company->getCompanyGalleries()->first(),
             'category' => $company->getCategoryCares()->first(),
             'countyRecommended' => $countyRows,
-            'categoryRecommended' => $categoryRows
+            'categoryRecommended' => $categoryRows,
+            'jobs' => $jobs
         ]);
     }
 
@@ -284,7 +279,7 @@ class DefaultController extends AbstractController
     {
         $company = $em->getRepository(Company::class)->findOneBy([
             'slug' => $slug,
-            'status' => Company::STATUS_PUBLISHED,
+            'status' => DefaultHelper::STATUS_PUBLISHED,
             'locationType' => Company::LOCATION_TYPE_CARE
         ]);
 
@@ -312,33 +307,19 @@ class DefaultController extends AbstractController
         /** @var Page $page */
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'providers']);
 
-        $limit = 4;
-        $companies = [];
-
-        // All packages
-        $packages = MembershipPackage::getPackages();
-
         // Exclude packages in this section
         $excludePackages = [MembershipPackage::PACKAGE_FREE];
+        $limit = 4;
 
         $categories = $em->getRepository(CategoryService::class)->getCategories();
 
-        // Parse and call by @package
-        foreach ($packages as $package) {
-            /**
-             * Get items by category
-             */
-            $result = $em->getRepository(Company::class)->getCompaniesByType(Company::LOCATION_TYPE_PROVIDER, null, 4, $package);
-
-            // Store results in array by @package
-            $companies[$package] = $result;
-        }
-
         // Process companies by package and limit
-        $recommended = $helper->filterDataByPackages($companies, $excludePackages, $limit);
-
-        // Parse and increment entityLog
-        $helper->parseEntityLog($recommended, Company::ENTITY_NAME);
+        $recommended = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['locationType' => Company::LOCATION_TYPE_PROVIDER],
+            $limit
+        );
 
         return $this->render('frontend/pages/index.html.twig', [
             'page' => $page,
@@ -355,11 +336,6 @@ class DefaultController extends AbstractController
         $providerRepository = $em->getRepository(Company::class);
 
         $limit = 4;
-        $categoryRecommended = [];
-        $countyRecommended = [];
-
-        // All packages
-        $packages = MembershipPackage::getPackages();
 
         // Exclude packages in this section
         $excludePackages = [MembershipPackage::PACKAGE_FREE];
@@ -377,31 +353,21 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('app_provider');
         }
 
-
-        // Parse and call by @package
-        foreach ($packages as $package) {
-            /**
-             * Get items by category
-             */
-            $resultCategory = $providerRepository->getCompaniesByCategoryOrCounty($provider, $package, true, false, $limit);
-
-            /**
-             * Get items by county
-             */
-            $resultCounty = $providerRepository->getCompaniesByCategoryOrCounty($provider, $package, false, true, $limit);
-
-            // Store results in array by @package
-            $categoryRecommended[$package] = $resultCategory;
-            $countyRecommended[$package] = $resultCounty;
-        }
+        // Process companies by package and limit
+        $categoryRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_CATEGORY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['company' => $provider],
+            $limit
+        );
 
         // Process companies by package and limit
-        $categoryRows = $helper->filterDataByPackages($categoryRecommended, $excludePackages, $limit);
-        $countyRows = $helper->filterDataByPackages($countyRecommended, $excludePackages, $limit);
-
-        // Parse and increment entityLog
-        $helper->parseEntityLog($categoryRows, Company::ENTITY_NAME);
-        $helper->parseEntityLog($countyRows, Company::ENTITY_NAME);
+        $countyRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COMPANY_COUNTY_RECOMMENDED,
+            Company::ENTITY_NAME, $excludePackages,
+            ['company' => $provider],
+            $limit
+        );
 
         $breadcrumbs[] = [
             'name' => $provider->getName(),
@@ -422,7 +388,7 @@ class DefaultController extends AbstractController
     public function jobs(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
     {
         /** @var Page $page */
-        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "jobs"]);
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'jobs']);
 
         /** @var CategoryJob $categories */
         $categories = $em->getRepository(CategoryJob::class)->getCategories();
@@ -436,15 +402,13 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/job/{slug?}', name: 'app_job_single')]
-    public function singleJob(EntityManagerInterface $em, BreadcrumbsHelper $helper, LanguageHelper $languageHelper, $slug): Response
+    public function singleJob(EntityManagerInterface $em, LanguageHelper $languageHelper, MembershipHelper $helper, $slug): Response
     {
-        $breadcrumbs = $helper::JOB_SINGLE_BREADCRUMBS;
-        $jobRepo = $em->getRepository(Job::class);
-
+        $breadcrumbs = BreadcrumbsHelper::JOB_SINGLE_BREADCRUMBS;
         $locale = $this->getParameter('default_locale');
         $language = $languageHelper->getLanguageByLocale($locale);
 
-        // Check exist slug
+        // Check exist param @slug
         if (!isset($slug)) {
             return $this->redirectToRoute('app_jobs');
         }
@@ -453,38 +417,38 @@ class DefaultController extends AbstractController
          * Get job by slug
          * @var Job $job
          */
-        $job = $jobRepo->getSingleJobByParams($slug);
+        $job = $em->getRepository(Job::class)->getSingleJobByParams($slug);
 
-        // Check exist article
+        // Check exist job
         if (!isset($job)) {
             return $this->redirectToRoute('app_jobs');
         }
 
-        /**
-         * Get jobs by  language and category
-         * @var Job $recommended
-         */
-        $recommended = $jobRepo->getRecommendedJobs($language, $job, 3);
+        // Process companies by package and limit
+        $jobRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_JOB_RECOMMENDED,
+            Job::ENTITY_NAME, [],
+            ['job' => $job, 'language' => $language], 3
+        );
 
-        /**
-         * Get courses by language and course
-         * @var TrainingCourse $recommendedCourses
-         */
-        $recommendedCourses = $em->getRepository(TrainingCourse::class)->getRecommendedCourses($language, null, 4);
+        // Process data by package and limit
+        $courseRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COURSE_RECOMMENDED,
+            TrainingCourse::ENTITY_NAME, [],
+            ['language' => $language], 4
+        );
 
-        $pageTitle = $job->getTranslation($locale)->getTitle();
         $breadcrumbs[] = [
-            'name' => $pageTitle,
+            'name' => $job->getTranslation($locale)->getTitle(),
             'route' => null,
             'params' => []
         ];
 
         return $this->render('frontend/pages/job.html.twig', [
-            'pageTitle' => $pageTitle,
+            'job' => $job,
             'breadcrumbs' => $breadcrumbs,
-            'recommended' => $recommended,
-            'recommendedCourses' => $recommendedCourses,
-            'job' => $job
+            'jobRecommended' => $jobRows,
+            'courseRecommended' => $courseRows
         ]);
     }
 
@@ -492,7 +456,7 @@ class DefaultController extends AbstractController
     public function courses(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
     {
         /** @var Page $page */
-        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => "courses"]);
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'courses']);
 
         /** @var CategoryCourse $categories */
         $categories = $em->getRepository(CategoryCourse::class)->getCategories();
@@ -506,11 +470,9 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/curs/{slug?}', name: 'app_course_single')]
-    public function singleCourse(EntityManagerInterface $em, BreadcrumbsHelper $helper, LanguageHelper $languageHelper, $slug): Response
+    public function singleCourse(EntityManagerInterface $em, MembershipHelper $helper, LanguageHelper $languageHelper, $slug): Response
     {
-        $breadcrumbs = $helper::COURSE_SINGLE_BREADCRUMBS;
-        $courseRepo = $em->getRepository(TrainingCourse::class);
-
+        $breadcrumbs = BreadcrumbsHelper::COURSE_SINGLE_BREADCRUMBS;
         $locale = $this->getParameter('default_locale');
         $language = $languageHelper->getLanguageByLocale($locale);
 
@@ -520,42 +482,41 @@ class DefaultController extends AbstractController
         }
 
         /**
-         * Get course by slug
+         * Get course by @slug
          * @var TrainingCourse $course
          */
-        $course = $courseRepo->getSingleCourseByParams($slug);
+        $course = $em->getRepository(TrainingCourse::class)->getSingleCourseByParams($slug);
 
         // Check exist article
         if (!isset($course)) {
             return $this->redirectToRoute('app_courses');
         }
 
-        /**
-         * Get jobs by language
-         * @var Job $recommended
-         */
-        $recommended = $em->getRepository(Job::class)->getRecommendedJobs($language, null, 3);
+        // Process companies by package and limit
+        $jobRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_JOB_RECOMMENDED,
+            Job::ENTITY_NAME, [],
+            ['language' => $language], 3
+        );
 
-        /**
-         * Get courses by language and course
-         * @var TrainingCourse $recommendedCourses
-         */
-        $recommendedCourses = $courseRepo->getRecommendedCourses($language, $course, 4);
+        // Process companies by package and limit
+        $courseRows = $helper->filterDataByPackage(
+            MembershipHelper::FILTER_COURSE_RECOMMENDED,
+            TrainingCourse::ENTITY_NAME, [],
+            ['course' => $course, 'language' => $language], 4
+        );
 
-
-        $pageTitle = $course->getTranslation($locale)->getTitle();
         $breadcrumbs[] = [
-            'name' => $pageTitle,
+            'name' => $course->getTranslation($locale)->getTitle(),
             'route' => null,
             'params' => []
         ];
 
         return $this->render('frontend/pages/course.html.twig', [
-            'pageTitle' => $pageTitle,
             'course' => $course,
-            'recommended' => $recommended,
-            'recommendedCourses' => $recommendedCourses,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'jobRecommended' => $jobRows,
+            'courseRecommended' => $courseRows
         ]);
     }
 

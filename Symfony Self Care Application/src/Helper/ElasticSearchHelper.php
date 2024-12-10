@@ -2,9 +2,10 @@
 
 namespace App\Helper;
 
-use App\Entity\Company;
 use Elastica\Query;
+use Elastica\Query\FunctionScore;
 use Elastica\ResultSet;
+use Exception;
 use FOS\ElasticaBundle\Elastica\Index;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Nested;
@@ -77,6 +78,7 @@ class ElasticSearchHelper
      * @param string $countyCode
      * @param string $searchType
      * @return array
+     * @throws Exception
      */
     public function searchAction(Index $finder, string $searchTerm, string $locale, array $fields, string $translationField, int $limit = 5, int $page = 1, string $countyCode = '', string $searchType = 'phrase_prefix'): array
     {
@@ -114,7 +116,7 @@ class ElasticSearchHelper
 
         // Add a filter for @published status
         $statusTermFilter = new Term();
-        $statusTermFilter->setTerm('status', Company::STATUS_PUBLISHED);
+        $statusTermFilter->setTerm('status', DefaultHelper::STATUS_PUBLISHED);
         $boolQuery->addFilter($statusTermFilter);
 
         if (!empty($countyCode)) {
@@ -127,15 +129,28 @@ class ElasticSearchHelper
             $boolQuery->addFilter($nestedCountyQuery);
         }
 
-        // Add a must_not to exclude documents with the deletedAt field
-        $deletedAtExistsFilter = new Exists('deletedAt');
-        $boolQuery->addMustNot($deletedAtExistsFilter);
+        // Add a must_not to exclude documents with the "deletedAt"
+        $existsQuery = new Exists('deletedAt');
+        $boolQuery->addMustNot($existsQuery);
 
-        // Create the main query with BoolQuery
-        $query = new Query($boolQuery);
+        // Create FunctionScore query to add random_score
+        $functionScoreQuery = new FunctionScore();
 
-        // Add descending sort by @id
-        $query->setSort(['_id' => ['order' => 'desc']]);
+        // Set the BoolQuery as the main query
+        $functionScoreQuery->setQuery($boolQuery);
+
+        // Apply random score with a seed (using crc32 for unique but reproducible seed)
+        $seed = crc32(uniqid());
+        $functionScoreQuery->addRandomScoreFunction($seed);
+
+        // Add main query to a query object
+        $query = new Query($functionScoreQuery);
+
+        // Add descending sort by membershipPrice
+        $query->setSort([
+            'membershipPrice' => ['order' => 'DESC'],
+            '_score' => ['order' => 'DESC']
+        ]);
 
         // Calculate the offset (from) based on the current page
         $offset = ($page - 1) * $limit;
@@ -166,9 +181,9 @@ class ElasticSearchHelper
      * @param int $page
      * @param string $searchType
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
-    public function searchCompany(Index $finder, string $searchTerm, string $locationType, array $fields, string $countyCode, int $limit = 5, int $page = 1, string $searchType = 'phrase_prefix')
+    public function searchCompany(Index $finder, string $searchTerm, string $locationType, array $fields, string $countyCode, int $limit = 5, int $page = 1, string $searchType = 'phrase_prefix'): array
     {
         // Create a BoolQuery object for the main query
         $boolQuery = new BoolQuery();
@@ -185,7 +200,7 @@ class ElasticSearchHelper
 
         // Add a filter for the "enabled" field to be true
         $enabledFilter = new Term();
-        $enabledFilter->setTerm('status', Company::STATUS_PUBLISHED);
+        $enabledFilter->setTerm('status', DefaultHelper::STATUS_PUBLISHED);
         $boolQuery->addFilter($enabledFilter);
 
         // Add a filter for the "type"
@@ -207,11 +222,24 @@ class ElasticSearchHelper
         $existsQuery = new Exists('deletedAt');
         $boolQuery->addMustNot($existsQuery);
 
-        // We create the main query with BoolQuery
-        $query = new Query($boolQuery);
+        // Create FunctionScore query to add random_score
+        $functionScoreQuery = new FunctionScore();
 
-        // Add descending sort by @id
-        $query->setSort(['_id' => ['order' => 'desc']]);
+        // Set the BoolQuery as the main query
+        $functionScoreQuery->setQuery($boolQuery);
+
+        // Apply random score with a seed (using crc32 for unique but reproducible seed)
+        $seed = crc32(uniqid());
+        $functionScoreQuery->addRandomScoreFunction($seed);
+
+        // Add main query to a query object
+        $query = new Query($functionScoreQuery);
+
+        // Add descending sort by membershipPrice
+        $query->setSort([
+            'membershipPrice' => ['order' => 'DESC'],
+            '_score' => ['order' => 'DESC']
+        ]);
 
         // Calculate the offset (from) based on the current page
         $offset = ($page - 1) * $limit;
@@ -232,14 +260,13 @@ class ElasticSearchHelper
         ];
     }
 
-
     /**
      * @param ResultSet $resultSet
      * @param string $locale
      * @param string $translationField
      * @param bool $hasTranslation
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     protected function formatElasticaResultSet(ResultSet $resultSet, bool $hasTranslation = false, string $locale = '', string $translationField = ''): array
     {
@@ -249,7 +276,7 @@ class ElasticSearchHelper
             $source = $result->getSource();
 
             if ($hasTranslation) {
-                if (!empty($source['createdAt'])){
+                if (!empty($source['createdAt'])) {
                     $source['createdAt'] = $this->helper->getTimeAgo(new \DateTime($source['createdAt']));
                 }
 

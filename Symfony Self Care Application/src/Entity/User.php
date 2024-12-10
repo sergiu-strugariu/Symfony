@@ -75,6 +75,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLoginAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $paymentToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $paymentTokenExpirationDate = null;
+
+    #[ORM\Column]
+    private ?bool $membershipCancel = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $membershipExpiresAt = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -143,6 +155,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->favorites = new ArrayCollection();
         $this->userBillingData = new ArrayCollection();
         $this->payments = new ArrayCollection();
+        $this->membershipCancel = 0;
     }
 
     public function getId(): ?int
@@ -371,7 +384,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
+
     public function getRole()
     {
         return empty($this->roles) ? self::ROLE_DEFAULT : reset($this->roles);
@@ -697,6 +710,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMembershipPackage(?MembershipPackage $membershipPackage): static
     {
         $this->membershipPackage = $membershipPackage;
+
+        return $this;
+    }
+
+    public function getPaymentToken(): ?string
+    {
+        return $this->paymentToken;
+    }
+
+    public function setPaymentToken(?string $paymentToken): static
+    {
+        $this->paymentToken = $paymentToken;
+
+        return $this;
+    }
+
+    public function getPaymentTokenExpirationDate(): ?\DateTimeInterface
+    {
+        return $this->paymentTokenExpirationDate;
+    }
+
+    public function setPaymentTokenExpirationDate(?\DateTimeInterface $paymentTokenExpirationDate): static
+    {
+        $this->paymentTokenExpirationDate = $paymentTokenExpirationDate;
+
+        return $this;
+    }
+
+    public function getMembershipExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->membershipExpiresAt;
+    }
+
+    public function setMembershipExpiresAt(?\DateTimeInterface $membershipExpiresAt): static
+    {
+        $this->membershipExpiresAt = $membershipExpiresAt;
+
+        return $this;
+    }
+
+    public function isMembershipCancel(): ?bool
+    {
+        return $this->membershipCancel;
+    }
+
+    public function setMembershipCancel(bool $membershipCancel): static
+    {
+        $this->membershipCancel = $membershipCancel;
 
         return $this;
     }

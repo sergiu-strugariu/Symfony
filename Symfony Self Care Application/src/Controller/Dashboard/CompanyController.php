@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Helper\DefaultHelper;
 use App\Helper\MembershipHelper;
+use App\Helper\UserHelper;
 use DateTime;
 use App\Entity\CompanyGallery;
 use App\Entity\Company;
@@ -81,7 +82,7 @@ class CompanyController extends AbstractController
 
 
         return $this->render('dashboard/company/actions.html.twig', [
-            'pageTitle' => $translator->trans('dashboard.table.add_new_item', [], 'messages'),
+            'pageTitle' => $translator->trans($locationType === Company::LOCATION_TYPE_CARE ? 'company.company_add' : 'company.service_add', [], 'messages'),
             'services' => json_encode(Company::getServices(), JSON_UNESCAPED_UNICODE),
             'locationType' => $locationType,
             'form' => $form->createView()
@@ -89,14 +90,19 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/dashboard/company/{uuid}/edit/{locationType}', name: 'dashboard_company_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, LanguageHelper $languageHelper, $uuid, $locationType, TranslatorInterface $translator): Response
+    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, LanguageHelper $languageHelper, TranslatorInterface $translator, $uuid, $locationType): Response
     {
         /**
          * Get company by @uuid
          * @var Company $company
          */
-        $company = $em->getRepository(Company::class)->findOneBy(['uuid' => $uuid, 'locationType' => $locationType]);
+        $company = $em->getRepository(Company::class)->findOneBy([
+            'uuid' => $uuid,
+            'locationType' => $locationType
+        ]);
+
         $files = DefaultHelper::COMPANY_FILE_FIELDS;
+        $companyPath = $this->getParameter('app_company_path');
 
         if (null === $company) {
             // Set flash message
@@ -112,7 +118,10 @@ class CompanyController extends AbstractController
         // Get gallery images
         $galleries = $em->getRepository(CompanyGallery::class)->getGalleryByCompany($company);
 
-        $form = $this->createForm(CompanyFormType::class, $company, ['language' => $language, 'locationType' => $locationType]);
+        $form = $this->createForm(CompanyFormType::class, $company, [
+            'language' => $language,
+            'locationType' => $locationType
+        ]);
         $form->handleRequest($request);
 
         // Validate form
@@ -126,24 +135,51 @@ class CompanyController extends AbstractController
                     $uploadFile = $fileUploader->uploadFile(
                         $file,
                         $form,
-                        $this->getParameter('app_company_path'),
+                        $companyPath,
                         $value
                     );
 
-                    // Check and set @filename
                     if ($uploadFile['success']) {
-                        match ($value) {
-                            DefaultHelper::COMPANY_FILE_FIELDS['video'] => $company->setVideoPlaceholder($uploadFile['fileName']),
-                            DefaultHelper::COMPANY_FILE_FIELDS['preview'] => $company->setFileName($uploadFile['fileName']),
-                            DefaultHelper::COMPANY_FILE_FIELDS['logo'] => $company->setLogo($uploadFile['fileName'])
-                        };
+                        switch ($value) {
+                            case DefaultHelper::COMPANY_FILE_FIELDS['video']:
+                                // Remove old file
+                                $fileUploader->removeFile(
+                                    $companyPath,
+                                    $company->getVideoPlaceholder()
+                                );
+
+                                // Set fileName
+                                $company->setVideoPlaceholder($uploadFile['fileName']);
+                                break;
+
+                            case DefaultHelper::COMPANY_FILE_FIELDS['preview']:
+                                // Remove old file
+                                $fileUploader->removeFile(
+                                    $companyPath,
+                                    $company->getFileName()
+                                );
+
+                                // Set fileName
+                                $company->setFileName($uploadFile['fileName']);
+                                break;
+
+                            case DefaultHelper::COMPANY_FILE_FIELDS['logo']:
+                                // Remove old file
+                                $fileUploader->removeFile(
+                                    $companyPath,
+                                    $company->getLogo()
+                                );
+
+                                // Set fileName
+                                $company->setLogo($uploadFile['fileName']);
+                                break;
+                        }
                     }
                 }
             }
 
             // Save changes to DB
             $company->setUpdatedAt(new DateTime());
-            $company->setLocationType($locationType);
             $em->persist($company);
             $em->flush();
 
@@ -154,42 +190,49 @@ class CompanyController extends AbstractController
 
         return $this->render('dashboard/company/actions.html.twig', [
             'pageTitle' => $translator->trans('dashboard.actions.edit', [], 'messages'),
-            'uuid' => $uuid,
+            'company' => $company,
+            'locationType' => $company->getLocationType(),
             'galleries' => $galleries,
-            'videoPlaceholder' => $company->getVideoPlaceholder(),
-            'previewImage' => $company->getFileName(),
-            'logo' => $company->getLogo(),
             'services' => json_encode(Company::getServices(), JSON_UNESCAPED_UNICODE),
-            'locationType' => $locationType,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/dashboard/company/actions/{action}/{uuid}/{locationType}', name: 'dashboard_company_actions')]
-    public function actions(EntityManagerInterface $em, $action, $uuid, $locationType, TranslatorInterface $translator): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, UserHelper $userHelper, $action, $uuid, $locationType): Response
     {
         /** @var Company $company */
-        $company = $em->getRepository(Company::class)->findOneBy(['uuid' => $uuid, 'locationType' => $locationType]);
+        $company = $em->getRepository(Company::class)->findOneBy([
+            'uuid' => $uuid,
+            'locationType' => $locationType
+        ]);
 
-        if ($action === 'remove') {
-            // Soft delete
-            $company->setDeletedAt(new DateTime());
-        } elseif ($action === 'moderate') {
-            $company->setStatus($company->getStatus() === Company::STATUS_DRAFT ? Company::STATUS_PUBLISHED : Company::STATUS_DRAFT);
-        } else {
+        if ($company === null) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
             return $this->redirectToRoute('dashboard_company_index', ['locationType' => $locationType]);
         }
 
-        if (!isset($company)) {
-            // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
-            return $this->redirectToRoute('dashboard_company_index', ['locationType' => $locationType]);
+        switch ($action) {
+            case DefaultHelper::ACTION_REMOVE:
+                // Remove storage files
+                $userHelper->removeEntityFiles($company, Company::ENTITY_NAME);
+
+                // Remove item
+                $em->remove($company);
+                break;
+            case DefaultHelper::ACTION_MODERATE:
+                // Update status
+                $company->setStatus($company->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
+                $em->persist($company);
+                break;
+            default:
+                // Set flash message
+                $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
+                return $this->redirectToRoute('dashboard_company_index', ['locationType' => $locationType]);
         }
 
         // Update data
-        $em->persist($company);
         $em->flush();
 
         // Set flash message

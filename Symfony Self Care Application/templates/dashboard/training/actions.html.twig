@@ -8,7 +8,8 @@
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <!--begin::Toolbar container-->
-        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack app-container-details">
+        <div id="kt_app_toolbar_container"
+             class="app-container container-fluid d-flex flex-stack app-container-details">
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
@@ -35,10 +36,14 @@
     <!--end::Content-->
 {% endblock %}
 {% block page_javascripts %}
-    <script>
-        {% set date = startCourseDate is defined ? startCourseDate : ''%}
-        flatpickrInit("{{ date }}");
-    </script>
     <script src="{{ asset('assets/dashboard/js/tinymce/tinymce.bundle.js') }}"></script>
-    <script>initEditor('#training_course_form_body');</script>
+    <script>
+        {% set date = startCourseDate is defined ? startCourseDate : '' %}
+        {% set endDate = endedAt is defined ? endedAt : '' %}
+
+        flatpickrInit("{{ date }}", false);
+        flatpickrInit("{{ endDate }}", false, false, 'd.m.Y', '.flatpickr-new');
+
+        initEditor('#training_course_form_body');
+    </script>
 {% endblock %}

@@ -95,23 +95,25 @@
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a href="{{ path('dashboard_my_subscription') }}"
-                               class="menu-link {{ route == 'dashboard_my_subscription' ? 'active' : '' }}">
+                    {% if isAdmin or isCompany %}
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a href="{{ path('dashboard_my_subscription') }}"
+                                   class="menu-link {{ route == 'dashboard_my_subscription' ? 'active' : '' }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
-                                <span class="menu-title">{{ 'dashboard.my_plan.title'|trans }}</span>
-                            </a>
-                            <!--end:Menu link-->
+                                    <span class="menu-title">{{ 'dashboard.my_plan.title'|trans }}</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
                         </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end:Menu sub-->
+                        <!--end:Menu sub-->
+                    {% endif %}
 
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">

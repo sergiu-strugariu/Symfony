@@ -6,9 +6,12 @@ use App\Entity\Article;
 use App\Entity\Company;
 use App\Entity\Favorite;
 use App\Entity\Job;
+use App\Entity\MembershipPackage;
+use App\Entity\Payment;
 use App\Entity\TrainingCourse;
 use App\Entity\User;
 use App\Entity\UserBillingData;
+use App\Helper\MembershipHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class DefaultController extends AbstractController
 {
@@ -72,10 +76,37 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/dashboard/favorites', name: 'dashboard_favorites')]
-    public function favorites(): Response
+    public function favorites(MembershipHelper $helper, EntityManagerInterface $em, Security $security): Response
     {
+        $companies = [];
+
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            // Exclude packages in this section
+            $excludePackages = [MembershipPackage::PACKAGE_GOLD, MembershipPackage::PACKAGE_SILVER, MembershipPackage::PACKAGE_FREE];
+
+            $cares = $helper->filterDataByPackage(
+                MembershipHelper::FILTER_COMPANY_RECOMMENDED,
+                Company::ENTITY_NAME, $excludePackages,
+                ['locationType' => Company::LOCATION_TYPE_CARE],
+                2
+            );
+
+            $providers = $helper->filterDataByPackage(
+                MembershipHelper::FILTER_COMPANY_RECOMMENDED,
+                Company::ENTITY_NAME, $excludePackages,
+                ['locationType' => Company::LOCATION_TYPE_PROVIDER],
+                2
+            );
+
+            $companies = array_merge($cares, $providers);
+        }
+
+        $users = $em->getRepository(User::class)->getFavoriteUsers();
+
         return $this->render('dashboard/default/favorites.html.twig', [
-            'types' => Favorite::getFavoriteTypes()
+            'types' => Favorite::getFavoriteTypes(),
+            'companies' => $companies,
+            'users' => $users
         ]);
     }
 
@@ -91,8 +122,11 @@ class DefaultController extends AbstractController
         /** @var UserBillingData $company */
         $favoriteCompany = $em->getRepository(UserBillingData::class)->findOneBy(['user' => $user, 'isFavorite' => true]);
 
+        $invoices = $em->getRepository(Payment::class)->findBy(['user' => $user], ['id' => 'desc']);
+
         return $this->render('dashboard/default/my-subscription.html.twig', [
             'companies' => $companies,
+            'invoices' => $invoices,
             'favoriteCompany' => $favoriteCompany
         ]);
     }

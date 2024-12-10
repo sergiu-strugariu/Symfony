@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\CategoryCare;
 use App\Entity\Company;
 use App\Entity\Language;
+use App\Helper\DefaultHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -109,7 +110,7 @@ class CategoryCareRepository extends ServiceEntityRepository
             ->andWhere('c.id IS NOT NULL')
             ->andWhere('cat.status = :status')
             ->andWhere('c.status = :status')
-            ->setParameter('status', Company::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('cat.id', 'DESC')
             ->groupBy('cat.id')
             ->getQuery()

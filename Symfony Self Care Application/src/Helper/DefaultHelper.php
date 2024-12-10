@@ -14,6 +14,9 @@ class DefaultHelper
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
 
+    const ACTION_REMOVE = 'remove';
+    const ACTION_MODERATE = 'moderate';
+
     const CATEGORY_TYPES = ['training', 'job', 'article', 'care', 'provider'];
     const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'instagramLink', 'logo', 'footerLogo', 'favicon'];
     const SETTING_FILE_FIELDS = ['logo', 'footerLogo', 'favicon'];

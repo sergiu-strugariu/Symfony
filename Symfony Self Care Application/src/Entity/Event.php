@@ -17,6 +17,7 @@ class Event
 {
     const STATUS_ENDED = 'ended';
     const STATUS_FUTURE = 'future';
+    const ENTITY_NAME = 'event';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

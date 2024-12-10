@@ -96,7 +96,9 @@
                         <div class="row">
                             <div class="pack">
                                 <h4>{{ 'dashboard.edit_profile.delete_account'|trans }}</h4>
-                                <p>{{ 'dashboard.edit_profile.delete_no_return'|trans }}</p>
+                                <p>
+                                    {{ 'dashboard.edit_profile.delete_no_return'|trans({'%resetPasswordPath%': path('app_resetting_forgot_password')})|raw }}
+                                </p>
                             </div>
                             <a href="#" data-bs-toggle="modal"
                                data-bs-target="#modalChangeDelete">{{ 'dashboard.edit_profile.delete_account'|trans }}</a>

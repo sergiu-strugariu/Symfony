@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\DefaultHelper;
 use App\Repository\CompanyRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
@@ -17,9 +19,6 @@ class Company
 {
     const LOCATION_TYPE_CARE = 'care';
     const LOCATION_TYPE_PROVIDER = 'provider';
-
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
 
     const ENTITY_NAME = 'company';
 
@@ -67,7 +66,7 @@ class Company
     #[ORM\Column(length: 20)]
     private ?string $companyType = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $companyCapacity = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
@@ -94,7 +93,7 @@ class Company
     #[ORM\Column(length: 99, nullable: true)]
     private ?string $website = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
+    #[ORM\Column(length: 99, nullable: true)]
     private ?string $admissionCriteria = null;
 
     #[ORM\Column]
@@ -129,13 +128,13 @@ class Company
     /**
      * @var Collection<int, Job>
      */
-    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'company', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'company')]
     private Collection $jobs;
 
     /**
      * @var Collection<int, TrainingCourse>
      */
-    #[ORM\OneToMany(targetEntity: TrainingCourse::class, mappedBy: 'company', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TrainingCourse::class, mappedBy: 'company')]
     private Collection $trainingCourses;
 
     /**
@@ -154,7 +153,7 @@ class Company
     /**
      * @var Collection<int, EntityDisplayLog>
      */
-    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'company')]
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'company', orphanRemoval: true)]
     private Collection $entityDisplayLogs;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -169,6 +168,7 @@ class Company
     public function __construct()
     {
         $this->createdAt = new DateTime();
+        $this->status = DefaultHelper::STATUS_DRAFT;
         $this->categoryCares = new ArrayCollection();
         $this->categoryServices = new ArrayCollection();
         $this->companyGalleries = new ArrayCollection();
@@ -477,7 +477,7 @@ class Company
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(\DateTimeInterface $deletedAt): static
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): static
     {
         $this->deletedAt = $deletedAt;
 
@@ -598,17 +598,6 @@ class Company
     /**
      * @return string[]
      */
-    public static function getStatuses(): array
-    {
-        return [
-            self::STATUS_DRAFT => self::STATUS_DRAFT,
-            self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
-        ];
-    }
-
-    /**
-     * @return string[]
-     */
     public static function getServices(): array
     {
         return [
@@ -631,16 +620,10 @@ class Company
     /**
      * @return array
      */
+    #[ArrayShape(['sub 18 ani' => "string", '18-65 ani' => "string", 'peste 65 ani' => "string"])]
     public static function getAdmissionCriteriaRange(): array
     {
-        $values = [];
-
-        foreach (range(35, 95, 10) as $item) {
-            // Adăugăm valoarea în array
-            $values[$item] = $item;
-        }
-
-        return $values;
+        return ['sub 18 ani' => 'sub 18 ani', '18-65 ani' => '18-65 ani', 'peste 65 ani' => 'peste 65 ani'];
     }
 
     /**
@@ -864,5 +847,13 @@ class Company
         }
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMembershipPrice(): ?string
+    {
+        return $this->getUser()->getMembershipPackage()->getPrice();
     }
 }

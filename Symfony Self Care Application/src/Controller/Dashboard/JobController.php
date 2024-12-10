@@ -3,7 +3,9 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\User;
+use App\Helper\DefaultHelper;
 use App\Helper\MembershipHelper;
+use App\Helper\UserHelper;
 use DateTime;
 use App\Entity\Job;
 use App\Entity\JobTranslation;
@@ -11,10 +13,10 @@ use App\Form\Type\JobFormType;
 use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,11 +28,17 @@ class JobController extends AbstractController
         return $this->render('dashboard/job/index.html.twig');
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/dashboard/job/create', name: 'dashboard_job_create')]
     public function create(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         // Get membership by @user
-        $getPlan = $helper->checkMembership($this->getUser(), Job::ENTITY_NAME);
+        $getPlan = $helper->checkMembership($user, Job::ENTITY_NAME);
 
         // Check status plan
         if ($getPlan['status']) {
@@ -41,16 +49,16 @@ class JobController extends AbstractController
         $job = new Job();
         $benefitsArray = [];
 
-        /** @var User $user */
-        $user = $this->isGranted('ROLE_ADMIN') ? null : $this->getUser();
+        /** @var User $userAdm */
+        $userAdm = $this->isGranted('ROLE_ADMIN') ? null : $user;
 
-        $form = $this->createForm(JobFormType::class, $job, ['language' => $languageHelper->getDefaultLanguage(), 'user' => $user]);
+        $form = $this->createForm(JobFormType::class, $job, ['language' => $languageHelper->getDefaultLanguage(), 'user' => $userAdm]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // generate and set unique UUID
-            $job->setUuid(Uuid::v4());
-            $job->setUser($this->getUser());
+            $job->setUser($user);
+            $job->setEndedAt(new DateTime($form->get('endedAt')->getData()));
+
             // get data from the form
             $file = $form->get('fileName')->getData();
 
@@ -109,9 +117,15 @@ class JobController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/dashboard/job/{uuid}/edit', name: 'dashboard_job_edit')]
-    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, MembershipHelper $helper, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, LanguageHelper $languageHelper, FileUploader $fileUploader, TranslatorInterface $translator, UserHelper $userHelper, $uuid): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         $job = $em->getRepository(Job::class)->findOneBy(['uuid' => $uuid]);
         $benefitsArray = [];
 
@@ -122,21 +136,12 @@ class JobController extends AbstractController
             return $this->redirectToRoute('dashboard_job_index');
         }
 
-        // Get membership by @user
-        $getPlan = $helper->checkMembership($this->getUser(), Job::ENTITY_NAME);
-
-        // Check status plan
-        if ($getPlan['status'] && $job->getStatus() !== DefaultHelper::STATUS_PUBLISHED) {
-            $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
-            return $this->redirectToRoute('dashboard_job_index');
-        }
-
         // get selected language
         $locale = $request->get('locale');
         $language = $languageHelper->getLanguageByLocale($locale);
 
-        /** @var User $user */
-        $user = $this->isGranted('ROLE_ADMIN') ? null : $this->getUser();
+        /** @var User $userAdm */
+        $userAdm = $this->isGranted('ROLE_ADMIN') ? null : $user;
 
         // get translation
         $jobTranslation = $em->getRepository(JobTranslation::class)->findOneBy([
@@ -150,7 +155,7 @@ class JobController extends AbstractController
         $form = $this->createForm(JobFormType::class, $job, [
             'translation' => $jobTranslation,
             'language' => $language,
-            'user' => $user
+            'user' => $userAdm
         ]);
 
         $form->handleRequest($request);
@@ -170,6 +175,7 @@ class JobController extends AbstractController
 
             // Update translation and set data
             $job->setUpdatedAt(new DateTime());
+            $job->setEndedAt(new DateTime($form->get('endedAt')->getData()));
             $jobTranslation->setTitle($form->get('title')->getData());
             $jobTranslation->setBody($form->get('body')->getData());
             $jobTranslation->setBenefits($benefitsArray);
@@ -183,8 +189,7 @@ class JobController extends AbstractController
                 $uploadFile = $fileUploader->uploadFile(
                     $file,
                     $form,
-                    $this->getParameter('app_job_path'),
-                    'fileName'
+                    $this->getParameter('app_job_path')
                 );
 
                 // Set status uploaded
@@ -192,6 +197,10 @@ class JobController extends AbstractController
 
                 // Check and set @filename
                 if ($uploadFile['success']) {
+                    // Remove old file
+                    $userHelper->removeEntityFiles($job, Job::ENTITY_NAME);
+
+                    // Set fileName
                     $job->setFileName($uploadFile['fileName']);
                 }
             }
@@ -212,44 +221,54 @@ class JobController extends AbstractController
             'form' => $form->createView(),
             'benefits' => json_encode(Job::getBenefits(), JSON_UNESCAPED_UNICODE),
             'pageTitle' => $translator->trans('controller.edit_job', [], 'messages'),
-            'fileName' => $job->getFileName()
+            'fileName' => $job->getFileName(),
+            'endedAt' => $job->getEndedAt()->format('d.m.Y')
         ]);
     }
 
     #[Route('/dashboard/job/actions/{action}/{uuid}', name: 'dashboard_job_actions')]
-    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, MembershipHelper $helper, $action, $uuid): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, MembershipHelper $helper, UserHelper $userHelper, $action, $uuid): Response
     {
         /** @var Job $job */
         $job = $em->getRepository(Job::class)->findOneBy(['uuid' => $uuid]);
 
-        if (empty($job)) {
+        if ($job === null || $job->getCompany() === null && $action === DefaultHelper::ACTION_MODERATE) {
             // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
+            $this->addFlash('danger', $translator->trans($job->getCompany() === null ? 'controller.no_company' : 'controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_job_index');
         }
 
+        /** @var User $user */
+        $user = $job->getUser();
+
         // Get membership by @user
-        $getPlan = $helper->checkMembership($this->getUser(), Job::ENTITY_NAME);
+        $getPlan = $helper->checkMembership($user, Job::ENTITY_NAME);
 
         // Check status
-        if ($getPlan['status'] && $job->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === 'moderate') {
+        if ($getPlan['status'] && $job->getStatus() !== DefaultHelper::STATUS_PUBLISHED && $action === DefaultHelper::ACTION_MODERATE) {
             $this->addFlash('danger', sprintf($translator->trans('dashboard.actions.max_plan', [], 'messages'), $getPlan['membership'], $getPlan['max']));
             return $this->redirectToRoute('dashboard_job_index');
         }
 
-        if ($action === 'remove') {
-            // Soft delete
-            $job->setDeletedAt(new DateTime());
-        } elseif ($action === 'moderate') {
-            $job->setStatus($job->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
-        } else {
-            // Set flash message
-            $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
-            return $this->redirectToRoute('dashboard_job_index');
+        switch ($action) {
+            case DefaultHelper::ACTION_REMOVE:
+                // Remove storage files
+                $userHelper->removeEntityFiles($job, Job::ENTITY_NAME);
+
+                // Remove item
+                $em->remove($job);
+                break;
+            case DefaultHelper::ACTION_MODERATE:
+                $job->setStatus($job->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
+                $em->persist($job);
+                break;
+            default:
+                // Set flash message
+                $this->addFlash('danger', $translator->trans('controller.error_action', [], 'messages'));
+                return $this->redirectToRoute('dashboard_job_index');
         }
 
         // Update data
-        $em->persist($job);
         $em->flush();
 
         // Set flash message

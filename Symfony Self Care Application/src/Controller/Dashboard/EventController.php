@@ -9,6 +9,7 @@ use App\Form\Type\EventForm;
 use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
 use App\Helper\LanguageHelper;
+use App\Helper\UserHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -250,25 +251,29 @@ class EventController extends AbstractController
     }
 
     #[Route('/dashboard/secure/event/actions/{action}/{uuid}', name: 'dashboard_event_actions')]
-    public function actions(EntityManagerInterface $em, $action, $uuid, TranslatorInterface $translator): Response
+    public function actions(EntityManagerInterface $em, TranslatorInterface $translator, UserHelper $userHelper, $action, $uuid): Response
     {
         /** @var Event $event */
         $event = $em->getRepository(Event::class)->findOneBy(['uuid' => $uuid]);
 
-        if (!isset($event)) {
+        if ($event === null) {
             // Set flash message
             $this->addFlash('danger', $translator->trans('controller.no_content', [], 'messages'));
             return $this->redirectToRoute('dashboard_event_index');
         }
 
         switch ($action) {
-            case 'remove':
-                // Soft delete
-                $event->setDeletedAt(new DateTime());
+            case DefaultHelper::ACTION_REMOVE:
+                // Remove storage files
+                $userHelper->removeEntityFiles($event, Event::ENTITY_NAME);
+
+                // Remove item
+                $em->remove($event);
                 break;
-            case 'moderate':
+            case DefaultHelper::ACTION_MODERATE:
                 // Update status
                 $event->setStatus($event->getStatus() === DefaultHelper::STATUS_DRAFT ? DefaultHelper::STATUS_PUBLISHED : DefaultHelper::STATUS_DRAFT);
+                $em->persist($event);
                 break;
             default:
                 // Set flash message and redirect
@@ -277,7 +282,6 @@ class EventController extends AbstractController
         }
 
         // Update data
-        $em->persist($event);
         $em->flush();
 
         // Set flash message

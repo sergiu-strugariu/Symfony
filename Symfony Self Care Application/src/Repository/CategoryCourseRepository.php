@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\CategoryCourse;
 use App\Entity\Language;
 use App\Entity\TrainingCourse;
+use App\Helper\DefaultHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -109,7 +110,7 @@ class CategoryCourseRepository extends ServiceEntityRepository
             ->andWhere('t.id IS NOT NULL')
             ->andWhere('cat.status = :status')
             ->andWhere('t.status = :status')
-            ->setParameter('status', TrainingCourse::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('cat.id', 'DESC')
             ->groupBy('cat.id')
             ->getQuery()

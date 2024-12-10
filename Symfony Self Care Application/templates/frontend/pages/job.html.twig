@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
+{% block title %}{{ parent() }} {{ job.translation(locale).title }}{% endblock %}
     {% block share %}
         <meta property="og:title" content="{{ job.translation(locale).title }}"/>
         <meta property="og:description" content="{{ job.translation(locale).shortDescription }}"/>
@@ -33,13 +33,16 @@
             {% include "frontend/pages/job/single/form.html.twig" %}
             <!-- end::Form & Share -->
 
-            <!-- start::Recommended -->
-            {% include "frontend/pages/common/recomended-jobs.html.twig" with {'sectionTitle': 'jobs.recommended_job_section'|trans} %}
-            <!-- end::Recommended -->
+            <!-- start::Recommended jobs-->
+            {% include "frontend/pages/common/recomended-jobs.html.twig" with {
+                'sectionTitle': 'jobs.recommended_job_section'|trans,
+                'recommended': jobRecommended
+            } %}
+            <!-- end::Recommended jobs-->
 
-            <!-- start::Other courses -->
-            {% include "frontend/pages/common/other-courses.html.twig" with {'sectionTitle': 'courses.other_course'|trans} %}
-            <!-- end::Other courses -->
+            <!-- start::Recommended courses -->
+            {% include "frontend/pages/common/recomended-courses.html.twig" %}
+            <!-- end::Recommended courses -->
         </div>
     </main>
 {% endblock %}

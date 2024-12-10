@@ -1,3 +1,4 @@
+{% set companyTypeTitle = locationType == constant('App\\Entity\\Company::LOCATION_TYPE_CARE') ? 'dashboard.form.company_type'|trans : 'dashboard.form.provider_type'|trans %}
 <div class="card mb-5 mb-lg-3 card-flush">
     <!--begin::Form content-->
     {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data', 'novalidate': 'novalidate'}}) }}
@@ -114,21 +115,24 @@
                 </div>
                 <!--end::address & postalCode-->
 
-                <!--start::address & postalCode-->
+                <!--start::companyType-->
                 <div class="row mb-6">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <!--begin::Label-->
-                            {{ form_label(form.companyType, 'dashboard.form.company_type'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8 fv-row">
-                                {{ form_widget(form.companyType, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
-                                {{ form_errors(form.companyType) }}
-                            </div>
-                            <!--end::Col-->
+                    <div class="row">
+                        <!--begin::Label-->
+                        {{ form_label(form.companyType, companyTypeTitle, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-10 fv-row">
+                            {{ form_widget(form.companyType, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
+                            {{ form_errors(form.companyType) }}
                         </div>
+                        <!--end::Col-->
                     </div>
+                </div>
+                <!--end::companyType-->
+
+                <!--start::companyCapacity & admissionCriteria -->
+                <div class="row mb-6 category-cares d-none">
                     <div class="col-md-6">
                         <div class="row">
                             <!--begin::Label-->
@@ -142,24 +146,22 @@
                             <!--end::Col-->
                         </div>
                     </div>
-                </div>
-                <!--end::address & postalCode-->
-
-                <!--start::type & admissionCriteria -->
-                <div class="row mb-6">
-                    <div class="row">
-                        <!--begin::Label-->
-                        {{ form_label(form.admissionCriteria, 'dashboard.form.admission_criteria'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
-                        <!--end::Label-->
-                        <!--begin::Col-->
-                        <div class="col-lg-10 fv-row">
-                            {{ form_widget(form.admissionCriteria, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
-                            {{ form_errors(form.admissionCriteria) }}
+                    <div class="col-md-6">
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            {{ form_label(form.admissionCriteria, 'dashboard.form.admission_criteria'|trans, {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.admissionCriteria, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                                {{ form_errors(form.admissionCriteria) }}
+                            </div>
+                            <!--end::Col-->
                         </div>
-                        <!--end::Col-->
                     </div>
                 </div>
-                <!--end::type & admissionCriteria -->
+                <!--end::companyCapacity & admissionCriteria -->
+
 
                 <!--start::price & website -->
                 <div class="row mb-6">
@@ -190,7 +192,7 @@
                         </div>
                     </div>
                 </div>
-                <!--end::name & companyName -->
+                <!--end::name & website -->
 
                 <!--start::availableServices-->
                 <div class="row mb-6">
@@ -243,7 +245,8 @@
                     <div class="col-lg-10 fv-row">
                         {{ form_widget(form.shortDescription, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0 shortDescription', 'rows': '3'}}) }}
                         {{ form_errors(form.shortDescription) }}
-                        <p class="character-counter"><span>0</span>  {{'dashboard.common.short_description_message_length'|trans}}</p>
+                        <p class="character-counter">
+                            <span>0</span> {{ 'dashboard.common.short_description_message_length'|trans }}</p>
 
                     </div>
                     <!--end::Col-->
@@ -276,10 +279,11 @@
                                 {{ form_widget(form.fileName, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
                                 {{ form_errors(form.fileName) }}
 
-                                {% if previewImage is defined %}
+                                {% if company.fileName is defined %}
                                     <div class="form-text">Image uploaded:
-                                        <a href="{{ asset(app_company_path ~ previewImage, 'cloudflare') }}" target="_blank">
-                                            {{ previewImage }}
+                                        <a href="{{ asset(app_company_path ~ company.fileName, 'cloudflare') }}"
+                                           target="_blank">
+                                            {{ company.fileName }}
                                         </a>
                                     </div>
                                 {% endif %}
@@ -297,11 +301,11 @@
                             <div class="col-lg-8 fv-row">
                                 {{ form_widget(form.logo, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
                                 {{ form_errors(form.logo) }}
-                                {% if logo is defined %}
+                                {% if company.logo is defined %}
                                     <div class="form-text">Image uploaded:
-                                        <a href="{{ asset(app_company_path ~ logo, 'cloudflare') }}"
+                                        <a href="{{ asset(app_company_path ~ company.logo, 'cloudflare') }}"
                                            target="_blank">
-                                            {{ logo }}
+                                            {{ company.logo }}
                                         </a>
                                     </div>
                                 {% endif %}
@@ -338,11 +342,11 @@
                             <div class="col-lg-8 fv-row">
                                 {{ form_widget(form.videoPlaceholder, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
                                 {{ form_errors(form.videoPlaceholder) }}
-                                {% if videoPlaceholder is defined %}
+                                {% if company.videoPlaceholder is defined %}
                                     <div class="form-text">{{ 'dashboard.form.image_upload'|trans }}
-                                        <a href="{{ asset(app_company_path ~ videoPlaceholder, 'cloudflare') }}"
+                                        <a href="{{ asset(app_company_path ~ company.videoPlaceholder, 'cloudflare') }}"
                                            target="_blank">
-                                            {{ videoPlaceholder }}
+                                            {{ company.videoPlaceholder }}
                                         </a>
                                     </div>
                                 {% endif %}
@@ -355,7 +359,7 @@
                 <!--end::videoUrl and placeholderImage-->
 
                 <!--start::GalleryImages-->
-                {% if uuid is defined %}
+                {% if company.uuid is defined %}
                     <div class="row">
                         <!--begin::Label-->
                         <label class="col-lg-2 col-form-label fw-semibold fs-6 required">
@@ -364,8 +368,9 @@
                         <!--end::Label-->
                         <!--begin::Col-->
                         <div class="col-lg-10 fv-row">
-                            <button type="button" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder" data-bs-toggle="modal"
-                                    data-bs-target="#kt_gallery_modal">
+                            <button type="button"
+                                    class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder"
+                                    data-bs-toggle="modal" data-bs-target="#kt_gallery_modal">
                                 {{ 'dashboard.form.upload_image'|trans }}
                             </button>
                             <div class="form-text"> {{ 'dashboard.form.gallery_images'|trans }}</div>
@@ -374,20 +379,6 @@
                     </div>
                 {% endif %}
                 <!--end::GalleryImages-->
-
-                <!--start::enabled-->
-                <div class="row mb-6">
-                    <!--begin::Label-->
-                    {{ form_label(form.status, 'dashboard.table.status'|trans, {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
-                    <!--end::Label-->
-                    <!--begin::Col-->
-                    <div class="col-lg-10 fv-row">
-                        {{ form_widget(form.status, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'common.select'|trans}}) }}
-                        {{ form_errors(form.status) }}
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::enabled-->
             </div>
         </div>
     </div>
@@ -398,10 +389,12 @@
             <div class="col-lg-12">
                 <div class="d-flex justify-content-end">
                     {{ form_widget(form._token) }}
-                    <a href="{{ path('dashboard_company_index', {'locationType': locationType}) }}" class="btn text-uppercase fw-bolder">
+                    <a href="{{ path('dashboard_company_index', {'locationType': locationType}) }}"
+                       class="btn text-uppercase fw-bolder">
                         {{ 'dashboard.form.cancel'|trans }}
                     </a>
-                    <button type="submit" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder"> {{ 'dashboard.form.submit'|trans }}</button>
+                    <button type="submit"
+                            class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder"> {{ 'dashboard.form.submit'|trans }}</button>
                 </div>
             </div>
         </div>

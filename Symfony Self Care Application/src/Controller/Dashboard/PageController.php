@@ -6,7 +6,7 @@ use App\Entity\Page;
 use App\Form\Type\PageFormType;
 use App\Helper\DefaultHelper;
 use App\Helper\FileUploader;
-use App\Helper\FileUploaderOld;
+use App\Helper\FileUploaderLocal;
 use App\Helper\LanguageHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class PageController extends AbstractController
     }
 
     #[Route('/dashboard/page/create', name: 'dashboard_page_create')]
-    public function create(Request $request, EntityManagerInterface $em, FileUploaderOld $fileUploader, LanguageHelper $languageHelper, DefaultHelper $helper, TranslatorInterface $translator): Response
+    public function create(Request $request, EntityManagerInterface $em, FileUploaderLocal $fileUploader, LanguageHelper $languageHelper, DefaultHelper $helper, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(PageFormType::class);
         $form->handleRequest($request);

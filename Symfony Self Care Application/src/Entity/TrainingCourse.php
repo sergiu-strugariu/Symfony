@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\DefaultHelper;
 use App\Repository\TrainingCourseRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,14 +11,12 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TrainingCourseRepository::class)]
 #[UniqueEntity(fields: ['slug'], message: 'A course with this name already exists.', errorPath: 'title')]
 class TrainingCourse
 {
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
-
     const FORMAT_PHYSICAL = 'physical';
     const FORMAT_ONLINE = 'online';
 
@@ -36,7 +35,7 @@ class TrainingCourse
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'trainingCourses')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Company $company = null;
 
     #[ORM\ManyToOne(inversedBy: 'trainingCourses')]
@@ -75,11 +74,14 @@ class TrainingCourse
     /**
      * @var Collection<int, EntityDisplayLog>
      */
-    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'course')]
+    #[ORM\OneToMany(targetEntity: EntityDisplayLog::class, mappedBy: 'course', orphanRemoval: true)]
     private Collection $entityDisplayLogs;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
@@ -102,6 +104,8 @@ class TrainingCourse
 
     public function __construct()
     {
+        $this->uuid = Uuid::v4();
+        $this->status = DefaultHelper::STATUS_DRAFT;
         $this->createdAt = new DateTime();
         $this->trainingCourseTranslations = new ArrayCollection();
         $this->categoryCourses = new ArrayCollection();
@@ -185,6 +189,18 @@ class TrainingCourse
         return $this;
     }
 
+    public function getEndedAt(): ?\DateTimeInterface
+    {
+        return $this->endedAt;
+    }
+
+    public function setEndedAt(\DateTimeInterface $endedAt): static
+    {
+        $this->endedAt = $endedAt;
+
+        return $this;
+    }
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -237,17 +253,6 @@ class TrainingCourse
         }
 
         return $this;
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getStatuses(): array
-    {
-        return [
-            self::STATUS_DRAFT => self::STATUS_DRAFT,
-            self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
-        ];
     }
 
     /**
@@ -306,7 +311,7 @@ class TrainingCourse
     public function getFirstCategory(): mixed
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('status', self::STATUS_PUBLISHED))
+            ->andWhere(Criteria::expr()->eq('status', DefaultHelper::STATUS_PUBLISHED))
             ->orderBy(['createdAt' => 'DESC'])
             ->setMaxResults(1);
 
@@ -463,5 +468,13 @@ class TrainingCourse
         }
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMembershipPrice(): ?string
+    {
+        return $this->getUser()->getMembershipPackage()->getPrice();
     }
 }

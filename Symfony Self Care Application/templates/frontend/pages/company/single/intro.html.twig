@@ -51,7 +51,7 @@
     <div class="right-section">
         {% if company.averageRating is not null %}
             <div class="top-section">
-                <img src="https://placehold.co/88x77" alt="rating-homede-detail">
+                <img src="{{ asset('assets/frontend/images/home-details/badge.svg') }}" alt="rating-homede-detail">
                 <div class="rating">
                     <div class="rating__value">
                         <p>{{ company.averageRating }}</p>
@@ -60,7 +60,7 @@
                     <div class="rating__number-reviews">
                         <p>
                             {{ 'review.review_from'|trans }}
-                            {{ company.companyReviews.count }}
+                            {{ company.approvedReviews.count }}
                             {{ 'review.reviews'|trans }}
                         </p>
                     </div>

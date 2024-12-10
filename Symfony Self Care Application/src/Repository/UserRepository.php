@@ -78,13 +78,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 u.uuid,
                 u.name,
                 u.roles,
+                u.reasonForDeletion,
                 COALESCE(u.profilePicture, '$defaultImage') as fileName,
                 u.email,
                 u.enabled,
                 DATE_FORMAT(u.createdAt, '%d-%m-%Y') as createdAt,
                 DATE_FORMAT(u.lastLoginAt, '%d-%m-%Y %H:%i') as lastLoginAt"
             )
-            ->where('u.deletedAt IS NULL')
             ->andWhere("u.roles NOT LIKE '%ROLE_ADMIN%'");
 
         // Field search
@@ -92,7 +92,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             'u.id',
             'u.name',
             'u.surname',
-            'u.email'
+            'u.email',
+            'u.reasonForDeletion'
         ];
 
         // Check @keyword
@@ -154,16 +155,33 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @param string $role
      * @return array
      */
-    public function getUsers(): array
+    public function getUsers(string $role = User::ROLE_ADMIN): array
     {
         return $this->createQueryBuilder('entity')
             ->select('entity.id, entity.name, entity.surname')
             ->where('entity.roles NOT LIKE :role')
             ->andWhere('entity.deletedAt IS NULL')
-            ->setParameter('role', '%"' . User::ROLE_ADMIN . '"%')
+            ->setParameter('role', '%"' . $role . '"%')
             ->orderBy('entity.id', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getFavoriteUsers(): array
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user.uuid, user.name, user.surname')
+            ->innerJoin('user.favorites', 'favorite')
+            ->andWhere('user.deletedAt IS NULL')
+            ->andWhere('user.enabled = 1')
+            ->groupBy('user.id')
+            ->orderBy('user.id', 'desc')
             ->getQuery()
             ->getResult();
     }

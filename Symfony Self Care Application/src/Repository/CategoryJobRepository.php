@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\CategoryJob;
-use App\Entity\Job;
 use App\Entity\Language;
+use App\Helper\DefaultHelper;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -109,7 +109,7 @@ class CategoryJobRepository extends ServiceEntityRepository
             ->andWhere('j.id IS NOT NULL')
             ->andWhere('cat.status = :status')
             ->andWhere('j.status = :status')
-            ->setParameter('status', Job::STATUS_PUBLISHED)
+            ->setParameter('status', DefaultHelper::STATUS_PUBLISHED)
             ->orderBy('cat.id', 'DESC')
             ->groupBy('cat.id')
             ->getQuery()
