@@ -1,0 +1,37 @@
+<div class="card d-flex justify-content-center justify-content-xl-start flex-row-auto w-100 w-xl-300px w-xxl-400px">
+    <!--begin::Wrapper-->
+    <div class="card-body px-6 px-lg-10 px-xxl-15 py-20">
+        <!--begin::Nav-->
+        <div class="stepper-nav">
+            <!--begin::Step-->
+            {% for key, step in steps %}
+                <div class="stepper-item {{ activeStep == loop.index ? 'current' : '' }} {{ loop.index < activeStep ? 'completed' : '' }}" data-kt-stepper-element="nav">
+                    <!--begin::Wrapper-->
+                    <div class="stepper-wrapper">
+                        <!--begin::Icon-->
+                        <div class="stepper-icon w-40px h-40px">
+                            <i class="stepper-check fas fa-check"></i>
+                            <span class="stepper-number">{{ loop.index }}</span>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Label-->
+                        <div class="stepper-label">
+                            <h3 class="stepper-title">{{ step.title }}</h3>
+                            <div class="stepper-desc fw-semibold">{{ step.subtitle }}</div>
+                        </div>
+                        <!--end::Label-->
+                    </div>
+                    <!--end::Wrapper-->
+                    {% if not loop.last %}
+                        <!--begin::Line-->
+                        <div class="stepper-line h-40px"></div>
+                        <!--end::Line-->
+                    {% endif %}
+                </div>
+                <!--end::Step-->
+            {% endfor %}
+        </div>
+        <!--end::Nav-->
+    </div>
+    <!--end::Wrapper-->
+</div>

@@ -1,0 +1,12 @@
+<div class="all-functionality content-functionality section">
+    <div class="inner">
+        <div class="{{ section.classes }}">
+            <div class="image" data-image="{{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }}"></div>
+            <div>
+                {% for widget in section.pageWidgets %}
+                    {% include 'frontend/pages/partials/home/widgets/' ~ widget.template ignore missing %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

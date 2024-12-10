@@ -1,0 +1,308 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Pacient prospect {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tabs-->
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <!--end::Tabs-->
+            <div class="py-10 px-9">
+                <form id="kt_pacient_prospect_form" action="" method="POST">
+                    <!--begin::Separator-->
+                    <div class="separator separator-content my-15"><span class="w-250px h2">Date apartinator</span></div>
+                    <!--end::Separator-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.relationName, 'Nume apartinator', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.relationName, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Nume apartinator'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.phoneNumber, 'Telefon', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Telefon'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Email'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Separator-->
+                    <div class="separator separator-content my-15"><span class="w-250px h2">Date beneficiar</span></div>
+                    <!--end::Separator-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.beneficiaryName, 'Nume beneficiar', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.beneficiaryName, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Nume beneficiar'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.age, 'Varsta', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.age, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Varsta'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.gender, 'Sex', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.gender, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.diagnosis, 'Diagnostic', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.diagnosis, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Diagnostic', 'rows': '3'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.personalNeeds, 'Nevoi', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.personalNeeds, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Nevoi', 'rows': '3'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.personality, 'Personalitate', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.personality, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Personalitate', 'rows': '3'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.roomType, 'Tip camera', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.roomType, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group--> 
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.currentAddress, 'Domiciliul actual', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.currentAddress, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Domiciliul actual'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-3 col-form-label fw-semibold fs-6">Purtator Pampers?</label>
+                        <!--begin::Label-->
+                        <!--begin::Label-->
+                        <div class="col-lg-9 d-flex align-items-center">
+                            <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                {{ form_widget(form.requiresDiapers, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                {{ form_label(form.requiresDiapers, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+                            </div>
+                        </div>
+                        <!--begin::Label-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-3 col-form-label fw-semibold fs-6">Ingrijire pat medical?</label>
+                        <!--begin::Label-->
+                        <!--begin::Label-->
+                        <div class="col-lg-9 d-flex align-items-center">
+                            <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                {{ form_widget(form.requiresMedicalBed, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                {{ form_label(form.requiresMedicalBed, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+                            </div>
+                        </div>
+                        <!--begin::Label-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.treatment, 'Tratament', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.treatment, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Tratament', 'rows': '3'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.estimatedAdmissionDate, 'Data posibila de internare', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.estimatedAdmissionDate, {'attr': {'class': 'form-control form-control-lg form-control-solid datepicker', 'placeholder': 'Data posibila de internare'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.observations, 'Observatii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Observatii', 'rows': '3'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Separator-->
+                    <div class="separator separator-content my-15"><span class="w-250px h2">Date lead</span></div>
+                    <!--end::Separator-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.scheduledAt, 'Vizionare programata', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.scheduledAt, {'attr': {'class': 'form-control form-control-lg form-control-solid datetimepicker', 'placeholder': 'Vizionare programata'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.offerSentAt, 'Oferta trimisa', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.offerSentAt, {'attr': {'class': 'form-control form-control-lg form-control-solid datetimepicker', 'placeholder': 'Oferta trimisa'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.status, 'Status', {'label_attr': {'class': 'required col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.status, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.leadSource, 'Sursa lead', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.leadSource, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        {{ form_label(form.leadSourceComment, 'Comentarii sursa lead', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row">
+                            {{ form_widget(form.leadSourceComment, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Comentarii sursa lead', 'rows': '3'}}) }}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                </form>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTPacientProspect.init('{{ pacient.uid }}');
+        });
+    </script>
+{% endblock %}
+
+
+

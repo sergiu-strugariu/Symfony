@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Documente {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack my-5">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <input type="text"
+                           data-kt-documents-table-filter="search"
+                           class="form-control form-control-solid w-250px ps-15"
+                           placeholder="Cauta..."
+                    />
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--end::Wrapper-->
+
+            <!--begin::Datatable-->
+            <table id="kt_datatable_documents" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                    <th>Nume fișier</th>
+                    <th>Nr.</th>
+                    <th>Data</th>
+                    <th>Observații</th>
+                    <th>Responsabil</th>
+                    <th>Încărcat de</th>
+                    <th>Status</th>
+                    <th>Vizualizări</th>
+                </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold">
+                </tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesDocuments.init('{{ type }}');
+        });
+    </script>
+{% endblock %}

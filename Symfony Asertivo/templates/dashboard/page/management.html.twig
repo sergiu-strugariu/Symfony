@@ -1,0 +1,99 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Importa pagina {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% set route = app.request.attributes.get('_route') %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body py-4">
+            <div class="py-10 px-9">
+                {% if route == 'dashboard_page_create' %}
+                    {% include 'dashboard/page/_form_upload.html.twig' %}
+                {% else %}
+                    {% include 'dashboard/page/_form.html.twig' %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/plugins/custom/draggable/draggable.bundle.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/page-builder/default.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/page-builder/repeater.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/page-builder/draggable.js') }}"></script>
+    <script>
+        {% if template['sections'] is defined %}
+
+        const defaultInit = new Default({
+            tinyMCE: 'tinymce-editor'
+        });
+
+        // Instantiate the PageGalleries class
+        const pageRepeater = new PageRepeater({
+            container: 'items',
+            addBtn: 'add-repeater-btn',
+            removeBtn: 'remove-repeater-btn',
+            sectionClass: 'repeater-item__',
+            imageHeaderClass: 'card-header',
+            imageWrapperClass: 'image-input-wrapper',
+            linkField: "{{ constant('App\\Helper\\PageBuilderHelper::LINK')['field'] }}",
+            galleryField: "{{ constant('App\\Helper\\PageBuilderHelper::GALLERY')['field'] }}",
+        });
+
+        const ktSectionDraggable = new KTCardDraggable({
+            container: 'draggable-sections',
+            init: {
+                draggable: '.draggable-section-item',
+                handle: '.draggable-section-item .draggable-handle__section_item',
+                mirror: {appendTo: 'body', constrainDimensions: true}
+            }
+        });
+
+        // Example of Twig for loop
+        {% for section in template['sections'] %}
+        {% if section['widgets'] is defined %}
+        {% for widget in section['widgets'] %}
+        const ktWidgetGalleryDraggable__{{ widget['machineName'] }} = new KTCardDraggable({
+            container: 'draggable-galleries__{{ widget['machineName'] }}',
+            init: {
+                draggable: '.repeater-item__{{ widget['machineName'] }}',
+                handle: '.repeater-item__{{ widget['machineName'] }} .draggable-handle__gallery__{{ widget['machineName'] }}',
+                mirror: {appendTo: 'body', constrainDimensions: true}
+            }
+        });
+        {% endfor %}
+        {% endif %}
+        const ktWidgetDraggable__{{ section['machineName'] }} = new KTCardDraggable({
+            container: 'draggable-widgets__{{ section['machineName'] }}',
+            init: {
+                draggable: '.draggable-widget-item__{{ section['machineName'] }}',
+                handle: '.draggable-widget-item__{{ section['machineName'] }} .draggable-handle__widget__{{ section['machineName'] }}',
+                mirror: {appendTo: 'body', constrainDimensions: true}
+            }
+        });
+        const ktGalleryDraggable__{{ section['machineName'] }} = new KTCardDraggable({
+            container: 'draggable-galleries__{{ section['machineName'] }}',
+            init: {
+                draggable: '.repeater-item__{{ section['machineName'] }}',
+                handle: '.repeater-item__{{ section['machineName'] }} .draggable-handle__gallery__{{ section['machineName'] }}',
+                mirror: {appendTo: 'body', constrainDimensions: true}
+            }
+        });
+        {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}
+
+
+

@@ -1,0 +1,7 @@
+andreas_a_backup_database:
+    database_url: '%env(resolve:DATABASE_URL)%'
+    target_directory: '%kernel.project_dir%/backup'
+    mysql:
+        ignored_tables: []
+        options: []
+        platform_specific_options: []

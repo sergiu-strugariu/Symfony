@@ -1,0 +1,154 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Administrare medicamentatie {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="my-5">
+                <!--begin::Form-->
+                <form action="" method="get">
+                    <div class="mb-1">
+                        <input name="date" type="text" class="form-control form-control-solid w-150px ps-4 datepicker d-inline-block" placeholder="Selecteaza o data..." value="{{ date }} "/>
+                        <select name="floor" class="form-select form-select-solid w-200px ps-4 d-inline-block">
+                            <option value="">Alege un etaj...</option>
+                            {% for key, value in floors %}
+                                <option value="{{ key }}" {{ key == floor ? 'selected' : '' }}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary d-inline-block mx-3">Filtreaza</button>
+                        <button type="button" class="btn btn-secondary d-inline-block" id="btn_mark_complete">Marcheaza ca si administrat</button>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Wrapper-->
+            <div class="my-5">
+                <div class="table-responsive">
+                    <table class="table table-flush">
+                        <thead>
+                            <tr class="fw-bold fs-6 text-gray-800 py-3">
+                                <th style="min-width: 220px;"></th>
+                                <th class="border-bottom" style="min-width: 240px;">Noaptea (23:00 - 6:59)</th>
+                                <th class="border-bottom" style="min-width: 240px;">Dimineata (7:00 - 13:59)</th>
+                                <th class="border-bottom" style="min-width: 240px;">Pranz (14:00 - 18:59)</th>
+                                <th class="border-bottom" style="min-width: 240px;">Seara (19:00 - 22:59)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pacientId, pacientMedication in pacientsMedicationDetails %}
+                                <tr class="text-gray-800 py-3 hoverable">
+                                    <td style="min-width: 220px;">
+                                        <span class="fw-semibold text-gray-400 badge badge-light-warning">{{ pacientMedication['roomNumber']|default('-') }}</span> {{ pacientMedication['name'] }}<br/>
+                                        {% for necessaryMedication in pacientMedication['necessary'] %}
+                                            <span class="fw-semibold text-dark-400">{{ necessaryMedication['drug'] ~ ' / ' ~ necessaryMedication['dose'] ~ ' - ' ~ necessaryMedication['observations'] }}</span><br/>
+                                        {% endfor %}
+                                        <span class="fw-semibold text-gray-400">Ultima actualizare: </span><a href="{{ path('dashboard_pacient_medical_records', {'uuid': pacientMedication['uid']}) }}">{{ pacientMedication['latestCommentAt'] is empty ? 'N/A' : pacientMedication['latestCommentAt']|time_elapsed }}</a><br/>
+                                        <a href="#" class="d-inline-block fs-7 show-on-hover invisible" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_medication" data-diagnosis-id="" data-pacient-uuid="{{ pacientMedication['uid'] }}" data-medication-id="">Adauga medicament</a>
+                                    </td>
+                                    <td class="border-bottom" style="min-width: 240px;">
+                                        {% if pacientMedication['data']['night'] is defined %}
+                                            {% for treatment in pacientMedication['data']['night'] %}
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <div class="form-check form-check-custom form-check-solid mb-1">
+                                                            <input class="form-check-input me-1" name="medications[]" type="checkbox" value="{{ treatment['id'] }}">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="text-dark text-hover-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_update_pacient_medication_details" data-pacient-medication-details-id="{{ treatment['id'] }}">{{ treatment['treatmentHour'] ~ ' - ' ~ treatment['drug'] ~ ' (' ~ treatment['dose'] ~ ')' }}</a> 
+                                                        <span class="fw-semibold text-gray-400 badge badge-light-{{ treatment['statusClass'] }}">{{ treatment['status'] }}</span>
+                                                        <p class="text-muted fs-8">{{ treatment['observations'] }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="border-bottom" style="min-width: 240px;">
+                                        {% if pacientMedication['data']['morning'] is defined %}
+                                            {% for treatment in pacientMedication['data']['morning'] %}
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <div class="form-check form-check-custom form-check-solid mb-1">
+                                                            <input class="form-check-input me-1" name="medications[]" type="checkbox" value="{{ treatment['id'] }}">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="text-dark text-hover-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_update_pacient_medication_details" data-pacient-medication-details-id="{{ treatment['id'] }}">{{ treatment['treatmentHour'] ~ ' - ' ~ treatment['drug'] ~ ' (' ~ treatment['dose'] ~ ')' }}</a>
+                                                        <span class="fw-semibold text-gray-400 badge badge-light-{{ treatment['statusClass'] }}">{{ treatment['status'] }}</span>
+                                                        <p class="text-muted fs-8">{{ treatment['observations'] }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="border-bottom" style="min-width: 240px;">
+                                        {% if pacientMedication['data']['noon'] is defined %}
+                                            {% for treatment in pacientMedication['data']['noon'] %}
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <div class="form-check form-check-custom form-check-solid mb-1">
+                                                            <input class="form-check-input me-1" name="medications[]" type="checkbox" value="{{ treatment['id'] }}">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="text-dark text-hover-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_update_pacient_medication_details" data-pacient-medication-details-id="{{ treatment['id'] }}">{{ treatment['treatmentHour'] ~ ' - ' ~ treatment['drug'] ~ ' (' ~ treatment['dose'] ~ ')' }}</a>
+                                                        <span class="fw-semibold text-gray-400 badge badge-light-{{ treatment['statusClass'] }}">{{ treatment['status'] }}</span>
+                                                        <p class="text-muted fs-8">{{ treatment['observations'] }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="border-bottom" style="min-width: 240px;">
+                                        {% if pacientMedication['data']['evening'] is defined %}
+                                            {% for treatment in pacientMedication['data']['evening'] %}
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <div class="form-check form-check-custom form-check-solid mb-1">
+                                                            <input class="form-check-input me-1" name="medications[]" type="checkbox" value="{{ treatment['id'] }}">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="text-dark text-hover-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_update_pacient_medication_details" data-pacient-medication-details-id="{{ treatment['id'] }}">{{ treatment['treatmentHour'] ~ ' - ' ~ treatment['drug'] ~ ' (' ~ treatment['dose'] ~ ')' }}</a> 
+                                                        <span class="fw-semibold text-gray-400 badge badge-light-{{ treatment['statusClass'] }}">{{ treatment['status'] }}</span>
+                                                        <p class="text-muted fs-8">{{ treatment['observations'] }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/update_pacient_medication_details.html.twig' %}
+    {% include 'dashboard/shared/modal/add_pacient_medication.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTPacientMedicationDetails.init();
+            KTPacientDiagnosis.init(null);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Remindere {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack my-5">
+                <div>&nbsp;</div>
+                <!--begin::Toolbar-->
+                <div class="d-flex justify-content-end">
+                    <!--begin::Add summary notification -->
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_summary_notification">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                        <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
+                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
+                            </svg></span>
+                        <!--end::Svg Icon-->       
+                        Adauga reminder
+                    </a>
+                    <!--end::Add summary notification-->
+                </div>
+                <!--end::Toolbar-->
+            </div>
+            <!--end::Wrapper-->
+            <div class="py-3">
+                <!--begin::Table-->
+                <table class="table gs-0 gy-3 my-0 mw-900px">
+                    <!--begin::Table body-->
+                    <tbody>
+                        {% for notification in summaryNotifications %}
+                            <tr>
+                                <td class="w-50px">
+                                    <span class="text-muted">{{ notification['notificationDate'] }}</span>
+                                </td>
+                                <td class="w-250px">
+                                    <span class="text-dark">{{ notification['observations'] }}</span>
+                                </td>
+                                <td class="w-150px">
+                                    <span class="text-dark">{{ notification['name'] }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <!--end::Table body-->
+                </table>
+                <!--end::Table-->
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/add_summary_notification.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTSummaryNotification.init('{{ pacient.uid }}');
+        });
+    </script>
+{% endblock %}
+

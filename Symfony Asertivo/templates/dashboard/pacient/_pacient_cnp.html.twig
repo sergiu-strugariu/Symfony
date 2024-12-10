@@ -1,0 +1,11 @@
+{% set cnp = selectedCnp is defined ? selectedCnp : '' %}
+<!--begin::Input group-->
+<div class="mb-0 fv-row">
+    <!--begin::Label-->
+    <label class="form-label mb-3">CNP</label>
+    <!--end::Label-->
+    <!--begin::Input-->
+    <input type="text" class="form-control form-control-lg form-control-solid" name="cnp" placeholder="CNP" value="{{ cnp }}" required />
+    <!--end::Input-->
+</div>
+<!--end::Input group-->

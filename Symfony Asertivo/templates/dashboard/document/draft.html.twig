@@ -1,0 +1,250 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Întocmire documente {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack my-5">
+                <!--begin::Search-->
+                <form id="documents_draft_filter_form" action="" method="get">
+                    <div class="d-flex align-items-center position-relative mt-1 mb-3">
+                        <button type="submit"
+                                class="btn d-block btn-active-light-warning {{ deadline ? 'btn-light-warning' : '' }}"
+                                name="deadline" value="1">
+                            Documente cu deadline ({{ pacientFilesWithDeadlineCount }})
+                        </button>
+                        <button type="submit"
+                                class="ms-2 btn d-block btn-active-light-warning {{ deadline ? '' : 'btn-light-warning' }}"
+                                name="deadline" value="0">
+                            Documente fara deadline ({{ pacientFilesWithoutDeadlineCount }})
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center position-relative mb-1">
+                        {% if deadline %}
+                            <input name="date" type="text"
+                                   class="form-control form-control-solid w-150px ps-4 monthpicker"
+                                   placeholder="Selectează luna..." value="{{ date }} "
+                            />
+                        {% endif %}
+                    </div>
+                </form>
+                <!--end::Search-->
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Row-->
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-12">
+                    <div class="card-flush h-md-100">
+                        {% if deadline %}
+                            {% for pacientFileDeadline in pacientFilesDeadlines %}
+                                <!--begin::Header-->
+                                <div class="card-header p-0">
+                                    <!--begin::Title-->
+                                    <h3 class="card-title">
+                                        <span class="card-label fw-bold text-gray-800"> {{ pacientFileDeadline }}</span>
+                                    </h3>
+                                    <!--end::Title-->
+                                </div>
+                                <!--end::Header-->
+                                <!--begin::Body-->
+                                <div class="pt-6">
+                                    <!--begin::Table container-->
+                                    <div class="table-responsive">
+                                        <!--begin::Table-->
+                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                            <!--begin::Table head-->
+                                            <thead>
+                                            <tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
+                                                <th class="p-0 pb-3 min-w-300px text-start">Document</th>
+                                                <th class="p-0 pb-3 w-300px text-left">Pacient</th>
+                                                <th class="p-0 pb-3 w-50px text-end">Acțiuni</th>
+                                            </tr>
+                                            </thead>
+                                            <!--end::Table head-->
+                                            <!--begin::Table body-->
+                                            <tbody>
+                                            {% for file in pacientFiles %}
+                                                {% set deadline = file.uploadDeadline|date('d/m/Y') %}
+                                                {% if pacientFileDeadline == deadline %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="symbol symbol-50px me-3">
+                                                                    <img src="{{ asset('assets/dashboard/media/svg/files/upload.svg') }}"/>
+                                                                </div>
+                                                                <div class="d-flex justify-content-start flex-column">
+                                                                    <span class="text-gray-800 fw-bold mb-1 fs-6">{{ file.fileName }}</span>
+                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">
+                                                                        Încarcă fișierul
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="pe-0">
+                                                            {% set pacient = file.pacient %}
+                                                            {% set nursingHomeRoom = pacient.nursingHomeRoom %}
+                                                            <div class="d-flex align-items-left flex-start">
+                                                                <!--begin::Symbol-->
+                                                                <div class="symbol symbol-30px symbol-circle me-3">
+                                                                    <img src="{{ pacient.photoPath }}" class="" alt="">
+                                                                </div>
+                                                                <!--end::Symbol-->
+                                                                <!--begin::Info-->
+                                                                <div class="m-0">
+                                                                    <a href="#" class="fw-bold text-gray-800 text-hover-primary fs-7">
+                                                                        {{ pacient.name }}
+                                                                    </a>
+                                                                    <span class="fw-semibold text-gray-400 d-block fs-8">
+                                                                        {{ pacient.cnp }}
+                                                                    </span>
+                                                                    <span class="fw-semibold text-gray-400 badge badge-light-warning">
+                                                                        {{ nursingHomeRoom is not empty ? nursingHomeRoom.roomNumber : '-' }}
+                                                                    </span>
+                                                                </div>
+                                                                <!--end::Info-->
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#"
+                                                               class="btn btn-sm btn-bg-light btn-active-color-primary dropzone-digital-record"
+                                                               data-kt-dropzone-upload-url="{{ path('dashboard_ajax_pacient_upload_digital_record', {'uuid': file.pacient.uid, 'recordUuid': file.uid}) }}">
+                                                                Încarcă
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                            </tbody>
+                                            <!--end::Table body-->
+                                        </table>
+                                    </div>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end: Card Body-->
+                            {% endfor %}
+                        {% else %}
+                            <!--begin::Header-->
+                            <div class="card-header p-0">
+                                <!--begin::Title-->
+                                <h3 class="card-title">
+                                    <span class="card-label fw-bold text-gray-800">Documente fara deadline</span>
+                                </h3>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Body-->
+                            <div class="pt-6">
+                                <!--begin::Table container-->
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                        <!--begin::Table head-->
+                                        <thead>
+                                        <tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
+                                            <th class="p-0 pb-3 min-w-300px text-start">Document</th>
+                                            <th class="p-0 pb-3 w-150px text-left">Deadline</th>
+                                            <th class="p-0 pb-3 w-300px text-left">Pacient</th>
+                                            <th class="p-0 pb-3 w-50px text-end">Acțiuni</th>
+                                        </tr>
+                                        </thead>
+                                        <!--end::Table head-->
+                                        <!--begin::Table body-->
+                                        <tbody>
+                                        {% for file in pacientFiles %}
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-50px me-3">
+                                                            <img src="{{ asset('assets/dashboard/media/svg/files/upload.svg') }}"
+                                                                 class="" alt=""/>
+                                                        </div>
+                                                        <div class="d-flex justify-content-start flex-column">
+                                                            <span class="text-gray-800 fw-bold mb-1 fs-6">{{ file.fileName }}</span>
+                                                            <span class="text-gray-400 fw-semibold d-block fs-7">
+                                                                Încarcă fișierul
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-left">
+                                                    <a href="#" class="fw-bold" data-bs-toggle="modal"
+                                                       data-bs-target="#kt_modal_add_pacient_file_deadline"
+                                                       data-pacient-file-uuid="{{ file.uid }}"
+                                                       data-pacient-file-deadline="{{ file.uploadDeadline|date('Y-m-d') }}">
+                                                        Adaugă deadline
+                                                    </a>
+                                                </td>
+                                                <td class="pe-0">
+                                                    {% set pacient = file.pacient %}
+                                                    {% set nursingHomeRoom = pacient.nursingHomeRoom %}
+                                                    <div class="d-flex align-items-left flex-start">
+                                                        <!--begin::Symbol-->
+                                                        <div class="symbol symbol-30px symbol-circle me-3">
+                                                            <img src="{{ pacient.photoPath }}" class="" alt="">
+                                                        </div>
+                                                        <!--end::Symbol-->
+                                                        <!--begin::Info-->
+                                                        <div class="m-0">
+                                                            <a href="#" class="fw-bold text-gray-800 text-hover-primary fs-7">
+                                                                {{ pacient.name }}
+                                                            </a>
+                                                            <span class="fw-semibold text-gray-400 d-block fs-8">
+                                                                {{ pacient.cnp }}
+                                                            </span>
+                                                            <span class="fw-semibold text-gray-400 badge badge-light-warning">
+                                                                {{ nursingHomeRoom is not empty ? nursingHomeRoom.roomNumber : '-' }}
+                                                            </span>
+                                                        </div>
+                                                        <!--end::Info-->
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="#"
+                                                       class="btn btn-sm btn-bg-light btn-active-color-primary dropzone-digital-record"
+                                                       data-kt-dropzone-upload-url="{{ path('dashboard_ajax_pacient_upload_digital_record', {'uuid': file.pacient.uid, 'recordUuid': file.uid}) }}">
+                                                        Încarcă
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                </div>
+                                <!--end::Table-->
+                            </div>
+                            <!--end: Card Body-->
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/add_pacient_file_deadline.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDrafts.init();
+            KTAddPacientFileDeadline.init();
+        });
+    </script>
+{% endblock %}
+

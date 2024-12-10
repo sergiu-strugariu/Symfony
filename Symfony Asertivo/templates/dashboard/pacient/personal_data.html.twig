@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Date personale {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <form novalidate="novalidate" id="kt_update_personal_data_form" method="POST">
+            <!--begin::Card body-->
+            <div class="card-body py-4">
+                {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+                {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+                <div class="py-10 px-9">
+                    {% include 'dashboard/pacient/_pacient_personal_data.html.twig' with {'user': pacient} %}
+                </div>
+            </div>
+            <!--end::Card body-->
+        </form>
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTPacientUpdatePersonalData.init('{{ pacient.uid }}');
+            KTUtilities.initCounties();
+        });
+    </script>
+{% endblock %}

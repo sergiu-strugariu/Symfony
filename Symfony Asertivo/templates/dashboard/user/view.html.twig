@@ -1,0 +1,282 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Detalii utilizator {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Layout-->
+    <div class="d-flex flex-column flex-lg-row">
+        <!--begin::Sidebar-->
+        <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-350px mb-10">
+            <!--begin::Card-->
+            <div class="card mb-5 mb-xl-8">
+                <!--begin::Card body-->
+                <div class="card-body">
+                    <!--begin::Summary-->
+                    <!--begin::User Info-->
+                    <div class="d-flex flex-center flex-column py-5">
+                        <form id="kt_update_photo_form" method="POST" action="">
+                            <!--begin::Input group-->
+                            <div class="mb-7">
+                                <!--begin::Label-->
+                                <label class="fs-6 fw-semibold mb-2">
+                                    <span>Modifica poza de profil</span>
+                                    <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
+                                       title="Extensii permise: png, jpg, jpeg."></i>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Image input wrapper-->
+                                <div class="mt-1">
+                                    <!--begin::Image placeholder-->
+                                    <style>.image-input-placeholder {
+                                            background-image: url('{{ asset('assets/dashboard/media/svg/avatars/blank.svg') }}');
+                                        }</style>
+                                    <!--end::Image placeholder-->
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-outline image-input-placeholder"
+                                         data-kt-image-input="true">
+                                        <!--begin::Preview existing avatar-->
+                                        <div class="image-input-wrapper w-125px h-125px"
+                                             style="background-image: url('{{ user.photoPath }}')"></div>
+                                        <!--end::Preview existing avatar-->
+                                        <!--begin::Edit-->
+                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                               data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                               title="Modifica poza de profil">
+                                            <i class="bi bi-pencil-fill fs-7"></i>
+                                            <!--begin::Inputs-->
+                                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg"/>
+                                            <input type="hidden" name="avatar_remove"/>
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::Edit-->
+                                        <!--begin::Cancel-->
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                              data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                              title="Anuleaza actiunea">
+                                            <i class="bi bi-x fs-2"></i>
+                                        </span>
+                                        <!--end::Cancel-->
+                                        <!--begin::Remove-->
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                              data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                              title="Elimina poza de profil">
+                                            <i class="bi bi-x fs-2"></i>
+                                        </span>
+                                        <!--end::Remove-->
+                                    </div>
+                                    <!--end::Image input-->
+                                </div>
+                                <!--end::Image input wrapper-->
+                            </div>
+                            <!--end::Input group-->
+                        </form>
+
+                        <!--begin::Name-->
+                        <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-3">{{ user.name }}</a>
+                        <!--end::Name-->
+                        <!--begin::Position-->
+                        <div class="mb-9">
+                            <!--begin::Badge-->
+                            <div class="badge badge-lg badge-light-primary d-inline">{{ user.formattedRole }}</div>
+                            <!--begin::Badge-->
+                        </div>
+                        <!--end::Position-->
+                    </div>
+                    <!--end::User Info-->
+                    <!--end::Summary-->
+                    <!--begin::Details toggle-->
+                    <div class="d-flex flex-stack fs-4 py-3">
+                        <div class="fw-bold rotate collapsible" data-bs-toggle="collapse" href="#kt_user_view_details"
+                             role="button" aria-expanded="false" aria-controls="kt_user_view_details">Detalii
+                            <span class="ms-2 rotate-180">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
+                                <span class="svg-icon svg-icon-3">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
+                                          fill="currentColor"/>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                        </div>
+                    </div>
+                    <!--end::Details toggle-->
+                    <div class="separator"></div>
+                    <!--begin::Details content-->
+                    <div id="kt_user_view_details" class="collapse show">
+                        <div class="pb-5 fs-6">
+                            <!--begin::Details item-->
+                            <div class="fw-bold mt-5">ID cont</div>
+                            <div class="text-gray-600">{{ 'ID-' ~ user.id }}</div>
+                            <!--begin::Details item-->
+                            <!--begin::Details item-->
+                            <div class="fw-bold mt-5">Email</div>
+                            <div class="text-gray-600">
+                                <a href="#" class="text-gray-600 text-hover-primary">{{ user.email }}</a>
+                            </div>
+                            <!--begin::Details item-->
+                        </div>
+                    </div>
+                    <!--end::Details content-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Sidebar-->
+        <!--begin::Content-->
+        <div class="flex-lg-row-fluid ms-lg-15">
+            <!--begin:::Tabs-->
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8">
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4 active" data-kt-countup-tabs="true" data-bs-toggle="tab"
+                       href="#kt_user_view_overview_security">Date cont</a>
+                </li>
+                <!--end:::Tab item-->
+            </ul>
+            <!--end:::Tabs-->
+            <!--begin:::Tab content-->
+            <div class="tab-content" id="myTabContent">
+                <!--begin:::Tab pane-->
+                <div class="tab-pane fade show active" id="kt_user_view_overview_security" role="tabpanel">
+                    <form id="kt_update_personal_data_form" method="POST" action="">
+                        <!--begin::Card-->
+                        <div class="card pt-4 mb-6 mb-xl-9">
+                            <!--begin::Card header-->
+                            <div class="card-header border-0">
+                                <!--begin::Card title-->
+                                <div class="card-title">
+                                    <h2>Securitate</h2>
+                                </div>
+                                <!--end::Card title-->
+                            </div>
+                            <!--end::Card header-->
+                            <!--begin::Card body-->
+                            <div class="card-body pt-0 pb-5">
+                                <!--begin::Table wrapper-->
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table align-middle table-row-dashed gy-5"
+                                           id="kt_table_users_login_session">
+                                        <!--begin::Table body-->
+                                        <tbody class="fs-6 fw-semibold text-gray-600">
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>{{ user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CNP</td>
+                                            <td>
+                                                <!--begin::Input group-->
+                                                <input type="text"
+                                                       class="form-control form-control-lg form-control-solid"
+                                                       name="cnp" placeholder="CNP" value="{{ user.cnp }}"/>
+                                                <!--end::Input group-->
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Password</td>
+                                            <td>******</td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#kt_modal_update_password">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-3">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                  d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                  fill="currentColor"/>
+                                                            <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                  fill="currentColor"/>
+                                                            </svg>
+                                                        </span>
+                                                    <!--end::Svg Icon-->
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Role</td>
+                                            <td>{{ user.formattedRole }}</td>
+                                        </tr>
+                                        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_SUPER_ADMIN') %}
+                                            <tr>
+                                                <td>Unitate</td>
+                                                <td>{{ user.nursingHome ? user.nursingHome.name : 'Fara unitate asociata' }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>Functie</td>
+                                            <td>
+                                                <!--begin::Input group-->
+                                                <input type="text"
+                                                       class="form-control form-control-lg form-control-solid"
+                                                       name="jobName" placeholder="Functie" value="{{ user.jobName }}"/>
+                                                <!--end::Input group-->
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Table wrapper-->
+                            </div>
+                            <!--end::Card body-->
+                        </div>
+                        <!--end::Card-->
+
+                        <!--begin::Card-->
+                        <div class="card pt-4 mb-6 mb-xl-9">
+                            <!--begin::Card header-->
+                            <div class="card-header border-0">
+                                <!--begin::Card title-->
+                                <div class="card-title flex-column">
+                                    <h2 class="mb-1">Date cont</h2>
+                                </div>
+                                <!--end::Card title-->
+                            </div>
+                            <!--end::Card header-->
+                            <!--begin::Card body-->
+                            <div class="card-body pb-5">
+                                {% include 'dashboard/pacient/_pacient_personal_data.html.twig' with {'user': user} %}
+                            </div>
+                            <!--end::Card body-->
+                        </div>
+                        <!--end::Card-->
+                    </form>
+                </div>
+                <!--end:::Tab pane-->
+            </div>
+            <!--end:::Tab content-->
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Layout-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/user_update_password.html.twig' %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    {% set county = user.county ? user.county.id : "" %}
+    {% set city = user.city ? user.city.id : "" %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTUsersUpdatePassword.init('{{ user.uid }}');
+            KTUsersUpdatePersonalData.init('{{ user.uid }}');
+            KTUtilities.initCounties();
+        });
+    </script>
+{% endblock %}

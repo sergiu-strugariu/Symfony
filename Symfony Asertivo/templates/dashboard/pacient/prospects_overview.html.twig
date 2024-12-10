@@ -1,0 +1,157 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Overview {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    {% set currentYear = 'now'|date('Y') %}
+    {% set inProgressProspectsCount = 0 %}
+    {% set pendingProspectsCount = 0 %}
+    {% set acceptedProspectsCount = 0 %}
+    {% set rejectedProspectsCount = 0 %}
+    {% set archivedProspectsCount = 0 %}
+    {% set totalProspectsCount = 0 %}
+    {% set sentOffersCount = 0 %}
+    {% set sentOffersValue = 0 %}
+    {% set totalViewingsCount = 0 %}
+    {% set canceledViewingsCount = 0 %}
+    {% set scheduledViewingsCount = 0 %}
+    {% set acceptedOffersValue = 0 %}
+    {% set rejectedOffersValue = 0 %}
+    {% set acceptedOffersPercentage = 0 %}
+    {% set rejectedOffersPercentage = 0 %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tabs-->
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="mt-5">
+                <!--begin::Form-->
+                <form action="" method="get">
+                    <div class="d-flex mb-1">
+                        <select name="year" type="text" class="form-select form-select-solid w-200px ps-4 me-2">
+                            <option value="">Selecteaza anul...</option>
+                            {% for option in currentYear..currentYear - 2 %}
+                                <option value="{{ option }}" {{ year == option ? 'selected' : '' }}>{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary">Filtreaza</button>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Wrapper-->
+            <!--end::Tabs-->
+            <div class="table-responsive">
+                <table class="table mt-5 mb-5">
+                    <tbody>
+                        <tr class="fw-bold fs-6 text-white text-center">
+                            <td></td>
+                            <td colspan="6" class="border-start border-end border-dark bg-dark">Leads</td>
+                        </tr>
+                        <tr class="fw-bold fs-6 text-dark text-center">
+                            <td class="min-w-50px"></td>
+                            <td class="border-start border-end border-dark">In lucru</td>
+                            <td class="border-end border-dark">Lista asteptare</td>
+                            <td class="bg-success text-white border-end border-dark">Leads won</td>
+                            <td class="bg-danger text-white border-end border-dark">Leads lost</td>
+                            <td class="border-end border-dark">Leads arhivate</td>
+                            <td class="border-end border-dark">Total</td>
+                        </tr>
+                        {% for key, row in data %}
+                            {% set fullDate = year ~ '-' ~ key ~ '-01' %}
+                            {% set inProgressProspectsCount = inProgressProspectsCount + row['inProgressProspectsCount']  %}
+                            {% set pendingProspectsCount = pendingProspectsCount + row['pendingProspectsCount'] %}
+                            {% set acceptedProspectsCount = acceptedProspectsCount + row['acceptedProspectsCount'] %}
+                            {% set rejectedProspectsCount = rejectedProspectsCount + row['rejectedProspectsCount'] %}
+                            {% set archivedProspectsCount = archivedProspectsCount + row['archivedProspectsCount'] %}
+                            {% set totalProspectsCount = totalProspectsCount + row['totalProspectsCount'] %}
+                            <tr class="text-dark border-bottom border-top border-dark">
+                                <td class="border-start border-end border-dark ps-2">{{ fullDate|date('M') }}</td>
+                                <td class="text-end border-end border-dark"><a href="{{ path('dashboard_pacients_prospects', {'date': fullDate|date('m-Y'), 'status': constant('App\\Entity\\Prospect::STATUS_IN_PROGRESS')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['inProgressProspectsCount'] }}</a></td>
+                                <td class="text-end border-end border-dark"><a href="{{ path('dashboard_pacients_prospects', {'date': fullDate|date('m-Y'), 'status': constant('App\\Entity\\Prospect::STATUS_PENDING')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['pendingProspectsCount'] }}</a></td>
+                                <td class="bg-success text-white text-end border-end border-dark"><a href="{{ path('dashboard_pacients_prospects', {'date': fullDate|date('m-Y'), 'status': constant('App\\Entity\\Prospect::STATUS_ACCEPTED')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['acceptedProspectsCount'] }}</a></td>
+                                <td class="bg-danger text-white text-end border-end border-dark"><a href="{{ path('dashboard_pacients_prospects', {'date': fullDate|date('m-Y'), 'status': constant('App\\Entity\\Prospect::STATUS_REJECTED')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['rejectedProspectsCount'] }}</a></td>
+                                <td class="text-end border-end border-dark"><a href="{{ path('dashboard_pacients_prospects', {'date': fullDate|date('m-Y'), 'status': constant('App\\Entity\\Prospect::STATUS_ARCHIVED')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['archivedProspectsCount'] }}</a></td>
+                                <td class="text-end border-end border-dark pe-2">{{ row['totalProspectsCount'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr class="text-dark fw-bold text-end">
+                            <td></td>
+                            <td>{{ inProgressProspectsCount }}</td>
+                            <td>{{ pendingProspectsCount }}</td>
+                            <td>{{ acceptedProspectsCount }}</td>
+                            <td>{{ rejectedProspectsCount }}</td>
+                            <td>{{ archivedProspectsCount }}</td>
+                            <td>{{ totalProspectsCount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table mt-5 mb-5">
+                    <tbody>
+                        <tr class="fw-bold fs-6 text-white text-center">
+                            <td></td>
+                            <td colspan="8" class="border-start border-end border-dark bg-dark">Oferte</td>
+                        </tr>
+                        <tr class="fw-bold fs-6 text-dark text-center">
+                            <td class="min-w-50px"></td>
+                            <td class="border-start border-end border-dark">Total trimise</td>
+                            <td class="border-end border-dark">Valoare (RON)</td>
+                            <td class="min-w-10px border-end border-dark"></td>
+                            <td class="border-end border-dark">Programari</td>
+                            <td class="border-end border-dark">Anulari</td>
+                            <td class="border-end border-dark">Vizite</td>
+                            <td class="bg-success text-white border-end border-dark">Acceptate</td>
+                            <td class="bg-danger text-white border-end border-dark">Refuzate</td>
+                        </tr>
+                        {% for key, row in data %}
+                            {% set fullDate = year ~ '-' ~ key ~ '-01' %}
+                            {% set sentOffersCount = sentOffersCount + row['sentOffersCount']  %}
+                            {% set sentOffersValue = sentOffersValue + row['sentOffersValue']  %}
+                            {% set totalViewingsCount = totalViewingsCount + row['totalViewingsCount']  %}
+                            {% set canceledViewingsCount = canceledViewingsCount + row['canceledViewingsCount']  %}
+                            {% set scheduledViewingsCount = scheduledViewingsCount + row['scheduledViewingsCount']  %}
+                            {% set acceptedOffersValue = acceptedOffersValue + row['acceptedOffersValue']  %}
+                            {% set rejectedOffersValue = rejectedOffersValue + row['rejectedOffersValue']  %}
+                            {% set acceptedOffersPercentage = row['sentOffersCount'] > 0 ? (row['acceptedOffersCount'] * 100) / row['sentOffersCount'] : 0 %}
+                            {% set rejectedOffersPercentage = row['sentOffersCount'] > 0 ? (row['rejectedOffersCount'] * 100) / row['sentOffersCount'] : 0 %}
+                            <tr class="text-dark border-dark">
+                                <td class="border-start border-top border-bottom border-end border-dark ps-2">{{ fullDate|date('M') }}</td>
+                                <td class="text-end  border-top border-bottom border-end border-dark"><a href="{{ path('dashboard_pacients_prospects_offers', {'date': fullDate|date('m-Y')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['sentOffersCount'] }}</a></td>
+                                <td class="text-end border-top border-bottom border-end border-dark">{{ row['sentOffersValue'] }}</td>
+                                <td class="border-end border-dark border-bottom-0"></td>
+                                <td class="text-end border-top border-bottom border-end border-dark"><a href="{{ path('dashboard_pacients_prospects_scheduled', {'date': fullDate|date('m-Y')}) }}" target="_blank" class="text-dark text-hover-primary">{{ row['totalViewingsCount'] }}</a></td>
+                                <td class="text-end border-top border-bottom border-end border-dark">{{ row['canceledViewingsCount'] }}</td>
+                                <td class="text-end border-top border-bottom border-end border-dark">{{ row['scheduledViewingsCount'] }}</td>
+                                <td class="bg-success text-white text-end  border-top border-bottom border-end border-dark">{{ row['acceptedOffersCount'] ~ ' - ' ~ row['acceptedOffersValue'] ~ ' (' ~  acceptedOffersPercentage|number_format(0) ~ '%)' }}</td>
+                                <td class="bg-danger text-white text-end  border-top border-bottom border-end border-dark pe-2">{{ row['rejectedOffersCount'] ~ ' - ' ~ row['rejectedOffersValue'] ~ ' (' ~  rejectedOffersPercentage|number_format(0) ~ '%)' }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr class="text-dark fw-bold text-end">
+                            {% set canceledViewingsPercentage = totalViewingsCount > 0 ? (canceledViewingsCount * 100) / totalViewingsCount : 0 %}
+                            <td></td>
+                            <td>{{ sentOffersCount }}</td>
+                            <td>{{ sentOffersValue }}</td>
+                            <td></td>
+                            <td>{{ totalViewingsCount }}</td>
+                            <td>{{ canceledViewingsPercentage|number_format(0) ~ '%' }}</td>
+                            <td>{{ scheduledViewingsCount }}</td>
+                            <td>{{ acceptedOffersValue }}</td>
+                            <td>{{ rejectedOffersValue }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

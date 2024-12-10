@@ -1,0 +1,41 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.fileName, 'Nume', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.fileName, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Nume'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.fileNumber, 'Numar', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.fileNumber, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Numar'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.fileDate, 'Data', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.fileDate, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0 datepicker', 'placeholder': 'Data'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.fileDetails, 'Detalii', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.fileDetails, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Detalii', 'rows': '3'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+{{ form_widget(form.uid) }}

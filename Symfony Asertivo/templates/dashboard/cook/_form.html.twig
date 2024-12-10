@@ -1,0 +1,166 @@
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.name, 'Nume', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.name, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Nume'}}) }}
+        {{ form_errors(form.name) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.nursingHome, 'Cămin', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.nursingHome, {'attr': {'class': 'form-select form-select-solid form-select-lg me-4', 'data-control': 'select2'}}) }}
+        {{ form_errors(form.nursingHome) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.startDate, 'Data start', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.startDate, {'attr': {'class': 'form-control form-control-lg form-control-solid datepicker', 'placeholder': 'Data start'}}) }}
+        {{ form_errors(form.startDate) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.endDate, 'Data final', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.endDate, {'attr': {'class': 'form-control form-control-lg form-control-solid datepicker', 'placeholder': 'Data final'}}) }}
+        {{ form_errors(form.endDate) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.observations, 'Observatii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Observatii', 'rows': '5'}}) }}
+        {{ form_errors(form.observations) }}
+    </div>
+    <!--end::Col-->
+</div>
+{{ form_widget(form._token) }}
+<!--end::Input group-->
+<div class="items" data-index="{{ form.cookMenuItems|length > 0 ? form.cookMenuItems|last.vars.name + 1 : 0 }}"  data-prototype="{{ form_widget(form.cookMenuItems.vars.prototype)|e('html_attr') }}">
+    {% for item in form.cookMenuItems %}
+        <div class="item">
+            <div class="separator my-10"></div>
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.day, 'Zi', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.day, {'attr': {'class': 'form-select form-select-lg form-select-solid'}}) }}
+                    {{ form_errors(item.day) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.breakfast, 'Mic dejun', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.breakfast, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Mic dejun'}}) }}
+                    {{ form_errors(item.breakfast) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.firstSnack, 'Gustare (11:00)', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.firstSnack, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Gustare (11:00)'}}) }}
+                    {{ form_errors(item.firstSnack) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.lunch, 'Gustare (11:00)', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.lunch, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Pranz'}}) }}
+                    {{ form_errors(item.lunch) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.secondSnack, 'Gustare (17:00)', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.secondSnack, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Gustare (17:00)'}}) }}
+                    {{ form_errors(item.secondSnack) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.dinner, 'Cina', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.dinner, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Cina'}}) }}
+                    {{ form_errors(item.dinner) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <!--begin::Label-->
+                {{ form_label(item.dz, 'DZ', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-9 fv-row">
+                    {{ form_widget(item.dz, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'DZ'}}) }}
+                    {{ form_errors(item.dz) }}
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+        </div>
+    {% endfor %}
+</div>
+
+<button type="button" class="btn btn-primary add_item_link my-3" data-collection-holder-class="items">Adaugă meniu per zi</button>

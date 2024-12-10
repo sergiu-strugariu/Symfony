@@ -1,0 +1,114 @@
+<!--begin::Modal - Pacients Search-->
+<div class="modal fade" id="kt_modal_pacients_search" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
+                <!--begin::Content-->
+                <div class="text-center mb-13">
+                    <h1 class="mb-3">Cauta pacienti</h1>
+                </div>
+                <!--end::Content-->
+                <!--begin::Search-->
+                <div id="kt_modal_pacients_search_handler" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="inline">
+                    <!--begin::Form-->
+                    <form data-kt-search-element="form" class="w-100 position-relative mb-5" autocomplete="off">
+                        <!--begin::Hidden input(Added to disable form autocomplete)-->
+                        <input type="hidden" />
+                        <!--end::Hidden input-->
+                        <!--begin::Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                        <span class="svg-icon svg-icon-2 svg-icon-lg-1 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor" />
+                                <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--end::Icon-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-lg form-control-solid px-15" name="search" value="" placeholder="Cauta dupa nume sau email..." data-kt-search-element="input" />
+                        <!--end::Input-->
+                        <!--begin::Spinner-->
+                        <span class="position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5" data-kt-search-element="spinner">
+                            <span class="spinner-border h-15px w-15px align-middle text-muted"></span>
+                        </span>
+                        <!--end::Spinner-->
+                        <!--begin::Reset-->
+                        <span class="btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 me-5 d-none" data-kt-search-element="clear">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                            <span class="svg-icon svg-icon-2 svg-icon-lg-1 me-0">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+                                    <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <!--end::Reset-->
+                    </form>
+                    <!--end::Form-->
+                    <!--begin::Wrapper-->
+                    <div class="py-5">
+                        <!--begin::Results(add d-none to below element to hide the pacients list by default)-->
+                        <div data-kt-search-element="results" class="d-none">
+                            <!--begin::Pacients-->
+                            <div class="mh-375px scroll-y me-n7 pe-7" id="kt_modal_pacients_search_results_wrapper">
+
+                                <!--begin::Separator-->
+                                <div class="border-bottom border-gray-300 border-bottom-dashed"></div>
+                                <!--end::Separator-->
+                            </div>
+                            <!--end::Pacients-->
+                            <!--begin::Actions-->
+                            <div class="d-flex flex-center mt-15">
+                                <button type="reset" id="kt_modal_pacients_search_reset" data-bs-dismiss="modal" class="btn btn-secondary">Renunta</button>
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Results-->
+                        <!--begin::Empty-->
+                        <div data-kt-search-element="empty" class="text-center d-none">
+                            <!--begin::Message-->
+                            <div class="fw-semibold py-10">
+                                <div class="text-gray-600 fs-3 mb-2">Nu a fost gasit nici un rezultat</div>
+                                <div class="text-muted fs-6">Cauta dupa nume sau adresa de email</div>
+                            </div>
+                            <!--end::Message-->
+                            <!--begin::Illustration-->
+                            <div class="text-center px-5">
+                                <img src="{{ asset('assets/dashboard/media/illustrations/sketchy-1/1.png') }}" alt="" class="w-100 h-200px h-sm-325px" />
+                            </div>
+                            <!--end::Illustration-->
+                        </div>
+                        <!--end::Empty-->
+                    </div>
+                    <!--end::Wrapper-->
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - Pacients Search-->

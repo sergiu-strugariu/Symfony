@@ -1,0 +1,16 @@
+{% set footerLogo = settingService.getService('logo') %}
+
+<div class="header">
+    <div class="inner">
+        <div class="menu-header mobile-header-menu">
+            <a class="header-logo" href="{{ path('dashboard') }}">
+                <img width="235"
+                     height="50"
+                     data-category="Meniu"
+                     src="{{ asset(app_setting_path ~ footerLogo, 'cloudflare') }}"
+                     alt="logo"
+                >
+            </a>
+        </div>
+    </div>
+</div>

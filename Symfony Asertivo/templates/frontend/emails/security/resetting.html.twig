@@ -1,0 +1,20 @@
+{% extends 'layout_email.html.twig' %}
+
+{% block content %}
+    <div class="email-header">
+        <h1>Resetare Parolă</h1>
+    </div>
+    <div class="email-body">
+        <p>Bună,</p>
+        <p>Am primit o cerere pentru resetarea parolei tale. Apasă pe butonul de mai jos pentru a seta o nouă parolă:</p>
+        <p>
+            <a href="{{ resettingUrl }}" class="reset-button">Resetează Parola</a>
+        </p>
+        <p>Dacă butonul nu funcționează, copiază și lipește următorul link în browserul tău:</p>
+        <p><a href="{{ resettingUrl }}">Link de resetare</a></p>
+    </div>
+    <div class="footer">
+        <p>Dacă nu ai cerut resetarea parolei, te rugăm să ignori acest email sau să contactezi echipa noastră de suport.</p>
+        <p>&copy; {{ app_name }}</p>
+    </div>
+{% endblock %}

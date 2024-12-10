@@ -1,0 +1,241 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Fisa medicala {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+
+            <div class="my-5 d-print-none">
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <button type="button" class="btn btn-primary d-inline-block mx-3" onclick="window.print();">Printeaza</button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                <tr>
+                    <td class="w-250px text-dark fw-bold fs-6">Nume Prenume</td>
+                    <td class="fs-6 fw-semibold">{{ pacient.name }}</td>
+                </tr>
+                <tr>
+                    <td class="w-250px text-dark fw-bold fs-6">CNP</td>
+                    <td class="fs-6 fw-semibold">{{ pacient.cnp }}</td>
+                </tr>
+                <tr>
+                    <td class="w-250px text-dark fw-bold fs-6">Diagnostic</td>
+                    <td>
+                        <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                            {% for diagnosis in pacientDiagnoses %}
+                                <tr>
+                                    <td>
+                                        <div class="fs-6 fw-semibold mb-1">{{ diagnosis.diagnosis }} - {{ diagnosis.createdAt|date('d/m/Y') }}</div>
+                                        <div class="fs-7 text-muted mb-2">{{ diagnosis.observations }}</div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-250px text-dark fw-bold fs-6">Tratament</td>
+                    <td>
+                        <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                            <tr>
+                                <td class="w-300px text-dark fw-bold fs-6">
+                                    Medicament
+                                </td>
+                                <td class="w-300px text-dark fw-bold fs-6">
+                                    Doza
+                                </td>
+                                <td class="w-300px text-dark fw-bold fs-6">
+                                    D
+                                </td>
+                                <td class="w-300px text-dark fw-bold fs-6">
+                                    P
+                                </td>
+                                <td class="w-300px text-dark fw-bold fs-6">
+                                    S
+                                </td>
+                            </tr>
+                            {% for plan in plans %}
+                                <tr>
+                                    <td class="w-300px text-dark fw-bold fs-6">
+                                        <span class="fs-6 fw-semibold">{{ plan['drug'] }}</span>
+                                    </td>
+                                    <td class="w-300px text-dark fw-bold fs-6">
+                                        <span class="fs-6 fw-semibold">{{ plan['dose'] }}</span>
+                                    </td>
+                                    <td class="w-300px text-dark fw-bold fs-6">
+                                        {% if plan['d'] is defined %}
+                                            <span class="fs-6 fw-semibold">{{ plan['d'] }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="w-300px text-dark fw-bold fs-6">
+                                        {% if plan['p'] is defined %}
+                                            <span class="fs-6 fw-semibold">{{ plan['p'] }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="w-300px text-dark fw-bold fs-6">
+                                        {% if plan['s'] is defined %}
+                                            <span class="fs-6 fw-semibold">{{ plan['s'] }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <div class="table-responsive">
+                <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">    
+                    <tr>
+                        <td class="min-w-250px text-dark fw-bold fs-6 d-print-none">Desfasurator tratament</td>
+                        <td>
+                            <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    {% for i in 1..lastDay %}
+                                        <td><span class="fs-6 fw-bold">{{ i }}</span></td>
+                                        {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>Dimineata</td>
+                                    {% for i in 1..lastDay %}
+                                        <td>
+                                            {% if currentPlans[i] is defined and currentPlans[i]['d'] is defined %}
+                                                {% for medication in currentPlans[i]['d'] %}
+                                                    <div class="fs-6 fw-semibold">{{ medication }}</div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>Pranz</td>
+                                    {% for i in 1..lastDay %}
+                                        <td>
+                                            {% if currentPlans[i] is defined and currentPlans[i]['p'] is defined %}
+                                                {% for medication in currentPlans[i]['p'] %}
+                                                    <div class="fs-6 fw-semibold">{{ medication }}</div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>Seara</td>
+                                    {% for i in 1..lastDay %}
+                                        <td>
+                                            {% if currentPlans[i] is defined and currentPlans[i]['s'] is defined %}
+                                                {% for medication in currentPlans[i]['s'] %}
+                                                    <div class="fs-6 fw-semibold">{{ medication }}</div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MEDIC') %}
+                <h4 class="fw-bold fs-lg-1 text-gray-800 mt-5 mb-5 mb-lg-10 d-print-none">Validare schema tratament</h4>
+                <div class="mt-10 d-print-none">
+                    <form action="" method="POST">
+                        <textarea class="form-control form-control-solid placeholder-gray-600 ps-9 pt-7" rows="4" name="observations" placeholder="Observatii" required>{{ pacient.treatmentPlanAuditObservations }}</textarea>
+                        <div class="mb-3 mt-3">
+                            <div class="form-check form-switch form-check-custom form-check-solid">
+                                <input class="form-check-input form-allow-details" name="valid" type="checkbox" value="1" id="validated" {{ pacient.treatmentPlanValid ? 'checked' : '' }} />
+                                <label class="form-check-label" for="validated">Validezi schema de tratament?</label>
+                            </div>
+                        </div>
+                        <!--begin::Submit-->
+                        <button type="submit" class="btn btn-primary mt-5 mb-5" name="action" value="validate">Trimite</button>
+                        <!--end::Submit-->
+                    </form>
+                </div>
+            {% endif %}
+            <!--begin::Comments-->
+            <h4 class="fw-bold fs-lg-1 text-gray-800 mt-5 mb-5 mb-lg-10">Comentarii</h4>
+            <div class="mt-10">
+                {% for comment in comments %}
+                    <div class="mb-9">
+                        <!--begin::Card-->
+                        <div class="card card-bordered w-100">
+                            <!--begin::Body-->
+                            <div class="card-body">
+                                <!--begin::Wrapper-->
+                                <div class="w-100 d-flex flex-stack mb-8">
+                                    <!--begin::Container-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Author-->
+                                        <div class="symbol symbol-50px me-5 d-print-none">
+                                            <img alt="Logo" src="{{ comment.addedBy.photoPath }}" />
+                                        </div>
+                                        <!--end::Author-->
+                                        <!--begin::Info-->
+                                        <div class="d-flex flex-column fw-semibold fs-5 text-gray-600 text-dark">
+                                            <!--begin::Text-->
+                                            <div class="d-flex align-items-center">
+                                                <!--begin::Username-->
+                                                <span class="text-gray-800 fw-bold fs-5 me-3">{{ comment.addedBy.name }}</span>
+                                                <!--end::Username-->
+                                            </div>
+                                            <!--end::Text-->
+                                            <!--begin::Date-->
+                                            <span class="text-muted fw-semibold fs-6">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                                            <!--end::Date-->
+                                        </div>
+                                        <!--end::Info-->
+                                    </div>
+                                    <!--end::Container-->
+                                </div>
+                                <!--end::Wrapper-->
+                                <!--begin::Desc-->
+                                <p class="fw-normal fs-5 text-gray-700 mb-3">{{ comment.commentBody }}</p>
+                                <!--end::Desc-->
+                                {% for file in comment.pacientCommentFiles %}
+                                    {% set path = asset('comments/' ~ pacient.uid ~ '/' ~ file.fileName) %}
+                                    <p>
+                                        <a href="{{ asset(path, 'cloudflare') }}" target="_blank" target="_blank">{{ file.fileName }}</a>
+                                    </p>
+                                {% endfor %}
+                                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') %}
+                                    <a href="{{ path('dashboard_pacient_comment_delete', {'uuid': pacient.uid, 'commentUuid': comment.uid}) }}" class="btn btn-danger btn-sm">Sterge</a>
+                                {% endif %}
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                        <!--end::Card-->
+                    </div>
+                {% endfor %}
+            </div>
+            <!--end::Comments-->
+            {% if not is_granted('ROLE_ASSISTANCE_MEDICAL') and not is_granted('ROLE_PHYSICAL_THERAPY') %}
+                <form action="" method="POST" enctype="multipart/form-data" class="d-print-none">
+                    <textarea class="form-control form-control-solid placeholder-gray-600 ps-9 pt-7" rows="4" name="comment" placeholder="Adauga un comentariu" required></textarea>
+                    <div class="mb-3 mt-3">
+                        <label for="images" class="form-label">Incarca una sau mai multe imagini (optional)</label>
+                        <input class="form-control" type="file" name="images[]" id="images" multiple>
+                    </div>
+                    <!--begin::Submit-->
+                    <button type="submit" class="btn btn-primary mt-5 mb-5" name="action" value="comment">Adauga comentariu</button>
+                    <!--end::Submit-->
+                </form>
+            {% endif %}
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

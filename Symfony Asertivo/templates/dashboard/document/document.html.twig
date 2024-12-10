@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <form id="document_filter_form" action="" method="POST">
+                <!--begin::Wrapper-->
+                <div class="my-5">
+                    <div class="row">
+                        <div class="col my-2 fv-row">
+                            <select name="nursing-home" data-control="select2" class="form-select form-select-solid form-select-lg me-4">
+                                <option value="">Alege un camin</option>
+                            </select>
+                        </div>
+                        <div class="col my-2 fv-row">
+                            <select name="pacient" data-control="select2" class="form-select form-select-solid form-select-lg me-4">
+                                <option value="">Alege un pacient</option>
+                            </select>
+                        </div>
+                        <div class="col my-2 fv-row">
+                            <select name="relation" data-control="select2" class="form-select form-select-solid form-select-lg me-4">
+                                <option value="">Alege un apartinator</option>
+                            </select>
+                        </div>
+                        <div class="col my-2">
+                            <button type="submit" id="document_filter_form_submit" class="btn btn-primary">
+                                <span class="indicator-label">Genereaza</span>
+                                <span class="indicator-progress">Se incarca...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Wrapper-->
+            </form>
+            <a href="#" id="trigger_document_modal" class="btn btn-primary invisible mb-5" data-bs-toggle="modal" data-bs-target="#kt_modal_pacient_document_data">Vezi datele</a>
+            <br/>
+            <textarea id="kt_docs" name="template" class="tox-target"></textarea>
+            <button type="button" id="generate_pdf_document" class="btn btn-primary invisible my-5">
+                <span class="indicator-label">Descarca documentul</span>
+                <span class="indicator-progress">Se incarca...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/document_data.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            const form = document.getElementById('document_filter_form');
+            KTUtilities.initDocumentFilters();
+            KTDocuments.init(form, '{{ slug }}');
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Pacienți {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Alerts-->
+            {% include 'dashboard/shared/alerts.html.twig' %}
+            <!--end::Alerts-->
+
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack my-5">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <input type="text" data-kt-pacients-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cauta..."/>
+                </div>
+                <!--end::Search-->
+                {% if not is_granted('ROLE_ASSISTANCE_MEDICAL') and not is_granted('ROLE_MEDIC') and not is_granted('ROLE_PHYSICAL_THERAPY') %}
+                    <div class="d-flex">
+                        <a href="#" class="px-3">
+                            <span class="badge badge-light badge-lg" data-kt-pacients-table-filter="filter" data-filter="{{ constant('App\\Entity\\Pacient::STATUS_PENDING') }}">In procesare ({{ pendingPacientsCount }})</span>
+                        </a>
+                        <a href="#" class="px-3">
+                            <span class="badge badge-success badge-lg" data-kt-pacients-table-filter="filter" data-filter="{{ constant('App\\Entity\\Pacient::STATUS_ADMITTED') }}">Internat ({{ admittedPacientsCount }})</span>
+                        </a>
+                        <a href="#" class="px-3">
+                            <span class="badge badge-danger badge-lg" data-kt-pacients-table-filter="filter" data-filter="{{ constant('App\\Entity\\Pacient::STATUS_DISCHARGED') }}">Externat ({{ dischargedPacientsCount }})</span>
+                        </a>
+                        <a href="#" class="px-3">
+                            <span class="badge badge-warning badge-lg" data-kt-pacients-table-filter="filter" data-filter="{{ constant('App\\Entity\\Pacient::STATUS_ARCHIVED') }}">Arhivat ({{ archivedPacientsCount }})</span>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') or is_granted('ROLE_MEDIC') %}
+                    <!--begin::Toolbar-->
+                    <div class="d-flex justify-content-end" data-kt-pacient-table-toolbar="base">
+                        <!--begin::Add pacient -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                            <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
+                                    <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
+                                </svg></span>
+                            <!--end::Svg Icon-->       
+                            Adauga pacient
+                        </button>
+                        <!--end::Add pacient-->
+                    </div>
+                    <!--end::Toolbar-->
+                {% endif %}
+            </div>
+            <!--end::Wrapper-->
+
+            <!--begin::Datatable-->
+            <table id="kt_datatable_pacients" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                        <th>Poza</th>
+                        <th>Nume si prenume</th>
+                        <th>Data internare</th>
+                        <th>Data externare</th>
+                        <th>To do</th>
+                        <th>Dosar digital</th>
+                        <th>Status</th>
+                        <th>Actiuni</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold">
+                </tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/quick_add_pacient.html.twig' %}
+    {% include 'dashboard/shared/modal/assign_pacient_room.html.twig' %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesPacients.init();
+            KTUsersAddPacient.init();
+            KTPacientRoom.init();
+        });
+    </script>
+{% endblock %}

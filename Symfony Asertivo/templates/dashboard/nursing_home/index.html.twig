@@ -1,0 +1,82 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Unități {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'dashboard/shared/alerts.html.twig' %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack my-5">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <input type="text"
+                           data-kt-nursing-homes-table-filter="search"
+                           class="form-control form-control-solid w-250px ps-15"
+                           placeholder="Cauta..."
+                    />
+                </div>
+                <!--end::Search-->
+                <!--begin::Toolbar-->
+                <div class="d-flex justify-content-end" data-kt-nursing-home-table-toolbar="base">
+                    <!--begin::Add user -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#kt_modal_add_nursing_home">
+                        <span class="svg-icon svg-icon-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                      transform="rotate(-90 11.364 20.364)"
+                                      fill="currentColor"
+                                />
+                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Adaugă camin
+                    </button>
+                    <!--end::Add customer-->
+                </div>
+                <!--end::Toolbar-->
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Datatable-->
+            <table id="kt_datatable_nursing_homes" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                    <th>Nume cămin</th>
+                    <th>Nume firmă</th>
+                    <th>Județ</th>
+                    <th>Oraș</th>
+                    <th>Adresa</th>
+                    <th>Data</th>
+                </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold"></tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/quick_add_nursing_home.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesNursingHomes.init();
+            KTUtilities.initCounties();
+        });
+    </script>
+{% endblock %}

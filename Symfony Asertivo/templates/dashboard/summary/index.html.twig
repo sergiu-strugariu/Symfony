@@ -1,0 +1,89 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Borderouri {{ parent() }} {% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tables Widget 9-->
+            <div class="card mb-5 mb-xl-8">
+                <!--begin::Header-->
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold fs-3 mb-1">Borderouri</span>
+                    </h3>
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body py-3">
+                    <!--begin::Table container-->
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                            <!--begin::Table head-->
+                            <thead>
+                                <tr class="fw-bold text-muted">
+                                    <th class="min-w-100px">Utilizator</th>
+                                    <th class="min-w-200px">Data</th>
+                                    <th class="min-w-150px">Numar pacienti</th>
+                                    <th class="min-w-150px">Tip</th>
+                                    <th class="min-w-100px text-end">Progres</th>
+                                </tr>
+                            </thead>
+                            <!--end::Table head-->
+                            <!--begin::Table body-->
+                            <tbody>
+                                {% for summary in summaries %}
+                                    <tr>
+                                        <td>
+                                            <div class="symbol symbol-circle symbol-30px overflow-hidden me-1">
+                                                <div class="symbol-label">
+                                                    <img src="{{ summary.user.photoPath }}" alt="Pic" title="{{ summary.user.name }}" class="w-100" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('dashboard_summary', {'uuid': summary.uid}) }}" class="text-primary fw-semibold">
+                                                {{ summary.summaryDate|date('d/m/Y') }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted fw-semibold">{{ summary.summaryPacientsCount }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted fw-semibold">{{ summary.type ? summary.type.name : '-'  }}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="d-flex flex-column w-100 me-2">
+                                                <div class="d-flex flex-stack mb-2">
+                                                    <span class="text-muted me-2 fs-7 fw-bold">{{ summary.progress }}%</span>
+                                                </div>
+                                                <div class="progress h-6px w-100">
+                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ summary.progress }}%" aria-valuenow="{{ summary.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                    <!--end::Table container-->
+                </div>
+                <!--begin::Body-->
+            </div>
+            <!--end::Tables Widget 9-->
+
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

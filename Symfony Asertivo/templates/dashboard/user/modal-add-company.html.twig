@@ -1,0 +1,143 @@
+<div class="modal fade" id="modalAddCompany" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <div class="modal-close cursor-pointer" aria-label="Close" data-dismiss="modal" data-bs-dismiss="modal">
+                    <img src="{{ asset('assets/dashboard/media/svg/files/modal-close.svg') }}"
+                         width="26"
+                         height="26"
+                         alt="modal-close"
+                    />
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="modalAddCompanyForm">
+                    <input type="hidden" name="uuid" value="0"/>
+
+                    <div class="row">
+                        <h2>Date facturare</h2>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Nume companie</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="companyName" name="companyName"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="Introdu numele">
+                        </div>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Cod unic de
+                            inregistrare</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="cui" name="cui"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="Format din 6 cifre">
+                        </div>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Nr. Registrul
+                            comerțului</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="companyRegisterNumber" name="companyRegisterNumber"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="Compus din maxim 12 caractere">
+                        </div>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Cont iban</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="iban" name="iban"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="Introdu contul">
+                        </div>
+                    </div>
+
+                    <br/>
+                    <hr />
+
+                    <div class="row mt-12">
+                        <h2>Date contact</h2>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Email</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="email" name="email"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="Introdu adresa de email">
+                        </div>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Telefon</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="phone" name="phone"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="Introdu numarul de telefon">
+                        </div>
+                    </div>
+
+                    <br/>
+                    <hr />
+
+                    <div class="row mt-12">
+                        <h2>Sediu social</h2>
+
+                        <label for="regionFilter" class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Județul</label>
+                        <div class="col-lg-9 fv-row">
+                            <select
+                                    data-control="select2"
+                                    data-name="county"
+                                    data-placeholder="Alege un judet"
+                                    class="form-select form-select-solid form-select-lg mb-3 mb-lg-0 counties region-filter"
+                                    name="county"
+                                    id="regionFilter"
+                                    data-dropdown-parent="#modalAddCompany"
+                                    data-trigger-id="#city"
+                                    data-value=""
+                            >
+                                <option value="" disabled selected>Alege un judet</option>
+                                {% for county in counties %}
+                                    <option value="{{ county.id }}" {% if user.county and user.county.id == county.id %}selected{% endif %}>
+                                        {{ county.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Oras</label>
+                        <div class="col-lg-9 fv-row">
+                            <select
+                                    data-control="select2"
+                                    data-name="city"
+                                    data-placeholder="Alege o localitate"
+                                    class="form-select form-select-solid form-select-lg mb-3 mb-lg-0 cities"
+                                    name="city"
+                                    id="city"
+                                    data-dropdown-parent="#modalAddCompany"
+                                    data-value=""
+                            >
+                                <option value="" disabled selected>Alege o localitate</option>
+                                {% if cities is defined %}
+                                    {% for city in cities %}
+                                        <option value="{{ city.id }}" {% if user.city and user.city.id == city.id %}selected{% endif %}>
+                                            {{ city.name }}
+                                        </option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <label class="col-lg-3 col-form-label required fw-semibold fs-6 mt-4">Adresa</label>
+                        <div class="col-lg-9 fv-row">
+                            <input type="text" id="address" name="address"
+                                   class="form-control form-control-lg form-control-solid mt-4"
+                                   placeholder="ex: Strada, numar, bloc, etaj, apartament">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="modal-close" aria-label="Close" data-dismiss="modal" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Anuleaza</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salveaza</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

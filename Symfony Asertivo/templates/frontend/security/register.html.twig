@@ -1,0 +1,70 @@
+{% extends 'layout_auth.html.twig' %}
+
+{% block title %}Register {{ parent() }} {% endblock %}
+
+{% form_theme form 'dashboard/shared/form/form_errors.html.twig' %}
+
+{% block content %}
+    <!-- start:: Error -->
+    <div class="content section">
+        <div class="inner">
+            <h2>Creează cont</h2>
+            <p><small>Ai deja un cont pe {{ app_name }}? <a href="{{ path('dashboard_login') }}" class="forgotPass">Autentifică-te</a></small>
+            </p>
+            <div class="form-section form-wrapper has-loader">
+                {{ form_start(form, {'attr': {'id': '', 'class': 'create-user-account-form form-wrapper has-loader'}}) }}
+
+                <!--begin::Form message-->
+                <div class="form-message">
+                    {% include 'frontend/common/alerts.html.twig' %}
+                </div>
+                <!--end::Form message-->
+                <div class="form-group">
+                    <!--begin::Email-->
+                    {{ form_label(form.firstName, 'Prenume*', {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.firstName, {'attr': {'placeholder': 'Prenume', 'autocomplete': 'off'}}) }}
+                    {{ form_errors(form.firstName) }}
+                    <!--end::Email-->
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.lastName, 'Nume*', {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.lastName, {'attr': {'placeholder': 'Nume', 'autocomplete': 'off'}}) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.phoneNumber, 'Telefon*', {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.phoneNumber, {'attr': {'placeholder': 'Introdu numărul de telefon', 'autocomplete': 'off'}}) }}
+                    {{ form_errors(form.phoneNumber) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.email, 'Email*', {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.email, {'attr': {'placeholder': 'Introdu emailul', 'autocomplete': 'off'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.first, 'Parola*', {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'Parola', 'autocomplete': 'off'}}) }}
+                    {{ form_errors(form.plainPassword.first) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.second, 'Reintrodu Parola*', {'label_attr': {'class': 'label'}}) }}
+                    {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Parola', 'autocomplete': 'off'}}) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                </div>
+                <div class="form-group checkbox checkbox-group">
+                    <input type="checkbox" id="terms" name="terms">
+                    <label for="terms">
+                        Pentru a continua, te rugăm să confirmi că ești de acord cu <a href="">Termenii şi
+                            condițiile {{ app_name }}</a>
+                    </label>
+                </div>
+
+                <div class="form-action">
+                    <input type="submit" class="submit-btn" value="Crează cont"/>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+<div class="accordion-item">
+    <h3 class="accordion-title"><span>{{ loop.index }}</span> {{ widget.name }}</h3>
+    <div class="accordion-content">
+        {{ widget.description|raw }}
+        <img src="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}" alt="{{ widget.name }}"/>
+    </div>
+</div>

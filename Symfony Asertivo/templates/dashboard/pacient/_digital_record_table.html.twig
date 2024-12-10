@@ -1,0 +1,137 @@
+{% for group in groups %}
+    <!--begin::Row-->
+    <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+        <!--begin::Col-->
+        <div class="col-xl-12">
+            <div class="card-flush h-md-100">
+                <!--begin::Header-->
+                <div class="card-header pt-7">
+                    <!--begin::Title-->
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{{ group.name }}</span>
+                    </h3>
+                    <!--end::Title-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-6">
+                    <!--begin::Table container-->
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                            <!--begin::Table head-->
+                            <thead>
+                                <tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
+                                    <th class="p-0 pb-3 min-w-175px text-start">Document</th>
+                                    <th class="p-0 pb-3 min-w-100px text-center">Deadline</th>
+                                    <th class="p-0 pb-3 min-w-100px text-center">Responsabil</th>
+                                    <th class="p-0 pb-3 min-w-50px text-end">Vizualizari</th>
+                                    <th class="p-0 pb-3 min-w-175px text-end pe-12">Status</th>
+                                    <th class="p-0 pb-3 w-50px text-end">Actiuni</th>
+                                </tr>
+                            </thead>
+                            <!--end::Table head-->
+                            <!--begin::Table body-->
+                            <tbody>
+                                {% for file in files %}
+                                    {% if file.fileGroup.id == group.id %}
+                                        <tr class="hoverable {{ file.filePath is not empty ? 'bg-light-success' : 'bg-light-danger' }}">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="symbol symbol-50px me-3">
+                                                        {% if file.filePath is not empty %}
+                                                            <img src="{{ asset('assets/dashboard/media/svg/files/' ~ file.fileExtension ~ '.svg') }}" class="" alt="" />
+                                                        {% else %}
+                                                            <img src="{{ asset('assets/dashboard/media/svg/files/upload.svg') }}" class="" alt="" />
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="d-flex justify-content-start flex-column">
+                                                        <span class="text-gray-800 fw-bold mb-1 fs-6">{{ file.fileName }}</span>
+                                                        <span class="text-gray-400 fw-semibold d-block fs-7">
+                                                            {% if file.addedBy is not empty  %}
+                                                                Urcat de <strong>{{ file.addedBy.name }}</strong> in data de {{ file.uploadedAt|date('d.m.Y H:i') }}
+                                                            {% else %}
+                                                                Incarca fisierul
+                                                            {% endif %}
+                                                        </span>
+                                                        <div class="show-on-hover invisible">
+                                                            <a href="#" class="fw-bold text-hover-primary mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#kt_modal_edit_pacient_file" data-pacient-file-uuid="{{ file.uid }}">Detalii document</a> |
+                                                            <a href="#" class="fw-bold text-hover-primary mb-1 fs-6 dropzone-digital-record" data-kt-dropzone-upload-url="{{ path('dashboard_ajax_pacient_upload_digital_record', {'uuid': user.uid, 'recordUuid': file.uid}) }}">Schimba document</a> |
+                                                            <a href="#" class="fw-bold text-hover-primary mb-1 fs-6" data-kt-pacient-file="delete" data-pacient-file-uuid="{{ file.uid }}">Sterge document</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-left pe-0">
+                                                <span class="text-gray-800">{{ file.uploadDeadline is not empty ? file.uploadDeadline|date('d/m/Y') : '-' }}</span>
+                                                <div class="show-on-hover invisible">
+                                                    <a href="#" class="fw-bold text-hover-primary mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_file_deadline" data-pacient-file-uuid="{{ file.uid }}" data-pacient-file-deadline="{{ file.uploadDeadline|date('Y-m-d') }}">Seteaza deadline</a>
+                                                </div>
+                                            </td>
+                                            <td class="pe-0">
+                                                {% if file.userResponsible is not empty %}
+                                                    {% set userResponsible = file.userResponsible %}
+                                                    <div class="d-flex align-items-center flex-end">
+                                                        <!--begin::Symbol-->
+                                                        <div class="symbol symbol-30px symbol-circle me-3">
+                                                            <img src="{{ userResponsible.photoPath }}" class="" alt="">
+                                                        </div>
+                                                        <!--end::Symbol-->
+                                                        <!--begin::Info-->
+                                                        <div class="m-0">
+                                                            <span class="fw-semibold text-gray-400 d-block fs-8">{{ userResponsible.formattedRole }}</span>
+                                                            <a href="#" class="fw-bold text-gray-800 text-hover-primary fs-7">{{ userResponsible.name }}</a>
+                                                            <a href="#" class="d-block fw-bold text-hover-primary mb-1 fs-6 show-on-hover invisible" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search" data-pacient-file-uuid="{{ file.uid }}">Schimba responsabil</a>
+                                                        </div>
+                                                        <!--end::Info-->
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-end pe-0">
+                                                <!--begin::Label-->
+                                                <span class="badge badge-light fs-base">{{ file.views }}</span>
+                                                <!--end::Label-->
+                                            </td>
+                                            <td class="text-end pe-12">
+                                                <span class="badge py-3 px-4 fs-7 badge-light-primary">{{ file.status }}</span>
+                                            </td>
+                                            <td class="text-end">
+                                                {% if file.filePath is not empty %}
+                                                    <a href="{{ asset(file.formattedFilePath(user.uid), 'cloudflare') }}" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px track-pacient-file-view" data-pacient-file-uuid="{{ file.uid }}" target="_blank">
+                                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                                        <span class="svg-icon svg-icon-5 svg-icon-gray-700">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor" />
+                                                            <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor" />
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" class="text-primary fw-bold dropzone-digital-record me-2" data-kt-dropzone-upload-url="{{ path('dashboard_ajax_pacient_upload_digital_record', {'uuid': user.uid, 'recordUuid': file.uid}) }}">
+                                                        Incarca
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                <tr>
+                                    <td class="text-left">
+                                        <a href="#" class="btn btn-link btn-color-success py-1" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_file" data-pacient-file-group="{{ group.id }}" >+ Adauga document nou</a>
+                                    </td>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
+                    </div>
+                    <!--end::Table-->
+                </div>
+                <!--end: Card Body-->
+            </div>
+        </div>
+        <!--end::Col--> 
+    </div>
+    <!--end::Row-->  
+{% endfor %}

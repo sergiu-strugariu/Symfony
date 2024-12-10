@@ -1,0 +1,459 @@
+<img src="https://app.asertivo.ro/assets/media/logos/asertivo-logo.jpg" alt="" width="300" height="103" />
+<h4 style="text-align: center; font-weight: bold;">FIȘA DE MONITORIZARE </h4>
+<br/>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 50%;" valign="top">
+            <p style="font-weight: bold; font-style: italic;">Beneficiar:</p>
+        </td>
+        <td style="width: 50%;" valign="top">
+            <p>{nume_beneficiar} {prenume_beneficiar}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 50%;" valign="top">
+            <p style="font-weight: bold; font-style: italic;">Vârsta:</p>
+        </td>
+        <td style="width: 50%;" valign="top">
+            <p>{varsta_beneficiar}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 50%;" valign="top">
+            <p style="font-weight: bold; font-style: italic;">Data intrării în centrul rezidențial:</p>
+        </td>
+        <td style="width: 50%;" valign="top">
+            <p>{data_admitere_beneficiar}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<h5>I. Starea de sănătate și monitorizarea parametrilor vitali</h5>
+<p style="font-style: italic;">*(completează medicul/asistentul medical)</p>
+<p style="font-weight: bold; font-style: italic;">DIAGNOSTIC</p>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 100%; height: 75px;" valign="top">
+            <p>{diagnostic}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Parametru</p>
+        </td>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold;">Dimineața</p>
+        </td>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold;">Seara</p>
+        </td>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold;">Observații</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Tensiune arterială (TA)</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{tensiune_arteriala_dimineata} mmHg</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p> {tensiune_arteriala_seara} mmHg</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_tensiune_arteriala}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Puls</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{puls_dimineata} bpm</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{puls_seara} bpm</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_puls}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Diureză (cantitate și aspect)</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{diureza_dimineata}</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{diureza_seara}</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_diureza}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Scaun (frecvență și consistență)</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{scaun_dimineata}</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{scaun_seara}</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_scaun}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Glicemia</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{glicemie_dimineata} mg/dL</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{glicemie_seara} mg/dL</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_glicemie}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Temperatura corporală</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{temperatura_dimineata} °C</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{temperatura_dimineata} °C</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_temperatura}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Greutate</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{greutate_dimineata} kg</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{greutate_seara} kg</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_greutate}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Nivel de hidratare</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{hidratare_dimineata}</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{hidratare_seara}</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>{observatii_hidratare}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Alte simptome/probleme</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+        <td style="width: 25%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<h5>II. Tratamente și observații</h5>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 30%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Medicație administrată</p>
+        </td>
+        <td style="width: 30%;" valign="top" align="center">
+            <p style="font-weight: bold;">Reacții adverse</p>
+        </td>
+        <td style="width: 40%;" valign="top" align="center">
+            <p style="font-weight: bold;">Observații asupra complianței la tratament</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;" valign="top">
+            <p style="font-style: italic;">Nume medicament, doză</p>
+        </td>
+        <td style="width: 30%;" valign="top">
+            <p>Reacții apărute</p>
+            <p>{reactii_medicamente}</p>
+        </td>
+        <td style="width: 40%;" valign="top">
+            <p>Dacă pacientul respectă tratamentul sau refuză doze</p>
+            <p>{observatii_tratament}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;" valign="top">
+            <p style="font-style: italic;">OBSERVATII</p>
+        </td>
+        <td style="width: 30%;" valign="top">
+            <p></p>
+        </td>
+        <td style="width: 40%;" valign="top">
+            <p>Modificări sau ajustări necesare</p>
+            <p>{modificari_tratament}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<h5>III. Servicii de recuperare / reabilitare funcțională (daca este cazul)</h5>
+<p style="font-style: italic;">* (completează specialistul kinetoterapeut)</p>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 35%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Activități</p>
+        </td>
+        <td style="width: 65%;" valign="top" align="center">
+            <p style="font-weight: bold;">Descriere</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 35%;" valign="top">
+            <p style="font-style: italic;">Kinetoterapie</p>
+        </td>
+        <td style="width: 65%;" valign="top">
+            <p>{descriere_activitati}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 35%;" valign="top">
+            <p style="font-style: italic;">Evoluția capacității motorii</p>
+        </td>
+        <td style="width: 65%;" valign="top">
+            <p>{descriere_evolutie_capacitati_motorii}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<h5>IV. Observații asupra îngrijirii generale *(completeaza ingrijitorul)</h5>
+<p style="font-style: italic;">* (completează ingrijitorul)</p>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Categorie</p>
+        </td>
+        <td style="width: 75%;" valign="top" align="center">
+            <p style="font-weight: bold;">Detalii</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Igienă personală</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Efectuată/Neefectuată, Observații:</p>
+            <p>{detalii_igiena_personala}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Alimentație</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Apetit, Tip dietă:</p>
+            <p>{detalii_alimentatie}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Mobilitate</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Nivel de independență:</p>
+            <p>{detalii_mobilitate}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Utilizare dispozitive</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Scaun cu rotile, cadru, etc.:</p>
+            <p>{detalii_utilizare_dispozitive}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<h5>V. Servicii pentru integrarea / reintegrarea socială</h5>
+<p style="font-style: italic;">*(completează asistentul social/terapeut ocupațional)</p>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Activități de socializare</p>
+        </td>
+        <td style="width: 75%;" valign="top" align="center">
+            <p style="font-weight: bold;">Descriere și observații</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Participare la evenimente</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Implicare în activități de grup</p>
+            <p>{detalii_participare_evenimente}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Terapie ocupațională</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Activități creative și recreative</p>
+            <p>{detalii_terapie_ocupationala}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Vizite de familie</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Frecvența și impactul asupra stării pacientului</p>
+            <p>{detalii_vizite_familie}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Nivel de cooperare</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Mod de interacțiune cu alți beneficiari</p>
+            <p>{detalii_nivel_cooperare}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<h5>VI. Consiliere psihologică</h5>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Parametru</p>
+        </td>
+        <td style="width: 75%;" valign="top" align="center">
+            <p style="font-weight: bold;">Detalii</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Starea emoțională</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Evaluarea stării emoționale (anxietate, depresie)</p>
+            <p>{detalii_stare_emotionala}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Tehnici și intervenții utilizate</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Consiliere individuală, terapii de grup, alte metode</p>
+            <p>{detalii_tehnici_consiliere}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Obiective stabilite</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Dezvoltarea abilităților de comunicare, socializare</p>
+            <p>{detalii_obiective}</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Observații asupra progresului</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>Feedback și modificări în planul de consiliere</p>
+            <p>{observatii_progres}</p>
+        </td>
+    </tr>
+</table>
+<p>Alte observații: {alte_observatii}</p>
+<br/>
+<h5>VII. Semnături</h5>
+<table style="width: 100%;" border="1" cellpadding="3" cellspacing="0">
+    <tr>
+        <td style="width: 25%;" valign="top" align="center">
+            <p style="font-weight: bold; font-style: italic;">Specialist </p>
+        </td>
+        <td style="width: 75%;" valign="top" align="center">
+            <p style="font-weight: bold;">Numele prenumele/semnătură si parafa</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Medic</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Asistent social</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Psiholog</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Kinetoterapeut</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Asistent medical</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 25%;" valign="top">
+            <p style="font-style: italic;">Infirmier</p>
+        </td>
+        <td style="width: 75%;" valign="top">
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+</table>

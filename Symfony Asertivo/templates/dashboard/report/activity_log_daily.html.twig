@@ -1,0 +1,69 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Activitate utilizare CRM {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-10 px-10">
+            <!--begin::Wrapper-->
+            <div class="my-5">
+                <!--begin::Form-->
+                <form action="" method="get">
+                    <div class="mb-1">
+                        <input name="date" type="text" class="form-control form-control-solid w-150px ps-4 datepicker d-inline-block" placeholder="Selecteaza o data..." value="{{ date }} "/>
+                    </div>
+                    <div class="my-2">
+                        <button type="submit" class="btn btn-primary">Filtrează</button>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Wrapper-->
+            <div class="my-5">
+                <div class="table-responsive">
+                    <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                        <tr>
+                            <td class="text-dark fw-bold fs-6">Nr crt</td>
+                            <td class="text-dark fw-bold fs-6">Utilizator</td>
+                            <td class="text-dark fw-bold fs-6">Rol</td>
+                            <td class="text-dark fw-bold fs-6">Pagini vizualizate</td>
+                            <td class="text-dark fw-bold fs-6">Prima vizita</td>
+                            <td class="text-dark fw-bold fs-6">Ultima vizita</td>
+                        </tr>
+                        {% for log in logs %}
+                            <tr>
+                                <td class="fw-semibold fs-6">{{ loop.index }}</td>
+                                <td>
+                                    <div class="d-flex align-items-left flex-start">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-30px symbol-circle me-3">
+                                            <img src="{{ log['photo'] }}" class="" alt="">
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Info-->
+                                        <div class="m-1">
+                                            <a href="{{ path('dashboard_user_view', {'uuid': log['uid']}) }}" class="fw-semibold d-block fs-6" target="_blank">{{ log['name'] }}</a>
+                                        </div>
+                                        <!--end::Info-->
+                                    </div>
+                                </td>
+                                <td class="fw-semibold fs-6"><span class="badge badge-light badge-sm">{{ log['role'] }}</span></td>
+                                <td class="fw-semibold fs-6">{{ log['pagesCount'] }}</td>
+                                <td class="fw-semibold fs-6">{{ log['firstView'] }}</td>
+                                <td class="fw-semibold fs-6">{{ log['lastView'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

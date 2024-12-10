@@ -1,0 +1,90 @@
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.pacientType, 'Tip pacient', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.pacientType, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.pacientMobility, 'Mobilitate', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.pacientMobility, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.diet, 'Regim alimentar', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.diet, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label fw-semibold fs-6">Pampers?</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="col-lg-9 d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.requiresDiapers, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.requiresDiapers, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label fw-semibold fs-6">Pat medical?</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="col-lg-9 d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.requiresMedicalBed, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.requiresMedicalBed, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.admissionDate, 'Data internarii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.admissionDate, {'attr': {'class': 'form-control form-control-lg form-control-solid datepicker', 'placeholder': 'Data internarii'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.nosocomialInfection, 'Infectie nosocomiala', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.nosocomialInfection, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Infectie nosocomiala', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->

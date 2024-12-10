@@ -1,0 +1,175 @@
+{% set authImage = settingService.getService('authImage') %}
+{% set logo = settingService.getService('logo') %}
+{% set footerLogo = settingService.getService('footerLogo') %}
+{% set favicon = settingService.getService('favicon') %}
+<div class="card mb-5 mb-lg-3 card-flush">
+    <!--begin::Form content-->
+    {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data'}}) }}
+    <!--begin::Card body-->
+    <div class="card-body p-9 pb-lg-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.phone, 'Telefon' , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.phone, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.phone) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.helpLine, 'Linia de ajutor', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.helpLine, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.helpLine) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.authImage, 'Auth Image', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.authImage, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.authImage) }}
+                        {% if authImage is not null %}
+                            <div class="form-text">Image uploaded:
+                                <a href="{{ asset(app_setting_path ~ authImage, 'cloudflare') }}" target="_blank">
+                                    {{ authImage }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">(accepted format: jpg, jpeg, png, webp max. 3M)</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.logo, 'Logo', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.logo, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.logo) }}
+                        {% if logo is not null %}
+                            <div class="form-text">Image uploaded:
+                                <a href="{{ asset(app_setting_path ~ logo, 'cloudflare') }}" target="_blank">
+                                    {{ logo }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">(accepted format: jpg, jpeg, png, webp max. 3M)</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.footerLogo, 'Footer logo', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.footerLogo, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.footerLogo) }}
+                        {% if footerLogo is not null %}
+                            <div class="form-text">Image uploaded:
+                                <a href="{{ asset(app_setting_path ~ footerLogo, 'cloudflare') }}" target="_blank">
+                                    {{ footerLogo }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">(accepted format: jpg, jpeg, png, webp max. 3M)</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.favicon, 'Favicon', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.favicon, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.favicon) }}
+                        {% if favicon is not null %}
+                            <div class="form-text">Image uploaded:
+                                <a href="{{ asset(app_setting_path ~ favicon, 'cloudflare') }}" target="_blank">
+                                    {{ favicon }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">(accepted format: jpg, jpeg, png, webp max. 3M)</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.facebookLink, 'Facebook link', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.facebookLink, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.facebookLink) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.linkedinLink, 'LinkedIn link', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.linkedinLink, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.linkedinLink) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.instagramLink, 'Instagram link', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.instagramLink, {'attr': {'class': 'form-control form-control-lg form-control-solid'}}) }}
+                        {{ form_errors(form.instagramLink) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card body-->
+    <!--begin::Card footer-->
+    <div class="card-footer py-6 pt-lg-0 border-top-0 pb-lg-9 px-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                    {{ form_widget(form._token) }}
+                    <a href="{{ path('dashboard') }}" class="btn btn-danger me-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success me-2">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card footer-->
+    {{ form_end(form) }}
+    <!--end::Form content-->
+</div>

@@ -1,0 +1,60 @@
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.dischargeDate, 'Data externarii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.dischargeDate, {'attr': {'class': 'form-control form-control-lg form-control-solid datepicker', 'placeholder': 'Data externarii'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.dischargeReason, 'Motiv', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.dischargeReason, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Motiv', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.clinicalDiagnostic, 'Diagnostic clinic', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.clinicalDiagnostic, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Diagnostic clinic', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.paraclinicalDiagnostic, 'Diagnostic paraclinic', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.paraclinicalDiagnostic, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Diagnostic paraclinic', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.epicrisis, 'Epicriza', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.epicrisis, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Epicriza', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->

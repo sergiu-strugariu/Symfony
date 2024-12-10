@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Activitate utilizare CRM {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-10 px-10">
+            <!--begin::Wrapper-->
+            <div class="my-5 d-print-none">
+                <div class="d-flex justify-content-between">
+                    <!--begin::Form-->
+                    <form action="" method="get">
+                        <div class="d-flex justify-content-left">
+                            <div class="my-2 me-3">
+                                <select name="nursing-home" data-control="select2" class="form-select form-select-solid form-select-lg me-4">
+                                    <option value="">Alege un cămin</option>
+                                    {% for item in nursingHomes %}
+                                        <option value="{{ item.uid }}" {{ selectedNursingHome == item.uid ? 'selected' : '' }}>
+                                            {{ item.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="my-2 me-3">
+                                <select name="date" data-control="select2" class="form-select form-select-solid">
+                                    <option value="">Alege o luna</option>
+                                    {% for key, item in activeMonths %}
+                                        <option value="{{ item['month'] }}" {{ item['month'] == date ? 'selected' : '' }}>{{ item['month'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <button type="submit" class="btn btn-primary">Filtrează</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                    <div>
+                        <button type="button" class="btn btn-primary d-inline-block mx-3" onclick="window.print();">Printeaza</button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Wrapper-->
+            <div class="my-5">
+                <div class="table-responsive">
+                    <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                        <tr>
+                            <td class="text-dark fw-bold fs-6">Data</td>
+                            <td class="text-dark fw-bold fs-6">Numar utilizatori activi</td>
+                        </tr>
+                        {% for log in logs %}
+                            <tr>
+                                <td class="fw-semibold fs-6">
+                                    <a href="{{ path('activity_log_report_daily', {'date': log['date']}) }}" target="_blank">{{ log['date'] }}</a>
+                                </td>
+                                <td class="fw-semibold fs-6">{{ log['usersCount'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

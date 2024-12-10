@@ -1,0 +1,52 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+        {{ form_widget(form.hydrationFood, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+        {{ form_label(form.hydrationFood, 'Hidratare/masa', {'label_attr': {'class': 'form-check-label'}}) }}
+    </div>
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+        {{ form_widget(form.diuresis, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+        {{ form_label(form.diuresis, 'Diureza', {'label_attr': {'class': 'form-check-label'}}) }}
+    </div>
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+        {{ form_widget(form.stool, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+        {{ form_label(form.stool, 'Scaun', {'label_attr': {'class': 'form-check-label'}}) }}
+    </div>
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+        {{ form_widget(form.bathing, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+        {{ form_label(form.bathing, 'Baie', {'label_attr': {'class': 'form-check-label'}}) }}
+    </div>
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+        {{ form_widget(form.diapers, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+        {{ form_label(form.diapers, 'Pampers', {'label_attr': {'class': 'form-check-label'}}) }}
+    </div>
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    {{ form_label(form.date, 'Data', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    {{ form_widget(form.date, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0 datetimepicker', 'placeholder': 'Data'}}) }}
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    {{ form_label(form.observations, 'Observatii', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Observatii', 'rows': '3'}}) }}
+</div>
+<!--end::Input group-->

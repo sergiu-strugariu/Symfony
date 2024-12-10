@@ -1,0 +1,60 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.description, 'Analize', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.description, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Analize', 'rows': '3', 'readonly': 'readonly'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    <label class="fw-semibold fs-6 mb-2">Sunat familie?</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.contactedFamily, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.contactedFamily, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    <label class="fw-semibold fs-6 mb-2">Recoltat?</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.collected, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.collected, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.comment, 'Observatii', {'label_attr': {'class': 'fw-semibold fs-6 mb-2 required'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.comment, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Observatii', 'rows': '3'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.status, 'Status', {'label_attr': {'class': 'fw-semibold fs-6 mb-2 required'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.status, {'attr': {'data-control': 'select2', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->

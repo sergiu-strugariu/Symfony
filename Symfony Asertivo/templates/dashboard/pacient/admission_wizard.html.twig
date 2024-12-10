@@ -1,0 +1,267 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Internare pacient {{ parent() }} {% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Stepper-->
+    <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid gap-10" id="kt_create_admission_stepper">
+        <!--begin::Aside-->
+        {% include 'dashboard/pacient/_wizard_nav.html.twig' %}
+        <!--begin::Aside-->
+        <!--begin::Content-->
+        <div class="card d-flex flex-row-fluid flex-center">
+            <!--begin::Form-->
+            <form class="card-body py-5 w-100 px-5" id="kt_create_admission_form" method="POST">
+                {% include 'dashboard/shared/alerts.html.twig' %}
+                {% if activeStep == 1 %}
+                    <!--begin::Step 1-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'CNP', 'subtitle': 'Introdu codul numeric personal'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_cnp.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 1-->
+                {% elseif activeStep == 2 %}
+                    <!--begin::Step 2-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Date personale', 'subtitle': 'Completare date personale'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_personal_data.html.twig' with {'user': user} %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 2-->
+                {% elseif activeStep == 3 %}
+                    <!--begin::Step 3-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            <div class="d-flex flex-stack px-10 py-10">
+                                <div>
+                                    <!--begin::Title-->
+                                    <h2 class="fw-bold text-dark">Apartinatori</h2>
+                                    <!--end::Title-->
+                                    <!--begin::Notice-->
+                                    <div class="text-muted fw-semibold fs-6">Completare apartinatori</div>
+                                    <!--end::Notice-->
+                                </div>
+                                <!--begin::Toolbar-->
+                                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                                    <!--begin::Add user -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_relation">
+                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                        <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
+                                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
+                                            </svg></span>
+                                        <!--end::Svg Icon-->       
+                                        Adauga apartinator
+                                    </button>
+                                    <!--end::Add customer-->
+                                </div>
+                                <!--end::Toolbar-->
+                            </div>
+                            <div class="my-5 px-10">
+                                <!--begin::Search-->
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <input type="text" data-kt-relations-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cauta..."/>
+                                </div>
+                                <!--end::Search-->
+                            </div>
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_relations_table.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 3-->
+                {% elseif activeStep == 4 %}
+                    <!--begin::Step 4-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Date generale', 'subtitle': 'Completare informatii generale'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_general_data.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 4-->
+                {% elseif activeStep == 5 %}
+                    <!--begin::Step 5-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Date medicale', 'subtitle': 'Completare date medicale'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_medical_data.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 5-->
+                {% elseif activeStep == 6 %}
+                    <!--begin::Step 6-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Examen clinic general', 'subtitle': 'Completare date examen clinic'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_clinical_exam.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 6-->
+                {% elseif activeStep == 7 %}
+                    <!--begin::Step 7-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Acord GDPR', 'subtitle': 'Generare acord GDPR'} %}
+                            <!--end::Heading-->
+                            <!--begin::Wrapper-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_admission_wizard_documents.html.twig' %}
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 7-->
+                {% elseif activeStep == 8 %}
+                    <!--begin::Step 8-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Contract', 'subtitle': 'Generare contract'} %}
+                            <!--end::Heading-->
+                            <!--begin::Wrapper-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_admission_wizard_documents.html.twig' %}
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 8-->
+                {% elseif activeStep == 9 %}
+                    <!--begin::Step 9-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Dosar digital', 'subtitle': 'Incarcare documente'} %}
+                            <!--end::Heading-->
+                            <!--begin::Wrapper-->
+                            {% include 'dashboard/pacient/_digital_record_table.html.twig' %}
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 9-->
+                {% elseif activeStep == 10 %}
+                    <!--begin::Step 10-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Final', 'subtitle': 'Finalizeaza internarea'} %}
+                            <!--end::Heading-->
+                            <p class="text-gray-400 fs-4 fw-semibold py-7 text-center">
+                                Apasa pe butonul de mai jos pentru a finaliza <br/> procesul de internare pentru pacient {{ user.name }}.
+                            </p>
+                            <div class="d-flex flex-center pb-10">
+                                <button type="submit" class="btn btn-lg btn-primary">Finalizeaza</button>
+                            </div>
+                            <div class="text-center px-4">
+                                <img src="{{ asset('assets/dashboard/media/illustrations/sketchy-1/2.png') }}" alt="" class="mw-100 mh-300px">
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 10-->
+                {% endif %}
+                <!--begin::Actions-->
+                {% include 'dashboard/pacient/_wizard_actions.html.twig' with {'wizard_path': 'dashboard_pacients_admission_wizard'} %}
+                <!--end::Actions-->
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Stepper-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+    {% if activeStep == 3 %}
+        {% include 'dashboard/shared/modal/add_pacient_relation.html.twig' %}
+    {% elseif activeStep in ['7', '8'] %}
+        {% include 'dashboard/shared/modal/document_data.html.twig' %}
+    {% elseif activeStep == 9 %}
+        {% include 'dashboard/shared/modal/add_pacient_file.html.twig' %}
+        {% include 'dashboard/shared/modal/edit_pacient_file.html.twig' %}
+        {% include 'dashboard/shared/modal/search_users.html.twig' %}
+        {% include 'dashboard/shared/modal/add_pacient_file_deadline.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block page_javascripts %}
+    {% if activeStep in ['7', '8'] %}
+        <script src="{{ asset('assets/dashboard/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
+    {% endif %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+        {% if activeStep == 1 %}
+                let queryString = window.location.search;
+                let urlParams = new URLSearchParams(queryString);
+                if (urlParams.has('cnp')) {
+                    let cnp = urlParams.get('cnp');
+                    document.querySelector("[name='cnp']").value = cnp;
+                }
+        {% elseif activeStep == 2 %}
+                KTUtilities.initCounties();
+                KTPacientUpdatePersonalData.init('{{ user.uid }}');
+        {% elseif activeStep == 3 %}
+                KTDatatablesPacientRelations.init('{{ user.uid }}', false);
+        {% elseif activeStep in ['7', '8'] %}
+                const form = document.getElementById('kt_create_admission_form');
+                KTDocuments.init(form, '{{ type }}');
+        {% elseif activeStep == 9 %}
+                KTPacientFile.init('{{ user.uid }}');
+                KTModalUserSearch.init();
+                KTAddPacientFileDeadline.init();
+        {% endif %}
+            });
+    </script>
+{% endblock %}
+

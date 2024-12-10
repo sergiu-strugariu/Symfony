@@ -1,0 +1,162 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Raport meniuri saptamanale {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-10 px-10">
+            <!--begin::Wrapper-->
+            <div class="my-5 d-print-none">
+                <div class="d-flex justify-content-between">
+                    <!--begin::Form-->
+                    <form action="" method="get">
+                        <div class="d-flex justify-content-left">
+                            <div class="me-2">
+                                <input name="startDate" class="form-control form-control-solid datepicker"
+                                       value="{{ startDate }}"
+                                />
+                            </div>
+                            <div class="me-2">
+                                <input name="endDate" class="form-control form-control-solid datepicker"
+                                       value="{{ endDate }}"
+                                />
+                            </div>
+                            <div class="me-2">
+                                <select name="nursing-home" data-control="select2" class="form-select form-select-solid form-select-lg me-4">
+                                    <option value="">Alege un cămin</option>
+                                    {% for item in nursingHomes %}
+                                        <option value="{{ item.uid }}" {{ selectedNursingHome == item.uid ? 'selected' : '' }}>
+                                            {{ item.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="me-2">
+                                <button type="submit" class="btn btn-primary d-inline-block">Filtrează</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                    <div>
+                        <button type="button" class="btn btn-primary d-inline-block mx-3" onclick="window.print();">
+                            Printeaza
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Wrapper-->
+            {% for menu in data %}
+                <div class="my-5">
+                    <h5 class="my-10 text-center">{{ menu['name']  ~ ' (' ~ menu['startDate'] ~ ' - ' ~ menu['endDate'] ~ ')' }}</h5>
+                    <div class="table-responsive">
+                        <table class="table gs-0 gy-4">
+                            <tr class="border-bottom">
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start ps-2">Zi/masa</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Luni</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Marti</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Miercuri</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Joi</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Vineri</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Sambata</td>
+                                <td class="text-dark fw-bold fs-6 border-end border-top border-start">Duminica</td>
+                            </tr>
+                            {% if menu['items'] is defined %}
+                                {% if menu['items']['breakfast'] is defined %}
+                                    <tr class="border-bottom">
+                                        <td class="border-end border-start fw-bold ps-2">Mic dejun 07:00 - 09:00</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['luni'] is defined ? menu['items']['breakfast']['luni'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['marti'] is defined ? menu['items']['breakfast']['marti'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['miercuri'] is defined ? menu['items']['breakfast']['miercuri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['joi'] is defined ? menu['items']['breakfast']['joi'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['vineri'] is defined ? menu['items']['breakfast']['vineri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['sambata'] is defined ? menu['items']['breakfast']['sambata'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['breakfast']['duminica'] is defined ? menu['items']['breakfast']['duminica'] : '-' }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if menu['items']['firstSnack'] is defined %}
+                                    <tr class="border-bottom">
+                                        <td class="border-end border-start fw-bold ps-2">Gustare 11:00</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['luni'] is defined ? menu['items']['firstSnack']['luni'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['marti'] is defined ? menu['items']['firstSnack']['marti'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['miercuri'] is defined ? menu['items']['firstSnack']['miercuri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['joi'] is defined ? menu['items']['firstSnack']['joi'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['vineri'] is defined ? menu['items']['firstSnack']['vineri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['sambata'] is defined ? menu['items']['firstSnack']['sambata'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['firstSnack']['duminica'] is defined ? menu['items']['firstSnack']['duminica'] : '-' }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if menu['items']['lunch'] is defined %}
+                                    <tr class="border-bottom">
+                                        <td class="border-end border-start fw-bold ps-2">Pranz 12:00 - 14:00</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['luni'] is defined ? menu['items']['lunch']['luni'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['marti'] is defined ? menu['items']['lunch']['marti'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['miercuri'] is defined ? menu['items']['lunch']['miercuri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['joi'] is defined ? menu['items']['lunch']['joi'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['vineri'] is defined ? menu['items']['lunch']['vineri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['sambata'] is defined ? menu['items']['lunch']['sambata'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['lunch']['duminica'] is defined ? menu['items']['lunch']['duminica'] : '-' }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if menu['items']['secondSnack'] is defined %}
+                                    <tr class="border-bottom">
+                                        <td class="border-end border-start fw-bold ps-2">Gustare 17:00</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['luni'] is defined ? menu['items']['secondSnack']['luni'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['marti'] is defined ? menu['items']['secondSnack']['marti'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['miercuri'] is defined ? menu['items']['secondSnack']['miercuri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['joi'] is defined ? menu['items']['secondSnack']['joi'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['vineri'] is defined ? menu['items']['secondSnack']['vineri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['sambata'] is defined ? menu['items']['secondSnack']['sambata'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['secondSnack']['duminica'] is defined ? menu['items']['secondSnack']['duminica'] : '-' }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if menu['items']['dinner'] is defined %}
+                                    <tr class="border-bottom">
+                                        <td class="border-end border-start fw-bold ps-2">Cina 18:00 - 19:00</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['luni'] is defined ? menu['items']['dinner']['luni'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['marti'] is defined ? menu['items']['dinner']['marti'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['miercuri'] is defined ? menu['items']['dinner']['miercuri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['joi'] is defined ? menu['items']['dinner']['joi'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['vineri'] is defined ? menu['items']['dinner']['vineri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['sambata'] is defined ? menu['items']['dinner']['sambata'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dinner']['duminica'] is defined ? menu['items']['dinner']['duminica'] : '-' }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if menu['items']['dz'] is defined %}
+                                    <tr class="border-bottom">
+                                        <td class="border-end border-start fw-bold ps-2">DZ</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['luni'] is defined ? menu['items']['dz']['luni'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['marti'] is defined ? menu['items']['dz']['marti'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['miercuri'] is defined ? menu['items']['dz']['miercuri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['joi'] is defined ? menu['items']['dz']['joi'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['vineri'] is defined ? menu['items']['dz']['vineri'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['sambata'] is defined ? menu['items']['dz']['sambata'] : '-' }}</td>
+                                        <td class="border-end border-start">{{ menu['items']['dz']['duminica'] is defined ? menu['items']['dz']['duminica'] : '-' }}</td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                    <p><strong>Observatii:</strong> {{ menu['observations']|nl2br }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

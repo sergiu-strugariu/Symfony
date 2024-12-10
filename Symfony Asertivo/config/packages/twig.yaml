@@ -1,0 +1,22 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        app_name: '%app_name%'
+        menu_helper: '@App\Helper\MenuHelper'
+        cloudflare_r2_file_path: '%cloudflare_r2_file_path%'
+        app_page_widget_path: '%app_page_widget_path%'
+        app_page_section_path: '%app_page_section_path%'
+        app_page_template: '%app_page_template%'
+        app_page_widget_template: '%app_page_widget_template%'
+        app_page_widget_gallery_path: '%app_page_widget_gallery_path%'
+        app_page_section_gallery_path: '%app_page_section_gallery_path%'
+        app_default_image: '%app_default_image%'
+        app_default_page_path: '%app_default_page_path%'
+        app_menu_path: '%app_menu_path%'
+        app_setting_path: '%app_setting_path%'
+        settingService: '@App\Service\SettingService'
+        menuHelper: '@App\Helper\MenuHelper'
+        menuService: '@App\Service\MenuService'
+when@test:
+    twig:
+        strict_variables: true

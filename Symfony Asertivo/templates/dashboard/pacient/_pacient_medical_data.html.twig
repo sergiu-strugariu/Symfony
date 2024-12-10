@@ -1,0 +1,276 @@
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.bloodType, 'Grup sangvin', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.bloodType, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.rh, 'RH', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.rh, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label fw-semibold fs-6">Vaccinat Covid</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="col-lg-9 d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.vaccinatedAgainstCovid, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.vaccinatedAgainstCovid, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label fw-semibold fs-6">Boala Sars-Cov-2</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="col-lg-9 d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.hadCovid, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.hadCovid, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.alergies, 'Alergii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.alergies, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Alergii', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.weight, 'Greutate', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.weight, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Greutate'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.height, 'Inaltime', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.height, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Inaltime'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.admissionDiagnostic, 'Diagnostic internare', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.admissionDiagnostic, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Diagnostic internare', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.admissionReason, 'Motivele internarii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.admissionReason, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Motivele internarii', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Separator-->
+<div class="separator separator-content my-15"><span class="h2">Anamneza</span></div>
+<!--end::Separator-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.heterolateralCollateralAntecedents, 'Antecedente heterolaterale - colaterale', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.heterolateralCollateralAntecedents, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Antecedente heterolaterale - colaterale', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.personalPhysiologicalPathologicalAntecedents, 'Antecedente personale, fiziologice, patologice', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.personalPhysiologicalPathologicalAntecedents, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Antecedente personale, fiziologice, patologice', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.livingAndWorkingConditions, 'Conditii de viata si munca', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.livingAndWorkingConditions, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Conditii de viata si munca', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.behaviors, 'Comportamente (fumat, alcool etc)', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.behaviors, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Comportamente (fumat, alcool etc)', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.previousMedication, 'Medicatie de fond administrata inaintea internarii', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.previousMedication, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Medicatie de fond administrata inaintea internarii', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Separator-->
+<div class="separator my-15"></div>
+<!--end::Separator-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.treatment, 'Tratament', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.treatment, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Tratament', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.epicrisis, 'Epicriza', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.epicrisis, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Epicriza', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.surgeryConsultation, 'Consult chirurgie', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.surgeryConsultation, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Consult chirurgie', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.radiologicalExaminations, 'Examene radiologice', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.radiologicalExaminations, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Examene radiologice', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.labExaminations, 'Examene de laborator', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.labExaminations, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Examene de laborator', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.ultrasoundExaminations, 'Examene ecografice', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.ultrasoundExaminations, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Examene ecografice', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.otherSpecializedExams, 'Alte examene de specialitate', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.otherSpecializedExams, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Alte examene de specialitate', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    {{ form_label(form.otherTherapeuticProcedures, 'Alte proceduri terapeutice', {'label_attr': {'class': 'col-lg-3 col-form-label fw-semibold fs-6'}}) }}
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.otherTherapeuticProcedures, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Alte proceduri terapeutice', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->

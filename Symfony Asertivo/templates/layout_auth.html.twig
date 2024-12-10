@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('assets/frontend/styles/style.min.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <main class="{{ class }}">
+        <div class="left-content">
+            <!-- Start: Header-->
+            {% include "frontend/common/auth/header.html.twig" %}
+            <!-- End: Header -->
+
+            <!-- Start: Content-->
+            {% block content %}{% endblock %}
+            <!-- End: Content -->
+
+            <!-- Start: Footer -->
+            {% include "frontend/common/auth/footer.html.twig" %}
+            <!-- End: Footer -->
+        </div>
+        <div class="right-content">
+            <div class="image" data-image="{{ asset(app_setting_path ~ settingService.service('authImage'), 'cloudflare') }}"></div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.formMessages = {
+            'name': {
+                'minlength': 'Numele trebuie să aibă cel puțin 2 caractere',
+                'valid_name': 'Numele poate conține doar litere, spații și cratime',
+            },
+            'default': {
+                'field_required': 'Câmp este obligatoriu.',
+                'default_all_field_required': 'Toate câmpurile sunte obligatorii.',
+                'only_letters': 'Sunt permise doar litere, spații și cratime'
+            },
+            'email': {
+                'required': 'Introdu adresa de email',
+                'email': 'Formatul adresei de email este invalid'
+            },
+            'phone': {
+                'required': 'Introdu numărul de telefon',
+                'minlength': 'Numarul minim este de 10 caractere',
+                'maxlength': 'Numarul maxim este de 10 caractere',
+                'phone_ro': 'Numărul de telefon nu este valid',
+                'phone_match': 'Numărul de telefon nu trebuie să coincidă'
+            },
+            'password': {
+                'required': 'Câmp este obligatoriu.',
+                'minlength': 'Parola trebuie să aibă cel puțin 8 caractere.',
+                'passwordMatch': 'Parolele nu coincid.',
+            },
+            'form_messages': {
+                'form_details_success': 'Felicitări! Cererea ta a fost trimisă cu success. Vom reveni în cel mai scurt timp posibil',
+                'form_details_error': 'A intervenit o eroare neprevăzută. Te rugăm să încerci din nou sau mai târziu',
+                'form_recaptcha': 'Nu uita să bifezi recaptcha'
+            },
+            'cui': {
+                'validCIF': 'CUI nu este valid',
+                'required': 'Câmp este obligatoriu.'
+            },
+            'companyRegisterNumber': {
+                'regNumber': 'Nr registrul comertului nu este valid',
+                'required': 'Câmp este obligatoriu.'
+            },
+            'iban': {
+                'required': 'Câmp este obligatoriu.'
+            },
+            'companyName': {
+                'required': 'Câmp este obligatoriu.'
+            },
+            'companyAddress': {
+                'required': 'Câmp este obligatoriu.'
+            },
+            'county': {
+                'required': 'Câmp este obligatoriu.'
+            },
+            'city': {
+                'required': 'Câmp este obligatoriu.'
+            }
+        }
+    </script>
+    <script src="{{ asset('assets/frontend/scripts/bundle.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/additional-methods.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="{{ asset('assets/frontend/scripts/main.min.js') }}"></script>
+{% endblock %}

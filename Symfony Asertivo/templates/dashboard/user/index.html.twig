@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Utilizatori {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tabs-->
+            <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x mb-5 fs-6">
+                {% for key, name in roles %}
+                    <li class="nav-item">
+                        <a class="nav-link text-active-primary py-5 me-1 {{ role == key ? 'active' : '' }}"  href="{{ path('dashboard_users', {'role': key}) }}">{{ name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!--end::Tabs-->
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack mb-5">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cauta..."/>
+                </div>
+                <!--end::Search-->
+                <!--begin::Toolbar-->
+                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                    <!--begin::Add user -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                        <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
+                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
+                            </svg></span>
+                        <!--end::Svg Icon-->       
+                        Adaugă utilizator
+                    </button>
+                    <!--end::Add customer-->
+                </div>
+                <!--end::Toolbar-->
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Datatable-->
+            <table id="kt_datatable_users" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                        <th>Poza</th>
+                        <th>Nume si prenume</th>
+                        <th>Functie</th>
+                        <th>Email</th>
+                        <th>Telefon</th>
+                        <th>CNP</th>
+                        <th>Camin</th>
+                        <th>Data nasterii</th>
+                        <th>Data</th>
+                        <th>Actiuni</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold">
+                </tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/quick_add_user.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesUsers.init('{{ role }}');
+            KTUsersAddUser.init();
+        });
+    </script>
+{% endblock %}

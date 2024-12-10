@@ -1,0 +1,386 @@
+{% set userMenuItems = menu_helper.userRoles %}
+{% set documents = menu_helper.getAvailableDocuments %}
+<div id="kt_app_header" class="app-header d-print-none">
+    <!--begin::Header container-->
+    <div class="app-container container-xxl d-flex align-items-stretch justify-content-between" id="kt_app_header_container">
+        <!--begin::Logo-->
+        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
+            <a href="{{ path('dashboard') }}">
+                <img alt="Logo" src="{{ asset('assets/dashboard/media/logos/logo_nursing_os.png') }}" class="h-40px h-lg-60px app-sidebar-logo-default theme-light-show" />
+            </a>
+        </div>
+        <!--end::Logo-->
+        <!--begin::Header wrapper-->
+        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
+            <!--begin::Menu wrapper-->
+            <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="{default: 'append', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
+                <!--begin::Menu-->
+                <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_RELATION') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard') }}" class="menu-title">Dashboard</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard_nursing_homes') }}" class="menu-title">Unitati</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard_users') }}" class="menu-title">Utilizatori</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard_pacients_prospects') }}" class="menu-title">Prospecti</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if not is_granted('ROLE_RELATION') and not is_granted('ROLE_PACIENT') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard_pacients') }}" class="menu-title">Pacienti</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_MEDIC') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('diagnoses_treatments_report') }}" class="menu-title">Schema tratament</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') %}
+                        <!--begin:Menu item-->
+                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <span class="menu-title">Divizii</span>
+                                <span class="menu-arrow d-lg-none"></span>
+                            </span>
+                            <!--end:Menu link-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('dashboard_cook_menus') }}">
+                                        <span class="menu-title">Bucatarie</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {#{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') or is_granted('ROLE_RECEPTION') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard_documents', {'type': 1}) }}" class="menu-title">Documente</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}#}
+
+                    <!--begin:Menu item-->
+                    <div class="menu-item me-0 me-lg-2">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <a href="{{ path('dashboard_summaries') }}" class="menu-title">Borderouri</a>
+                        </span>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_RECEPTION') or is_granted('ROLE_MANAGEMENT') or is_granted('ROLE_ASSISTANCE_MEDICAL_PHARMACY') or is_granted('ROLE_MEDIC') or is_granted('ROLE_ASSISTANCE_MEDICAL') %}
+                        <!--begin:Menu item-->
+                        <div class="menu-item me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <a href="{{ path('dashboard_visits_calendar') }}" class="menu-title">Calendar</a>
+                            </span>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') or is_granted('ROLE_SOCIAL_WORKER') or is_granted('ROLE_PSYCHOTHERAPY') %}
+                        <!--begin:Menu item-->
+                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <span class="menu-title">Intocmire documente</span>
+                                <span class="menu-arrow d-lg-none"></span>
+                            </span>
+                            <!--end:Menu link-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
+                                {% for type, templates in documents %}
+                                    <!--begin:Menu item-->
+                                    <div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">
+                                        <!--begin:Menu link-->
+                                        <span class="menu-link">
+                                            <span class="menu-title">{{ type|capitalize }}</span>
+                                            <span class="menu-arrow"></span>
+                                        </span>
+                                        <!--end:Menu link-->
+                                        <!--begin:Menu sub-->
+                                        <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-active-bg px-lg-2 py-lg-4 w-lg-225px">
+                                            {% for template in templates %}
+                                                <!--begin:Menu item-->
+                                                <div class="menu-item">
+                                                    <!--begin:Menu link-->
+                                                    <a class="menu-link" href="{{ path('dashboard_document', {'slug': template['slug']}) }}">
+                                                        <span class="menu-title">{{ template['name'] }}</span>
+                                                    </a>
+                                                    <!--end:Menu link-->
+                                                </div>
+                                                <!--end:Menu item-->
+                                            {% endfor %}
+                                        </div>
+                                        <!--end:Menu sub-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                {% endfor %}
+                            </div>
+                            <!--end:Menu sub-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') or is_granted('ROLE_MANAGEMENT') %}
+                        <!--begin:Menu item-->
+                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <span class="menu-title">Rapoarte</span>
+                                <span class="menu-arrow d-lg-none"></span>
+                            </span>
+                            <!--end:Menu link-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('diagnoses_treatments_report') }}">
+                                        <span class="menu-title">Diagnostice si tratamente per pacient</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('digital_records_report') }}">
+                                        <span class="menu-title">Status dosare digitale per pacient</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('activity_log_report') }}">
+                                        <span class="menu-title">Activitate utilizare CRM</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('relations_report') }}">
+                                        <span class="menu-title">Apartinatori</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('samples_report') }}">
+                                        <span class="menu-title">Recoltare</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('medical_monitoring_report') }}">
+                                        <span class="menu-title">Asistenti medicali</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('physical_therapy_report') }}">
+                                        <span class="menu-title">Kinetoterapie</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('orderly_report') }}">
+                                        <span class="menu-title">Infirmieri</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('cook_menus_report') }}">
+                                        <span class="menu-title">Meniuri saptamanale</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ path('cook_food_report') }}">
+                                        <span class="menu-title">Lista bucatarie</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            </div>
+                            <!--end:Menu sub-->
+                        </div>
+                        <!--end:Menu item-->
+                    {% endif %}
+                </div>
+                <!--end::Menu-->
+            </div>
+            <!--end::Menu wrapper--> 
+            <!--begin::Navbar-->
+            <div class="app-navbar flex-shrink-0">
+                <!--begin::Notifications-->
+                <div class="app-navbar-item ms-1 ms-md-3">
+                    <a href="{{ path('dashboard_pacients_admissions') }}" class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen060.svg-->
+                        <span class="svg-icon theme-light-show svg-icon-2x">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.3" d="M12.025 4.725C9.725 2.425 6.025 2.425 3.725 4.725C1.425 7.025 1.425 10.725 3.725 13.025L11.325 20.625C11.725 21.025 12.325 21.025 12.725 20.625L20.325 13.025C22.625 10.725 22.625 7.025 20.325 4.725C18.025 2.425 14.325 2.425 12.025 4.725Z" fill="currentColor"/>
+                            <path d="M14.025 17.125H13.925C13.525 17.025 13.125 16.725 13.025 16.325L11.925 11.125L11.025 14.325C10.925 14.725 10.625 15.025 10.225 15.025C9.825 15.125 9.425 14.925 9.225 14.625L7.725 12.325L6.525 12.925C6.425 13.025 6.225 13.025 6.125 13.025H3.125C2.525 13.025 2.125 12.625 2.125 12.025C2.125 11.425 2.525 11.025 3.125 11.025H5.925L7.725 10.125C8.225 9.925 8.725 10.025 9.025 10.425L9.825 11.625L11.225 6.72498C11.325 6.32498 11.725 6.02502 12.225 6.02502C12.725 6.02502 13.025 6.32495 13.125 6.82495L14.525 13.025L15.225 11.525C15.425 11.225 15.725 10.925 16.125 10.925H21.125C21.725 10.925 22.125 11.325 22.125 11.925C22.125 12.525 21.725 12.925 21.125 12.925H16.725L15.025 16.325C14.725 16.925 14.425 17.125 14.025 17.125Z" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <span class="position-absolute top-0 start-100 translate-middle badge badge-sm badge-circle badge-primary">{{ pacient_admissions_count() }}</span>
+                    </a>
+                </div>
+                <!--end::Notifications-->
+                <!--begin::User menu-->
+                <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
+                    <!--begin::Menu wrapper-->
+                    <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                        <img src="{{ app.user.photoPath }}" alt="user" />
+                    </div>
+                    <!--begin::User account menu-->
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <div class="menu-content d-flex align-items-center px-3">
+                                <!--begin::Avatar-->
+                                <div class="symbol symbol-50px me-5">
+                                    <img alt="Logo" src="{{ app.user.photoPath }}" />
+                                </div>
+                                <!--end::Avatar-->
+                                <!--begin::Username-->
+                                <div class="d-flex flex-column">
+                                    <div class="fw-bold d-flex align-items-center fs-5">{{ app.user.name }}
+                                        <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ app.user.formattedRole }}</span></div>
+                                    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ app.user.email }}</a>
+                                </div>
+                                <!--end::Username-->
+                            </div>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu separator-->
+                        <div class="separator my-2"></div>
+                        <!--end::Menu separator-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-5">
+                            <a href="{{ path('dashboard_user_profile') }}" class="menu-link px-5">Profilul meu</a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-5">
+                            <a href="{{ path('dashboard_logout') }}" class="menu-link px-5">Sign out</a>
+                        </div>
+                        <!--end::Menu item-->
+                    </div>
+                    <!--end::User account menu-->
+                    <!--end::Menu wrapper-->
+                </div>
+                <!--end::User menu-->
+                <!--begin::Header menu toggle-->
+                <div class="app-navbar-item d-lg-none ms-2 me-n3" title="Show header menu">
+                    <div class="btn btn-icon btn-active-color-primary w-30px h-30px w-md-35px h-md-35px" id="kt_app_header_menu_toggle">
+                        <!--begin::Svg Icon | path: icons/duotune/text/txt001.svg-->
+                        <span class="svg-icon svg-icon-2 svg-icon-md-1">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 11H3C2.4 11 2 10.6 2 10V9C2 8.4 2.4 8 3 8H13C13.6 8 14 8.4 14 9V10C14 10.6 13.6 11 13 11ZM22 5V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4V5C2 5.6 2.4 6 3 6H21C21.6 6 22 5.6 22 5Z" fill="currentColor" />
+                            <path opacity="0.3" d="M21 16H3C2.4 16 2 15.6 2 15V14C2 13.4 2.4 13 3 13H21C21.6 13 22 13.4 22 14V15C22 15.6 21.6 16 21 16ZM14 20V19C14 18.4 13.6 18 13 18H3C2.4 18 2 18.4 2 19V20C2 20.6 2.4 21 3 21H13C13.6 21 14 20.6 14 20Z" fill="currentColor" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                </div>
+                <!--end::Header menu toggle-->
+            </div>
+            <!--end::Navbar-->
+        </div>
+        <!--end::Header wrapper-->
+    </div>
+    <!--end::Header container-->
+</div>

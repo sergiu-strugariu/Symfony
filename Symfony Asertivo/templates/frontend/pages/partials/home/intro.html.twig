@@ -1,0 +1,35 @@
+<div class="intro">
+    <div class="inner section">
+        <div class="left-content">
+            <h1>{{ section.name }}</h1>
+            <div class="left-content__buttons">
+                <ul>
+                    {% for link in section.links %}
+                        <li>
+                            <a href="{{ link.url }}" class="{{ loop.index0 == 0 ? 'blue-btn' : 'border-btn' }}">
+                                {{ link.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="right-content">
+            <div class="right-content__images">
+                {% for gallery in section.galleries %}
+                    <img src="{{ asset(app_page_section_gallery_path ~ gallery.fileName, 'cloudflare') }}"
+                         alt="{{ gallery.title }}"
+                    />
+                {% endfor %}
+            </div>
+            <div class="video-container">
+                <div class="video-overlay">
+                    <video autoplay muted loop playsinline>
+                        <source src="{{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }}" type="video/webm"/>
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

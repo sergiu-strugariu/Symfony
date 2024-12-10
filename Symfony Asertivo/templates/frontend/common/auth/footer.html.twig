@@ -1,0 +1,19 @@
+{% set footerRules = menuService.menuItems('footer-rules') %}
+<div class="login-footer">
+    <div class="inner">
+        <ul>
+            <li>
+                <p>
+                    Copyright © {{ 'now'|date('Y') }} | Toate drepturile rezervate
+                </p>
+            </li>
+            {% for item in footerRules %}
+                <li>
+                    <a href="{{ item['link'] }}">
+                        {{ item['linkText'] }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

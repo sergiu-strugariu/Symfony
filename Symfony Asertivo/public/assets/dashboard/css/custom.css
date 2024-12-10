@@ -1,0 +1,9 @@
+@media print {
+    .table-responsive {
+        overflow-x: visible;
+    }
+
+    #monitoring .fw-bold {
+        font-size: 10px;
+    }
+}

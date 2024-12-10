@@ -1,0 +1,135 @@
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">Nume</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9">
+        <!--begin::Row-->
+        <div class="row">
+            <!--begin::Col-->
+            <div class="col-lg-6 fv-row">
+                {{ form_widget(form.firstName, {'attr': {'class': 'form-control form-control-lg form-control-solid mb-3 mb-lg-0', 'placeholder': 'Prenume'}}) }}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-lg-6 fv-row">
+                {{ form_widget(form.lastName, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Nume'}}) }}
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">CI</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9">
+        <!--begin::Row-->
+        <div class="row">
+            <!--begin::Col-->
+            <div class="col-lg-6 fv-row">
+                {{ form_widget(form.idCardSeries, {'attr': {'class': 'form-control form-control-lg form-control-solid mb-3 mb-lg-0', 'placeholder': 'Serie'}}) }}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-lg-6 fv-row">
+                {{ form_widget(form.idCardNumber, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Numar'}}) }}
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">CNP</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.cnp, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'CNP'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">Data nasterii</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.dateOfBirth, {'attr': {'class': 'form-control form-control-lg form-control-solid datepicker', 'placeholder': 'Data nasterii'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">Adresa</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9">
+        <!--begin::Row-->
+        <div class="row">
+            <!--begin::Col-->
+            <div class="col-lg-6 fv-row">
+                {{ form_widget(form.county, {'attr': {'data-control': 'select2', 'data-name': 'county', 'data-placeholder': 'Alege un judet', 'class': 'form-select form-select-solid form-select-lg mb-3 mb-lg-0', 'data-trigger-id': '#user_personal_data_form_city', 'data-value': user.county ? user.county.id : ""}}) }}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-lg-6 fv-row">
+                {{ form_widget(form.city, {'attr': {'data-control': 'select2', 'data-name': 'city', 'data-placeholder': 'Alege o localitate', 'class': 'form-select form-select-solid form-select-lg mb-3 mb-lg-0', 'data-value': user.city ? user.city.id : ""}}) }} 
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">Domiciliu</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.homeAddress, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Domiciliu', 'rows': '3'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">Cetatenie</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.citizenship, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Cetatenie'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="row mb-6">
+    <!--begin::Label-->
+    <label class="col-lg-3 col-form-label required fw-semibold fs-6">Numar telefon</label>
+    <!--end::Label-->
+    <!--begin::Col-->
+    <div class="col-lg-9 fv-row">
+        {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control form-control-lg form-control-solid', 'placeholder': 'Numar telefon'}}) }}
+    </div>
+    <!--end::Col-->
+</div>
+<!--end::Input group-->

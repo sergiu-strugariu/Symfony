@@ -1,0 +1,42 @@
+<p style="font-size: 14px; Margin-bottom: 10px;">Draga, {{ prospect.relationName }},</p>
+<p style="font-size: 14px; Margin-bottom: 10px;">În primul rând doresc să-ti multumesc pentru interesul acordat centrului AsertivO.</p>
+<p style="font-size: 14px; Margin-bottom: 10px;">Conform discuției avute, iata ce am inteles de la dumneavoastra:</p>
+
+<p style="font-size: 14px; Margin-bottom: 10px;"><strong>Detalii despre aparținător:</strong><br/>
+    Nume: {{ prospect.relationName }}<br/>
+    Telefon: {{ prospect.phoneNumber }}<br/>
+    E-mail: {{ prospect.email }}<br/>
+</p>
+
+<p style="font-size: 14px; Margin-bottom: 10px;"><strong>Detalii despre pacient:</strong><br/>
+    Numele pacientului: {{ prospect.beneficiaryName }}<br/>
+    Varsta pacient: {{ prospect.age }}<br/>
+    Diagnostic: {{ prospect.diagnosis }}<br/>
+    Tratament: {{ prospect.treatment }} <em>(in cadrul pachetului este inclusa administrarea tratamentului oral, nu si costul medicatiei, medicatia fiind adusa de catre familie)</em><br/>
+    Nevoi: {{ prospect.personalNeeds }}<br/>
+    Personalitatea: {{ prospect.personality }}<br/>
+    Tipologie camera: {{ prospect.roomType }}<br/>
+    Domiciliul actual: {{ prospect.currentAddress }}<br/>
+    Purtator pampers: {{ prospect.requiresDiapers ? 'Da' : 'Nu'}}<br/>
+    Ingrijire / pat medical: {{ prospect.requiresMedicalBed ? 'Da' : 'Nu' }}<br/>
+    Data posibila internare: {{ prospect.estimatedAdmissionDate|date('d-m-Y') }}<br/>
+</p> 
+
+<p style="font-size: 14px; Margin-bottom: 10px;">Locatie: <strong>Asertivo Otopeni (Calea Bucureștilor 11A, Otopeni 075100)</strong><br/>
+    Pretul este de: <strong>{pret} / luna*</strong></p>
+
+{% if prospect.scheduledAt is not empty %}
+    <p style="font-size: 14px; Margin-bottom: 10px;">Programare pentru vizionare: {{ prospect.scheduledAt|date('d-m-Y') }}, ora {{ prospect.scheduledAt|date('H:i') }}** - <a href="{{ absolute_url(path('viewing', {'uuid': prospect.uid, 'location': prospect.nursingHome.uid})) }}">anulează/reprogrameaza vizita</a></p>
+{% else %}
+    <p style="font-size: 14px; Margin-bottom: 10px;">Programare pentru vizionare: <a href="{{ absolute_url(path('viewing', {'uuid': prospect.uid, 'location': prospect.nursingHome.uid})) }}">programeaza o data</a></p>
+{% endif %}
+
+<p style="font-style: italic; font-size: 12px; Margin-bottom: 0;">*in urma evaluarii din momentul internarii, pretul se poate modifica in functie de nevoile acestuia. In atașament regasiti prezentarea noastră în care sperăm să găsiți răspunsurile la toate întrebările pe care le aveți vizavi de serviciile pe care le oferim seniorilor.</p>
+{% if prospect.scheduledAt is not empty %}
+    <p style="font-style: italic; font-size: 12px; Margin-bottom: 0;">**daca nu mai puteti ajunge la vizita, va rog sa ne anuntati cu minim 24 de ore inainte, sau sa apasati pe acest link pentru a o anula.</p>
+{% endif %}
+
+<p style="font-size: 14px; Margin-bottom: 10px;">Dacă aveți orice întrebări sau dacă este nevoie de mai multe clarificări, vă rugăm să nu ezitați să ne contactați. Corina Enache - corina@asertivo.ro - 07x.29.29.29</p>
+
+<p style="font-size: 14px; Margin-bottom: 10px;">O zi frumoasă,</p>
+

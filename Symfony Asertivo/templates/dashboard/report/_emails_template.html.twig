@@ -1,0 +1,28 @@
+<table class="table table-bordered table-striped mb-8">
+    <thead>
+        <tr class="fw-bold fs-6 text-gray-800">
+            <th>Data</th>
+            <th>Expeditor</th>
+            <th>Destinatar</th>
+            <th>Subiect</th>
+            <th>Open</th>
+            <th>Clicks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for email in emails %}
+            <tr>
+                <td>{{ email['createdAt'] }}</td>
+                <td>{{ email['senderEmail'] }}</td>
+                <td>{{ email['recipientEmail'] }}</td>
+                <td>{{ email['subject'] }}</td>
+                <td>{{ email['opened'] }}</td>
+                <td>{{ email['clicks'] }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" align="center">Nu s-au gasit email-uri pentru acest apartinator...</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

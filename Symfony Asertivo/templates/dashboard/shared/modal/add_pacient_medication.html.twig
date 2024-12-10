@@ -1,0 +1,198 @@
+<!--begin::Modal - Add pacient medication-->
+<div class="modal fade" id="kt_modal_add_pacient_medication" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header border-0 pb-0" id="kt_modal_add_pacient_medication_header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">Adauga medicament</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-add-pacient-medication-modal-action="close">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <form id="kt_modal_add_pacient_medication_form" action="" method="post" class="mw-650px">
+                    <!--begin::Input group-->
+                    <div id="diagnosis_select_row" class="row mb-3">
+                        <div class="col-lg-12 fv-row">
+                            <select name="diagnosis" class="form-control form-select form-select-lg form-select-solid">
+                                <option value="">Alege un diagnostic...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-3">
+                        <div class="col-lg-6 fv-row">
+                            <input type="text" class="form-control form-control-lg form-control-solid" id="drug" name="drug" placeholder="Medicament" />
+                        </div>
+                        <div class="col-lg-6 fv-row">
+                            <input type="text" class="form-control form-control-lg form-control-solid" id="dose" name="dose" placeholder="Doza" />
+                        </div>
+                    </div>
+                    <!--end::Input group-->
+                    <div class="row mb-3">
+                        <div class="mb-3 mt-3">
+                            <div class="form-check form-switch form-check-custom form-check-solid">
+                                <input class="form-check-input form-allow-details" type="checkbox" value="1" name="as-necessary" id="as_necessary" />
+                                <label class="form-check-label text-dark fw-semibold fs-6" for="as_necessary">La nevoie?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="scheduled_wrapper">
+                        <!--begin::Input group-->
+                        <div class="row mb-3">
+                            <div class="col-lg-6 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid datepicker" id="startDate" name="startDate" placeholder="Data start" />
+                            </div>
+                            <div class="col-lg-6 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid datepicker" id="endDate" name="endDate" placeholder="Data final" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-3">
+                            <!--begin::Label-->
+                            <label class="col-lg-6 col-form-label required fw-semibold fs-6">De cate ori pe zi?</label>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group repeater 1-->
+                        <div class="row mb-3 row-allow-details">
+                            <div class="col-lg-2">
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input class="form-check-input form-allow-details" type="checkbox" value="1" id="switcher0"/>
+                                    <label class="form-check-label" for="switcher0"></label>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-hour timepicker" name="details[0][hour]" placeholder="Ora" disabled />
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-observations" name="details[0][observations]" placeholder="Observatii" disabled />
+                            </div>
+                        </div>
+                        <!--end::Input group repeater 1-->
+                        <!--begin::Input group repeater 2-->
+                        <div class="row mb-3 row-allow-details">
+                            <div class="col-lg-2">
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input class="form-check-input form-allow-details" type="checkbox" value="1" id="switcher1"/>
+                                    <label class="form-check-label" for="switcher1"></label>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-hour timepicker" name="details[1][hour]" placeholder="Ora" disabled />
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-observations" name="details[1][observations]" placeholder="Observatii" disabled />
+                            </div>
+                        </div>
+                        <!--end::Input group repeater 2-->
+                        <!--begin::Input group repeater 3-->
+                        <div class="row mb-3 row-allow-details">
+                            <div class="col-lg-2">
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input class="form-check-input form-allow-details" type="checkbox" value="1" id="switcher2"/>
+                                    <label class="form-check-label" for="switcher2"></label>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-hour timepicker" name="details[2][hour]" placeholder="Ora" disabled />
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-observations" name="details[2][observations]" placeholder="Observatii" disabled />
+                            </div>
+                        </div>
+                        <!--end::Input group repeater 3-->
+                        <!--begin::Input group repeater 4-->
+                        <div class="row mb-3 row-allow-details">
+                            <div class="col-lg-2">
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input class="form-check-input form-allow-details" type="checkbox" value="1" id="switcher3"/>
+                                    <label class="form-check-label" for="switcher3"></label>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-hour timepicker" name="details[3][hour]" placeholder="Ora" disabled />
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-observations" name="details[3][observations]" placeholder="Observatii" disabled />
+                            </div>
+                        </div>
+                        <!--end::Input group repeater 4-->
+                        <!--begin::Input group repeater 5-->
+                        <div class="row mb-3 row-allow-details">
+                            <div class="col-lg-2">
+                                <div class="form-check form-switch form-check-custom form-check-solid">
+                                    <input class="form-check-input form-allow-details" type="checkbox" value="1" id="switcher4"/>
+                                    <label class="form-check-label" for="switcher4"></label>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-hour timepicker" name="details[4][hour]" placeholder="Ora" disabled />
+                            </div>
+                            <div class="col-lg-5 fv-row">
+                                <input type="text" class="form-control form-control-lg form-control-solid fv-observations" name="details[4][observations]" placeholder="Observatii" disabled />
+                            </div>
+                        </div>
+                        <!--end::Input group repeater 5-->
+                    </div>
+                    <div id="as_necessary_wrapper" style="display: none;">
+                        <div class="row mb-3">
+                            <div class="col-lg-12 fv-row">
+                                <textarea class="form-control form-control-lg form-control-solid" id="as_necessary_observations" name="asNecessaryObservations" placeholder="Observatii" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!--begin::Input group-->
+                    <div class="row mb-3">
+                        <label class="col-lg-12 col-form-label fw-semibold fs-6">Aminteste-mi cand o sa reevaluez schema de tratament</label>
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-3">
+                        <div class="col-lg-12 fv-row">
+                            <input type="text" class="form-control form-control-lg form-control-solid datepicker" name="notificationDate" placeholder="Data" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-12 fv-row">
+                            <textarea class="form-control form-control-lg form-control-solid" name="notificationObservations" placeholder="Observatii" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <!--end::Input group-->
+                    <div class="row mt-15 mb-5">
+                        <div class="col-lg-12 text-center">
+                            <input type="hidden" id="medication-id" name="medicationId" value="" />
+                            <button type="reset" class="btn btn-light me-3" data-kt-add-pacient-medication-modal-action="cancel">Renunta</button>
+                            <button type="submit" class="btn btn-primary" data-kt-add-pacient-medication-modal-action="submit">
+                                <span class="indicator-label">Salveaza</span>
+                                <span class="indicator-progress">Se incarca...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - Add pacient medication-->

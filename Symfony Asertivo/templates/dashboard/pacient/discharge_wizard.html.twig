@@ -1,0 +1,118 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Externare pacient {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Stepper-->
+    <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid gap-10" id="kt_create_admission_stepper">
+        <!--begin::Aside-->
+        {% include 'dashboard/pacient/_wizard_nav.html.twig' %}
+        <!--begin::Aside-->
+        <!--begin::Content-->
+        <div class="card d-flex flex-row-fluid flex-center">
+            <!--begin::Form-->
+            <form class="card-body py-5 w-100 px-5" id="kt_create_discharge_form" method="POST">
+                {% include 'dashboard/shared/alerts.html.twig' %}
+                {% if activeStep == 1 %}
+                    <!--begin::Step 1-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'CNP', 'subtitle': 'Introdu codul numeric personal'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_cnp.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 1-->
+                {% elseif activeStep == 2 %}
+                    <!--begin::Step 2-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Date externare', 'subtitle': 'Completare date externare'} %}
+                            <!--end::Heading-->
+                            <div class="px-10">
+                                {% include 'dashboard/pacient/_pacient_discharge_data.html.twig' %}
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 2-->
+                {% elseif activeStep == 3 %}
+                    <!--begin::Step 3-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Incarcare documente', 'subtitle': 'Incarcare documente externare'} %}
+                            <!--end::Heading-->
+                            <!--begin::Wrapper-->
+                            {% include 'dashboard/pacient/_digital_record_table.html.twig' %}
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 3-->
+                {% elseif activeStep == 4 %}
+                    <!--begin::Step 4-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Heading-->
+                            {% include 'dashboard/pacient/_step_heading.html.twig' with {'title': 'Final', 'subtitle': 'Finalizeaza externarea'} %}
+                            <!--end::Heading-->
+                            <p class="text-gray-400 fs-4 fw-semibold py-7 text-center">
+                                Apasa pe butonul de mai jos pentru a finaliza <br/> procesul de externare pentru pacient {{ user.name }}.
+                            </p>
+                            <div class="d-flex flex-center pb-10">
+                                <button type="submit" class="btn btn-lg btn-primary">Finalizeaza</button>
+                            </div>
+                            <div class="text-center px-4">
+                                <img src="{{ asset('assets/dashboard/media/illustrations/sketchy-1/2.png') }}" alt="" class="mw-100 mh-300px">
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 4-->
+                {% endif %}
+                <!--begin::Actions-->
+                {% include 'dashboard/pacient/_wizard_actions.html.twig' with {'wizard_path': 'dashboard_pacients_discharge_wizard'} %}
+                <!--end::Actions-->
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Stepper-->
+{% endblock %}
+
+{% block modals %}
+    {% if activeStep == 3 %}
+        {% include 'dashboard/shared/modal/add_pacient_file.html.twig' %}
+        {% include 'dashboard/shared/modal/edit_pacient_file.html.twig' %}
+        {% include 'dashboard/shared/modal/search_users.html.twig' %}
+        {% include 'dashboard/shared/modal/add_pacient_file_deadline.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+        {% if activeStep == 3 %}
+                KTPacientFile.init('{{ user.uid }}');
+                KTModalUserSearch.init();
+                KTAddPacientFileDeadline.init();
+        {% endif %}
+            });
+    </script>
+{% endblock %}

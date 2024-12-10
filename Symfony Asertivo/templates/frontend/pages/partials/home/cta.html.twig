@@ -1,0 +1,15 @@
+<div class="cta">
+    <div class="inner section">
+        <div>
+            <div>
+                {{ section.description|raw }}
+                {% for link in section.links %}
+                    <a href="{{ link.url }}" class="{{ loop.index0 == 0 ? 'blue-btn' : 'border-btn' }}">
+                        {{ link.title }}
+                    </a>
+                {% endfor %}
+            </div>
+            <div data-image="{{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }}"></div>
+        </div>
+    </div>
+</div>

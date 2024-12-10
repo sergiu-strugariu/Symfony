@@ -1,0 +1,91 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Prospecti {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tabs-->
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--end::Tabs-->
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack mt-5 mb-5">
+                <!--begin::Form-->
+                <form class="d-flex align-items-center position-relative my-1" action="" method="GET">
+                    <input type="text" data-kt-pacients-prospects-table-filter="search" class="form-control form-control-solid w-200px ps-5 mx-2" placeholder="Cauta..."/>
+                    <input name="date" id="date" type="text" class="form-control form-control-solid w-150px ps-4 mx-2 monthpicker" placeholder="Selecteaza luna..." value="{{ date }}" />
+                    <select name="status" type="text" class="form-select form-select-solid w-200px ps-4 mx-2">
+                        <option value="">Selecteaza statusul...</option>
+                        <option value="{{ constant('App\\Entity\\Prospect::STATUS_IN_PROGRESS') }}" {{ status == constant('App\\Entity\\Prospect::STATUS_IN_PROGRESS') ? 'selected' : '' }}>In lucru ({{ pendingProspectsCount }})</option>
+                        <option value="{{ constant('App\\Entity\\Prospect::STATUS_PENDING') }}" {{ status == constant('App\\Entity\\Prospect::STATUS_PENDING') ? 'selected' : '' }}>Lista asteptare ({{ waitingProspectsCount }})</option>
+                        <option value="{{ constant('App\\Entity\\Prospect::STATUS_REJECTED') }}" {{ status == constant('App\\Entity\\Prospect::STATUS_REJECTED') ? 'selected' : '' }}>Oferte refuzate ({{ rejectedProspectsCount }})</option>
+                        <option value="{{ constant('App\\Entity\\Prospect::STATUS_ACCEPTED') }}" {{ status == constant('App\\Entity\\Prospect::STATUS_ACCEPTED') ? 'selected' : '' }}>Oferte acceptate ({{ acceptedProspectsCount }})</option>
+                        <option value="{{ constant('App\\Entity\\Prospect::STATUS_ARCHIVED') }}" {{ status == constant('App\\Entity\\Prospect::STATUS_ARCHIVED') ? 'selected' : '' }}>Oferte arhivate ({{ archivedProspectsCount }})</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mx-2">Filtreaza</button>
+                </form>
+                <!--end::Form-->
+                <!--begin::Toolbar-->
+                <div class="d-flex justify-content-end" data-kt-pacient-prospects-table-toolbar="base">
+                    <!--begin::Add pacient -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_prospect">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                        <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
+                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
+                            </svg></span>
+                        <!--end::Svg Icon-->       
+                        Adauga prospect
+                    </button>
+                    <!--end::Add pacient-->
+                </div>
+                <!--end::Toolbar-->
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Datatable-->
+            <table id="kt_datatable_pacients_prospects" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                        <th>Data</th>
+                        <th>Nume apartinator</th>
+                        <th>Sursa Lead</th>
+                        <th>Nume beneficiar</th>
+                        <th>Telefon</th>
+                        <th>Email</th>
+                        <th>Vizionare</th>
+                        <th>Oferta trimisa</th>
+                        <th>Creat de</th>
+                        <th>Status</th>
+                        <th>Actiuni</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold">
+                </tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/quick_add_pacient_prospect.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            let date = '{{ date }}';
+            let status = '{{ status }}';
+            KTDatatablesPacientsProspects.init(date, status);
+        });
+    </script>
+{% endblock %}

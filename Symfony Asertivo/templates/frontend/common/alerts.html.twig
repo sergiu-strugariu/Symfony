@@ -1,0 +1,13 @@
+{% block flashes %}
+    {% for type in ['primary', 'danger', 'warning', 'success'] %}
+        {% for flash in app.session.flashBag.get(type) %}
+            <div class="form-message {{ type }}">
+                <div aria-atomic="true" role="alert" class="{{ type }}-message">
+                    <div class="{{ type }} message">
+                        <p>{{ flash|raw }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

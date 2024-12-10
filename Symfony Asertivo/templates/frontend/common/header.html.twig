@@ -1,0 +1,65 @@
+{% set primaryMenu = menuService.menuItems('primary-menu') %}
+{% set authMenu = menuService.menuItems('auth-menu') %}
+{% set logo = settingService.getService('logo') %}
+<div class="header">
+    <div class="inner">
+        <div class="menu-header mobile-header-menu d-md-none">
+            <a class="header-logo" href="{{ path('app_homepage') }}">
+                <img width="120"
+                     height="45"
+                     data-category="Meniu"
+                     src="{{ asset(app_setting_path ~ logo, 'cloudflare') }}"
+                     alt="logo"
+                />
+            </a>
+            <div class="hamburger-menu hamburger-menu--close"></div>
+        </div>
+        <nav class="nav-menu">
+            <div class="container-wrapper">
+                <div class="links common-elements-links">
+                    <div class="common-elements-links__logo d-none d-md-block">
+                        <a class="header-logo" href="{{ path('app_homepage') }}">
+                            <img width="235"
+                                 height="50"
+                                 src="{{ asset(app_setting_path ~ logo, 'cloudflare') }}"
+                                 alt="logo"
+                            />
+                        </a>
+                    </div>
+                    <nav class="common-elements-links__container">
+                        <div class="left-links">
+                            <ul>
+                                {% for item in primaryMenu %}
+                                    <li>
+                                        <a href="{{ item['link'] }}">
+                                            {{ item['linkText'] }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="right-links">
+                            <ul>
+                                {% for item in authMenu %}
+                                    <li>
+                                        <a href="{{ item['link'] }}" class="{{ item['cssClass'] }}">
+                                            {% if item['icon'] %}
+                                                <img width="22"
+                                                     height="22"
+                                                     src="{{ asset(app_menu_path ~ item['icon'], 'cloudflare') }}"
+                                                     alt="logo"
+                                                />
+                                            {% endif %}
+                                            {{ item['linkText'] }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+

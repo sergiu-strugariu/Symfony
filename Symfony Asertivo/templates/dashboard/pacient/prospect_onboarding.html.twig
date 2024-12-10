@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Inroleaza ca pacient {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tabs-->
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <!--end::Tabs-->
+        </div>
+        <!--begin::Wrapper-->
+        <div class="w-100">
+            {% if pacient.onboarded %}
+                <p class="text-gray-400 fs-4 fw-semibold py-7 text-center">
+                    Prospectul {{ pacient.beneficiaryName }} a fost deja inrolat ca si pacient.
+                </p>
+            {% else %}
+                <p class="text-gray-400 fs-4 fw-semibold py-7 text-center">
+                    Apasa pe butonul de mai jos pentru a inrola ca si pacient prospectul {{ pacient.beneficiaryName }}.
+                </p>
+                <div class="d-flex flex-center pb-10">
+                    <form action="" method="POST">
+                        <button type="submit" class="btn btn-lg btn-primary">Inroleaza</button>
+                    </form>
+                </div>
+            {% endif %}
+            <div class="text-center px-4">
+                <img src="{{ asset('assets/dashboard/media/illustrations/sketchy-1/7.png') }}" alt="" class="mw-100 mh-300px">
+            </div>
+        </div>
+        <!--end::Wrapper--> 
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

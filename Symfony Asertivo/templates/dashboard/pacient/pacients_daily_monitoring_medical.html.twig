@@ -1,0 +1,122 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Administrare medicamentatie {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="my-5">
+                <!--begin::Search-->
+                <form action="" method="get">
+                    <div class="mb-1">
+                        <input name="date" type="text" class="form-control form-control-solid w-150px ps-4 datepicker d-inline-block" placeholder="Selecteaza o data..." value="{{ date|date('Y-m-d') }} "/>
+                        <select name="floor" class="form-select form-select-solid w-200px ps-4 d-inline-block">
+                            <option value="">Alege un etaj...</option>
+                            {% for floor in floors %}
+                                <option value="{{ floor }}" {{ floor == selectedFloor ? 'selected' : '' }}>{{ floor }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary d-inline-block mx-3" name="action" value="filter">Filtreaza</button>
+                        <button type="submit" class="btn btn-primary d-inline-block mx-3" name="action" value="export">Exporta</button>
+                    </div>
+                </form>
+                <!--end::Search-->
+            </div>
+            <!--end::Wrapper-->
+            <div class="my-5">
+                <div class="table-responsive">
+                    <table class="table table-flush">
+                        <thead>
+                            <tr class="fw-bold fs-6 text-gray-800 py-3">
+                                <th style="max-width: 200px;"></th>
+                                <th class="border-bottom" style="max-width: 120px;">Temperatura</th>
+                                <th class="border-bottom" style="max-width: 120px;">Saturatie</th>
+                                <th class="border-bottom" style="max-width: 120px;">Tensiune arteriala</th>
+                                <th class="border-bottom" style="max-width: 120px;">Puls</th>
+                                <th class="border-bottom" style="max-width: 120px;">Glicemie</th>
+                                <th class="border-bottom" style="max-width: 120px;">Perfuzabile</th>
+                                <th class="border-bottom" style="max-width: 120px;">Observatii</th>
+                                <th class="border-bottom" style="max-width: 50px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pacientMonitoringMedical in pacientsMonitoringMedical %}
+                                <tr class="text-gray-800 py-3 hoverable">
+                                    <td style="max-width: 200px;">
+                                        <span class="fw-semibold text-gray-400 badge badge-light-warning">{{ pacientMonitoringMedical['roomNumber']|default('-') }}</span> {{ pacientMonitoringMedical['name'] }}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {{ data['monitoringHour'] }} - {{ data['temperature']|default('N/A') }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {{ data['monitoringHour'] }} - {{ data['saturation']|default('N/A') }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {{ data['monitoringHour'] }} - {{ data['systolicBloodPressure']|default('N/A') ~ '/' ~  data['diastolicBloodPressure']|default('N/A') }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {{ data['monitoringHour'] }} - {{ data['heartRate']|default('N/A') }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {{ data['monitoringHour'] }} - {{ data['glucose']|default('N/A') }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {{ data['monitoringHour'] }} - {{ data['infusion']|default('N/A') }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 120px;">
+                                        {% for key, data in pacientMonitoringMedical['data'] %}
+                                            {% if data['observations'] is not empty %}
+                                                Observatii ({{ data['monitoringHour'] }}): {{ data['observations'] }}<br/>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="border-bottom" style="max-width: 50px;">
+                                        <div class="show-on-hover invisible">
+                                            <a href="#" class="fw-bold text-hover-primary mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_monitoring_medical" data-pacient-uuid="{{ pacientMonitoringMedical['uid'] }}" data-monitoring-date="{{ date|date('Y-m-d H:i') }}">Adauga</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/add_pacient_monitoring_medical.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTPacientMonitoringMedical.init(true);
+        });
+    </script>
+{% endblock %}

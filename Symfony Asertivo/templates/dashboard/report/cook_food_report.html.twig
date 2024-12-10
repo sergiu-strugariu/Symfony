@@ -1,0 +1,92 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Raport lista bucătărie {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-10 px-10">
+            <!--begin::Wrapper-->
+            <div class="my-5 d-print-none">
+                <div class="d-flex justify-content-between">
+                    <!--begin::Form-->
+                    <form action="" method="get">
+                        <div class="d-flex justify-content-left">
+                            <div class="me-2">
+                                <input name="date" class="form-control form-control-solid datepicker"
+                                       value="{{ date }}"
+                                />
+                            </div>
+                            <div class="me-2">
+                                <select name="nursing-home" data-control="select2" class="form-select form-select-solid form-select-lg me-4">
+                                    <option value="">Alege un cămin</option>
+                                    {% for item in nursingHomes %}
+                                        <option value="{{ item.uid }}" {{ selectedNursingHome == item.uid ? 'selected' : '' }}>
+                                            {{ item.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="me-2">
+                                <button type="submit" class="btn btn-primary d-inline-block">
+                                    Filtrează
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                    <div class="me-2">
+                        <button type="button" class="btn btn-primary d-inline-block mx-3" onclick="window.print();">
+                            Printează
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Wrapper-->
+            <div class="my-5">
+                <div class="table-responsive">
+                    {% for floor, items in data %}
+                        <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                            <tr>
+                                <td class="text-dark fw-bold border-end border-start border-top fs-6 ps-2">{{ date }}</td>
+                                <td class="border-end border-start border-top"></td>
+                                <td class="border-end border-start border-top"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-dark fw-bold border-end border-start fs-6 ps-2">{{ 'ETAJ ' ~ floor }}</td>
+                                <td class="border-end border-start"></td>
+                                <td class="border-end border-start"></td>
+                            </tr>
+                            {% for option, names in items %}
+                                <tr>
+                                    <td class="text-dark border-end border-start fs-6 ps-2">{{ option }}</td>
+                                    <td class="text-dark border-end border-start fs-6">{{ names|length }}</td>
+                                    <td class="text-dark border-end border-start fs-6">{{ names|join(',') }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td class="text-dark fw-bold border-end border-start border-top fs-6 ps-2">Nr.
+                                    pacienți
+                                </td>
+                                <td class="border-end border-start"></td>
+                                <td class="border-end border-start"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

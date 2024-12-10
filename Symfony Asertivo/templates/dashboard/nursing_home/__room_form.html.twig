@@ -1,0 +1,52 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.roomNumber, 'Nr camera', {'label_attr': {'class': 'required fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.roomNumber, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Nr camera' }}) }}
+    {{ form_widget(form.uid) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.floor, 'Etaj camera', {'label_attr': {'class': 'required fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.floor, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Etaj camera' }}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.numberOfBeds, 'Nr locuri', {'label_attr': {'class': 'required fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.numberOfBeds, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Nr locuri' }}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.roomType, 'Tip camera', {'label_attr': {'class': 'required fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.roomType, {'attr': {'data-control': 'select2', 'data-placeholder': 'Selecteaza o optiune...', 'class': 'form-select form-select-solid form-select-lg fw-semibold mb-3' }}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.details, 'Detalii', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.details, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Detalii', 'rows': '3' }}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->

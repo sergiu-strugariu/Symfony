@@ -1,0 +1,22 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set role = app.user.role %}
+<ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x fs-5 d-print-none">
+    {% for tab in tabs %}
+        {% if tab.roles is defined and role in tab.roles %}
+            {% if tab.items is empty %}
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary py-5 me-6 {{ tab.path == route ? 'active' : '' }}" href="{{ path(tab.path, {'uuid': pacient.uid}) }}">{{ tab.name }}</a>
+                </li>
+            {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle py-5 me-6" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{ tab.name }}</a>
+                    <ul class="dropdown-menu">
+                        {% for item in tab.items %}
+                            <li><a href="{{ path(item.path, {'uuid': pacient.uid}) }}" class="dropdown-item">{{ item.name }}</a></li>
+                            {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</ul>

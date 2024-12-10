@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Raport asistenti medicali {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-10 px-10">
+            <!--begin::Wrapper-->
+            <div class="my-5 d-print-none">
+                <div class="d-flex justify-content-between">
+                    <!--begin::Form-->
+                    <!--begin::Form-->
+                    <form action="" method="get">
+                        <div class="d-flex justify-content-left">
+                            <div>
+                                <input name="date" class="form-control form-control-solid monthpicker" value="{{ month }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary d-inline-block mx-3">Filtreaza</button>
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                    <div>
+                        <button type="button" class="btn btn-primary d-inline-block mx-3" onclick="window.print();">Printeaza</button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Wrapper-->
+            <div class="my-5">
+                <div class="table-responsive">
+                    <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-4">
+                        <tr>
+                            <td class="text-dark fw-bold fs-6"></td>
+                            {% for i in startDay..endDay %}
+                                <td class="text-dark fw-bold fs-6">{{ i }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% for assistant in data %}
+                            <tr>
+                                <td>{{ assistant['name'] }}</td>
+                                {% for i in startDay..endDay %}
+                                    {% if assistant['data'][i] is defined %}
+                                        <td class="text-dark fs-6">{{ assistant['data'][i]['completed'] is defined ? assistant['data'][i]['completed'] : '' }}</td>
+                                    {% else %}
+                                        <td class="text-dark fs-6"></td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

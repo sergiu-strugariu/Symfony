@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Dosar digitale {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <form action="#" method="POST">
+                {% include 'dashboard/pacient/_digital_record_table.html.twig' %}
+            </form>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/add_pacient_file.html.twig' %}
+    {% include 'dashboard/shared/modal/edit_pacient_file.html.twig' %}
+    {% include 'dashboard/shared/modal/search_users.html.twig' %}
+    {% include 'dashboard/shared/modal/add_pacient_file_deadline.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTPacientFile.init('{{ pacient.uid }}');
+            KTModalUserSearch.init();
+            KTAddPacientFileDeadline.init();
+        });
+    </script>
+{% endblock %}

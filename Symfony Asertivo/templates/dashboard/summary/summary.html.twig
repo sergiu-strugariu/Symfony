@@ -1,0 +1,209 @@
+{% extends 'layout.html.twig' %}
+
+{% set title = 'Borderou ' ~ summary.summaryDate|date('d/m/Y') ~ ' - ' ~ summary.user.name %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Tables Widget 9-->
+    <div class="card mb-5 mb-xl-8">
+        <!--begin::Header-->
+        <div class="card-header border-0 pt-5">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label fw-bold fs-3 mb-1">{{ title }}</span>
+                <span class="text-muted mt-1 fw-semibold fs-7">{{ summary.summaryPacientsCount }} pacienti</span>
+            </h3>
+            <div class="card-toolbar">
+                <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_pacients_search">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                    <span class="svg-icon svg-icon-3">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    Adauga pacient
+                </a>
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body py-3">
+            <!--begin::Table container-->
+            <div class="table-responsive">
+                <!--begin::Table-->
+                <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                    <!--begin::Table head-->
+                    <thead>
+                        <tr class="fw-bold text-muted">
+                            <th class="min-w-250px">Pacient</th>
+                            <th class="min-w-500px">Observatii</th>
+                                {% if summary.type is not null %}
+                                    {% if summary.type.id == constant('App\\Entity\\SummaryType::SUMMARY_TYPE_RECEPTION') %}
+                                    <th class="min-w-250px">Actualizare date</th>
+                                    {% elseif summary.type.id == constant('App\\Entity\\SummaryType::SUMMARY_TYPE_MEDIC') %}
+                                    <th class="min-w-250px">To do</th>
+                                    {% endif %}
+                                {% endif %}
+                            <th class="min-w-50px text-end">Actiuni</th>
+                        </tr>
+                    </thead>
+                    <!--end::Table head-->
+                    <!--begin::Table body-->
+                    <tbody>
+                        {% for pacientSummary in summaries %}
+                            {% set pacient = pacientSummary.pacient %}
+                            <tr class="hoverable {{ pacientSummary.status == constant('App\\Entity\\SummaryPacient::STATUS_COMPLETED') ? 'bg-light-success' : 'bg-light-warning' }}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-45px me-5">
+                                            <img src="{{ pacientSummary.pacient.photoPath }}" alt="" />
+                                        </div>
+                                        <div class="d-flex justify-content-start flex-column">
+                                            <span class="text-dark fw-bold fs-6">{{ pacient.name }} {% if pacientSummary.urgent %}<span class="badge badge-danger badge-sm">Urgent</span>{% endif %}</span>
+                                            {% if is_granted('ROLE_RECEPTION') %}
+                                                <div>
+                                                    <a href="{{ path('dashboard_pacient_reminders', {'uuid': pacient.uid}) }}">Remindere</a>
+                                                </div>
+                                            {% else %}
+                                                <div>
+                                                    <a href="{{ path('dashboard_pacient_overview', {'uuid': pacient.uid}) }}">Fisa pacient</a> |
+                                                    <a href="{{ path('dashboard_pacient_digital_record', {'uuid': pacient.uid}) }}">Dosar digital</a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-muted fw-semibold text-muted d-block fs-7">{{ pacientSummary.observations|default('-') }}</span>
+                                    {% if not is_granted('ROLE_RECEPTION') %}
+                                        <div class="show-on-hover invisible">
+                                            <a href="#" class="fw-bold text-hover-primary mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#kt_modal_edit_summary_pacient" data-summary-pacient-uuid="{{ pacientSummary.uid }}">Actualizeaza observatiile</a>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                {% if is_granted('ROLE_RECEPTION') %}
+                                    <td></td>
+                                {% else %}
+                                    <td>
+                                        {% if summary.type is not null %}
+                                            {% if summary.type.id == constant('App\\Entity\\SummaryType::SUMMARY_TYPE_RECEPTION') %}
+                                                <span class="badge badge-light-danger">lipsa cnp</span> <span class="badge badge-light-warning">16 doc</span> <span class="badge badge-light-danger">lipsa apartinatori</span>
+                                            {% elseif summary.type.id == constant('App\\Entity\\SummaryType::SUMMARY_TYPE_MEDIC')  %}
+                                                <a href="{{ path('dashboard_pacient_diagnoses', {'uuid': pacient.uid}) }}" class="btn btn-primary btn-sm m-1">Diagnostice & tratament</a> 
+                                                <a href="{{ path('dashboard_pacient_reminders', {'uuid': pacient.uid}) }}" class="btn btn-primary btn-sm m-1">Remindere</a>
+                                                <a href="#" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#kt_modal_request_pacient_sample" data-pacient-uuid="{{ pacient.uid }}">Cerere recoltare</a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td>
+                                    {% if not is_granted('ROLE_RECEPTION') %}
+                                        <div class="d-flex justify-content-end flex-shrink-0">
+                                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" data-kt-summary-pacient="delete" data-summary-pacient-uuid="{{ pacientSummary.uid }}">
+                                                <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+                                                <span class="svg-icon svg-icon-3">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor" />
+                                                        <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor" />
+                                                        <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <!--end::Table body-->
+                </table>
+                <!--end::Table-->
+            </div>
+            <!--end::Table container-->
+        </div>
+        <!--begin::Body-->
+    </div>
+    <!--end::Tables Widget 9-->
+
+    {% if summaryNotifications|length > 0 %}
+        <!--begin::Tables Widget 9-->
+        <div class="card mb-5 mb-xl-8">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label fw-bold fs-3 mb-1">Remindere</span>
+                </h3>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body py-3">
+                <!--begin::Table container-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                        <!--begin::Table head-->
+                        <thead>
+                            <tr class="fw-bold text-muted">
+                                <th class="min-w-250px">Data</th>
+                                <th class="min-w-250px">Pacient</th>
+                                <th class="min-w-500px">Adu-mi aminte de</th>
+                            </tr>
+                        </thead>
+                        <!--end::Table head-->
+                        <!--begin::Table body-->
+                        <tbody>
+                            {% for notification in summaryNotifications %}
+                                <tr>
+                                    <td>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ notification.notificationDate|date('d/m/Y') }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ notification.pacient.name }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ notification.observations }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <!--end::Table container-->
+            </div>
+            <!--begin::Body-->
+        </div>
+        <!--end::Tables Widget 9-->
+    {% endif %}
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/search_pacients.html.twig' %}
+    {% include 'dashboard/shared/modal/edit_summary_pacient.html.twig' %}
+    {% if summary.type.id == constant('App\\Entity\\SummaryType::SUMMARY_TYPE_MEDIC')  %}
+        {% include 'dashboard/shared/modal/request_pacient_sample.html.twig' %}
+    {% endif %}
+    {% include 'dashboard/shared/toast/default.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTModalPacientSearch.init('{{ summary.uid }}');
+            KTPacientSummary.init(true);
+            {% if summary.type.id == constant('App\\Entity\\SummaryType::SUMMARY_TYPE_MEDIC')  %}
+                KTPacientSample.init();
+            {% endif %}
+        });
+    </script>
+{% endblock %}
+

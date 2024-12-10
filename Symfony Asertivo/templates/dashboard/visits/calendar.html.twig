@@ -1,0 +1,90 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Calendar vizite {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack my-5">
+                <form id="pacient_visit_form" action="" method="get">
+                    <!--begin::Datepicker-->
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <input id="visit_date" type="text" name="date"
+                               class="form-control form-control-lg form-control-solid w-150px ps-5 datepicker"
+                               placeholder="Data" value="{{ date }}"/>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <select id="visit_location" name="location" data-control="select2"
+                                    class="form-select form-select-lg form-select-solid w-300px ms-6">
+                                {% for nursingHome in nursingHomes %}
+                                    <option value="{{ nursingHome.uid }}" {{ selectedNursingHomeUuid == nursingHome.uid ? 'selected' : '' }}>{{ nursingHome.name }}</option>
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            <input id="visit_location" type="hidden" name="location"
+                                   value="{{ selectedNursingHomeUuid }}"/>
+                        {% endif %}
+                    </div>
+                    <!--end::Datepicker-->
+                </form>
+                {% if not is_granted('ROLE_ASSISTANCE_MEDICAL') %}
+                    <div>
+                        <button class="btn btn-flex btn-primary me-3" data-kt-calendar="add"
+                                data-kt-visit-type="{{ constant('App\\Entity\\PacientVisitCalendar::VISIT_TYPE_RELATION') }}">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                            <span class="svg-icon svg-icon-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                      transform="rotate(-90 11.364 20.364)" fill="currentColor"/>
+                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"/>
+                            </svg>
+                        </span>
+                            Adauga vizita
+                        </button>
+                        <button class="btn btn-flex btn-primary" data-kt-calendar="add"
+                                data-kt-visit-type="{{ constant('App\\Entity\\PacientVisitCalendar::VISIT_TYPE_MEDICAL') }}">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                            <span class="svg-icon svg-icon-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                      transform="rotate(-90 11.364 20.364)" fill="currentColor"/>
+                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"/>
+                            </svg>
+                        </span>
+                            Adauga programare medicala
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Calendar-->
+            <div id="kt_calendar_app"></div>
+            <!--end::Calendar-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/add_event_calendar.html.twig' %}
+    {% include 'dashboard/shared/modal/view_event_calendar.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTAppCalendar.init();
+        });
+    </script>
+{% endblock %}

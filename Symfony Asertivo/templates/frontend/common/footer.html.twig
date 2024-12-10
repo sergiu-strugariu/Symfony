@@ -1,0 +1,125 @@
+{% set footerRules = menuService.menuItems('footer-rules') %}
+{% set footerMenu = menuService.menuItems('footer-menu') %}
+
+{% set logoFooter = settingService.getService('footerLogo') %}
+{% set facebookLink = settingService.getService('facebookLink') %}
+{% set linkedInLink = settingService.getService('linkedinLink') %}
+<footer class="footer">
+    <div class="inner">
+        <div class="top-section">
+            <div class="text-section">
+                <h4>Ai întrebări sau dorești să ne contactezi?</h4>
+                <p>
+                    Îți stăm oricând la dispoziție pentru întrebări, solicitări sau sugestii. Trimite-ne un mesaj
+                    folosind formularul
+                </p>
+            </div>
+            <div class="subscribe-section contact-form-wrapper has-loader">
+                <form class="contact" id="contactForm">
+                    <!--begin::Form message-->
+                    <div class="form-message">
+                        {% include "frontend/common/alerts.html.twig" %}
+                    </div>
+                    <!--end::Form message-->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Nume*</label>
+                            <input type="text"
+                                   id="fullName"
+                                   name="fullName"
+                                   autocomplete="off"
+                                   placeholder="Nume*"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="emailAddress">Email*</label>
+                            <input type="email" id="emailAddress"
+                                   name="emailAddress"
+                                   autocomplete="off"
+                                   placeholder="Email*"
+                                   class="form-email"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row form-message">
+                        <div class="form-group ">
+                            <label for="message">Mesaj*</label>
+                            <textarea placeholder="Mesaj*" name="message" id="message"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row checkbox checkbox-group">
+                        <input type="checkbox" id="terms" name="terms">
+                        <label for="terms">
+                            Sunt de acord cu prelucrarea datelor mele cu caracter personal în conformitate cu
+                            <a href="">Politica de Confidentialitate</a>
+                        </label>
+                    </div>
+                    <div class="button-wrapper">
+                        <input type="submit" id="edit-submit" class="submit-btn" value="Trimite">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bottom-section">
+            <div class="container-wrapper">
+                <div class="links common-elements-links">
+                    <div class="common-elements-links__logo">
+                        <a class="header-logo" href="{{ path('app_homepage') }}">
+                            <img src="{{ asset(app_setting_path ~ logoFooter, 'cloudflare') }}"
+                                 alt="logo"
+                            />
+                        </a>
+                    </div>
+                    <nav class="common-elements-links__container">
+                        <div class="left-links">
+                            <ul>
+                                {% for item in footerMenu %}
+                                    <li>
+                                        <a href="{{ item['link'] }}">
+                                            {{ item['linkText'] }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="right-links">
+                            <ul>
+                                <li>
+                                    <a href="{{ facebookLink }}" target="_blank">
+                                        <img src="{{ asset('assets/frontend/images/common/Facebook-footer.svg') }}"
+                                             alt="Facebook"
+                                        />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ linkedInLink }}" target="_blank">
+                                        <img src="{{ asset('assets/frontend/images/common/linkedin-footer.svg') }}"
+                                             alt="LinkedIn"
+                                        />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="section copyright ">
+                <p>
+                    Copyright © {{ 'now'|date('Y') }} | Toate drepturile rezervate
+                </p>
+                <div class="bottom-links">
+                    <ul>
+                        {% for item in footerRules %}
+                            <li>
+                                <a href="{{ item['link'] }}">
+                                    {{ item['linkText'] }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

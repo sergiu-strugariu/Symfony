@@ -1,0 +1,325 @@
+{% extends 'base_v2.html.twig' %}
+
+{% block title %}Programare vizita{% endblock %}
+
+{% block stylesheets %}
+    <!--begin::Fonts(mandatory for all pages)-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="{{ asset('assets/dashboard/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/dashboard/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
+{% endblock %}
+
+{% block javascripts %}
+    <!--begin::Javascript-->
+    <script>var hostUrl = "assets/";</script>
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/scripts.bundle.js') }}"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--end::Javascript-->
+{% endblock %}
+
+{% block body %}
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root" id="kt_app_root">
+        <style>body { background-image: url({{ asset('assets/dashboard/media/auth/bg9.jpg') }}); }</style>
+        <!--begin::Page bg image-->
+        <!--end::Page bg image-->
+        <!--begin::Feedback -->
+        <div class="d-flex flex-column flex-center flex-column-fluid">
+            <!--begin::Content-->
+            <div class="d-flex flex-column flex-center p-10">
+                <!--begin::Wrapper-->
+                <div class="card card-flush w-lg-650px py-5">
+                    <div class="card-body py-15 py-lg-20">
+                        <!--begin::Logo-->
+                        <div class="mb-13 text-center ">
+                            <a href="#">
+                                <img alt="Logo" src="{{ asset('assets/dashboard/media/logos/logo_nursing_os.png') }}" class="h-80px" />
+                            </a>
+                        </div>
+                        <!--end::Logo-->
+                        <div class="w-md-350px mb-2 mx-auto">
+                            <!--begin::Title-->
+                            <h1 class="fw-bolder text-gray-900 mb-7 text-center">{{ error ? 'Eroare' : 'Programeaza/anuleaza vizita' }}</h1>
+                            <!--end::Title-->
+                            {% if error %}
+                                <p class="text-danger text-center fs-5">{{ message }}</p>
+                            {% else %}
+                                <!--begin::Form-->
+                                <form id="viewing_form" method="POST" action="">
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required fw-semibold fs-6 text-start mb-3">Data</label>
+                                        <!--end::Label-->
+                                        <!--begin::Col-->
+                                        <div>
+                                            <input type="text" name="date" class="form-control form-control-lg form-control-solid datetimepicker" placeholder="Data vizita" value="{{ prospect.scheduledAt is not empty ? prospect.scheduledAt|date('Y-m-d H:i') : '' }}" />
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <div class="mb-6 text-center">
+                                        <input type="hidden" name="location" value="{{ location }}" />
+                                        <button type="submit" class="btn btn-primary me-2" data-viewing-action="schedule">
+                                            <span class="indicator-label">Programeaza vizita</span>
+                                            <span class="indicator-progress">Se incarca...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                        {% if prospect.scheduledAt is not empty  %}
+                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#kt_modal_cancel_viewing">Anuleaza vizita</a>
+                                        {% endif %}
+                                    </div>
+                                </form>
+                                <!--end::Form-->
+                            {% endif %}
+
+                        </div>
+                        <!--end::Form-->
+                        <!--begin::Illustration-->
+                        <div class="mb-n5 text-center">
+                            <img src="{{ asset('assets/dashboard/media/illustrations/sketchy-1/1.png') }}" class="mw-100 mh-200px" alt="" />
+                        </div>
+                        <!--end::Illustration-->
+                    </div>
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Feedback-->
+    </div>
+    <!--end::Root-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/cancel_viewing.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="https://unpkg.com/flatpickr@4.6.13/dist/plugins/monthSelect/index.js"></script>
+    <script src="{{ asset('assets/dashboard/js/common.js') }}"></script>
+    <script>
+        var KTViewing = function () {
+            // Init schedule viewing
+            var initScheduleViewing = (uuid) => {
+                var form = document.getElementById('viewing_form');
+                // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+                var validator = FormValidation.formValidation(
+                        form,
+                        {
+                            fields: {
+                                'date': {
+                                    validators: {
+                                        notEmpty: {
+                                            message: 'Te rugam să introduci o dată validă'
+                                        }
+                                    }
+                                }
+                            },
+
+                            plugins: {
+                                trigger: new FormValidation.plugins.Trigger(),
+                                bootstrap: new FormValidation.plugins.Bootstrap5({
+                                    rowSelector: '.fv-row',
+                                    eleInvalidClass: '',
+                                    eleValidClass: ''
+                                })
+                            }
+                        }
+                );
+
+                // Submit button handler
+                const submitButton = document.querySelector('[data-viewing-action="schedule"]');
+                submitButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    // Validate form before submit
+                    if (validator) {
+                        validator.validate().then(function (status) {
+                            if (status == 'Valid') {
+                                // Show loading indication
+                                submitButton.setAttribute('data-kt-indicator', 'on');
+
+                                // Disable button to avoid multiple click 
+                                submitButton.disabled = true;
+
+                                // send AJAX call to backend
+                                $.ajax({
+                                    url: '/viewing/' + uuid + '/ajax/schedule',
+                                    method: 'POST',
+                                    dataType: 'json',
+                                    data: $(form).serialize(),
+                                    success: function (response) {
+                                        var icon = "error";
+                                        if (response.success) {
+                                            icon = "success";
+                                            setTimeout(function () {
+                                                window.location.reload();
+                                            }, 3000);
+                                        }
+
+                                        KTSwal.showSwal(response.message, icon);
+                                    },
+                                    error: function () {
+                                        KTSwal.showDefaultErrorSwal();
+                                    },
+                                    complete: function () {
+                                        // Remove loading indication
+                                        submitButton.removeAttribute('data-kt-indicator');
+                                        // Enable button
+                                        submitButton.disabled = false;
+                                    }
+                                });
+
+                            } else {
+                                // Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                                KTSwal.showSwal("Datele introduse nu sunt valide, te rugam sa incerci din nou", "error");
+                            }
+                        });
+                    }
+                });
+            };
+
+            var initCancelViewing = (uuid) => {
+                var form, modal;
+                const element = document.getElementById('kt_modal_cancel_viewing');
+
+                if (typeof (element) != 'undefined' && element != null) {
+                    form = element.querySelector('#kt_modal_cancel_viewing_form');
+                    modal = new bootstrap.Modal(element);
+                }
+
+                // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+                var validator = FormValidation.formValidation(
+                        form,
+                        {
+                            fields: {
+                                'option': {
+                                    validators: {
+                                        notEmpty: {
+                                            message: 'Te rugam sa selectezi un motiv'
+                                        }
+                                    }
+                                },
+                                'otherReason': {
+                                    validators: {
+                                        callback: {
+                                            message: 'Te rugam sa introduci motivul',
+                                            callback: function (input) {
+                                                var element = input.element;
+                                                var otherReason = document.getElementById("reason5");
+                                                return (otherReason.checked) ? (element.value !== '') : true;
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+
+                            plugins: {
+                                trigger: new FormValidation.plugins.Trigger(),
+                                bootstrap: new FormValidation.plugins.Bootstrap5({
+                                    rowSelector: '.fv-row',
+                                    eleInvalidClass: '',
+                                    eleValidClass: ''
+                                })
+                            }
+                        }
+                );
+
+                // Submit button handler
+                const submitButton = document.querySelector('[data-kt-cancel-viewing-modal-action="submit"]');
+                submitButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    var selectedOption = $('input[name="option"]:checked').val();
+                    $('#reason').val(selectedOption == 'other' ? $('#otherReason').val() : selectedOption);
+
+                    // Validate form before submit
+                    if (validator) {
+                        validator.validate().then(function (status) {
+                            if (status == 'Valid') {
+                                // Show loading indication
+                                submitButton.setAttribute('data-kt-indicator', 'on');
+
+                                // Disable button to avoid multiple click 
+                                submitButton.disabled = true;
+
+                                // send AJAX call to backend
+                                $.ajax({
+                                    url: '/viewing/' + uuid + '/ajax/cancel',
+                                    method: 'POST',
+                                    dataType: 'json',
+                                    data: $(form).serialize(),
+                                    beforeSend: function () {
+                                        // Show loading indication
+                                        submitButton.setAttribute('data-kt-indicator', 'on');
+
+                                        // Disable button to avoid multiple click 
+                                        submitButton.disabled = true;
+                                    },
+                                    success: function (response) {
+                                        var icon = "error";
+                                        if (response.success) {
+                                            icon = "success";
+                                            setTimeout(function () {
+                                                window.location.reload();
+                                            }, 2000);
+                                        }
+
+                                        KTSwal.showSwal(response.message, icon);
+                                    },
+                                    error: function () {
+                                        KTSwal.showDefaultErrorSwal();
+                                    },
+                                    complete: function () {
+                                        // Remove loading indication
+                                        submitButton.removeAttribute('data-kt-indicator');
+                                        // Enable button
+                                        submitButton.disabled = false;
+                                    }
+                                });
+                            } else {
+                                // Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                                KTSwal.showSwal("Datele introduse nu sunt valide, te rugam sa incerci din nou", "error");
+                            }
+                        });
+                    }
+                });
+
+                // Cancel button handler
+                const cancelButton = element.querySelector('[data-kt-cancel-viewing-modal-action="cancel"]');
+                cancelButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    form.reset(); // Reset form			
+                    modal.hide();
+                });
+
+                // Close button handler
+                const closeButton = element.querySelector('[data-kt-cancel-viewing-modal-action="close"]');
+                closeButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    form.reset(); // Reset form			
+                    modal.hide();
+                });
+            };
+
+            return {
+                // Public functions
+                init: function (uuid) {
+                    initScheduleViewing(uuid);
+                    initCancelViewing(uuid);
+                }
+            };
+        }();
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTViewing.init('{{ uuid }}');
+        });
+    </script>
+{% endblock %}

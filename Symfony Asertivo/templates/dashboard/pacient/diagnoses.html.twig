@@ -1,0 +1,171 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Diagnostice {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <!--begin::Timeline-->
+            <div class="timeline mt-6">
+                {% for diagnosis in pacientDiagnoses %}
+                    {% set medic = diagnosis.medic %}
+                    <div class="timeline-item hoverable">
+                        <!--begin::Timeline line-->
+                        <div class="timeline-line w-40px"></div>
+                        <!--end::Timeline line-->
+                        <!--begin::Timeline icon-->
+                        <div class="timeline-icon symbol symbol-circle symbol-40px me-4">
+                            <div class="symbol-label bg-light">
+                                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.3" d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z" fill="currentColor" />
+                                        <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="currentColor" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                        </div>
+                        <!--end::Timeline icon-->
+                        <!--begin::Timeline content-->
+                        <div class="timeline-content mb-10 mt-n1">
+                            <!--begin::Timeline heading-->
+                            <div class="pe-3 mb-5">
+                                <!--begin::Title-->
+                                <div class="mb-1">
+                                    <span class="fs-5 fw-semibold mb-1">{{ diagnosis.diagnosis }}</span> 
+                                    {% if not is_granted('ROLE_ASSISTANCE_MEDICAL')  and not is_granted('ROLE_PHYSICAL_THERAPY') %}
+                                        <a href="#" class="btn btn-primary btn-sm show-on-hover invisible" data-bs-toggle="modal" data-bs-target="#kt_modal_edit_pacient_diagnosis" data-diagnosis-id="{{ diagnosis.id }}">Editează</a>&nbsp;<a href="#" class="btn btn-danger btn-sm show-on-hover invisible delete-diagnosis" data-diagnosis-id="{{ diagnosis.id }}">Sterge</a>
+                                    {% endif %}
+                                </div>
+                                <div class="fs-6 text-muted mb-2">{{ diagnosis.observations|nl2br }}</div>
+                                <!--end::Title-->
+                                <!--begin::Description-->
+                                <div class="d-flex align-items-center mt-1 fs-6">
+                                    <!--begin::Info-->
+                                    <div class="text-muted me-2 fs-7">Adaugat de</div>
+                                    {# {{ diagnosis.createdAt|date('d/m/Y') }} #}
+                                    <!--end::Info-->
+                                    <!--begin::User-->
+                                    <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="{{ medic.name }}">
+                                        <img src="{{ medic.photoPath }}" alt="img" />
+                                    </div>
+                                    <!--end::User-->
+                                </div>
+                                <!--end::Description-->
+                            </div>
+                            <!--end::Timeline heading-->
+                            {% if diagnosis.pacientMedications|length > 0 %}
+                                <div class="overflow-auto pb-2">
+                                    {% for medication in diagnosis.pacientMedications %}
+                                        <!--begin::Record-->
+                                        <div class="d-flex align-items-center border border-dashed border-gray-300 rounded px-7 py-3 mb-5">
+                                            <!--begin::Title-->
+                                            <div class="fs-5 text-dark fw-semibold w-900px min-w-200px">{{ medication.details }}</div>
+                                            <!--end::Title-->
+                                            <!--begin::Status-->
+                                            <div class="min-w-125px pe-2">
+                                                <span class="badge badge-light-primary">{{ medication.status }}</span>
+                                            </div>
+                                            <!--End::Status-->
+                                            {% if not is_granted('ROLE_ASSISTANCE_MEDICAL')  and not is_granted('ROLE_PHYSICAL_THERAPY') %}
+                                                <!--begin::Action-->
+                                                <button type="button" class="btn btn-sm btn-primary edit-medication-plan me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_medication" data-diagnosis-id="{{ diagnosis.id }}" data-pacient-uuid="{{ pacient.uid }}" data-medication-id="{{ medication.id }}">Editeaza</button>
+                                                <!--end::Action-->
+                                                <!--begin::Action-->
+                                                <button type="button" class="btn btn-sm btn-light btn-active-light-primary stop-medication-plan" data-medication-id="{{ medication.id }}">Intrerupe</button>
+                                                <!--end::Action-->
+                                            {% endif %}
+                                        </div>
+                                        <!--end::Record-->
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if diagnosis.notifications|length > 0 %}
+                                <div class="py-2">
+                                    {% for notification in diagnosis.notifications %}
+                                        <div class="text-muted fs-7">Reminder: {{ notification.notificationDate|date('d/m/Y') }} - {{ notification.observations }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if not is_granted('ROLE_ASSISTANCE_MEDICAL')  and not is_granted('ROLE_PHYSICAL_THERAPY') %}
+                                <a href="#" class="btn btn-primary btn-sm show-on-hover invisible" data-bs-toggle="modal" data-bs-target="#kt_modal_add_pacient_medication" data-diagnosis-id="{{ diagnosis.id }}" data-pacient-uuid="{{ pacient.uid }}" data-medication-id="">Adauga medicament</a>
+                            {% endif %}
+                        </div>
+                        <!--end::Timeline content-->
+                    </div>
+                {% endfor %}
+                {% if not is_granted('ROLE_ASSISTANCE_MEDICAL') and not is_granted('ROLE_PHYSICAL_THERAPY') %}
+                    <!--begin::Timeline item-->
+                    <div class="timeline-item">
+                        <!--begin::Timeline line-->
+                        <div class="timeline-line w-40px"></div>
+                        <!--end::Timeline line-->
+                        <!--begin::Timeline icon-->
+                        <div class="timeline-icon symbol symbol-circle symbol-40px">
+                            <div class="symbol-label bg-light">
+                                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.3" d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z" fill="currentColor" />
+                                        <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="currentColor" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                        </div>
+                        <!--end::Timeline icon-->
+                        <!--begin::Timeline content-->
+                        <div class="timeline-content mb-10 mt-n2">
+                            <!--begin::Timeline heading-->
+                            <div class="overflow-auto pe-3">
+                                <!--begin::Title-->
+                                <div class="fs-5 fw-semibold mb-2">Adauga diagnostic nou</div>
+                                <!--end::Title-->
+                                <form class="mw-450px" action="" method="post">
+                                    <div class="mb-5 fv-row">
+                                        <input type="text" name="diagnosis" class="form-control form-control-solid" placeholder="Nume diagnostic" required/>
+                                    </div>
+                                    <div class="mb-5 fv-row">
+                                        <textarea name="observations" class="form-control form-control-solid" placeholder="Detalii diagnostic" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-5 fv-row">
+                                        <button type="submit" class="btn btn-primary">Adauga diagnostic</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--end::Timeline heading-->
+                        </div>
+                        <!--end::Timeline content-->
+                    </div>
+                    <!--end::Timeline item-->
+                {% endif %}
+            </div>
+            <!--end::Timeline-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block modals %}
+    {% include 'dashboard/shared/modal/add_pacient_medication.html.twig' %}
+    {% include 'dashboard/shared/modal/edit_pacient_diagnosis.html.twig' %}
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTPacientDiagnosis.init('{{ pacient.uid }}');
+        });
+    </script>
+{% endblock %}

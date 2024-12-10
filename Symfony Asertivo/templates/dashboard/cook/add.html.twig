@@ -1,0 +1,44 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Adaugă meniu {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Header-->
+        <div class="card-header">
+            <!--begin::Title-->
+            <h3 class="card-title">Adaugă meniu</h3>
+            <!--end::Title-->
+        </div>
+        <!--end::Header-->
+
+        <form class="form py-5" action="" method="POST">
+            <!--begin::Card body-->
+            <div class="card-body py-4">
+                {% include 'dashboard/cook/_form.html.twig' %}
+            </div>
+            <!--end::Card body-->
+            <!--begin::Card footer-->
+            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                <a href="{{ path('dashboard_cook_menus') }}" class="btn btn-light btn-active-light-primary me-2">Renunță</a>
+                <button type="submit" class="btn btn-primary">Salvează</button>
+            </div>
+            <!--begin::Card footer-->
+        </form>
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTEmbeddedCollection.init();
+        });
+    </script>
+{% endblock %}

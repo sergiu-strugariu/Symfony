@@ -1,0 +1,140 @@
+{% import "dashboard/partials/form/macros.html.twig" as form %}
+
+{% set textarea = constant('App\\Helper\\PageBuilderHelper::TEXTAREA_TYPE') %}
+
+{% set link = constant('App\\Helper\\PageBuilderHelper::LINK')['type'] %}
+{% set gallery = constant('App\\Helper\\PageBuilderHelper::GALLERY')['type'] %}
+{% set hidden = constant('App\\Helper\\PageBuilderHelper::HIDDEN')['type'] %}
+{% set checkbox = constant('App\\Helper\\PageBuilderHelper::CHECKBOX')['type'] %}
+{% set weight = constant('App\\Helper\\PageBuilderHelper::WEIGHT') %}
+
+{% set sectionType = constant('App\\Helper\\PageBuilderHelper::SECTION') %}
+{% set widgetType = constant('App\\Helper\\PageBuilderHelper::WIDGET') %}
+
+<form method="post" action="{{ path('dashboard_page_save', {'machineName': pageTitle}) }}"
+      enctype="multipart/form-data">
+    <div class="card card-dashed">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">{{ entity.name }}</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            {% for variable in template['variables'] %}
+                {% if variable['type'] == textarea %}
+                    {{ form.textarea(variable, template['machineName'], template['entity']) }}
+                {% else %}
+                    {{ form.input(variable, template['machineName'], template['entity']) }}
+                {% endif %}
+            {% endfor %}
+            <div class="card card-dashed mt-4 p-4">
+                <h2 class="fw-bold cursor-pointer mb-0 p-4">
+                    Sections
+                </h2>
+                <div class="draggable-sections">
+                    {% for section in template['sections']|sort((a, b) => a['weight'] <=> b['weight']) %}
+                        <div class="card card-dashed draggable-section-item mb-5">
+                            {{ form.hidden(section['machineName'], section['entity'],weight,section['weight']) }}
+                            <div class="card-header">
+                                <div class="d-flex align-items-center collapsible py-3 toggle mb-0 collapsed" data-bs-toggle="collapse" data-bs-target="#kt_page_{{ section['machineName'] }}">
+                                    <div class="btn btn-icon btn-light-dark btn-sm">
+                                        <i class="fas fa-plus toggle-off"></i>
+                                        <i class="fas fa-minus toggle-on"></i>
+                                    </div>
+                                    <h3 class="card-label px-3 m-0">
+                                        {{ section['name']}}
+                                    </h3>
+                                </div>
+                                <div class="card-toolbar">
+                                    <div class="btn btn-icon btn-light-dark btn-sm draggable-handle__section_item">
+                                        <i class="fas fa-grip-horizontal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="kt_page_{{ section['machineName'] }}" class="collapse">
+                                <div class="card-body">
+                                    {% for variable in section['variables'] %}
+                                        {% if variable['type'] == link %}
+                                            {{ form.link(variable, section['machineName'], section['entity']) }}
+                                        {% elseif variable['type'] == textarea %}
+                                            {{ form.textarea(variable, section['machineName'], section['entity']) }}
+                                        {% elseif variable['type'] == checkbox %}
+                                            {{ form.checkbox(variable, section['machineName'], section['entity']) }}
+                                        {% elseif variable['type'] == gallery %}
+                                            {{ form.gallery(variable, section['machineName'], section['entity'], sectionType) }}
+                                        {% else %}
+                                            {{ form.input(variable, section['machineName'], section['entity']) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% if section['widgets'] is defined %}
+                                    <div class="card card-dashed m-3">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h3 class="card-label">
+                                                    Widgets
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="draggable-widgets__{{ section['machineName'] }}">
+                                                {% for widget in section['widgets']|sort((a, b) => a['weight'] <=> b['weight']) %}
+                                                    <div class="draggable-widget-item__{{ section['machineName'] }}">
+                                                        {{ form.hidden(widget['machineName'], widget['entity'],weight,widget['weight']) }}
+                                                        <div class="card card-dashed mb-3">
+                                                            <div class="card-header">
+                                                                <div class="d-flex align-items-center collapsible py-3 toggle mb-0 collapsed"
+                                                                     data-bs-toggle="collapse"
+                                                                     data-bs-target="#kt_page_{{ widget['machineName'] }}">
+                                                                    <div class="btn btn-icon btn-light-dark btn-sm">
+                                                                        <i class="fas fa-plus toggle-off"></i>
+                                                                        <i class="fas fa-minus toggle-on"></i>
+                                                                    </div>
+                                                                    <h3 class="card-label px-3 m-0">
+                                                                        Widget - #{{ loop.index }}
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="card-toolbar">
+                                                                    <button type="button" class="btn btn-icon btn-light-dark btn-sm draggable-handle__widget__{{ section['machineName'] }}">
+                                                                        <i class="fas fa-grip-horizontal"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div id="kt_page_{{ widget['machineName'] }}" class="card-body collapse">
+                                                                {% for variable in widget['variables'] %}
+                                                                    {% if variable['type'] == link %}
+                                                                        {{ form.link(variable, widget['machineName'], widget['entity']) }}
+                                                                    {% elseif variable['type'] == textarea %}
+                                                                        {{ form.textarea(variable, widget['machineName'], widget['entity']) }}
+                                                                    {% elseif variable['type'] == checkbox %}
+                                                                        {{ form.checkbox(variable, widget['machineName'], widget['entity']) }}
+                                                                    {% elseif variable['type'] == gallery %}
+                                                                        {{ form.gallery(variable, widget['machineName'], widget['entity'], widgetType) }}
+                                                                    {% else %}
+                                                                        {{ form.input(variable, widget['machineName'], widget['entity']) }}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('dashboard_pages_index') }}" class="btn btn-light me-2">
+                Anulare
+            </a>
+            <button type="submit" class="btn btn-primary">
+                Salvează
+            </button>
+        </div>
+    </div>
+</form>

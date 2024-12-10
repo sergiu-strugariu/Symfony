@@ -1,0 +1,20 @@
+{% extends 'layout_email.html.twig' %}
+
+{% block content %}
+    <div class="email-header">
+        <h1>Activare Cont</h1>
+    </div>
+    <div class="email-body">
+        <p>Bună,</p>
+        <p>Mulțumim că ți-ai creat un cont la noi! Pentru a finaliza înregistrarea, te rugăm să activezi contul tău făcând clic pe butonul de mai jos:</p>
+        <p>
+            <a href="{{ activationUrl }}" class="activate-button">Activează Contul</a>
+        </p>
+        <p>Dacă butonul nu funcționează, copiază și lipește următorul link în browserul tău:</p>
+        <p><a href="{{ activationUrl }}">Link de activare</a></p>
+    </div>
+    <div class="footer">
+        <p>Dacă nu ai solicitat crearea acestui cont, te rugăm să ignori acest email.</p>
+        <p>&copy; {{ app_name }}</p>
+    </div>
+{% endblock %}

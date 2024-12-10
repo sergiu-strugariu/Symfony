@@ -1,0 +1,56 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Vizite {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <div class="py-3">
+                <!--begin::Table-->
+                <table class="table gs-0 gy-3 my-0 mw-900px">
+                    <!--begin::Table body-->
+                    <tbody>
+                        <tr class="fw-bold fs-6 text-dark">
+                            <td>Nr</td>
+                            <td>Data si ora</td>
+                            <td>Vizitator</td>
+                            <td>Observații</td>
+                            <td>Status</td>
+                        </tr>
+                        {% for visit in pacientVisits %}
+                            <tr>
+                                <td>
+                                    <span class="text-dark fs-6">{{ loop.index }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-dark fs-6">{{ visit.startDate|date('d-m-Y H:i') }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-dark fs-6">-</span>
+                                </td>
+                                <td>
+                                    <span class="text-dark fs-6">{{ visit.observations }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-dark fs-6">{{ visit.status }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <!--end::Table body-->
+                </table>
+                <!--end::Table-->
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

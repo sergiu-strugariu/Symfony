@@ -1,0 +1,73 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Schema tratament {{ pacient.name }} {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            {% include 'dashboard/shared/breadcrumbs.html.twig' %}
+            {% include 'dashboard/pacient/_pacient_tabs.html.twig' %}
+            <!--begin::Wrapper-->
+            <div class="mt-5 mb-3">
+                <form action="" method="get">
+                    <div class="d-flex">
+                        <input name="date" type="text" class="form-control form-control-solid w-150px ps-4 monthpicker me-3" placeholder="Selecteaza luna..." value="{{ date }}" />
+                        <button type="submit" class="btn btn-primary">Filtreaza</button>
+                    </div>
+                </form>
+            </div>
+            <!--end::Wrapper-->
+            {% for date, plans in treatmentPlans %}
+                <!--begin::Header-->
+                <div class="card-header pt-3 px-0 border-0">
+                    <!--begin::Title-->
+                    <h3 class="card-title">
+                        <span class="card-label fw-bold text-gray-800">{{ date }}</span>
+                    </h3>
+                    <!--end::Title-->
+                </div>
+                <!--end::Header-->
+                <div class="pb-3">
+                    <!--begin::Table-->
+                    <table class="table gs-0 gy-3 my-0 mw-900px">
+                        <!--begin::Table body-->
+                        <tbody>
+                            {% for plan in plans %}
+                                {% set badgeClass = 'badge-light-warning' %}
+                                {% if plan['status'] == constant('App\\Entity\\PacientMedicationDetails::STATUS_ADMINISTERED') %}
+                                    {% set badgeClass = 'badge-light-success' %}
+                                {% elseif plan['status'] == constant('App\\Entity\\PacientMedicationDetails::STATUS_REFUSED') %}
+                                    {% set badgeClass = 'badge-light-danger' %}
+                                {% endif %}
+                                <tr>
+                                    <td class="w-50px">
+                                        <span class="text-muted">{{ plan['hour'] }}</span>
+                                    </td>
+                                    <td class="w-350px">
+                                        <span class="text-dark">{{ plan['details'] }}</span>
+                                    </td>
+                                    <td class="w-50px">
+                                        <span class="badge {{ badgeClass }}">{{ plan['status'] }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark">{{ plan['assistant'] }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+            {% endfor %}
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}

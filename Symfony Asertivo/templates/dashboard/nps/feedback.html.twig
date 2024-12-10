@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block stylesheets %}
+    <!--begin::Fonts(mandatory for all pages)-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="{{ asset('assets/dashboard/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/dashboard/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
+{% endblock %}
+
+{% block javascripts %}
+    <!--begin::Javascript-->
+    <script>var hostUrl = "assets/";</script>
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/scripts.bundle.js') }}"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--end::Javascript-->
+{% endblock %}
+
+{% block body %}
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root" id="kt_app_root">
+        <style>body { background-image: url({{ asset('assets/dashboard/media/auth/bg9.jpg') }}); }</style>
+        <!--begin::Page bg image-->
+        <!--end::Page bg image-->
+        <!--begin::Feedback -->
+        <div class="d-flex flex-column flex-center flex-column-fluid">
+            <!--begin::Content-->
+            <div class="d-flex flex-column flex-center p-10">
+                <!--begin::Wrapper-->
+                <div class="card card-flush w-lg-650px py-5">
+                    <div class="card-body py-15 py-lg-20">
+                        <!--begin::Logo-->
+                        <div class="mb-13 text-center ">
+                            <a href="#">
+                                <img alt="Logo" src="{{ asset('assets/dashboard/media/logos/logo_nursing_os.png') }}" class="h-80px" />
+                            </a>
+                        </div>
+                        <!--end::Logo-->
+                        <div class="w-md-350px mb-2 mx-auto">
+                            <!--begin::Title-->
+                            <h1 class="fw-bolder text-gray-900 mb-7 text-center">{{ error ? 'Eroare' : 'Multumim pentru nota!' }}</h1>
+                            <!--end::Title-->
+                            {% if error %}
+                                <p class="text-danger text-center fs-5">{{ message }}</p>
+                            {% else %}
+                                <!--begin::Form-->
+                                <form id="nps_feedback_form" method="POST" action="">
+                                    <div class="mb-6 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required fw-semibold fs-6 text-start mb-3">Lasa-ne si un feedback</label>
+                                        <!--end::Label-->
+                                        <!--begin::Col-->
+                                        <div>
+                                            <textarea name="feedback" class="form-control form-control-lg form-control-solid" rows="5" required></textarea>
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <div class="mb-6 text-center">
+                                        <button type="submit" class="btn btn-primary" data-nps-feedback-action="submit">
+                                            <span class="indicator-label">Trimite</span>
+                                            <span class="indicator-progress">Se incarca...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+
+                                    </div>
+                                </form>
+                                <!--end::Form-->
+                            {% endif %}
+
+                        </div>
+                        <!--end::Form-->
+                        <!--begin::Illustration-->
+                        <div class="mb-n5 text-center">
+                            <img src="{{ asset('assets/dashboard/media/auth/chart-graph.png') }}" class="mw-100 mh-300px" alt="" />
+                        </div>
+                        <!--end::Illustration-->
+                    </div>
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Feedback-->
+    </div>
+    <!--end::Root-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="https://unpkg.com/flatpickr@4.6.13/dist/plugins/monthSelect/index.js"></script>
+    <script src="{{ asset('assets/dashboard/js/common.js') }}"></script>
+    <script>
+        // Init add feedback
+        var initAddFeedback = (uuid) => {
+            var form = document.getElementById('nps_feedback_form');
+            // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+            var validator = FormValidation.formValidation(
+                    form,
+                    {
+                        fields: {
+                            'feedback': {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Te rugam sa introduci feedback-ul tau'
+                                    }
+                                }
+                            }
+                        },
+
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger(),
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: '.fv-row',
+                                eleInvalidClass: '',
+                                eleValidClass: ''
+                            })
+                        }
+                    }
+            );
+
+            // Submit button handler
+            const submitButton = document.querySelector('[data-nps-feedback-action="submit"]');
+            submitButton.addEventListener('click', e => {
+                e.preventDefault();
+
+                // Validate form before submit
+                if (validator) {
+                    validator.validate().then(function (status) {
+                        if (status == 'Valid') {
+                            // Show loading indication
+                            submitButton.setAttribute('data-kt-indicator', 'on');
+
+                            // Disable button to avoid multiple click 
+                            submitButton.disabled = true;
+
+                            // send AJAX call to backend
+                            $.ajax({
+                                url: '/nps/' + uuid + '/ajax/feedback',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: $(form).serialize(),
+                                success: function (response) {
+                                    var icon = "error";
+                                    if (response.success) {
+                                        icon = "success";
+                                    }
+
+                                    KTSwal.showSwal(response.message, icon);
+                                },
+                                error: function () {
+                                    KTSwal.showDefaultErrorSwal();
+                                },
+                                complete: function () {
+                                    // Remove loading indication
+                                    submitButton.removeAttribute('data-kt-indicator');
+                                    // Enable button
+                                    submitButton.disabled = false;
+                                }
+                            });
+
+                        } else {
+                            // Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                            KTSwal.showSwal("Datele introduse nu sunt valide, te rugam sa incerci din nou", "error");
+                        }
+                    });
+                }
+            });
+        };
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            initAddFeedback('{{ uuid }}');
+        });
+    </script>
+{% endblock %}

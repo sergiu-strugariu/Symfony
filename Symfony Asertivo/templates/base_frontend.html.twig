@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}| {{ app_name }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/dashboard/media/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/dashboard/media/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/dashboard/media/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+        {% block stylesheets %}
+        {% endblock %}
+    </head>
+    <body class="header-gradient">
+        {% block body %}
+        {% endblock %}
+        {% block modals %}
+        {% endblock %}
+        {% block javascripts %}
+        {% endblock %}
+        {% block page_javascripts %}
+        {% endblock %}
+    </body>
+</html>

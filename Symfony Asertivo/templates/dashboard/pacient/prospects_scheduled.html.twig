@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Vizionari programate {{ parent() }}{% endblock %}
+
+{% block toolbar %}
+    {% include 'dashboard/shared/toolbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Tabs-->
+            {% include 'dashboard/shared/tabs.html.twig' %}
+            <!--end::Tabs-->
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack mt-5 mb-5">
+                <!--begin::Form-->
+                <form class="d-flex align-items-center position-relative my-1" action="" method="GET">
+                    <input type="text" data-kt-pacients-prospects-scheduled-table-filter="search" class="form-control form-control-solid w-200px ps-5 mx-5" placeholder="Cauta..."/>
+                    <input name="date" id="date" type="text" class="form-control form-control-solid w-200px ps-4 mx-5 monthpicker" placeholder="Selecteaza luna..." value="{{ date }}" />
+                    <button type="submit" class="btn btn-primary">Filtreaza</button>
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Datatable-->
+            <table id="kt_datatable_pacients_prospects_scheduled" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                        <th>Data vizita</th>
+                        <th>Nume apartinator</th>
+                        <th>Nume beneficiar</th>
+                        <th>Telefon</th>
+                        <th>Creat de</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold">
+                </tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            let date = '{{ date }}';
+            KTDatatablesPacientsProspectsScheduled.init(date);
+        });
+    </script>
+{% endblock %}

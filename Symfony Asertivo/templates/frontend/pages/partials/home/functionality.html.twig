@@ -1,0 +1,12 @@
+<div class="all-functionality section">
+    <div class="inner">
+        {{ section.description|raw }}
+        <div class="top-section">
+            {% for link in section.links %}
+                <a href="{{ link.url }}" class="{{ loop.index0 == 0 ? 'blue-btn' : 'border-btn' }}">
+                    {{ link.title }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

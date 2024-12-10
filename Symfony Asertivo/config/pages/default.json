@@ -1,0 +1,280 @@
+{
+  "entity": "Page",
+  "name": "Default",
+  "machineName": "default",
+  "url": "/default",
+  "classes": "default",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Home section",
+      "machineName": "section_intro_1",
+      "template": "intro.html.twig",
+      "weight": 1,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "classes",
+          "type": "text",
+          "label": "Class",
+          "placeholder": "Class",
+          "value": "",
+          "required": false
+        },
+        {
+          "field": "linkText",
+          "type": "text",
+          "label": "Link Text",
+          "placeholder": "Link Text",
+          "value": "",
+          "isTranslated": true,
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "link",
+          "type": "url",
+          "label": "Link",
+          "placeholder": "Link",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "isActive",
+          "type": "checkbox",
+          "label": "Is active",
+          "value": 0
+        },
+        {
+          "field": "galleries",
+          "type": "gallery",
+          "placeholderTitle": "Insert image title",
+          "placeholderImage": "Insert image",
+          "label": "Galleries",
+          "required": true,
+          "value": []
+        },
+        {
+          "field": "links",
+          "type": "link",
+          "label": "Links",
+          "placeholderTitle": "Insert link title",
+          "placeholderLink": "Insert link",
+          "required": true,
+          "value": []
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "section_widget_1",
+          "template": "content.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "classes",
+              "type": "text",
+              "label": "Class",
+              "placeholder": "Class",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Link Text",
+              "placeholder": "Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Link",
+              "placeholder": "Link",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert image title",
+              "placeholderImage": "Insert image",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            },
+            {
+              "field": "links",
+              "type": "link",
+              "label": "Links",
+              "placeholderTitle": "Insert link title",
+              "placeholderLink": "Insert link",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "section_widget_2",
+          "template": "content.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "classes",
+              "type": "text",
+              "label": "Class",
+              "placeholder": "Class",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "linkText",
+              "type": "text",
+              "label": "Link Text",
+              "placeholder": "Link Text",
+              "value": "",
+              "isTranslated": true,
+              "required": true,
+              "editable": true
+            },
+            {
+              "field": "link",
+              "type": "url",
+              "label": "Link",
+              "placeholder": "Link",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert image title",
+              "placeholderImage": "Insert image",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            },
+            {
+              "field": "links",
+              "type": "link",
+              "label": "Links",
+              "placeholderTitle": "Insert link title",
+              "placeholderLink": "Insert link",
+              "required": true,
+              "value": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

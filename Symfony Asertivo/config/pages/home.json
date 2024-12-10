@@ -1,0 +1,1010 @@
+{
+  "entity": "Page",
+  "name": "Home",
+  "machineName": "home",
+  "url": "/",
+  "classes": "homepage",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "NursingHelp, ERP-ul care crește productivitatea și reduce costurile căminelor de bătrâni",
+      "machineName": "home_section_intro",
+      "template": "intro.html.twig",
+      "weight": 1,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "galleries",
+          "type": "gallery",
+          "placeholderTitle": "Insert file title",
+          "placeholderImage": "Insert file",
+          "label": "Galleries",
+          "required": true,
+          "value": []
+        },
+        {
+          "field": "links",
+          "type": "link",
+          "label": "Links",
+          "placeholderTitle": "Insert link title",
+          "placeholderLink": "Insert link",
+          "required": true,
+          "value": []
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Testimonial section",
+      "machineName": "home_testimonials",
+      "template": "testimonials.html.twig",
+      "weight": 2,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "home_testimonial_widget_one",
+          "template": "testimonial-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_testimonial_widget_two",
+          "template": "testimonial-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_testimonial_widget_three",
+          "template": "testimonial-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_testimonial_widget_four",
+          "template": "testimonial-item.html.twig",
+          "weight": 4,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Cum te ajutăm să îți dezvolți business-ul?",
+      "machineName": "home_help",
+      "template": "helps.html.twig",
+      "weight": 3,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "home_help_widget_one",
+          "template": "help-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_help_widget_two",
+          "template": "help-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_help_widget_three",
+          "template": "help-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_help_widget_four",
+          "template": "help-item.html.twig",
+          "weight": 4,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "All functionality",
+      "machineName": "home_all_functionality",
+      "template": "functionality.html.twig",
+      "weight": 4,
+      "variables": [
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "links",
+          "type": "link",
+          "label": "Links",
+          "placeholderTitle": "Insert link title",
+          "placeholderLink": "Insert link",
+          "required": true,
+          "value": []
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "All functionality right-to-left",
+      "machineName": "home_all_functionality_section_one",
+      "template": "function-section.html.twig",
+      "weight": 5,
+      "variables": [
+        {
+          "field": "classes",
+          "type": "text",
+          "label": "Class",
+          "placeholder": "Class",
+          "value": "",
+          "required": false
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "home_all_functionality_section_one_widget_one",
+          "template": "function-section-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_all_functionality_section_one_widget_two",
+          "template": "function-section-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_all_functionality_section_one_widget_three",
+          "template": "function-section-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "All functionality left-to-right",
+      "machineName": "home_all_functionality_section_two",
+      "template": "function-section.html.twig",
+      "weight": 6,
+      "variables": [
+        {
+          "field": "classes",
+          "type": "text",
+          "label": "Class",
+          "placeholder": "Class",
+          "value": "",
+          "required": false
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "home_all_functionality_section_two_widget_one",
+          "template": "function-section-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_all_functionality_section_two_widget_two",
+          "template": "function-section-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_all_functionality_section_two_widget_three",
+          "template": "function-section-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "See how",
+      "machineName": "home_see_how",
+      "template": "see-how.html.twig",
+      "weight": 7,
+      "variables": [
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "links",
+          "type": "link",
+          "label": "Links",
+          "placeholderTitle": "Insert link title",
+          "placeholderLink": "Insert link",
+          "required": true,
+          "value": []
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_1",
+          "template": "see-how-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_2",
+          "template": "see-how-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_3",
+          "template": "see-how-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_4",
+          "template": "see-how-item.html.twig",
+          "weight": 4,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_5",
+          "template": "see-how-item.html.twig",
+          "weight": 5,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_6",
+          "template": "see-how-item.html.twig",
+          "weight": 6,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_7",
+          "template": "see-how-item.html.twig",
+          "weight": 7,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_8",
+          "template": "see-how-item.html.twig",
+          "weight": 8,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_9",
+          "template": "see-how-item.html.twig",
+          "weight": 9,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_10",
+          "template": "see-how-item.html.twig",
+          "weight": 10,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_11",
+          "template": "see-how-item.html.twig",
+          "weight": 11,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "home_see_how_widget_12",
+          "template": "see-how-item.html.twig",
+          "weight": 12,
+          "variables": [
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "CTA section",
+      "machineName": "home_section_cta",
+      "template": "cta.html.twig",
+      "weight": 8,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "links",
+          "type": "link",
+          "label": "Links",
+          "placeholderTitle": "Insert link title",
+          "placeholderLink": "Insert link",
+          "required": true,
+          "value": []
+        }
+      ]
+    }
+  ]
+}

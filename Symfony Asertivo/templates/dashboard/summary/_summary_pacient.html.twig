@@ -1,0 +1,36 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    <label class="fw-semibold fs-6 mb-2">Urgent?</label>
+    <!--begin::Label-->
+    <!--begin::Label-->
+    <div class="d-flex align-items-center">
+        <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+            {{ form_widget(form.urgent, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+            {{ form_label(form.urgent, ' ', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <!--begin::Label-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.observations, 'Observatii', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Observatii', 'rows': '3'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.status, 'Status', {'label_attr': {'class': 'fw-semibold fs-6 mb-2 required'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.status, {'attr': {'data-control': 'select2', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+{{ form_widget(form.uid) }}

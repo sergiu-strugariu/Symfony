@@ -1,0 +1,20 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.diagnosis, 'Nume diagnostic', {'label_attr': {'class': 'required fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.diagnosis, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Nume diagnostic'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.observations, 'Detalii diagnostic', {'label_attr': {'class': 'required fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Nume diagnostic', 'rows': '3'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->

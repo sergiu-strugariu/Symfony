@@ -1,0 +1,17 @@
+{% block flashes %}
+    {% for type in ['primary', 'danger', 'warning', 'success'] %}
+        {% for flash in app.session.flashbag.get(type) %}
+            <!--begin::Alert-->
+            <div class="alert bg-light-{{ type }} d-flex flex-column flex-sm-row py-5 mb-10">
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-column pe-0 pe-sm-10">
+                    <!--begin::Title-->
+                    <h4 class="fw-semibold mb-0">{{ flash|raw }}</h4>
+                    <!--end::Title-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Alert-->
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

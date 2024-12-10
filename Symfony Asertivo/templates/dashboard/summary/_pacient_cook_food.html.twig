@@ -1,0 +1,30 @@
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.foodOption, 'Optiune', {'label_attr': {'class': 'fw-semibold fs-6 mb-2 required'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.foodOption, {'attr': {'data-control': 'select2', 'class': 'form-select form-select-solid form-select-lg fw-semibold'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.date, 'Data', {'label_attr': {'class': 'fw-semibold fs-6 mb-2 required'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.date, {'attr': {'class': 'form-control form-control-solid form-control-lg fw-semibold datepicker'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
+<!--begin::Input group-->
+<div class="fv-row mb-7">
+    <!--begin::Label-->
+    {{ form_label(form.observations, 'Observatii', {'label_attr': {'class': 'fw-semibold fs-6 mb-2'}}) }}
+    <!--end::Label-->
+    <!--begin::Input-->
+    {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-solid mb-3 mb-lg-0', 'placeholder': 'Observatii', 'rows': '3'}}) }}
+    <!--end::Input-->
+</div>
+<!--end::Input group-->
