@@ -6,9 +6,9 @@
     <div class="content section">
         <div class="inner">
             <h2>Loghează-te</h2>
-            <p><small>Nu ai cont pe {{ app_name }}? <a href="{{ path('dashboard_register') }}">Creează cont în 2 minute</a></small></p>
+            <p><small>Nu ai cont pe {{ app_name }}? <a href="{{ path('app_register') }}">Creează cont în 2 minute</a></small></p>
             <div class="form-section form-wrapper has-loader">
-                <form class="form w-100" method="POST" action="{{ path('dashboard_login') }}">
+                <form class="form w-100" method="POST" action="{{ path('app_login') }}">
 
                     {% include 'frontend/common/alerts.html.twig' %}
 

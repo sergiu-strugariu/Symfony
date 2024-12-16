@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Page;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,13 +22,10 @@ class PageType extends AbstractType
                         'message' => 'Acest câmp este obligatoriu.'
                     ]),
                     new File([
-                        'mimeTypes' => ['application/json', 'text/json'],
-                        'mimeTypesMessage' => 'Formatul fișierului este nevalid.',
                         'maxSize' => '8M'
                     ])
                 ]
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

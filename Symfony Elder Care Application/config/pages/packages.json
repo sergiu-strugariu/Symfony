@@ -1,0 +1,391 @@
+{
+  "entity": "Page",
+  "name": "Pachete",
+  "machineName": "packages",
+  "url": "/pachete",
+  "classes": "packages",
+  "variables": [
+    {
+      "field": "name",
+      "type": "text",
+      "label": "Page Name",
+      "placeholder": "Page Name",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "url",
+      "type": "text",
+      "label": "Page URL",
+      "placeholder": "Page URL",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaTitle",
+      "type": "text",
+      "label": "Meta Title",
+      "placeholder": "Meta Title",
+      "value": "",
+      "required": true
+    },
+    {
+      "field": "metaDescription",
+      "type": "textarea",
+      "label": "Meta Description",
+      "placeholder": "Meta Description",
+      "value": "",
+      "required": true
+    }
+  ],
+  "sections": [
+    {
+      "entity": "PageSection",
+      "name": "Pachete Nursing Help",
+      "machineName": "packages_section_intro",
+      "template": "intro.html.twig",
+      "weight": 1,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Video",
+          "placeholder": "Video",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Testează gratuit NursingHelp timp de 30 de zile",
+      "machineName": "packages_section_cta",
+      "template": "cta.html.twig",
+      "weight": 2,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "linkText",
+          "type": "text",
+          "label": "Link Text",
+          "placeholder": "Link Text",
+          "value": "",
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "link",
+          "type": "url",
+          "label": "Link",
+          "placeholder": "Link",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Alege pachetul potrivit nevoilor tale",
+      "machineName": "packages_section_choose_package",
+      "template": "choose-package.html.twig",
+      "weight": 3,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Compară funcționalitățile",
+      "machineName": "packages_section_compare_packages",
+      "template": "compare-packages.html.twig",
+      "weight": 4,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Alătură-te zecilor de parteneri deja existenți",
+      "machineName": "packages_section_partners",
+      "template": "partners.html.twig",
+      "weight": 5,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "galleries",
+          "type": "gallery",
+          "placeholderTitle": "Insert file title",
+          "placeholderImage": "Insert file",
+          "label": "Galleries",
+          "required": true,
+          "value": []
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Ce spun clienții noștri",
+      "machineName": "packages_testimonials",
+      "template": "testimonials.html.twig",
+      "weight": 6,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        }
+      ],
+      "widgets": [
+        {
+          "entity": "PageWidget",
+          "machineName": "packages_testimonial_widget_one",
+          "template": "testimonial-item.html.twig",
+          "weight": 1,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "packages_testimonial_widget_two",
+          "template": "testimonial-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "packages_testimonial_widget_three",
+          "template": "testimonial-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "packages_testimonial_widget_four",
+          "template": "testimonial-item.html.twig",
+          "weight": 4,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entity": "PageSection",
+      "name": "Testează gratuit NursingHelp timp de 30 de zile",
+      "machineName": "packages_section_cta_bottom",
+      "template": "cta-bottom.html.twig",
+      "weight": 7,
+      "variables": [
+        {
+          "field": "name",
+          "type": "text",
+          "label": "Name",
+          "placeholder": "Name",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "description",
+          "type": "textarea",
+          "label": "Content",
+          "placeholder": "Content",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "linkText",
+          "type": "text",
+          "label": "Link Text",
+          "placeholder": "Link Text",
+          "value": "",
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "link",
+          "type": "url",
+          "label": "Link",
+          "placeholder": "Link",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "entity": "Page",
-  "name": "Cookies",
+  "name": "Politica de cookies",
   "machineName": "cookies",
-  "url": "/cookies",
+  "url": "/politica-cookies",
   "classes": "legal cookies-page",
   "variables": [
     {

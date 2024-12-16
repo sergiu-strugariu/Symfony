@@ -1,0 +1,13 @@
+<div class="swiper-slide">
+    <div class="text-section">
+        <p>{{ widget.name }}</p>
+    </div>
+    <div class="user-info">
+        <div class="user-info__image">
+            <div class="image" data-image="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}"></div>
+        </div>
+        <div class="user-info__details">
+            {{ widget.description|raw }}
+        </div>
+    </div>
+</div>

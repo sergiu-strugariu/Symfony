@@ -1,0 +1,42 @@
+<form class="contact" id="contactForm">
+    <!--begin::Form message-->
+    <div class="form-message-wrapper"></div>
+    <!--end::Form message-->
+    <div class="form-row">
+        <div class="form-group">
+            <label for="fullName">Nume*</label>
+            <input type="text"
+                   id="fullName"
+                   name="fullName"
+                   autocomplete="off"
+                   placeholder="Nume*"
+            />
+        </div>
+        <div class="form-group">
+            <label for="emailAddress">Email*</label>
+            <input type="email" id="emailAddress"
+                   name="emailAddress"
+                   autocomplete="off"
+                   placeholder="Email*"
+                   class="form-email"
+            />
+        </div>
+    </div>
+    <div class="form-row form-message">
+        <div class="form-group ">
+            <label for="message">Mesaj*</label>
+            <textarea placeholder="Mesaj*" name="message" id="message"></textarea>
+        </div>
+    </div>
+
+    <div class="form-row checkbox checkbox-group form-group">
+        <input type="checkbox" id="terms" name="terms">
+        <label for="terms" id="terms">
+            Sunt de acord cu prelucrarea datelor mele cu caracter personal în conformitate cu
+            <a href="">Politica de Confidentialitate</a>
+        </label>
+    </div>
+    <div class="button-wrapper">
+        <input type="submit" id="edit-submit" class="submit-btn" value="Trimite">
+    </div>
+</form>

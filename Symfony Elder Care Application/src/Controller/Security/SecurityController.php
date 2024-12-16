@@ -4,8 +4,6 @@ namespace App\Controller\Security;
 
 use App\Entity\User;
 use App\Form\Type\UserRegisterFormType;
-use App\Helper\MailHelper;
-use App\Helper\TokenGenerator;
 use App\Mailer\TwigMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -17,14 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="dashboard_login")
+     * @Route("/login", name="app_login")
      */
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -40,9 +37,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/register", name="dashboard_register")
+     * @Route("/creare-cont", name="app_register")
      */
-    public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TwigMailer $twigMailer): Response {
+    public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TwigMailer $twigMailer): Response
+    {
         /** @var User $user */
         $user = new User();
 
@@ -59,7 +57,7 @@ class SecurityController extends AbstractController
             if (isset($getUser)) {
                 // Set flash message
                 $this->addFlash('danger', 'Adresa de email introdusă este deja folosită. Vă rugăm să folosiți o altă adresă de email sau să vă autentificați cu contul existent');
-                return $this->redirectToRoute('dashboard_register');
+                return $this->redirectToRoute('app_register');
             }
 
             $plainPassword = $form['plainPassword']->getData();
@@ -87,14 +85,14 @@ class SecurityController extends AbstractController
 
             if (!$sent) {
                 $this->addFlash('danger', 'Mesajul nu s-a putut trimite. Incearca mai tarziu.');
-                return $this->redirectToRoute('dashboard_login');
+                return $this->redirectToRoute('app_login');
             }
 
             $em->persist($user);
             $em->flush();
 
             $this->addFlash('primary', 'Felicitări! Contul dvs. a fost creat cu succes.');
-            return $this->redirectToRoute('dashboard_login');
+            return $this->redirectToRoute('app_login');
         }
 
 
@@ -113,12 +111,12 @@ class SecurityController extends AbstractController
 
         if (!$user) {
             $this->addFlash('danger', 'Acest cont nu exista.');
-            return $this->redirectToRoute('dashboard_login');
+            return $this->redirectToRoute('app_login');
         }
 
         if ($user->getStatus() !== User::STATUS_INACTIVE) {
             $this->addFlash('danger', 'Adresa de email a fost deja verificata, te poti loga.');
-            return $this->redirectToRoute('dashboard_login');
+            return $this->redirectToRoute('app_login');
         }
 
         $user->setStatus(User::STATUS_ACTIVE);
@@ -128,7 +126,7 @@ class SecurityController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'Adresa de email a fost confirmata, te poti loga acum.');
-        return $this->redirectToRoute('dashboard_login');
+        return $this->redirectToRoute('app_login');
     }
 
     /**

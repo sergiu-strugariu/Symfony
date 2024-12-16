@@ -7,7 +7,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class DefaultHelper
 {
-    const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'instagramLink', 'logo', 'footerLogo','authImage', 'favicon'];
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISHED = 'published';
+
+    const SETTING_FIELDS = ['phone', 'helpLine', 'email', 'twitterLink', 'facebookLink', 'linkedinLink', 'instagramLink', 'logo', 'footerLogo', 'authImage', 'favicon'];
     const SETTING_FILE_FIELDS = ['logo', 'footerLogo', 'favicon', 'authImage'];
 
     private ParameterBagInterface $parameterBag;
@@ -204,5 +207,16 @@ class DefaultHelper
         }
 
         return $mod97 === 1;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getStatus(): array
+    {
+        return [
+            self::STATUS_DRAFT => self::STATUS_DRAFT,
+            self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
+        ];
     }
 }

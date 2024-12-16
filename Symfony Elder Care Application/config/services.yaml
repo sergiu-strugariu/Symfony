@@ -6,6 +6,9 @@
 parameters:
     app_name: '%env(APP_NAME)%'
     app_env: '%env(APP_ENV)%'
+    app_email: '%env(APP_EMAIL)%'
+    email_address: '%env(EMAIL_ADDRESS)%'
+    email_sender: '%env(EMAIL_SENDER)%'
     from_sender: '%env(EMAIL_SENDER)%'
     from_email: '%env(EMAIL_ADDRESS)%'
     cloudflare_r2_file_path: '%env(CLOUDFLARE_R2_FILE_PATH)%'
@@ -19,6 +22,7 @@ parameters:
     app_default_page_path: '%env(APP_DEFAULT_PAGE_PATH)%'
     app_menu_path: '%env(APP_MENU_PATH)%'
     app_setting_path: '%env(APP_SETTING_PATH)%'
+    app_membership_package_path: '%env(APP_MEMBERSHIP_PACKAGE_PATH)%'
 
 services:
     # default configuration for services in *this* file
@@ -43,6 +47,17 @@ services:
 
     App\Helper\MenuHelper:
         public: true
+
+    App\Helper\MailHelper:
+        arguments:
+            $fromEmail: '%email_address%'
+            $fromSender: '%email_sender%'
+
+    App\EventSubscriber\PageNotFoundListener:
+        arguments:
+            $urlGenerator: '@router'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
 
     Symfony\Component\Uid\Command\GenerateUuidCommand: ~
     

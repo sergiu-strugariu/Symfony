@@ -1,0 +1,22 @@
+<section class="services-listing section" {% if widget.name %}id="{{ widget.name }}"{% endif %}>
+    <div class="inner">
+        {{ widget.description|raw }}
+        <div class="wrapper">
+            <div class="left">
+                <ul>
+                    {% for gallery in widget.galleries %}
+                        <li>
+                            <img src="{{ asset(app_page_widget_gallery_path ~ gallery.fileName, 'cloudflare') }}"
+                                 alt="{{ gallery.title }}"
+                            />
+                            {{ gallery.title }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="right">
+                <div class="image" data-image="{{ asset(app_page_widget_path ~ widget.fileName, 'cloudflare') }}"></div>
+            </div>
+        </div>
+    </div>
+</section>

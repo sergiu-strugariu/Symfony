@@ -1,8 +1,8 @@
 {
   "entity": "Page",
-  "name": "Policy",
+  "name": "Politica de confidențialitate",
   "machineName": "policy",
-  "url": "/policy",
+  "url": "/politica-de-confidentialitate",
   "classes": "legal policy-page",
   "variables": [
     {

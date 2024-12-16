@@ -81,4 +81,17 @@ class BreadcrumbsHelper
             'params' => []
         ]
     ];
+
+    const PACKAGES_BREADCRUMBS = [
+        [
+            'name' => 'Acasă',
+            'route' => 'app_homepage',
+            'params' => []
+        ],
+        [
+            'name' => 'Pachete',
+            'route' => null,
+            'params' => []
+        ]
+    ];
 }

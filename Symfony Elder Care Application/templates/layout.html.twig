@@ -65,6 +65,7 @@
         let hostUrl = "assets/dashboard/";
         let cloudflareR2FilePath = '{{ cloudflare_r2_file_path }}';
         window.notAssistanceMedical = '{{ not is_granted('ROLE_ASSISTANCE_MEDICAL') }}';
+        window.published = '{{ constant('App\\Helper\\DefaultHelper::STATUS_PUBLISHED') }}';
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{ asset('assets/dashboard/plugins/global/plugins.bundle.js') }}"></script>

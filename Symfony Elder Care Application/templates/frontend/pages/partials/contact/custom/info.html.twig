@@ -1,0 +1,19 @@
+{% set phone = settingService.getService('phone') %}
+{% set email = settingService.getService('email') %}
+
+<div class="contact-details section pt-3">
+    <div class="inner">
+        <ul>
+            <li>
+                <img src="{{ asset('assets/frontend/images/contact/phone.svg') }}" alt="phone">
+                Telefon: <a href="tel:{{ phone }}">{{ phone }}</a>
+            </li>
+            <li>
+                <img src="{{ asset('assets/frontend/images/contact/email.svg') }}" alt="mail">
+                Mail: <a href="mailto:{{ email }}" class="mail">
+                    {{ email }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

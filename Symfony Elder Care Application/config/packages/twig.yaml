@@ -17,6 +17,7 @@ twig:
         settingService: '@App\Service\SettingService'
         menuHelper: '@App\Helper\MenuHelper'
         menuService: '@App\Service\MenuService'
+        app_membership_package_path: '%app_membership_package_path%'
 when@test:
     twig:
         strict_variables: true

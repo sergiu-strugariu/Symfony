@@ -49,7 +49,7 @@ class FileUploaderLocal
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        $fileName = $renameFile ? $safeFilename . '-' . uniqid() . '.' . $file->guessExtension() : $safeFilename . '.' . $file->guessExtension();
+        $fileName = $renameFile ? $safeFilename . '-' . uniqid() . '.' . $file->guessClientExtension() : $safeFilename . '.' . $file->guessClientExtension();
 
         try {
             $file->move($directory, $fileName);

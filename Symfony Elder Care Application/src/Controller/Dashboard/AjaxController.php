@@ -64,6 +64,7 @@ use App\Repository\CityRepository;
 use App\Repository\CookMenuRepository;
 use App\Repository\CountyRepository;
 use App\Repository\EmailRepository;
+use App\Repository\MembershipPackageRepository;
 use App\Repository\MenuRepository;
 use App\Repository\NursingHomeRepository;
 use App\Repository\NursingHomeRoomRepository;
@@ -4437,6 +4438,33 @@ class AjaxController extends AbstractController
             'status' => true,
             'companies' => $companies
         ]);
+    }
+
+    /**
+     * @Route("/dashboard/ajax/packages", name="dashboard_ajax_packages")
+     */
+    public function getPackages(Request $request, MembershipPackageRepository $repository, DatatableHelper $datatableHelper): Response
+    {
+        $params = $request->query->all();
+
+        $data = $repository->getPackages();
+        $totalRecords = count($data);
+
+        $data = $this->parseDatatableData($data, $params, $datatableHelper);
+        $totalDisplay = count($data);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $data = array_splice($data, $params['start'], $params['length']);
+        }
+
+        $result = [
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $data
+        ];
+
+        return $this->json($result);
     }
 
     private function parseDatatableData(&$data, $params, $datatableHelper)

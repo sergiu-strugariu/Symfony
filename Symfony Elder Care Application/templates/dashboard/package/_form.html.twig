@@ -1,0 +1,182 @@
+<div class="card mb-5 mb-lg-3 card-flush">
+    <!--begin::Form content-->
+    {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data', 'novalidate': 'novalidate'}}) }}
+    <!--begin::Card body-->
+    <div class="card-body p-9 pb-lg-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.name, 'Nume', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.subName, 'Sub titlu', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.subName, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.subName) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.price, 'Preț' , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.price, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.price) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.discount, 'Discount' , {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.discount, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.discount) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.content, 'Content', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.content, {'attr': {'class': 'tinymce-editor form-control form-control-solid form-control-lg rounded-0 tinymce-editor', 'rows': '6'}}) }}
+                        {{ form_errors(form.content) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.isPopular, 'Popular', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.isPopular, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'Selectează'}}) }}
+                                {{ form_errors(form.isPopular) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!--begin::Label-->
+                            {{ form_label(form.isFree, 'Testează acum', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                {{ form_widget(form.isFree, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'Selectează'}}) }}
+                                {{ form_errors(form.isFree) }}
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.status, 'Status', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.status, {'attr': {'class': 'form-select form-select-solid form-select-lg rounded-0',  'data-control': 'select2', 'data-placeholder': 'Selectează'}}) }}
+                        {{ form_errors(form.status) }}
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {{ form_label(form.fileName, 'Imagine', {'label_attr': {'class': 'col-lg-2 col-form-label fw-semibold fs-6'}}) }}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-10 fv-row">
+                        {{ form_widget(form.fileName, {'attr': {'class': 'form-control form-control-solid form-control-lg rounded-0'}}) }}
+                        {{ form_errors(form.fileName) }}
+                        {% if fileName is defined %}
+                            <div class="form-text">Imagine încărcată:
+                                <a href="{{ asset(app_membership_package_path ~ fileName, 'cloudflare') }}"
+                                   target="_blank">
+                                    {{ fileName }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="form-text">(format acceptat: jpg, jpeg, png, webp, svg max. 3M)</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                {% for key, module in modules %}
+                    <div class="card card-dashed my-6">
+                        <div class="card-header">
+                            <div class="card-title">
+                                {% if module.title is defined %}
+                                    <h3 class="card-label">{{ module.title }}</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% for itemKey, item in module %}
+                                    {% if item is iterable and item.title is defined %}
+                                        <div class="col-md-4">
+                                            <div class="row d-flex align-items-center">
+                                                <label class="col-lg-8 col-form-label fw-semibold fs-6">
+                                                    {{ item.title }}
+                                                </label>
+                                                <div class="col-lg-4 fv-row">
+                                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                                        <input
+                                                                type="checkbox"
+                                                                name="{{ key ~ '[' ~ itemKey ~ ']' }}"
+                                                                class="form-check-input w-45px h-30px"
+                                                                {{ item.enabled ? 'checked' : '' }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!--end::Card body-->
+        <!--begin::Card footer-->
+        <div class="card-footer py-6 pt-lg-0 border-top-0 pb-lg-9 px-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="d-flex justify-content-end">
+                        {{ form_widget(form._token) }}
+                        <a href="{{ path('dashboard_membership_index') }}" class="btn text-uppercase fw-bolder">
+                            Anulare
+                        </a>
+                        <button type="submit"
+                                class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                            Trimite
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card footer-->
+        {{ form_end(form) }}
+        <!--end::Form content-->
+    </div>
+</div>

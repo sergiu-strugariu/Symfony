@@ -1,0 +1,10 @@
+<div class="faq section">
+    <div class="inner">
+        <h1>{{ section.name }}</h1>
+        <div class="wrapper">
+            {% for widget in section.pageWidgets %}
+                {% include 'frontend/pages/partials/services/widgets/' ~ widget.template ignore missing %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

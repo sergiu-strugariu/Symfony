@@ -1,8 +1,8 @@
 {
   "entity": "Page",
-  "name": "Services",
+  "name": "Funcționalități",
   "machineName": "services",
-  "url": "/services",
+  "url": "/functionalitati",
   "classes": "services",
   "variables": [
     {
@@ -42,26 +42,10 @@
     {
       "entity": "PageSection",
       "name": "Toate funcționalitățile de care ai nevoie.",
-      "machineName": "services_section_video_intro",
-      "template": "video-intro.html.twig",
+      "machineName": "services_section_intro",
+      "template": "intro.html.twig",
       "weight": 1,
       "variables": [
-        {
-          "field": "fileName",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "fileNameMob",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
         {
           "field": "name",
           "type": "text",
@@ -94,15 +78,30 @@
           "placeholder": "Link",
           "value": "",
           "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Gif",
+          "placeholder": "Gif",
+          "value": "",
+          "required": true
         }
       ]
     },
-
     {
       "entity": "PageSection",
-      "name": "Submenu.",
-      "machineName": "services_section_submenu",
-      "template": "submenu.html.twig",
+      "name": "Link-uri",
+      "machineName": "services_section_links",
+      "template": "links.html.twig",
       "weight": 2,
       "variables": [
         {
@@ -115,147 +114,11 @@
         }
       ]
     },
-
     {
       "entity": "PageSection",
-      "name": "Planuri flexibile pentru nevoile tale",
-      "machineName": "services_section_cta",
-      "template": "cta.html.twig",
-      "weight": 12,
-      "variables": [
-        {
-          "field": "fileName",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "linkText",
-          "type": "text",
-          "label": "Link Text",
-          "placeholder": "Link Text",
-          "value": "",
-          "required": true,
-          "editable": true
-        },
-        {
-          "field": "link",
-          "type": "url",
-          "label": "Link",
-          "placeholder": "Link",
-          "value": "",
-          "required": true
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Întrebări frecvente",
-      "machineName": "services_section_faq",
-      "template": "faq.html.twig",
-      "weight": 13,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
-          "entity": "PageWidget",
-          "machineName": "service_faq_widget_one",
-          "template": "faq-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "classes",
-              "type": "text",
-              "label": "Class",
-              "placeholder": "Class",
-              "value": "active",
-              "required": false
-            },
-            {
-              "field": "name",
-              "type": "text",
-              "label": "Name",
-              "placeholder": "Name",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            }
-          ]
-        },
-        {
-          "entity": "PageWidget",
-          "machineName": "service_faq_widget_two",
-          "template": "faq-item.html.twig",
-          "weight": 2,
-          "variables": [
-            {
-              "field": "classes",
-              "type": "text",
-              "label": "Class",
-              "placeholder": "Class",
-              "value": "active",
-              "required": false
-            },
-            {
-              "field": "name",
-              "type": "text",
-              "label": "Name",
-              "placeholder": "Name",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul administrativ 1",
-      "machineName": "services_section_listing_one",
-      "template": "services-listing.html.twig",
+      "name": "Servicii",
+      "machineName": "services_section_items",
+      "template": "services.html.twig",
       "weight": 3,
       "variables": [
         {
@@ -265,30 +128,22 @@
           "placeholder": "Name",
           "value": "",
           "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
         }
       ],
       "widgets": [
         {
           "entity": "PageWidget",
-          "machineName": "service_listing_widget_one",
-          "template": "listing-item.html.twig",
+          "machineName": "services_items_widget_one",
+          "template": "services-item.html.twig",
           "weight": 1,
           "variables": [
             {
               "field": "name",
               "type": "text",
-              "label": "Name",
-              "placeholder": "Name",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
               "value": "",
-              "required": true
+              "required": false
             },
             {
               "field": "description",
@@ -305,17 +160,353 @@
               "placeholder": "Image",
               "value": "",
               "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_two",
+          "template": "services-item.html.twig",
+          "weight": 2,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_three",
+          "template": "services-item.html.twig",
+          "weight": 3,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_four",
+          "template": "services-item.html.twig",
+          "weight": 4,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_five",
+          "template": "services-item.html.twig",
+          "weight": 5,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_six",
+          "template": "services-item.html.twig",
+          "weight": 6,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_seven",
+          "template": "services-item.html.twig",
+          "weight": 7,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_eight",
+          "template": "services-item.html.twig",
+          "weight": 8,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
+            }
+          ]
+        },
+        {
+          "entity": "PageWidget",
+          "machineName": "services_items_widget_nine",
+          "template": "services-item.html.twig",
+          "weight": 9,
+          "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Section #ID",
+              "placeholder": "Section #ID",
+              "value": "",
+              "required": false
+            },
+            {
+              "field": "description",
+              "type": "textarea",
+              "label": "Content",
+              "placeholder": "Content",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "fileName",
+              "type": "file",
+              "label": "Image",
+              "placeholder": "Image",
+              "value": "",
+              "required": true
+            },
+            {
+              "field": "galleries",
+              "type": "gallery",
+              "placeholderTitle": "Insert file title",
+              "placeholderImage": "Insert file",
+              "label": "Galleries",
+              "required": true,
+              "value": []
             }
           ]
         }
       ]
     },
-
     {
       "entity": "PageSection",
-      "name": "Modul administrativ 2",
-      "machineName": "services_section_listing_two",
-      "template": "services-listing.html.twig",
+      "name": "Planuri flexibile pentru nevoile tale",
+      "machineName": "services_section_cta",
+      "template": "cta.html.twig",
       "weight": 4,
       "variables": [
         {
@@ -333,41 +524,39 @@
           "placeholder": "Content",
           "value": "",
           "required": true
-        }
-      ],
-      "widgets": [
+        },
         {
-          "entity": "PageWidget",
-          "machineName": "service_listing_widget_two",
-          "template": "listing-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
-              "value": "",
-              "required": true
-            }
-          ]
+          "field": "linkText",
+          "type": "text",
+          "label": "Link Text",
+          "placeholder": "Link Text",
+          "value": "",
+          "required": true,
+          "editable": true
+        },
+        {
+          "field": "link",
+          "type": "url",
+          "label": "Link",
+          "placeholder": "Link",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
         }
       ]
     },
-
     {
       "entity": "PageSection",
-      "name": "Modul administrativ 3",
-      "machineName": "services_section_listing_three",
-      "template": "services-listing.html.twig",
+      "name": "Întrebări frecvente",
+      "machineName": "services_section_faqs",
+      "template": "faqs.html.twig",
       "weight": 5,
       "variables": [
         {
@@ -377,348 +566,52 @@
           "placeholder": "Name",
           "value": "",
           "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
         }
       ],
       "widgets": [
         {
           "entity": "PageWidget",
-          "machineName": "service_listing_widget_three",
-          "template": "listing-item.html.twig",
+          "machineName": "services_section_widget_one",
+          "template": "faq-item.html.twig",
           "weight": 1,
           "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
             {
               "field": "description",
               "type": "textarea",
               "label": "Content",
               "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
               "value": "",
               "required": true
             }
           ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul medical 1",
-      "machineName": "services_section_listing_four",
-      "template": "services-listing.html.twig",
-      "weight": 6,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
         },
         {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
           "entity": "PageWidget",
-          "machineName": "service_listing_widget_four",
-          "template": "listing-item.html.twig",
-          "weight": 1,
+          "machineName": "services_section_widget_two",
+          "template": "faq-item.html.twig",
+          "weight": 2,
           "variables": [
+            {
+              "field": "name",
+              "type": "text",
+              "label": "Name",
+              "placeholder": "Name",
+              "value": "",
+              "required": true
+            },
             {
               "field": "description",
               "type": "textarea",
               "label": "Content",
               "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
-              "value": "",
-              "required": true
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul medical 2",
-      "machineName": "services_section_listing_five",
-      "template": "services-listing.html.twig",
-      "weight": 7,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
-          "entity": "PageWidget",
-          "machineName": "service_listing_widget_five",
-          "template": "listing-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
-              "value": "",
-              "required": true
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul kinetoterapie 1",
-      "machineName": "services_section_listing_six",
-      "template": "services-listing.html.twig",
-      "weight": 8,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
-          "entity": "PageWidget",
-          "machineName": "service_listing_widget_six",
-          "template": "listing-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
-              "value": "",
-              "required": true
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul infirmerie 1",
-      "machineName": "services_section_listing_seven",
-      "template": "services-listing.html.twig",
-      "weight": 9,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
-          "entity": "PageWidget",
-          "machineName": "service_listing_widget_seven",
-          "template": "listing-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
-              "value": "",
-              "required": true
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul recepție 1",
-      "machineName": "services_section_listing_eight",
-      "template": "services-listing.html.twig",
-      "weight": 10,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
-          "entity": "PageWidget",
-          "machineName": "service_listing_widget_eight",
-          "template": "listing-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
-              "value": "",
-              "required": true
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "entity": "PageSection",
-      "name": "Modul bucătărie 1",
-      "machineName": "services_section_listing_nine",
-      "template": "services-listing.html.twig",
-      "weight": 11,
-      "variables": [
-        {
-          "field": "name",
-          "type": "text",
-          "label": "Name",
-          "placeholder": "Name",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "description",
-          "type": "textarea",
-          "label": "Content",
-          "placeholder": "Content",
-          "value": "",
-          "required": true
-        }
-      ],
-      "widgets": [
-        {
-          "entity": "PageWidget",
-          "machineName": "service_listing_widget_nine",
-          "template": "listing-item.html.twig",
-          "weight": 1,
-          "variables": [
-            {
-              "field": "description",
-              "type": "textarea",
-              "label": "Content",
-              "placeholder": "Content",
-              "value": "",
-              "required": true
-            },
-            {
-              "field": "fileName",
-              "type": "file",
-              "label": "Image",
-              "placeholder": "Image",
               "value": "",
               "required": true
             }

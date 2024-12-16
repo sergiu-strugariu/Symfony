@@ -1,6 +1,6 @@
 {
   "entity": "Page",
-  "name": "Home",
+  "name": "Acasă",
   "machineName": "home",
   "url": "/",
   "classes": "homepage",

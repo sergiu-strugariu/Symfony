@@ -1,0 +1,15 @@
+<div class="testimonials section">
+    <div class="inner">
+        <h2>{{ section.name }}</h2>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {% for widget in section.pageWidgets %}
+                    {% include 'frontend/pages/partials/packages/widgets/' ~ widget.template ignore missing %}
+                {% endfor %}
+            </div>
+            <div class="controls">
+                <div class="swiper-pagination-packagesTestimonials bullets-wrapper"></div>
+            </div>
+        </div>
+    </div>
+</div>

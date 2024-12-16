@@ -1,0 +1,14 @@
+<div class="error-page__container">
+    <div class="inner">
+        <div class="error-image">
+            <img src="{{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }}" alt="error-icon">
+        </div>
+        <div class="error-text">
+            <h2>{{ section.name }}</h2>
+            {{ section.description|raw }}
+            <div class="button">
+                <a href="{{ section.link }}">{{ section.linkText }}</a>
+            </div>
+        </div>
+    </div>
+</div>

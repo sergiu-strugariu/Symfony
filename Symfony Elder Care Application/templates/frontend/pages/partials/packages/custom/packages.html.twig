@@ -1,0 +1,37 @@
+<div class="toggle-wrapper">
+    <span class="toggle-text">Plan lunar</span>
+    <div class="toggle-container">
+        <div class="toggle-circle"></div>
+    </div>
+    <span class="toggle-text">Plan anual</span>
+</div>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        {% for package in packages %}
+            {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_comand_detail', {'slug': package.slug}) : url('app_login', {'returnUrl': path('app_packages')}) %}
+            <div class="swiper-slide {{ package.isFree ? 'freePackage' : '' }} {{ package.isPopular ? 'activePackage' : '' }}">
+                <div>
+                    <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}"
+                         alt="{{ package.name }}"
+                    />
+                    <div>
+                        <h3>{{ package.name }}</h3>
+                        <p>{{ package.subName }}</p>
+                    </div>
+                </div>
+                {{ package.content|raw }}
+                <h3 class="packagePrice"
+                    data-price="{{ package.price > 0 ? package.price : '0' }}"
+                    data-discount="{{ package.yearlyPricePerMonth }}">
+                    0 RON / an
+                </h3>
+                <a class="packageButton" href="{{ packagePath }}">
+                    Comandă acum
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="controls">
+        <div class="swiper-pagination-choosePackage bullets-wrapper"></div>
+    </div>
+</div>

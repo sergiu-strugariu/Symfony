@@ -1,7 +1,7 @@
 <div class="breadcrumb">
     <ul>
         {% for item in breadcrumbs %}
-            <li class="breadcrumb-item">
+            <li>
                 {% if item.route is not empty %}
                     <a href="{{ path(item.route, item.params) }}">
                         {{ item.name }}

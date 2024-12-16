@@ -34,16 +34,16 @@
         window.yearly = 'yearly';
         window.userBillingAddressActions = '';
         window.userBillingAddress = '';
-        window.contactFormPath = '';
+        window.contactFormPath = '{{ path('ajax_contact_mail') }}';
         window.formMessages = {
             'name': {
-                'minlength': 'Numele trebuie să aibă cel puțin 2 caractere',
+                'minLength': 'Numele trebuie să aibă cel puțin 2 caractere',
                 'valid_name': 'Numele poate conține doar litere, spații și cratime',
             },
             'default': {
                 'field_required': 'Câmp este obligatoriu.',
                 'default_all_field_required': 'Toate câmpurile sunte obligatorii.',
-                'only_letters': 'Sunt permise doar litere, spații și cratime'
+                'only_letters': 'Sunt permise doar litere, spații și cratime',
             },
             'email': {
                 'required': 'Introdu adresa de email',
@@ -51,14 +51,14 @@
             },
             'phone': {
                 'required': 'Introdu numărul de telefon',
-                'minlength': 'Numarul minim este de 10 caractere',
+                'minLength': 'Numarul minim este de 10 caractere',
                 'maxlength': 'Numarul maxim este de 10 caractere',
                 'phone_ro': 'Numărul de telefon nu este valid',
                 'phone_match': 'Numărul de telefon nu trebuie să coincidă'
             },
             'password': {
                 'required': 'Câmp este obligatoriu.',
-                'minlength': 'Parola trebuie să aibă cel puțin 8 caractere.',
+                'minLength': 'Parola trebuie să aibă cel puțin 8 caractere.',
                 'passwordMatch': 'Parolele nu coincid.',
             },
             'form_messages': {

@@ -1,10 +1,12 @@
 <div class="services-cta section">
-    <div class="inner ">
+    <div class="inner">
         <div class="wrapper">
             <div class="left">
                 <h2>{{ section.name }}</h2>
                 {{ section.description|raw }}
-                <a href="{{ section.link }}">{{ section.linkText }}</a>
+                <a href="{{ section.link }}">
+                    {{ section.linkText }}
+                </a>
             </div>
             <div class="right">
                 <div class="image" style="background-image: url({{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }})"></div>

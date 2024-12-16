@@ -1,8 +1,8 @@
 {
   "entity": "Page",
-  "name": "Terms",
+  "name": "Termeni și condiții",
   "machineName": "terms",
-  "url": "/terms",
+  "url": "/termeni-si-conditii",
   "classes": "legal terms-page",
   "variables": [
     {

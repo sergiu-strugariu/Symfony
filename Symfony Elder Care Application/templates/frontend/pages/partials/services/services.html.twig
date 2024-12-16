@@ -1,0 +1,3 @@
+{% for widget in section.pageWidgets %}
+    {% include 'frontend/pages/partials/services/widgets/' ~ widget.template ignore missing %}
+{% endfor %}

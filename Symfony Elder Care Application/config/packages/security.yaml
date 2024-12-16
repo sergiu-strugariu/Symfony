@@ -17,8 +17,8 @@ security:
             user_checker: App\EventSubscriber\UserChecker
             access_denied_handler: App\EventSubscriber\AccessDeniedListener
             form_login:
-                login_path: dashboard_login
-                check_path: dashboard_login
+                login_path: app_login
+                check_path: app_login
                 default_target_path: dashboard_user_profile
                 enable_csrf: true
             logout:

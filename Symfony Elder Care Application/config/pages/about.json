@@ -1,8 +1,8 @@
 {
   "entity": "Page",
-  "name": "About",
+  "name": "Despre noi",
   "machineName": "about",
-  "url": "/about",
+  "url": "/despre-noi",
   "classes": "about",
   "variables": [
     {
@@ -47,22 +47,6 @@
       "weight": 1,
       "variables": [
         {
-          "field": "fileName",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
-        {
-          "field": "fileNameMob",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
-        {
           "field": "name",
           "type": "text",
           "label": "Name",
@@ -92,6 +76,22 @@
           "type": "url",
           "label": "Link",
           "placeholder": "Link",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileNameMob",
+          "type": "file",
+          "label": "Gif",
+          "placeholder": "Gif",
           "value": "",
           "required": true
         }
@@ -105,14 +105,6 @@
       "weight": 2,
       "variables": [
         {
-          "field": "fileName",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
-        {
           "field": "name",
           "type": "text",
           "label": "Name",
@@ -142,6 +134,14 @@
           "type": "url",
           "label": "Link",
           "placeholder": "Link",
+          "value": "",
+          "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
           "value": "",
           "required": true
         }
@@ -190,8 +190,8 @@
         {
           "field": "fileName",
           "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
+          "label": "Image",
+          "placeholder": "Image",
           "value": "",
           "required": true
         }

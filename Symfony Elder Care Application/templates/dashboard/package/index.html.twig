@@ -1,0 +1,70 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Pachete {{ parent() }}{% endblock %}
+
+{% block content %}
+    <!--begin::Users-->
+    <div class="card card-flush">
+        <!--begin::Card header-->
+        <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <input
+                            type="text"
+                            data-kt-packages-table-filter="search"
+                            class="form-control form-control-solid w-250px ps-12"
+                            placeholder="Căutați ..."
+                    />
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--end::Card title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <a href="{{ path('dashboard_membership_create') }}" class="btn btn-brand btn-md rounded-0 fw-bold btn-primary text-uppercase">
+                    Adăugați pachet
+                </a>
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Datatable-->
+            <table id="kt_datatable_packages" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                    <th>ID</th>
+                    <th class="min-w-150px">Nume</th>
+                    <th class="min-w-150px">Slug</th>
+                    <th class="min-w-150px">Preț</th>
+                    <th class="min-w-150px">Discount</th>
+                    <th class="min-w-100px">Stare</th>
+                    <th class="min-w-100px">Imagine</th>
+                    <th class="min-w-100px">Creat la</th>
+                    <th class="text-end min-w-100px">Acțiuni</th>
+                </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold"></tbody>
+            </table>
+            <!--end::Datatable-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Users-->
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablePackages.init("{{ path('dashboard_ajax_packages') }}", "{{ asset(app_membership_package_path, 'cloudflare') }}");
+        });
+    </script>
+{% endblock %}

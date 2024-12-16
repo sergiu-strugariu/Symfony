@@ -107,7 +107,7 @@ class ResettingController extends AbstractController
                 $em->flush();
 
                 $this->addFlash('primary', 'Felicitări! V-ați actualizat cu succes parola');
-                return $this->redirectToRoute('dashboard_login');
+                return $this->redirectToRoute('app_login');
             }
 
             return $this->render('frontend/security/resetting/reset_password.html.twig', [
@@ -117,6 +117,6 @@ class ResettingController extends AbstractController
         }
 
         $this->addFlash('danger', 'Acest token a expirat');
-        return $this->redirectToRoute('dashboard_login');
+        return $this->redirectToRoute('app_login');
     }
 }

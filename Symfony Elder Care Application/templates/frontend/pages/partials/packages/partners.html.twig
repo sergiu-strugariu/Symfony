@@ -1,0 +1,16 @@
+<div class="partners section">
+    <div class="inner">
+        <div>
+            <h2>{{ section.name }}</h2>
+            <ul>
+                {% for gallery in section.galleries %}
+                    <li>
+                        <img src="{{ asset(app_page_section_gallery_path ~ gallery.fileName, 'cloudflare') }}"
+                             alt="{{ gallery.title }}"
+                        />
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

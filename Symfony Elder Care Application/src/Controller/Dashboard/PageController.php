@@ -226,6 +226,7 @@ class PageController extends AbstractController
         $files = $request->files->get('fields');
 
         if ($request->isMethod('POST')) {
+
             if (!empty($files)) {
                 foreach ($files as $className => $variables) {
                     // Generate the fully qualified class name

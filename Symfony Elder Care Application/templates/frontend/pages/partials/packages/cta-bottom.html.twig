@@ -1,0 +1,12 @@
+<div class="cta section">
+    <div class="inner">
+        <div>
+            <div>
+                <h2>{{ section.name }}</h2>
+                {{ section.description|raw }}
+                <a href="{{ section.link }}" class="border-btn">{{ section.linkText }}</a>
+            </div>
+            <div data-image="{{ asset(app_page_section_path ~ section.fileName, 'cloudflare') }}"></div>
+        </div>
+    </div>
+</div>

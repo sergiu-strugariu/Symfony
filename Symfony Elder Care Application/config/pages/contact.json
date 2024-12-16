@@ -47,14 +47,6 @@
       "weight": 1,
       "variables": [
         {
-          "field": "fileName",
-          "type": "file",
-          "label": "Video",
-          "placeholder": "Video",
-          "value": "",
-          "required": true
-        },
-        {
           "field": "name",
           "type": "text",
           "label": "Name",
@@ -69,14 +61,22 @@
           "placeholder": "Content",
           "value": "",
           "required": true
+        },
+        {
+          "field": "fileName",
+          "type": "file",
+          "label": "Image",
+          "placeholder": "Image",
+          "value": "",
+          "required": true
         }
       ]
     },
     {
       "entity": "PageSection",
       "name": "Date de contact",
-      "machineName": "contact_section_contact",
-      "template": "contact.html.twig",
+      "machineName": "contact_section_info",
+      "template": "info.html.twig",
       "weight": 2,
       "variables": [
         {

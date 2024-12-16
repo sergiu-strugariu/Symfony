@@ -1,0 +1,45 @@
+<div role="region" aria-labelledby="caption" tabindex="0">
+    <table>
+        <caption id="caption"></caption>
+        <thead>
+        <tr>
+            <th></th>
+            {% for package in packages %}
+                <th>
+                    <div>
+                        <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}"
+                             alt="{{ package.name }}"
+                        />
+                        <p>{{ package.name }}</p>
+                    </div>
+                    <p class="packagePrice"
+                       data-price="{{ package.price > 0 ? package.price : '0' }}"
+                       data-discount="{{ package.yearlyPricePerMonth }}">0 RON / an
+                    </p>
+                    <a class="packageButton" href="#">Comandă acum</a>
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        {% for sectionTitle, module in modules %}
+            <tbody>
+            <tr>
+                <th>{{ sectionTitle }}</th>
+            </tr>
+            {% for title, item in module %}
+                <tr>
+                    <th>
+                        <div>
+                            <img src="{{ asset('assets/frontend/images/packages/icons/' ~ item.icon) }}" alt="icon"/>
+                            <p>{{ title }}</p>
+                        </div>
+                    </th>
+                    {% for package in item.packages %}
+                        <td class="{{ package ? 'active' : '' }}"></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        {% endfor %}
+    </table>
+</div>
