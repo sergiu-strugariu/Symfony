@@ -89,7 +89,7 @@ class EducationController extends AbstractController
 
             $em->flush();
 
-            $this->sendZohoRequest($zohoAPIHelper, $education, $form, 'create');
+            $this->sendZohoRequest($zohoAPIHelper, $education, 'create');
 
             $this->addFlash('success', 'Congratulations, you have successfully added a new education.');
             return $this->redirectToRoute($listingRoute);
@@ -207,7 +207,7 @@ class EducationController extends AbstractController
 
             $em->flush();
 
-            $this->sendZohoRequest($zohoAPIHelper, $education, $form, 'update');
+            $this->sendZohoRequest($zohoAPIHelper, $education, 'update');
 
             $this->addFlash('success', 'You have successfully edited the education');
             return $this->redirectToRoute($listingRoute);
@@ -224,7 +224,7 @@ class EducationController extends AbstractController
     }
 
     #[Route('/dashboard/education/{uuid}/delete', name: 'dashboard_education_delete')]
-    public function delete(EntityManagerInterface $em, $uuid): Response
+    public function delete(EntityManagerInterface $em, ZohoAPIHelper $zohoAPIHelper, $uuid): Response
     {
         $education = $em->getRepository(Education::class)->findOneBy(['uuid' => $uuid]);
         if (null === $education) {
@@ -235,6 +235,8 @@ class EducationController extends AbstractController
         $education->setDeletedAt(new \DateTime());
         $em->persist($education);
         $em->flush();
+
+        $this->sendZohoRequest($zohoAPIHelper, $education, 'delete');
 
         // set flash message
         $this->addFlash('success', 'This education has been successfully deleted');
@@ -265,11 +267,8 @@ class EducationController extends AbstractController
         return $route;
     }
 
-    private function sendZohoRequest($zohoAPIHelper, Education $education, $form, $operation): void
+    private function sendZohoRequest(ZohoAPIHelper $zohoAPIHelper, Education $education, $operation): void
     {
-        $educationTitle = $form->get('title')->getData();
-        $educationDescription = $form->get('description')->getData();
-
         $educationTeamMembers = $education->getTeamMembers();
 
         $instructors = [];
@@ -282,7 +281,7 @@ class EducationController extends AbstractController
 
         $data = [
             'data' => [
-                'CourseName' => $educationTitle,
+                'CourseName' => $education->getTranslation('ro')->getTitle(),
                 'IdCourse' => $education->getId(),
                 'IdZoho' => $education->getZohoCode(),
                 'CourseStartDate' => $education->getStartDate()->format('d-m-Y'),
@@ -295,7 +294,7 @@ class EducationController extends AbstractController
                 'Price' => $education->getPriceWithVAT(),
                 'CourseCity' => $education->getCity()->getName(),
                 'Instructors' => $instructors,
-                'Description' => strip_tags($educationDescription),
+                'Description' => strip_tags($education->getTranslation('ro')->getDescription()),
                 'Action' => 'NewCoursePlanned',
                 'Operation' => $operation
             ]

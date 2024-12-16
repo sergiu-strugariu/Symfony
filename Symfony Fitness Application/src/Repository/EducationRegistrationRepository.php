@@ -150,17 +150,28 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getCalendarEducationRegistrations($user, $status, $order)
+    public function getCalendarEducationRegistrations($user, $status, $order, $showFutureEducations = true, $showPreviousEducations = true)
     {
-        return $this->createQueryBuilder('entity')
-            ->join('entity.education', 'education')
-            ->where('entity.user = :user')
-            ->andWhere('entity.paymentStatus = :status')
-            ->setParameter('status', $status)
-            ->setParameter('user', $user)
-            ->orderBy('education.startDate', $order)
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('entity')
+                ->join('entity.education', 'education')
+                ->where('entity.user = :user')
+                ->andWhere('entity.paymentStatus = :status')
+                ->setParameter('status', $status)
+                ->setParameter('user', $user);
+
+        if (!$showFutureEducations) {
+            $qb->andWhere('education.startDate <= :now')
+                    ->setParameter('now', new \DateTime());
+        }
+        
+        if (!$showPreviousEducations) {
+            $qb->andWhere('education.endDate >= :now')
+                    ->setParameter('now', new \DateTime());
+        }
+
+        return $qb->orderBy('education.startDate', $order)
+                        ->getQuery()
+                        ->getResult();
     }
 
     public function getEducationRegistrationCount($user, $startDate = null, $endDate = null)

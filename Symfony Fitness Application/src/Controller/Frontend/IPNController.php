@@ -22,7 +22,7 @@ class IPNController extends AbstractController
     {
         $content = $request->getContent();
         $data = json_decode($content, true);
-
+       
         if (JSON_ERROR_NONE !== json_last_error()) {
             return new Response('');
         }
@@ -42,9 +42,9 @@ class IPNController extends AbstractController
                 return new Response('');
             }
 
-            if (EducationRegistration::PAYMENT_STATUS_SUCCESS === $educationRegistration->getPaymentStatus()) {
-                return new Response('');
-            }
+//            if (EducationRegistration::PAYMENT_STATUS_SUCCESS === $educationRegistration->getPaymentStatus()) {
+//                return new Response('');
+//            }
 
             $installmentsNumber = isset($paymentResult['installmentsNumber']) ? $paymentResult['installmentsNumber'] : 1;
 
@@ -59,14 +59,18 @@ class IPNController extends AbstractController
                     $invoiceNumber = $educationRegistration->getInvoiceNumber();
                     $invoiceSeriesName = $educationRegistration->getInvoiceSeriesName();
 
-                    $contractNumber = $em->getRepository(EducationRegistration::class)->findMaxContractNumber();
-                    if ($contractNumber === null) {
-                        $contractNumber = $this->getParameter('contract_number_start');
-                    } else {
-                        $contractNumber++;
-                    }
-
                     if (null === $invoiceNumber && null === $invoiceSeriesName) {
+                        $contractNumber = $educationRegistration->getContractNumber();
+                        if (null === $contractNumber) {
+                            $maxContractNumber = $em->getRepository(EducationRegistration::class)->findMaxContractNumber();
+                            if ($maxContractNumber === null) {
+                                $contractNumber = $this->getParameter('contract_number_start');
+                            } else {
+                                $maxContractNumber++;
+                                $contractNumber = $maxContractNumber;
+                            }
+                        }
+
                         $education = $educationRegistration->getEducation();
                         $user = $educationRegistration->getUser();
                         $educationTranslation = $education->getTranslation($this->getParameter('default_locale'));
@@ -77,7 +81,7 @@ class IPNController extends AbstractController
 
                         $isInvoicingPerLegalEntity = $educationRegistration->isInvoicingPerLegalEntity();
 
-                        $data = [
+                        $smartBillData = [
                             'issueDate' => (new \DateTime())->format('Y-m-d'),
                             'isDraft' => false,
                             'client' => [
@@ -114,12 +118,12 @@ class IPNController extends AbstractController
 
                         $hasException = false;
                         try {
-                            $response = $smartBillAPIHelper->generateInvoice(SmartBillAPIHelper::INVOICE_TYPE_DEFAULT, $data);
+                            $response = $smartBillAPIHelper->generateInvoice(SmartBillAPIHelper::INVOICE_TYPE_DEFAULT, $smartBillData);
                         } catch (\Exception $e) {
                             $smartbillLogger->error($e->getMessage(), ['id' => $educationRegistration->getId()]);
                             $hasException = true;
                         }
-
+                        
                         if (!$hasException) {
                             if (isset($response['series']) &&
                                 isset($response['number']) &&
@@ -156,25 +160,25 @@ class IPNController extends AbstractController
                                     [
                                         'title' => 'Confirmare inregistrare educatie',
                                         'name' => $user->getFullName(),
-                                        'description' => "Te-ai inregistrat cu success la cursul ",
+                                        'description' => "Te-ai inregistrat cu success la educatia ",
                                         'educationName' => $education->getTranslation('ro')->getTitle(),
                                         'generatedUrl' => $this->generateUrl('app_education_details', ['slug' => $education->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
                                     ],
                                     $attachments
                                 );
 
-                                $data = [
+                                $zohoData = [
                                     'data' => [
                                         'IdEducationPurchase' => $educationRegistration->getId(),
                                         'PaymentMethod' => $educationRegistration->getEducationPaymentMethod(),
                                         'PaidValue' => $educationRegistration->getPaymentWithVAT(),
-                                        'PaymentDate' => $education->getCreatedAt()->format('d-m-Y'),
+                                        'PaymentDate' => $educationRegistration->getCreatedAt()->format('d-m-Y'),
                                         'Action' => 'PaymentCompleted'
                                     ]
                                 ];
 
                                 try {
-                                    $zohoAPIHelper->sendRequest($data);
+                                    $zohoAPIHelper->sendRequest($zohoData);
                                 } catch (\Exception $exception) {}
                             }
                         }

@@ -20,7 +20,8 @@ class AccountController extends AbstractController
         $contracts = $em->getRepository(EducationRegistration::class)->findBy([
             'user' => $user,
             'paymentStatus' => EducationRegistration::PAYMENT_STATUS_SUCCESS
-        ]);
+                ], ['createdAt' => 'DESC']
+        );
 
         return $this->render('frontend/default/account.html.twig', [
             'user' => $user,
@@ -35,7 +36,8 @@ class AccountController extends AbstractController
         $invoices = $em->getRepository(EducationRegistration::class)->findBy([
             'user' => $user,
             'paymentStatus' => EducationRegistration::PAYMENT_STATUS_SUCCESS
-        ]);
+                ], ['createdAt' => 'DESC']
+        );
 
         return $this->render('frontend/default/account.html.twig', [
             'user' => $user,
@@ -82,7 +84,7 @@ class AccountController extends AbstractController
 
         $new = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "ASC");
 
-        $old = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "DESC");
+        $old = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "DESC", false);
 
         $canceled = $em->getRepository(EducationRegistration::class)->findBy(
             [
@@ -91,7 +93,7 @@ class AccountController extends AbstractController
             ]
         );
 
-        $participated = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "DESC");
+        $participated = $em->getRepository(EducationRegistration::class)->getCalendarEducationRegistrations($user, EducationRegistration::PAYMENT_STATUS_SUCCESS, "DESC", false, false);
 
         return $this->render('frontend/default/account.html.twig', [
             'user' => $user,

@@ -57,8 +57,8 @@ authentication:
 refund:
   success: "The refund request has been sended successfully."
   fail: "An error occured."
-  text: 'Refund formular'
-  description: "Complete the refund formular!"
+  text: 'Refund form'
+  description: "Complete the refund form"
   underForm: "<p>Return Procedure for Move On Courses and Workshops Purchased Online.</p>
               <p>
                   In the case of a professional training contract concluded remotely or outside Move On premises, the client has the right to withdraw within
@@ -287,6 +287,7 @@ account:
     contracts: "Contracts"
     invoices: "Invoices"
     calendar: "My Calendar"
+    refund: "Refund"
 
 mails:
   salute: "Hello"

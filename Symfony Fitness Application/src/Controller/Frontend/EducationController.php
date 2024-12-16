@@ -103,12 +103,12 @@ class EducationController extends AbstractController
             if ($form->isValid()) {
                 $recaptcha = $request->get('g-recaptcha-response');
 
-                if ($helper->captchaVerify($recaptcha)) {
-                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha'));
-                    return $this->redirectToRoute('app_education_register', [
-                        'slug' => $slug
-                    ]);
-                }
+//                if ($helper->captchaVerify($recaptcha)) {
+//                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha'));
+//                    return $this->redirectToRoute('app_education_register', [
+//                        'slug' => $slug
+//                    ]);
+//                }
 
                 $existingRegistration = $em->getRepository(EducationRegistration::class)->findOneBy([
                     'user' => $user,
@@ -522,7 +522,7 @@ class EducationController extends AbstractController
         ]);
     }
 
-    private function sendZohoRequest($zohoAPIHelper, Education $education, EducationRegistration $educationRegistration, $paymentMethod): void
+    private function sendZohoRequest(ZohoAPIHelper $zohoAPIHelper, Education $education, EducationRegistration $educationRegistration, $paymentMethod): void
     {
         $educationTranslation = $education->getTranslation($this->getParameter('default_locale'));
         $educationTeamMembers = $education->getTeamMembers();

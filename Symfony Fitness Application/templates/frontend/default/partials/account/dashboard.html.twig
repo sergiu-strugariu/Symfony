@@ -25,7 +25,7 @@
             {% else %}
                 {% for result in new %}
                     <div class="item">
-                        <h4>NR: {{ result.id }} / {{ result.education.createdAt|date('d.m.Y') }}</h4>
+                        <h4>{{ result.education.startDate|date('d.m.Y') }}</h4>
                         <p>{{ result.education.translation(locale).title }}</p>
                         <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
                     </div>
@@ -42,7 +42,7 @@
             {% else %}
                 {% for result in old %}
                     <div class="item">
-                        <h4>NR: {{ result.id }} / {{ result.education.createdAt|date('d.m.Y') }}</h4>
+                        <h4>{{ result.education.startDate|date('d.m.Y') }}</h4>
                         <p>{{ result.education.translation(locale).title }}</p>
                         <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
                     </div>
@@ -59,7 +59,7 @@
             {% else %}
                 {% for result in canceled %}
                     <div class="item">
-                        <h4>NR: {{ result.id }} / {{ result.education.createdAt|date('d.m.Y') }}</h4>
+                        <h4>{{ result.education.startDate|date('d.m.Y') }}</h4>
                         <p>{{ result.education.translation(locale).title }}</p>
                         <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
                     </div>
@@ -75,13 +75,13 @@
 </div>
 
 <h3>{{ 'account.dashboard.events_text'|trans }}</h3>
-{% if new is empty %}
+{% if participated is empty %}
     <h3>{{ 'account.dashboard.no_events'|trans }}</h3>
 {% endif %}
 <div class="items-wrapper">
-    {% for result in new %}
+    {% for result in participated %}
         <div class="item">
-            <h4>[{{ result.education.createdAt|date('d.m.Y') }}]</h4>
+            <h4>[{{ result.education.startDate|date('d.m.Y') }}]</h4>
             <p>{{ result.education.translation(locale).title }}</p>
             <a href="{{ path('app_education_details', {'slug': result.education.slug}) }}">{{ 'account.dashboard.details'|trans }}</a>
         </div>

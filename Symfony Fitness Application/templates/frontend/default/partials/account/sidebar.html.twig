@@ -31,7 +31,9 @@
             <li {% if route == 'app_my_account_invoices' %}class="active"{% endif %}>
                 <a href="{{ path('app_my_account_invoices') }}">{{ 'account.sidebar.invoices'|trans }}</a>
             </li>
-
+            <li>
+                <a href="{{ path('app_refund') }}" target="_blank">{{ 'account.sidebar.refund'|trans }}</a>
+            </li>
         </ul>
     </nav>
 </div>
