@@ -1,4 +1,4 @@
-<div class="compare-packages section">
+<div class="compare-packages section" data-login="{{ is_granted('IS_AUTHENTICATED_FULLY') }}">
     <div class="inner">
         <h2>{{ section.name }}</h2>
         {{ section.description|raw }}

@@ -8,7 +8,7 @@
 <div class="swiper-container">
     <div class="swiper-wrapper">
         {% for package in packages %}
-            {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_comand_detail', {'slug': package.slug}) : url('app_login', {'returnUrl': path('app_packages')}) %}
+            {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_order_details', {'slug': package.slug}) : url('app_login', {'returnUrl': path('app_packages')}) %}
             <div class="swiper-slide {{ package.isFree ? 'freePackage' : '' }} {{ package.isPopular ? 'activePackage' : '' }}">
                 <div>
                     <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}"
@@ -19,15 +19,23 @@
                         <p>{{ package.subName }}</p>
                     </div>
                 </div>
+
                 {{ package.content|raw }}
+
                 <h3 class="packagePrice"
                     data-price="{{ package.price > 0 ? package.price : '0' }}"
                     data-discount="{{ package.yearlyPricePerMonth }}">
                     0 RON / an
                 </h3>
-                <a class="packageButton" href="{{ packagePath }}">
-                    Comandă acum
-                </a>
+                {% if loop.index != 1 %}
+                    <a class="packageButton" href="{{ packagePath }}" data-href="{{ packagePath }}">
+                        Comandă acum
+                    </a>
+                {% else %}
+                    <a  href="{{ url('app_register', {'returnUrl': path('app_packages')}) }}">
+                        Creează cont
+                    </a>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

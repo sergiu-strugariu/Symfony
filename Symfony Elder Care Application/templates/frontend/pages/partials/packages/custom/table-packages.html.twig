@@ -5,6 +5,7 @@
         <tr>
             <th></th>
             {% for package in packages %}
+                {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_order_details', {'slug': package.slug}) : url('app_login', {'returnUrl': path('app_packages')}) %}
                 <th>
                     <div>
                         <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}"
@@ -16,30 +17,45 @@
                        data-price="{{ package.price > 0 ? package.price : '0' }}"
                        data-discount="{{ package.yearlyPricePerMonth }}">0 RON / an
                     </p>
-                    <a class="packageButton" href="#">Comandă acum</a>
+                    {% if loop.index != 1 %}
+                        <a class="packageButton" href="{{ packagePath }}" data-href="{{ packagePath }}">
+                            Comandă acum
+                        </a>
+                    {% else %}
+                        <a  href="{{ url('app_register', {'returnUrl': path('app_packages')}) }}">
+                            Creează cont
+                        </a>
+                    {% endif %}
                 </th>
             {% endfor %}
         </tr>
         </thead>
-        {% for sectionTitle, module in modules %}
-            <tbody>
-            <tr>
-                <th>{{ sectionTitle }}</th>
-            </tr>
-            {% for title, item in module %}
-                <tr>
-                    <th>
-                        <div>
-                            <img src="{{ asset('assets/frontend/images/packages/icons/' ~ item.icon) }}" alt="icon"/>
-                            <p>{{ title }}</p>
-                        </div>
-                    </th>
-                    {% for package in item.packages %}
-                        <td class="{{ package ? 'active' : '' }}"></td>
-                    {% endfor %}
-                </tr>
+
+        <tbody>
+        {% for moduleData in modules %}
+            {% for key, featureData in moduleData %}
+                {% if key == 'title' %}
+                    <tr>
+                        <th>{{ moduleData.title }}</th>
+                    </tr>
+                {% else %}
+                    <tr>
+                        {% if key != 'packages' and featureData is iterable %}
+                            <th>
+                                <div>
+                                    <img src="{{ asset('assets/frontend/images/packages/icons/' ~ featureData.icon) }}"
+                                         alt="icon"/>
+                                    <p>{{ featureData.title }}</p>
+                                </div>
+                            </th>
+                            {% for package in moduleData.packages %}
+                                <td class="{{ package ? 'active' : '' }}"></td>
+                            {% endfor %}
+                        {% endif %}
+                    </tr>
+                {% endif %}
             {% endfor %}
-            </tbody>
         {% endfor %}
+        </tbody>
     </table>
 </div>

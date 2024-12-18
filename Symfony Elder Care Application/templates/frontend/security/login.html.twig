@@ -3,35 +3,49 @@
 {% block title %}Login {{ parent() }}{% endblock %}
 
 {% block content %}
+    {% set returnUrl = app.request.get('returnUrl') %}
+    {% set targetPath = returnUrl is not empty ? returnUrl :path('dashboard_user_profile') %}
+    {% set registerPath = returnUrl is not empty ? url('app_register', {'returnUrl': returnUrl}) :path('app_register') %}
     <div class="content section">
         <div class="inner">
             <h2>Loghează-te</h2>
-            <p><small>Nu ai cont pe {{ app_name }}? <a href="{{ path('app_register') }}">Creează cont în 2 minute</a></small></p>
+            <p>
+                <small>
+                    Nu ai cont pe {{ app_name }}? <a href="{{ registerPath }}">Creează cont în 2 minute</a>
+                </small>
+            </p>
             <div class="form-section form-wrapper has-loader">
                 <form class="form w-100" method="POST" action="{{ path('app_login') }}">
-
                     {% include 'frontend/common/alerts.html.twig' %}
-
                     {% if error %}
-                        <p class="text-center text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                        <p class="text-center text-danger">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </p>
                     {% endif %}
-
                     <div class="form-group">
                         <label for="emailAddress">Email*</label>
-                        <input type="text" placeholder="Email" name="_username" value="{{ last_username }}"
-                               autocomplete="off" class="emailAddress"/>
+                        <input type="text"
+                               placeholder="Email"
+                               name="_username"
+                               value="{{ last_username }}"
+                               autocomplete="off"
+                               class="emailAddress"
+                        />
                     </div>
                     <div class="form-group">
                         <label for="password">Parola*</label>
-                        <input type="password" placeholder="Parola" name="_password" autocomplete="off"
-                               class="password"/>
+                        <input type="password"
+                               placeholder="Parola"
+                               name="_password"
+                               autocomplete="off"
+                               class="password"
+                        />
                     </div>
-
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <input type="hidden" name="_target_path" value="{{ path('dashboard_user_profile') }}"/>
-
-                    <a href="{{ path('dashboard_resetting_forgot_password') }}" class="forgotPass">Am uitat parola</a>
-
+                    <input type="hidden" name="_target_path" value="{{ targetPath }}"/>
+                    <a href="{{ path('dashboard_resetting_forgot_password') }}" class="forgotPass">
+                        Am uitat parola
+                    </a>
                     <div class="form-action">
                         <input type="submit" class="submit-btn" value="Intra in cont"/>
                     </div>

@@ -9,15 +9,16 @@
     <div class="content section">
         <div class="inner">
             <h2>Creează cont</h2>
-            <p><small>Ai deja un cont pe {{ app_name }}? <a href="{{ path('app_login') }}" class="forgotPass">Autentifică-te</a></small>
+            <p>
+                <small>
+                    Ai deja un cont pe {{ app_name }}? <a href="{{ path('app_login') }}" class="forgotPass">Autentifică-te</a>
+                </small>
             </p>
             <div class="form-section form-wrapper has-loader">
                 {{ form_start(form, {'attr': {'id': '', 'class': 'create-user-account-form form-wrapper has-loader'}}) }}
 
                 <!--begin::Form message-->
-                <div class="form-message">
-                    {% include 'frontend/common/alerts.html.twig' %}
-                </div>
+                {% include 'frontend/common/alerts.html.twig' %}
                 <!--end::Form message-->
                 <div class="form-group">
                     <!--begin::Email-->
@@ -54,15 +55,15 @@
                 <div class="form-group checkbox checkbox-group">
                     <input type="checkbox" id="terms" name="terms">
                     <label for="terms">
-                        Pentru a continua, te rugăm să confirmi că ești de acord cu <a href="">Termenii şi
-                            condițiile {{ app_name }}</a>
+                        Pentru a continua, te rugăm să confirmi că ești de acord cu
+                        <a href="{{ path('app_terms') }}">
+                            Termenii şi condițiile {{ app_name }}
+                        </a>
                     </label>
                 </div>
-
                 <div class="form-action">
                     <input type="submit" class="submit-btn" value="Crează cont"/>
                 </div>
-
                 {{ form_end(form) }}
             </div>
         </div>

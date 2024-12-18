@@ -139,7 +139,7 @@
                        href="#kt_user_view_overview_security">Date cont</a>
                 </li>
                 <!--end:::Tab item-->
-                {% if not is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <!--begin:::Tab item-->
                     <li class="nav-item">
                         <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
@@ -264,6 +264,7 @@
                         </div>
                         <!--end::Card-->
                     </form>
+
                 </div>
                 <!--end:::Tab pane-->
                 {% if is_granted('ROLE_ADMIN') %}
@@ -338,14 +339,7 @@
                             </div>
                             <!--end::Card body-->
                         </div>
-                        <!--end::Card-->
-                    </div>
-                    <!--end:::Tab pane-->
-                {% endif %}
-            </div>
-            <div class="tab-pane fade show active" id="kt_user_view_overview_security" role="tabpanel">
-    <!-- Card Container -->
-    <div class="card pt-4 mb-6 mb-xl-9">
+                        <div class="card pt-4 mb-6 mb-xl-9">
         <div class="card-header">
             <h3 class="card-title">Detalii de Facturare</h3>
         </div>
@@ -407,6 +401,16 @@
         </div>
         <!--end::Content-->
     </div>
+                        <!--end::Card-->
+                    </div>
+
+
+                    <!--end:::Tab pane-->
+                {% endif %}
+            </div>
+            <div class="tab-pane fade show active" id="kt_user_view_overview_security" role="tabpanel">
+    <!-- Card Container -->
+
     <!--end::Layout-->
 {% endblock %}
 

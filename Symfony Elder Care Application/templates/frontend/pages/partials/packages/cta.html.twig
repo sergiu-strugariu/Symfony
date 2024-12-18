@@ -6,7 +6,10 @@
                 {{ section.description|raw }}
             </div>
             <div>
-                <a href="{{ section.link }}">{{ section.linkText }}</a>
+                {% set packagePath = is_granted('IS_AUTHENTICATED_FULLY') ? path('app_comand_detail', {'slug': 'gratuit-30-zile'}) : url('app_login', {'returnUrl': path('app_packages')}) %}
+                <a href="{{ packagePath }}" class="packageButton" data-href="{{ packagePath }}">
+                    Comandă acum
+                </a>
             </div>
         </div>
     </div>
