@@ -102,23 +102,6 @@
           "placeholder": "Content",
           "value": "",
           "required": true
-        },
-        {
-          "field": "linkText",
-          "type": "text",
-          "label": "Link Text",
-          "placeholder": "Link Text",
-          "value": "",
-          "required": true,
-          "editable": true
-        },
-        {
-          "field": "link",
-          "type": "url",
-          "label": "Link",
-          "placeholder": "Link",
-          "value": "",
-          "required": true
         }
       ]
     },

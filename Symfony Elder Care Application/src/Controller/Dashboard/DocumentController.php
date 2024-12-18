@@ -109,5 +109,4 @@ class DocumentController extends AbstractController {
 
         return $this->render($template, $params);
     }
-
 }

@@ -4,6 +4,7 @@ namespace App\Controller\Security;
 
 use App\Entity\User;
 use App\Form\Type\UserRegisterFormType;
+use App\Helper\DefaultHelper;
 use App\Mailer\TwigMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -41,15 +42,18 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, TwigMailer $twigMailer): Response
     {
-        /** @var User $user */
         $user = new User();
 
         // Create FormType
         $form = $this->createForm(UserRegisterFormType::class, $user);
         $form->handleRequest($request);
 
+        $email = $form->get('email')->getData();
+        $returnUrl = $request->get('returnUrl');
+
         // Validate form
         if ($form->isSubmitted() && $form->isValid()) {
+            $hash = DefaultHelper::generateHash($email);
 
             /** @var User $getUser */
             $getUser = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
@@ -57,7 +61,7 @@ class SecurityController extends AbstractController
             if (isset($getUser)) {
                 // Set flash message
                 $this->addFlash('danger', 'Adresa de email introdusă este deja folosită. Vă rugăm să folosiți o altă adresă de email sau să vă autentificați cu contul existent');
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('app_register', array_filter(['returnUrl' => $returnUrl]));
             }
 
             $plainPassword = $form['plainPassword']->getData();
@@ -72,26 +76,28 @@ class SecurityController extends AbstractController
             $user->setCreatedAt(new \DateTime());
             $user->setStatus(User::STATUS_INACTIVE);
             $user->setPassword($hashedPassword);
+            $user->setConfirmationToken($hash);
 
             $sent = $twigMailer->sendActivatingAccountMessage(
                 $user->getEmail(),
                 'Activate account',
                 [
                     'user' => $user,
-                    'activationUrl' => $this->generateUrl('app_account_confirmation', [
-                        'uuid' => $user->getUid()
-                    ], UrlGeneratorInterface::ABSOLUTE_URL)
+                    'activationUrl' => $this->generateUrl('app_account_confirmation', array_filter([
+                        'token' => $hash,
+                        'returnUrl' => $returnUrl
+                    ]), UrlGeneratorInterface::ABSOLUTE_URL)
                 ]);
 
             if (!$sent) {
-                $this->addFlash('danger', 'Mesajul nu s-a putut trimite. Incearca mai tarziu.');
-                return $this->redirectToRoute('app_login');
+                $this->addFlash('danger', 'Mesajul nu s-a putut trimite. Încearcă mai târziu.');
+                return $this->redirectToRoute('app_login', array_filter(['returnUrl' => $returnUrl]));
             }
 
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('primary', 'Felicitări! Contul dvs. a fost creat cu succes.');
+            $this->addFlash('success', 'Felicitări! Contul dvs. a fost creat cu succes.');
             return $this->redirectToRoute('app_login');
         }
 
@@ -103,30 +109,29 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/confirmare-cont/{uuid}", name="app_account_confirmation")
+     * @Route("/confirmare-cont/{token}", name="app_account_confirmation")
      */
-    public function confirm(EntityManagerInterface $em, $uuid): Response
+    public function confirm(Request $request, EntityManagerInterface $em, $token): Response
     {
-        $user = $em->getRepository(User::class)->findOneBy(['uid' => $uuid]);
+        $returnUrl = $request->get('returnUrl');
 
-        if (!$user) {
-            $this->addFlash('danger', 'Acest cont nu exista.');
-            return $this->redirectToRoute('app_login');
+        $user = $em->getRepository(User::class)->findOneBy([
+            'confirmationToken' => $token
+        ]);
+
+        if ($user) {
+            $user->setStatus(User::STATUS_ACTIVE);
+            $user->setConfirmationToken(null);
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Adresa de email a fost confirmata, te poți loga acum.');
+            return $this->redirectToRoute('app_login', array_filter(['returnUrl' => $returnUrl]));
         }
 
-        if ($user->getStatus() !== User::STATUS_INACTIVE) {
-            $this->addFlash('danger', 'Adresa de email a fost deja verificata, te poti loga.');
-            return $this->redirectToRoute('app_login');
-        }
-
-        $user->setStatus(User::STATUS_ACTIVE);
-        $user->setConfirmationToken(null);
-
-        $em->persist($user);
-        $em->flush();
-
-        $this->addFlash('success', 'Adresa de email a fost confirmata, te poti loga acum.');
-        return $this->redirectToRoute('app_login');
+        $this->addFlash('danger', 'Adresa de email a fost deja verificata, te poți loga.');
+        return $this->redirectToRoute('app_login', array_filter(['returnUrl' => $returnUrl]));
     }
 
     /**

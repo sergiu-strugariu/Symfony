@@ -9,14 +9,12 @@ use App\Helper\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SettingController extends AbstractController
 {
-
     /**
-     * @Route("/dashboard/setting", name="dashboard_settings_index")
+     * @Route("/dashboard/secure/setting", name="dashboard_settings_index")
      */
     public function index(Request $request, FileUploader $fileUploader, EntityManagerInterface $em, DefaultHelper $helper)
     {

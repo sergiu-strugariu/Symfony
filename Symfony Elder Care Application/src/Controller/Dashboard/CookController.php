@@ -15,7 +15,7 @@ use Symfony\Component\Uid\Uuid;
 class CookController extends AbstractController
 {
     /**
-     * @Route("/dashboard/cook/menus", name="dashboard_cook_menus")
+     * @Route("/dashboard/cook/menu", name="dashboard_cook_menus")
      */
     public function menus(): Response
     {

@@ -1,0 +1,74 @@
+<div class="inner section">
+    <h2>Detalii comandă</h2>
+    <form class="order-details-form has-loader" id="orderDetailsForm">
+        <div class="switch-period">
+            <a href="#" data-period="monthly" data-price="{{ package.price }}" data-payment="{{ package.price }}">Lunar</a>
+            <a href="#" class="active" data-period="yearly" data-price="{{ package.price }}" data-payment="{{ package.yearlyPricePerMonth }}">Anual (-20%)</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <h3>1. Pachetul selectat</h3>
+                <div class="step-inner">
+                    <div>
+                        <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}" alt="icon">
+                        <h4><strong>{{ package.name }}</strong></h4>
+                    </div>
+                    <p><strong>{{ package.price }} RON / an</strong></p>
+                </div>
+            </div>
+            <div class="step billing-info">
+                <h3>2. Date facturare</h3>
+                {% for orderDetails in app.user.userBillingData %}
+                    <div class="step-inner">
+                        <input type="radio" id="billin-2" name="billing" value="{{ orderDetails.uuid }}">
+                        <p><strong>{{ orderDetails.companyName }}</strong></p>
+                        <p>{{ orderDetails.address }}</p>
+                        <a href="#" class="edit-btn" data-index="{{ orderDetails.uuid }}">Editează</a>
+                    </div>
+                {% endfor %}
+                <div class="text-center">
+                    <a href="#" class="border-btn add-btn">Adauga date facturare</a>
+                </div>
+            </div>
+            <div class="step">
+                <h3>3. Metoda de plată</h3>
+                <div class="step-inner">
+                    <input type="checkbox" id="paymentMethod" name="paymentMethod" checked>
+                    <ul>
+                        <li>
+                            <img src="{{ asset('assets/frontend/images/icons/visa-logo.svg') }}" alt="visa">
+                        </li>
+                        <li>
+                            <img src="{{ asset('assets/frontend/images/icons/mastercard-logo.svg') }}" alt="mastercard">
+                        </li>
+                    </ul>
+                    <p><strong>Card online</strong></p>
+                    <p>Plătește rapid și sigur! Vei fi redirecționat către pagina de plată.</p>
+                </div>
+            </div>
+        </div>
+        <div class="checkboxes">
+            <div class="group">
+                <input type="checkbox" name="agreeTerms" id="agreeTerms">
+                <label for="agreeTerms">Prin plasarea comenzii, confirm că sunt de acord cu <a href="#">Termenii și Condițiile</a> și că
+                    am luat
+                    la cunoștință <a href="#">Politica de Prelucrare a Datelor Personale</a>.</label>
+            </div>
+            <div class="group">
+                <input type="checkbox" name="agreeMarketing" id="agreeMarketing">
+                <label for="agreeMarketing">Doresc să primesc comunicări personalizate despre noutăți, funcționalități
+                    și alte
+                    informații.</label>
+            </div>
+        </div>
+        <div class="info">
+            <h4><strong>Total: {{ package.price }} RON</strong></h4>
+            <p>Facturat anual</p>
+            <p>Următoarea plată: 25 noiembrie 2025</p>
+        </div>
+        <div class="form-actions">
+            <a href="#" class="border-btn">Înapoi la pachete</a>
+            <input type="submit" class="blue-btn" value="Continuă către plată">
+        </div>
+    </form>
+</div>

@@ -1,0 +1,14 @@
+<div class="bottom-section ">
+    <div class="inner">
+        <div class="wrapper">
+            <ul>
+                {% for gallery in section.galleries %}
+                    <li>
+                        <img src="{{ asset(app_page_section_gallery_path ~ gallery.fileName, 'cloudflare') }}" alt="icon">
+                            <strong>{{ gallery.title }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

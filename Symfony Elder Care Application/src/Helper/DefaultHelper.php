@@ -219,4 +219,13 @@ class DefaultHelper
             self::STATUS_PUBLISHED => self::STATUS_PUBLISHED
         ];
     }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public static function generateHash($string): string
+    {
+        return sha1(mt_rand(1, 90000) . $string);
+    }
 }

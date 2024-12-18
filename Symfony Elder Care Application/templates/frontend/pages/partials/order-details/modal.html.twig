@@ -1,0 +1,67 @@
+<div class="modal billing-details" tabindex="-1" role="dialog" id="billingDetailsModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adaugă date de facturare</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <img src="{{ asset('assets/frontend/images/icons/close-icon.svg') }}" alt="close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="has-loader" id="billingDetailsForm">
+                    <!--begin::Form message-->
+                    <div class="form-message"></div>
+                    <!--end::Form message-->
+                    <input type="hidden" name="uuid">
+                    <div class="form-group">
+                        <label class="label" for="companyName">Nume companie*</label>
+                        <input type="text" name="companyName" id="companyName"
+                               placeholder="Centru Rezidential Seniorum">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="label" for="companyRegisterNumber">Nr registrul comertului*</label>
+                            <input type="text" name="companyRegisterNumber" id="nrRegCom">
+
+                        </div>
+                        <div class="form-group">
+                            <label class="label" for="cui">Cod unic de inregistrare*</label>
+                            <input type="text" name="cui" id="cui" placeholder="ex. Popescu">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="iban">Cont IBAN*</label>
+                        <input type="text" name="iban" id="iban">
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="phone">Telefon*</label>
+                        <input type="text" name="phone" id="phone" placeholder="Introdu numărul de telefon">
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="email">Email*</label>
+                        <input type="email" name="email" id="emailAddress" placeholder="Introdu emailul">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="label" for="county">Judet*</label>
+                            <select name="county" id="county"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="label" for="city">Localitate*</label>
+                            <select name="city" id="city"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="address">Adresa*</label>
+                        <textarea name="address" id="companyAddress"></textarea>
+                    </div>
+
+                    <div class="form-action">
+                        <a href="#" class="border-btn">Anulează</a>
+                        <input type="submit" class="blue-btn" value="Salvează datele">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

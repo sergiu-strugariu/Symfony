@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PageController extends AbstractController
 {
     /**
-     * @Route("/dashboard/page", name="dashboard_pages_index")
+     * @Route("/dashboard/secure/page", name="dashboard_pages_index")
      */
     public function index(): Response
     {
@@ -27,7 +27,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/page/create", name="dashboard_page_create")
+     * @Route("/dashboard/secure/page/create", name="dashboard_page_create")
      */
     public function create(Request $request, FileUploaderLocal $fileUploader, DefaultHelper $defaultHelper, EntityManagerInterface $em): Response
     {
@@ -119,7 +119,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/page/{machineName}/edit", name="dashboard_page_edit")
+     * @Route("/dashboard/secure/page/{machineName}/edit", name="dashboard_page_edit")
      */
     public function edit(DefaultHelper $defaultHelper, EntityManagerInterface $em, $machineName): Response
     {
@@ -216,7 +216,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/page/save", name="dashboard_page_save")
+     * @Route("/dashboard/secure/page/save", name="dashboard_page_save")
      */
     public function save(Request $request, EntityManagerInterface $em, FileUploader $fileUploader): Response
     {
@@ -358,7 +358,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/page/{machineName}/delete", name="dashboard_page_delete")
+     * @Route("/dashboard/secure/page/{machineName}/delete", name="dashboard_page_delete")
      */
     public function delete(EntityManagerInterface $em, $machineName): Response
     {

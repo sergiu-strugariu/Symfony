@@ -4112,7 +4112,7 @@ class AjaxController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/ajax/cities/county/{id}", name="dashboard_ajax_cities_by_county")
+     * @Route("/dashboard/ajax/cities/county/{id?}", name="dashboard_ajax_cities_by_county")
      */
     public function citiesByCounty(CountyRepository $countyRepository, CityRepository $cityRepository, $id): Response
     {
@@ -4262,6 +4262,7 @@ class AjaxController extends AbstractController
 
         // Retrieve form data from request
         $formData = $request->request->all();
+
         $uuid = $formData['uuid'];
 
         // Remove @uuid
@@ -4289,7 +4290,10 @@ class AjaxController extends AbstractController
             if (!$validate['checkErrors']) {
 
                 /** @var County $county */
-                $county = $em->getRepository(County::class)->findOneBy(['id' => $formData['county']]);
+                $countyRepository = $em->getRepository(County::class);
+
+                $county = $countyRepository->findOneBy(['id' => $formData['county']])
+                    ?: $countyRepository->findOneBy(['code' => $formData['county']]);
 
                 /** @var City $city */
                 $city = $em->getRepository(City::class)->find($formData['city']);
@@ -4326,7 +4330,7 @@ class AjaxController extends AbstractController
             'errors' => $validate['errors'],
             'message' => !$validate['checkErrors']
                 ? 'Editarea a fost realizată cu succes.'
-                : 'Acest câmp este obligatoriu.',
+                : 'Toate câmpurile este obligatoriu.',
         ]);
     }
 

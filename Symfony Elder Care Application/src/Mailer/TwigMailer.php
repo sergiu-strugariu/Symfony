@@ -105,6 +105,7 @@ class TwigMailer {
         try {
             $this->mailer->send($email);
         } catch (\Exception $e) {
+//            dd($e->getMessage());
             $sent = false;
         }
 

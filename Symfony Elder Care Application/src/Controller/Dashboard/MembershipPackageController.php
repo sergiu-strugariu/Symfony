@@ -2,7 +2,6 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Helper\MembershipHelper;
 use DateTime;
 use Exception;
 use App\Entity\MembershipPackage;
@@ -29,20 +28,15 @@ class MembershipPackageController extends AbstractController
      * @throws Exception
      * @Route("/dashboard/secure/membership-package/create", name="dashboard_membership_create")
      */
-    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, MembershipHelper $membershipHelper): Response
+    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader): Response
     {
         $package = new MembershipPackage();
-        $modules = MembershipPackage::MODULES;
-
         $form = $this->createForm(MembershipPackageFormType::class, $package);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // get data from the form
             $file = $form->get('fileName')->getData();
-
-            // parse checkboxes
-            $modules = $membershipHelper->parseCheckboxResponse($request->request->all());
 
             // Upload file
             $uploadFile = $fileUploader->uploadFile($file, $form, $this->getParameter('app_membership_package_path'));
@@ -51,13 +45,6 @@ class MembershipPackageController extends AbstractController
             if ($uploadFile['success']) {
                 // save new item to DB
                 $package->setFileName($uploadFile['fileName']);
-
-                $package->setAdministrativeModule($modules[MembershipPackage::MODULE_ADMINISTRATIVE]);
-                $package->setMedicalModule($modules[MembershipPackage::MODULE_MEDICAL]);
-                $package->setPhysiotherapyModule($modules[MembershipPackage::MODULE_PHYSIOTHERAPY]);
-                $package->setInfirmaryModule($modules[MembershipPackage::MODULE_INFIRMARY]);
-                $package->setReceptionModule($modules[MembershipPackage::MODULE_RECEPTION]);
-                $package->setKitchenModule($modules[MembershipPackage::MODULE_KITCHEN]);
 
                 $em->persist($package);
                 $em->flush();
@@ -70,7 +57,6 @@ class MembershipPackageController extends AbstractController
 
         return $this->render('dashboard/package/actions.html.twig', [
             'form' => $form->createView(),
-            'modules' => $modules,
             'pageTitle' => 'Creați pachet'
         ]);
     }
@@ -79,7 +65,7 @@ class MembershipPackageController extends AbstractController
      * @throws Exception
      * @Route("/dashboard/secure/membership-package/{uuid}/edit", name="dashboard_membership_edit")
      */
-    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, MembershipHelper $membershipHelper, $uuid): Response
+    public function edit(Request $request, EntityManagerInterface $em, FileUploader $fileUploader, $uuid): Response
     {
         /** @var MembershipPackage $package */
         $package = $em->getRepository(MembershipPackage::class)->findOneBy(['uuid' => $uuid]);
@@ -90,15 +76,6 @@ class MembershipPackageController extends AbstractController
             return $this->redirectToRoute('dashboard_membership_index');
         }
 
-        $modules = [
-            $package::MODULE_ADMINISTRATIVE => $package->getAdministrativeModule(),
-            $package::MODULE_MEDICAL => $package->getMedicalModule(),
-            $package::MODULE_PHYSIOTHERAPY => $package->getPhysiotherapyModule(),
-            $package::MODULE_INFIRMARY => $package->getInfirmaryModule(),
-            $package::MODULE_RECEPTION => $package->getReceptionModule(),
-            $package::MODULE_KITCHEN => $package->getKitchenModule()
-        ];
-
         // Init form & handle request data
         $form = $this->createForm(MembershipPackageFormType::class, $package);
         $form->handleRequest($request);
@@ -106,9 +83,6 @@ class MembershipPackageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $filePath = $this->getParameter('app_membership_package_path');
             $file = $form->get('fileName')->getData();
-
-            // Parse checkboxes
-            $modules = $membershipHelper->parseCheckboxResponse($request->request->all());
 
             // Check exist new file
             if (isset($file)) {
@@ -125,14 +99,6 @@ class MembershipPackageController extends AbstractController
                 }
             }
 
-            // Update modules
-            $package->setAdministrativeModule($modules[MembershipPackage::MODULE_ADMINISTRATIVE]);
-            $package->setMedicalModule($modules[MembershipPackage::MODULE_MEDICAL]);
-            $package->setPhysiotherapyModule($modules[MembershipPackage::MODULE_PHYSIOTHERAPY]);
-            $package->setInfirmaryModule($modules[MembershipPackage::MODULE_INFIRMARY]);
-            $package->setReceptionModule($modules[MembershipPackage::MODULE_RECEPTION]);
-            $package->setKitchenModule($modules[MembershipPackage::MODULE_KITCHEN]);
-
             // save changes to DB
             $em->persist($package);
             $em->flush();
@@ -145,7 +111,6 @@ class MembershipPackageController extends AbstractController
         return $this->render('dashboard/package/actions.html.twig', [
             'form' => $form->createView(),
             'fileName' => $package->getFileName(),
-            'modules' => $modules,
             'pageTitle' => 'Editare pachet'
         ]);
     }

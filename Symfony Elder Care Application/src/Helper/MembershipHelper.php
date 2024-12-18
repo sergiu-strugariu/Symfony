@@ -39,87 +39,45 @@ class MembershipHelper
     }
 
     /**
-     * @param $packages
-     * @return array
+     * Parses the response to add new keys based on the package slug.
+     *
+     * @param array $packages List of packages (MembershipPackage)
+     * @return array Modules with updated options
      */
-    public function parseResponse($packages): array
+    public function parseResponse(array $packages): array
     {
-        $membership = MembershipPackage::MODULES;
-
-        $administrative = [];
-        $medical = [];
-        $physiotherapy = [];
-        $infirmary = [];
-        $reception = [];
-        $kitchen = [];
+        $modules = MembershipPackage::MODULES;
 
         /** @var MembershipPackage $package */
         foreach ($packages as $package) {
-            foreach ($package->getAdministrativeModule() as $key => $item) {
-                // Skip this item
-                if ($key === 'title') continue;
-                $administrative = self::moduleItem($administrative, $item, $package->getSlug());
-            }
+            $slug = $package->getSlug();
 
-            foreach ($package->getMedicalModule() as $key => $item) {
-                // Skip this item
-                if ($key === 'title') continue;
-                $medical = self::moduleItem($medical, $item, $package->getSlug());
-            }
-
-            foreach ($package->getPhysiotherapyModule() as $key => $item) {
-                // Skip this item
-                if ($key === 'title') continue;
-                $physiotherapy = self::moduleItem($physiotherapy, $item, $package->getSlug());
-            }
-
-            foreach ($package->getInfirmaryModule() as $key => $item) {
-                // Skip this item
-                if ($key === 'title') continue;
-                $infirmary = self::moduleItem($infirmary, $item, $package->getSlug());
-            }
-
-            foreach ($package->getReceptionModule() as $key => $item) {
-                // Skip this item
-                if ($key === 'title') continue;
-                $reception = self::moduleItem($reception, $item, $package->getSlug());
-            }
-
-            foreach ($package->getKitchenModule() as $key => $item) {
-                // Skip this item
-                if ($key === 'title') continue;
-                $kitchen = self::moduleItem($kitchen, $item, $package->getSlug());
+            // Iterate through all modules defined in MembershipPackage::MODULES
+            foreach ($modules as $moduleKey => &$module) {
+                // Add options based on the module and slug
+                switch ($moduleKey) {
+                    case MembershipPackage::MODULE_ADMINISTRATIVE:
+                        $module['packages'][$slug] = $package->getAdministrativeModule();
+                        break;
+                    case MembershipPackage::MODULE_MEDICAL:
+                        $module['packages'][$slug] = $package->getMedicalModule();
+                        break;
+                    case MembershipPackage::MODULE_PHYSIOTHERAPY:
+                        $module['packages'][$slug] = $package->getPhysiotherapyModule();
+                        break;
+                    case MembershipPackage::MODULE_INFIRMARY:
+                        $module['packages'][$slug] = $package->getInfirmaryModule();
+                        break;
+                    case MembershipPackage::MODULE_RECEPTION:
+                        $module['packages'][$slug] = $package->getReceptionModule();
+                        break;
+                    case MembershipPackage::MODULE_KITCHEN:
+                        $module['packages'][$slug] = $package->getKitchenModule();
+                        break;
+                }
             }
         }
 
-        return [
-            $membership[MembershipPackage::MODULE_ADMINISTRATIVE]['title'] => $administrative,
-            $membership[MembershipPackage::MODULE_MEDICAL]['title'] => $medical,
-            $membership[MembershipPackage::MODULE_PHYSIOTHERAPY]['title'] => $physiotherapy,
-            $membership[MembershipPackage::MODULE_INFIRMARY]['title'] => $infirmary,
-            $membership[MembershipPackage::MODULE_RECEPTION]['title'] => $reception,
-            $membership[MembershipPackage::MODULE_KITCHEN]['title'] => $kitchen
-        ];
-    }
-
-    /**
-     * @param $arr
-     * @param $item
-     * @param $packageSlug
-     * @return mixed
-     */
-    protected function moduleItem($arr, $item, $packageSlug)
-    {
-        if (!isset($arr[$item['title']])) {
-            $arr[$item['title']] = [
-                'icon' => $item['icon'],
-                'packages' => []
-            ];
-        }
-
-
-        $arr[$item['title']]['packages'][$packageSlug] = $item['enabled'];
-
-        return $arr;
+        return $modules;
     }
 }

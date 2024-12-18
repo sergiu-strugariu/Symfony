@@ -35,19 +35,45 @@ security:
         ROLE_ORDERLY: ROLE_USER
         ROLE_SOCIAL_WORKER: ROLE_USER
         ROLE_COOK: ROLE_USER
-        ROLE_PACIENT: ROLE_USER
         ROLE_RELATION: ROLE_USER
         ROLE_CLEANING: ROLE_USER
         ROLE_RECEPTION: ROLE_USER
         ROLE_PSYCHOTHERAPY: ROLE_USER
     access_control:
-        - { path: ^/dashboard/nursing-homes, roles: [ ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT ] }
+        # Group @secure
+        - { path: ^/dashboard/secure, roles: ROLE_SUPER_ADMIN }
 
-          # Security configurations for routes with ROLE_SUPER_ADMIN access
-        - { path: ^/dashboard/page, roles: [ROLE_SUPER_ADMIN] }
-        - { path: ^/dashboard/menu, roles: [ROLE_SUPER_ADMIN] }
-        - { path: ^/dashboard/setting, roles: [ROLE_SUPER_ADMIN] }
+        # Group @nursing
+        - { path: ^/dashboard/nursing-homes$, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT] }
+        - { path: ^/dashboard/user, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT] }
 
+        # Group 4
+        - { path: ^/dashboard/cook/menu$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_COOK] }
+        - { path: ^/dashboard/reports, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT] }
+
+        # Group @pacient
+        - { path: ^/dashboard/pacients/prospect, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT] }
+        - { path: ^/dashboard/pacients/overview$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_RECEPTION, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY, ROLE_PHYSICAL_THERAPY, ROLE_ORDERLY, ROLE_SOCIAL_WORKER] }
+        - { path: ^/dashboard/pacients/admissions$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY] }
+        - { path: ^/dashboard/pacients/daily-monitoring/medical$, roles: [ROLE_ADMIN, ROLE_MANAGEMENT, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY] }
+        - { path: ^/dashboard/pacients/discharges$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_RECEPTION, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY] }
+        - { path: ^/dashboard/pacients/drugs$, roles: [ROLE_ADMIN, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY] }
+        - { path: ^/dashboard/pacient, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_RECEPTION, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY, ROLE_PHYSICAL_THERAPY, ROLE_ORDERLY, ROLE_SOCIAL_WORKER] }
+
+        # Group @visits
+        - { path: ^/dashboard/visits, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_RECEPTION, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY] }
+
+        # Group @summaries
+        - { path: ^/dashboard/summaries$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_MEDIC, ROLE_ASSISTANCE_MEDICAL, ROLE_ASSISTANCE_MEDICAL_PHARMACY, ROLE_PHYSICAL_THERAPY, ROLE_ORDERLY, ROLE_SOCIAL_WORKER, ROLE_COOK, ROLE_CLEANING, ROLE_RECEPTION, ROLE_PSYCHOTHERAPY] }
+
+        # Group @document
+        - { path: ^/dashboard/document, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_SOCIAL_WORKER, ROLE_PSYCHOTHERAPY] }
+
+        # Group @default
+        - { path: ^/dashboard$, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN] }
+        - { path: ^/detalii-comanda, roles: ROLE_ADMIN }
+        - { path: ^/dashboard/ajax, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/dashboard/profile$, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/, roles: PUBLIC_ACCESS }
 when@test:
     security:

@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-
     /**
      * @Route("/dashboard/users", name="dashboard_users")
      */
@@ -40,7 +39,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/user/profile", name="dashboard_user_profile")
+     * @Route("/dashboard/profile", name="dashboard_user_profile")
      */
     public function profile(EntityManagerInterface $em): Response
     {
@@ -70,12 +69,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/user/{uuid}/view", name="dashboard_user_view")
+     * @Route("/dashboard/profile/{uuid}/view", name="dashboard_user_view")
      */
     public function view(UserRepository $userRepository, $uuid): Response
     {
         // find user by UUID
         $user = $userRepository->findOneBy(['uid' => $uuid]);
+
         // check if user exists
         if (null === $user) {
             return $this->redirectToRoute('dashboard_users');
@@ -88,5 +88,4 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-
 }

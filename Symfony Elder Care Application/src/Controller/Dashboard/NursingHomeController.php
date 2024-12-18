@@ -42,6 +42,7 @@ class NursingHomeController extends AbstractController
         ]
     ];
 
+
     /**
      * @Route("/dashboard/nursing-homes", name="dashboard_nursing_homes")
      */

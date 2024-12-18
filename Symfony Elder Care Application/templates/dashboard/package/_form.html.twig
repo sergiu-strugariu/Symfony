@@ -119,42 +119,76 @@
                     </div>
                     <!--end::Col-->
                 </div>
-                {% for key, module in modules %}
-                    <div class="card card-dashed my-6">
-                        <div class="card-header">
-                            <div class="card-title">
-                                {% if module.title is defined %}
-                                    <h3 class="card-label">{{ module.title }}</h3>
-                                {% endif %}
+                <div class="offset-2">
+                    <div class="row mb-6">
+                        <div class="col-md-6">
+                            <div class="row">
+                                {{ form_label(form.administrativeModule, 'Modul administrativ', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <div class="col-lg-8 fv-row">
+                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                        {{ form_widget(form.administrativeModule, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                        {{ form_errors(form.administrativeModule) }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="col-md-6">
                             <div class="row">
-                                {% for itemKey, item in module %}
-                                    {% if item is iterable and item.title is defined %}
-                                        <div class="col-md-4">
-                                            <div class="row d-flex align-items-center">
-                                                <label class="col-lg-8 col-form-label fw-semibold fs-6">
-                                                    {{ item.title }}
-                                                </label>
-                                                <div class="col-lg-4 fv-row">
-                                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
-                                                        <input
-                                                                type="checkbox"
-                                                                name="{{ key ~ '[' ~ itemKey ~ ']' }}"
-                                                                class="form-check-input w-45px h-30px"
-                                                                {{ item.enabled ? 'checked' : '' }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
+                                {{ form_label(form.medicalModule, 'Modul medical', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <div class="col-lg-8 fv-row">
+                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                        {{ form_widget(form.medicalModule, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                        {{ form_errors(form.medicalModule) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                {{ form_label(form.physiotherapyModule, 'Modul kinetoterapie', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <div class="col-lg-8 fv-row">
+                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                        {{ form_widget(form.physiotherapyModule, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                        {{ form_errors(form.physiotherapyModule) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                {{ form_label(form.infirmaryModule, 'Modul infirmerie', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <div class="col-lg-8 fv-row">
+                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                        {{ form_widget(form.infirmaryModule, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                        {{ form_errors(form.infirmaryModule) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                {{ form_label(form.receptionModule, 'Modul recepție', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <div class="col-lg-8 fv-row">
+                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                        {{ form_widget(form.receptionModule, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                        {{ form_errors(form.receptionModule) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                {{ form_label(form.kitchenModule, 'Modul bucătărie', {'label_attr': {'class': 'col-lg-4 col-form-label fw-semibold fs-6'}}) }}
+                                <div class="col-lg-8 fv-row">
+                                    <div class="form-check form-check-solid form-switch form-check-custom fv-row">
+                                        {{ form_widget(form.kitchenModule, {'attr': {'class': 'form-check-input w-45px h-30px'}}) }}
+                                        {{ form_errors(form.kitchenModule) }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             </div>
         </div>
         <!--end::Card body-->
@@ -167,8 +201,7 @@
                         <a href="{{ path('dashboard_membership_index') }}" class="btn text-uppercase fw-bolder">
                             Anulare
                         </a>
-                        <button type="submit"
-                                class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
+                        <button type="submit" class="btn btn-brand btn-primary rounded-0 bg-1B3951 text-uppercase fw-bolder">
                             Trimite
                         </button>
                     </div>

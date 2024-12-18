@@ -300,34 +300,34 @@ class MembershipPackage
     private ?string $status = null;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="boolean")
      */
-    private array $administrativeModule = [];
+    private ?bool $administrativeModule = false;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="boolean")
      */
-    private array $medicalModule = [];
+    private ?bool $medicalModule = false;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="boolean")
      */
-    private array $physiotherapyModule = [];
+    private ?bool $physiotherapyModule = false;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="boolean")
      */
-    private array $infirmaryModule = [];
+    private ?bool $infirmaryModule = false;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="boolean")
      */
-    private array $receptionModule = [];
+    private ?bool $receptionModule = false;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="boolean")
      */
-    private array $kitchenModule = [];
+    private ?bool $kitchenModule = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -482,72 +482,72 @@ class MembershipPackage
         return $this;
     }
 
-    public function getAdministrativeModule(): ?array
+    public function getAdministrativeModule(): ?bool
     {
         return $this->administrativeModule;
     }
 
-    public function setAdministrativeModule(array $administrativeModule): self
+    public function setAdministrativeModule(bool $administrativeModule): self
     {
         $this->administrativeModule = $administrativeModule;
 
         return $this;
     }
 
-    public function getMedicalModule(): ?array
+    public function getMedicalModule(): ?bool
     {
         return $this->medicalModule;
     }
 
-    public function setMedicalModule(array $medicalModule): self
+    public function setMedicalModule(bool $medicalModule): self
     {
         $this->medicalModule = $medicalModule;
 
         return $this;
     }
 
-    public function getPhysiotherapyModule(): ?array
+    public function getPhysiotherapyModule(): ?bool
     {
         return $this->physiotherapyModule;
     }
 
-    public function setPhysiotherapyModule(array $physiotherapyModule): self
+    public function setPhysiotherapyModule(bool $physiotherapyModule): self
     {
         $this->physiotherapyModule = $physiotherapyModule;
 
         return $this;
     }
 
-    public function getInfirmaryModule(): ?array
+    public function getInfirmaryModule(): ?bool
     {
         return $this->infirmaryModule;
     }
 
-    public function setInfirmaryModule(array $infirmaryModule): self
+    public function setInfirmaryModule(bool $infirmaryModule): self
     {
         $this->infirmaryModule = $infirmaryModule;
 
         return $this;
     }
 
-    public function getReceptionModule(): ?array
+    public function getReceptionModule(): ?bool
     {
         return $this->receptionModule;
     }
 
-    public function setReceptionModule(array $receptionModule): self
+    public function setReceptionModule(bool $receptionModule): self
     {
         $this->receptionModule = $receptionModule;
 
         return $this;
     }
 
-    public function getKitchenModule(): ?array
+    public function getKitchenModule(): ?bool
     {
         return $this->kitchenModule;
     }
 
-    public function setKitchenModule(array $kitchenModule): self
+    public function setKitchenModule(bool $kitchenModule): self
     {
         $this->kitchenModule = $kitchenModule;
 

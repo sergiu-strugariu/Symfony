@@ -28,12 +28,13 @@
 {% block javascripts %}
     <script>
         let absolutePath = "{{ asset('assets/frontend/images') }}";
-        window.countyApiPath = 'https://seniorhelp.ro/ajax/get-counties';
-        window.cityApiPath =  'https://seniorhelp.ro/ajax/county/cities';
+        window.countyApiPath = '{{ path('dashboard_ajax_counties') }}';
+        window.cityApiPath =  '{{ path('dashboard_ajax_cities_by_county') }}';
         window.monthly = 'monthly';
         window.yearly = 'yearly';
-        window.userBillingAddressActions = '';
-        window.userBillingAddress = '';
+        window.userBillingAddressActions = '{{ path('ajax_user_billing_address_actions') }}';
+        window.userBillingAddress = '{{ path('ajax_get_user_billing_address') }}';
+        window.userBillingAddresses = '{{ path('ajax_get_user_billing_addresses') }}'
         window.contactFormPath = '{{ path('ajax_contact_mail') }}';
         window.formMessages = {
             'name': {

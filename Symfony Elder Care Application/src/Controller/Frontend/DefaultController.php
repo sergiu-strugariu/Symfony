@@ -2,8 +2,11 @@
 
 namespace App\Controller\Frontend;
 
+use App\Entity\County;
 use App\Entity\MembershipPackage;
 use App\Entity\Page;
+use App\Entity\User;
+use App\Entity\UserBillingData;
 use App\Helper\MembershipHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -81,7 +84,7 @@ class DefaultController extends AbstractController
         $packages = $em->getRepository(MembershipPackage::class)->getAllPackages();
 
         // Parse packages by @slug
-        $modules = $membershipHelper->parseResponse($packages);
+        $modules = $membershipHelper->parseResponse((array)$packages);
 
         return $this->render('frontend/pages/index.html.twig', [
             'page' => $page,
@@ -94,16 +97,40 @@ class DefaultController extends AbstractController
     /**
      * @Route("/detalii-comanda/pachet/{slug}", name="app_comand_detail")
      */
-    public function comandDetail(EntityManagerInterface $em): Response
+    public function comandDetail(EntityManagerInterface $em, BreadcrumbsHelper $helper, $slug): Response
     {
         // TODO: Update machine name, this for testing redirect
 
-        /** @var Page $page */
-        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'contact']);
+        $billingRepository = $em->getRepository(UserBillingData::class);
 
-        return $this->render('frontend/pages/index.html.twig', [
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'order-details']);
+
+        /**
+         * Get package by @slug
+         * @var MembershipPackage $package
+         */
+        $package = $em->getRepository(MembershipPackage::class)->findOneBy(['slug' => $slug]);
+
+        // Check exist package
+        if (!$package || !$user) {
+            return $this->redirectToRoute('app_packages');
+        }
+
+        /**
+         * Get favorites @user billings
+         * @var UserBillingData $billings
+         */
+        $billings = $billingRepository->findBy(['user' => $user], ['isFavorite' => 'DESC']);
+
+        return $this->render('frontend/pages/order-details.html.twig', [
             'page' => $page,
-            'breadcrumbs' => []
+            'package' => $package,
+            'billings' => $billings,
+            'breadcrumbs' => [],
         ]);
     }
 
@@ -146,6 +173,44 @@ class DefaultController extends AbstractController
         return $this->render('frontend/pages/legal.html.twig', [
             'page' => $page,
             'breadcrumbs' => $helper::COOKIES_BREADCRUMBS
+        ]);
+    }
+
+    /**
+     * @Route("/order-details/{slug}", name="app_order_details")
+     */
+    public function orderDetails(EntityManagerInterface $em, BreadcrumbsHelper $helper, $slug): Response
+    {
+        $billingRepository = $em->getRepository(UserBillingData::class);
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'order-details']);
+
+        /**
+         * Get package by @slug
+         * @var MembershipPackage $package
+         */
+        $package = $em->getRepository(MembershipPackage::class)->findOneBy(['slug' => $slug]);
+
+        // Check exist package
+        if (!$package || !$user) {
+            return $this->redirectToRoute('app_packages');
+        }
+
+        /**
+         * Get favorites @user billings
+         * @var UserBillingData $billings
+         */
+        $billings = $billingRepository->findBy(['user' => $user], ['isFavorite' => 'DESC']);
+
+        return $this->render('frontend/pages/order-details.html.twig', [
+            'page' => $page,
+            'package' => $package,
+            'billings' => $billings,
+            'breadcrumbs' => [],
         ]);
     }
 

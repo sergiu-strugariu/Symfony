@@ -15,7 +15,7 @@ use DateTime;
 class MenuController extends AbstractController
 {
     /**
-     * @Route("/dashboard/menu", name="dashboard_menu_index")
+     * @Route("/dashboard/secure/menu", name="dashboard_menu_index")
      */
     public function index(): Response
     {
@@ -23,7 +23,7 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/create", name="dashboard_menu_create")
+     * @Route("/dashboard/secure/menu/create", name="dashboard_menu_create")
      */
     public function create(Request $request, EntityManagerInterface $em): Response
     {
@@ -51,7 +51,7 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/{uuid}/edit", name="dashboard_menu_edit")
+     * @Route("/dashboard/secure/menu/{uuid}/edit", name="dashboard_menu_edit")
      */
     public function edit(Request $request, EntityManagerInterface $em, $uuid): Response
     {
@@ -90,7 +90,7 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/{uuid}/delete", name="dashboard_menu_delete")
+     * @Route("/dashboard/secure/menu/{uuid}/delete", name="dashboard_menu_delete")
      */
     public function delete(EntityManagerInterface $em, $uuid): Response
     {

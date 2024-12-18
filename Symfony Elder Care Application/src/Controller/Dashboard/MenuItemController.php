@@ -12,12 +12,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuItemController extends AbstractController
 {
     /**
-     * @Route("/dashboard/menu/item/{uuid}/view", name="dashboard_menu_items_index")
+     * @Route("/dashboard/secure/menu/item/{uuid}/view", name="dashboard_menu_items_index")
      */
     public function index(EntityManagerInterface $em, Request $request, $uuid): Response
     {
@@ -47,7 +46,7 @@ class MenuItemController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/item/{uuid}/create", name="dashboard_menu_item_create")
+     * @Route("/dashboard/secure/menu/item/{uuid}/create", name="dashboard_menu_item_create")
      */
     public function create(EntityManagerInterface $em, Request $request, FileUploader $fileUploader, $uuid): Response
     {
@@ -135,7 +134,7 @@ class MenuItemController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/item/{uuid}/edit", name="dashboard_menu_item_edit")
+     * @Route("/dashboard/secure/menu/item/{uuid}/edit", name="dashboard_menu_item_edit")
      */
     public function edit(EntityManagerInterface $em, Request $request, FileUploader $fileUploader, $uuid): Response
     {
@@ -234,7 +233,7 @@ class MenuItemController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/item/{uuid}/update-node", name="dashboard_menu_item_update_node")
+     * @Route("/dashboard/secure/menu/item/{uuid}/update-node", name="dashboard_menu_item_update_node")
      */
     public function updateNode(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -275,7 +274,7 @@ class MenuItemController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/menu/item/{uuid}/delete", name="dashboard_menu_item_remove")
+     * @Route("/dashboard/secure/menu/item/{uuid}/delete", name="dashboard_menu_item_remove")
      */
     public function delete(Request $request, EntityManagerInterface $em, FileUploader $fileUploader): JsonResponse
     {

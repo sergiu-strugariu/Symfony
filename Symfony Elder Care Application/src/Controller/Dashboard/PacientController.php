@@ -308,6 +308,7 @@ class PacientController extends AbstractController
             'roles' => ['ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGEMENT']
         ]
     ];
+
     const FLOORS = [
         'parter' => 'Parter',
         '1' => '1',
@@ -517,7 +518,7 @@ class PacientController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/pacients/prospects", name="dashboard_pacients_prospects")
+     * @Route("/dashboard/pacients/prospect", name="dashboard_pacients_prospects")
      */
     public function prospects(Request $request, ProspectRepository $prospectRepository, NursingHomeRepository $nursingHomeRepository): Response
     {
@@ -549,7 +550,7 @@ class PacientController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/pacients/prospects/overview", name="dashboard_pacients_prospects_overview")
+     * @Route("/dashboard/pacients/prospect/overview", name="dashboard_pacients_prospects_overview")
      */
     public function prospectsOverview(Request $request, ProspectRepository $prospectRepository): Response
     {
@@ -636,7 +637,7 @@ class PacientController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/pacients/prospects/scheduled", name="dashboard_pacients_prospects_scheduled")
+     * @Route("/dashboard/pacients/prospect/scheduled", name="dashboard_pacients_prospects_scheduled")
      */
     public function prospectsScheduled(Request $request): Response
     {
@@ -649,7 +650,7 @@ class PacientController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/pacients/prospects/offers", name="dashboard_pacients_prospects_offers")
+     * @Route("/dashboard/pacients/prospect/offers", name="dashboard_pacients_prospects_offers")
      */
     public function prospectsOffers(Request $request): Response
     {
@@ -662,7 +663,7 @@ class PacientController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/pacients/prospects/sources", name="dashboard_pacients_prospects_sources")
+     * @Route("/dashboard/pacients/prospect/sources", name="dashboard_pacients_prospects_sources")
      */
     public function prospectsSources(): Response
     {
@@ -842,7 +843,7 @@ class PacientController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/pacients/readmission/{uuid}", name="dashboard_pacient_readmission")
+     * @Route("/dashboard/pacient/readmission/{uuid}", name="dashboard_pacient_readmission")
      */
     public function pacientReadmission(EntityManagerInterface $em, $uuid): Response
     {

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\MembershipPackage;
 use App\Helper\DefaultHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -118,6 +119,24 @@ class MembershipPackageFormType extends AbstractType
                     'Da' => 1,
                     'Nu' => 0
                 ]
+            ])
+            ->add('administrativeModule', CheckboxType::class, [
+                'required' => false
+            ])
+            ->add('medicalModule', CheckboxType::class, [
+                'required' => false
+            ])
+            ->add('physiotherapyModule', CheckboxType::class, [
+                'required' => false
+            ])
+            ->add('infirmaryModule', CheckboxType::class, [
+                'required' => false
+            ])
+            ->add('receptionModule', CheckboxType::class, [
+                'required' => false
+            ])
+            ->add('kitchenModule', CheckboxType::class, [
+                'required' => false
             ])
             ->add('fileName', FileType::class, [
                 'required' => true,

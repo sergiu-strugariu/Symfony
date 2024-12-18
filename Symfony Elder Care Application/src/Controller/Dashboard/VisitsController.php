@@ -16,14 +16,14 @@ class VisitsController extends AbstractController
             'path_params' => [],
             'name' => 'Programari',
             'items' => [],
-            'roles' => ['ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGEMENT', 'ROLE_RECEPTION']
+            'roles' => ['ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGEMENT', 'ROLE_RECEPTION', 'ROLE_MEDIC', 'ROLE_ASSISTANCE_MEDICAL', 'ROLE_ASSISTANCE_MEDICAL_PHARMACY']
         ],
         [
             'path' => 'dashboard_visits_list',
             'path_params' => [],
             'name' => 'Lista vizite',
             'items' => [],
-            'roles' => ['ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGEMENT', 'ROLE_RECEPTION']
+            'roles' => ['ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGEMENT', 'ROLE_RECEPTION', 'ROLE_MEDIC', 'ROLE_ASSISTANCE_MEDICAL', 'ROLE_ASSISTANCE_MEDICAL_PHARMACY']
         ]
     ];
 
