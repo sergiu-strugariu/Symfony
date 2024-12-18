@@ -1,0 +1,142 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %} {{ page_title }} {{ parent() }} {% endblock %}
+
+{% block content %}
+<div class="charts">
+    <div class="card mb-5">
+        <div class="card-header px-3">
+            <div class="card-title">
+                        <span class="card-icon">
+                            <i class="ki-duotone ki-chart-simple-3 fs-2x">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                <h3 class="card-label">Educatii</h3>
+            </div>
+            <div class="card-toolbar my-1">
+                <div class="option-year mx-2">
+                    <select id="data-year-filter"
+                            class="form-select"
+                            data-control="select2"
+                            data-placeholder="Year"
+                    >
+                        <option></option>
+                        {% for year in dataYears %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="kt_educations_chartjs_2" class="mh-400px"></canvas>
+        </div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-header px-3">
+            <div class="card-title">
+                        <span class="card-icon">
+                            <i class="ki-duotone ki-profile-participants fs-2x">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                <h3 class="card-label">Registrations</h3>
+            </div>
+            <div class="card-toolbar my-1">
+                <select id="participants-year-filter"
+                        class="form-select"
+                        data-control="select2"
+                        data-placeholder="Year"
+                >
+                    <option></option>
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="kt_participants_chartjs_2" class="mh-400px"></canvas>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <!--begin::Card header-->
+        <div class="card-header px-3">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <span class="card-icon">
+                    <i class="ki-duotone ki-chart-simple-3 fs-2x">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                    </i>
+                </span>
+                <h3 class="card-label">Course Total Sells</h3>
+            </div>
+            <div class="card-toolbar my-1">
+                <div class="option-user mx-2">
+                    <select id="sum-course-filter"
+                            class="form-select"
+                            data-control="select2"
+                            data-placeholder=""
+                    >
+                        <option value="all">All courses</option>
+                        {% for course in courses %}
+                            <option value="{{ course.id }}">{{ course.translation(default_locale).title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="kt_course_chartjs_2" class="mh-400px"></canvas>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <!--begin::Card header-->
+        <div class="card-header px-3">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <span class="card-icon">
+                    <i class="ki-duotone ki-chart-simple-3 fs-2x">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                    </i>
+                </span>
+                <h3 class="card-label">Workshops Total Sells</h3>
+            </div>
+            <div class="card-toolbar my-1">
+                <div class="option-year mx-2">
+                    <select id="sum-workshop-filter"
+                            class="form-select"
+                            data-control="select2"
+                            data-placeholder=""
+                    >
+                        <option value="all">All workshops</option>
+                        {% for workshop in workshops %}
+                            <option value="{{ workshop.id }}">{{ workshop.translation(default_locale).title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="kt_workshop_chartjs_2" class="mh-400px"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_javascripts %}
+    <script src="{{ asset('assets/dashboard/js/charts/default.js') }}"></script>
+{% endblock %}

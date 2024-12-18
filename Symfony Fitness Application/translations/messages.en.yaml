@@ -59,6 +59,7 @@ refund:
   fail: "An error occured."
   text: 'Refund form'
   description: "Complete the refund form"
+  disclaimer: "If the initial payment was made by bank transfer, it is mandatory to fill in the bank and bank account. For online payments, the refund will be automatically made by the payment processor to the bank account from which the initial payment was made."
   underForm: "<p>Return Procedure for Move On Courses and Workshops Purchased Online.</p>
               <p>
                   In the case of a professional training contract concluded remotely or outside Move On premises, the client has the right to withdraw within

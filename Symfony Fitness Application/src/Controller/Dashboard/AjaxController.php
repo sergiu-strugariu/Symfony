@@ -596,46 +596,58 @@ class AjaxController extends AbstractController
     }
 
     #[Route('/dashboard/ajax/user/{uuid}/contracts', name: 'dashboard_ajax_user_contracts')]
-    public function getUserContracts(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    public function getUserContracts(Request $request, EducationRegistrationRepository $repository, EntityManagerInterface $manager, $uuid): JsonResponse
     {
         $params = $request->query->all();
 
-        // get sortable fields
-        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_CONTRACTS_FIELDS);
-
         $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
 
-        // filter by params
-        $contracts = $repository->getContracts(
-            $tableParams['column'],
-            $tableParams['dir'],
-            $tableParams['keyword'],
-            $user
-        );
+        // get user contracts
+        $contracts = $repository->getContracts($user);
+        
+        $totalRecords = $repository->findRegistrationsCountByUser($user);
 
-        return $this->getFilteredData($repository, $contracts, $params);
+        // get filtered count
+        $totalDisplay = count($contracts);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $contracts = array_splice($contracts, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $contracts
+        ]);
     }
 
     #[Route('/dashboard/ajax/user/{uuid}/invoices', name: 'dashboard_ajax_user_invoices')]
-    public function getUserInvoices(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    public function getUserInvoices(Request $request, EducationRegistrationRepository $repository, EntityManagerInterface $manager, $uuid): JsonResponse
     {
         // get all params from the request
         $params = $request->query->all();
 
-        // get sortable fields
-        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_INVOICES_FIELDS);
-
         $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
 
         // filter by params
-        $invoices = $repository->getInvoices(
-            $tableParams['column'],
-            $tableParams['dir'],
-            $tableParams['keyword'],
-            $user
-        );
+        $invoices = $repository->getInvoices($user);
 
-        return $this->getFilteredData($repository, $invoices, $params);
+        $totalRecords = $repository->findRegistrationsCountByUser($user);
+
+        // get filtered count
+        $totalDisplay = count($invoices);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $invoices = array_splice($invoices, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $invoices
+        ]);
     }
 
     #[Route('/dashboard/ajax/user/{uuid}/courses', name: 'dashboard_ajax_user_courses')]
@@ -644,41 +656,53 @@ class AjaxController extends AbstractController
         // get all params from the request
         $params = $request->query->all();
 
-        // get sortable fields
-        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_COURSES_FIELDS);
-
         $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
-
+        
         // filter by params
-        $courses = $repository->getCourses(
-            $tableParams['column'],
-            $tableParams['dir'],
-            $tableParams['keyword'],
-            $user
-        );
+        $courses = $repository->getCourses($user);
 
-        return $this->getFilteredData($repository, $courses, $params);
+        $totalRecords = $repository->findRegistrationsCountByUser($user);
+
+        // get filtered count
+        $totalDisplay = count($courses);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $courses = array_splice($courses, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $courses
+        ]);
     }
 
     #[Route('/dashboard/ajax/user/{uuid}/certifications', name: 'dashboard_ajax_user_certifications')]
-    public function getUserCertifications(Request $request, EducationRegistrationRepository $repository, DatatableHelper $datatableHelper, EntityManagerInterface $manager, $uuid): JsonResponse
+    public function getUserCertifications(Request $request, EducationRegistrationRepository $repository, EntityManagerInterface $manager, $uuid): JsonResponse
     {
         // get all params from the request
         $params = $request->query->all();
 
-        // get sortable fields
-        $tableParams = $datatableHelper->getTableParams($params, $datatableHelper::USER_CERTIFICATIONS_FIELDS);
-
         $user = $manager->getRepository(User::class)->findOneBy(['uuid' => $uuid]);
 
         // filter by params
-        $certifications = $repository->getUserCertifications(
-            $tableParams['column'],
-            $tableParams['dir'],
-            $tableParams['keyword'],
-            $user
-        );
+        $certifications = $repository->getUserCertifications($user);
 
-        return $this->getFilteredData($repository, $certifications, $params);
+        $totalRecords = $repository->findRegistrationsCountByUser($user);
+
+        // get filtered count
+        $totalDisplay = count($certifications);
+
+        // pagination length
+        if (isset($params['length'])) {
+            $certifications = array_splice($certifications, $params['start'], $params['length'] === '-1' ? $totalRecords : $params['length']);
+        }
+
+        return new JsonResponse([
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalDisplay,
+            'data' => $certifications
+        ]);
     }
 }

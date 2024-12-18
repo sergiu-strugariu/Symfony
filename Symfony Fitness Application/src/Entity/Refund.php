@@ -37,10 +37,10 @@ class Refund
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $company = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $bank = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $iban = null;
     
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
@@ -72,6 +72,9 @@ class Refund
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $observations = null;
 
     public function __construct()
     {
@@ -299,4 +302,21 @@ class Refund
         return $this;
     }
 
+    public function getObservations(): ?string
+    {
+        return $this->observations;
+    }
+
+    public function setObservations(?string $observations): static
+    {
+        $this->observations = $observations;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->getFirstName() . " " . $this->getLastName();
+    }
+    
 }

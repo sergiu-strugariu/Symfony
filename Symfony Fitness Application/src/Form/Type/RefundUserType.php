@@ -93,28 +93,10 @@ class RefundUserType extends AbstractType
                 'required' => false
             ])
             ->add('bank', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Length([
-                        'min' => 2,
-                        'minMessage' => 'common.min_message'
-                    ]),
-                    new NotBlank([
-                        'message' => 'common.not_blank'
-                    ])
-                ]
+                'required' => false
             ])
             ->add('iban', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'common.min_message'
-                    ]),
-                    new NotBlank([
-                        'message' => 'common.not_blank'
-                    ])
-                ]
+                'required' => false
             ])
             ->add('amount', NumberType::class, [
                 'required' => true,

@@ -76,22 +76,10 @@ class RefundType extends AbstractType
                 'required' => false
             ])
             ->add('bank', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Length([
-                        'min' => 2,
-                        'minMessage' => 'common.min_message'
-                    ])
-                ]
+                'required' => false
             ])
             ->add('iban', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'common.min_message'
-                    ])
-                ]
+                'required' => false
             ])
             ->add('amount', NumberType::class, [
                 'required' => true,
@@ -146,13 +134,11 @@ class RefundType extends AbstractType
                     ])
                 ]
             ])
+            ->add('observations', TextareaType::class, [
+                'required' => false
+            ])
             ->add('payuPaymentReference', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'common.not_blank'
-                    ])
-                ]
+                'required' => false
             ])
         ;
     }

@@ -35,6 +35,20 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             $queryBuilder->getQuery()
                 ->getSingleScalarResult();
     }
+    
+    public function findRegistrationsCountByUser($user)
+    {
+        return $this->createQueryBuilder('er')
+            ->select('COUNT(er.id)')
+            ->join('er.education', 'e')
+            ->where('er.user = :user')
+            ->andWhere('er.paymentStatus = :status')
+            ->andWhere('e.deletedAt is NULL')
+            ->setParameter('user', $user)
+            ->setParameter('status', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
     public function findByFilters(string $column, string $dir, $keyword, $uuid): array
     {
@@ -239,164 +253,95 @@ class EducationRegistrationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getInvoices(string $column, string $dir, $keyword, $user): array
+    public function getContracts($user): array
     {
-        $queryBuilder = $this->createQueryBuilder('invoice')
-            ->join('invoice.education', 'e')
-            ->join('e.educationTranslations', 'et')
-            ->where('invoice.paymentStatus = :paymentStatus')
-            ->setParameter('paymentStatus', EducationRegistration::PAYMENT_STATUS_SUCCESS)
-            ->andWhere('invoice.user = :user')
-            ->setParameter('user', $user)
-            ->select("
-                DATE_FORMAT(invoice.createdAt, '%M %d, %Y') as createdAt,
-                invoice.invoiceSeriesName,
-                invoice.invoiceNumber,
+        return $this->createQueryBuilder('er')
+            ->select("DATE_FORMAT(er.createdAt, '%M %d, %Y') as createdAt,
+                er.contractNumber,
                 et.title AS educationTitle,
-                e.uuid,
-                e.slug
-            ")
-            ->andWhere('e.deletedAt is NULL');
-
-        $fields = [
-            'invoice.createdAt'
-        ];
-
-        if (!empty($keyword)) {
-            $orExpr = $queryBuilder->expr()->orX();
-
-            foreach ($fields as $field) {
-                $orExpr->add($queryBuilder->expr()->like($field, ':keyword'));
-            }
-
-            $queryBuilder
-                ->andWhere($orExpr)
-                ->setParameter('keyword', '%' . $keyword . '%');
-        }
-
-        $queryBuilder
-            ->orderBy($column === 'createdAt' ? 'invoice.' . $column : 'et.' . $column, $dir);
-
-        return $queryBuilder
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getCourses(string $column, string $dir, $keyword, $user): array
-    {
-        $queryBuilder = $this->createQueryBuilder('course')
-            ->join('course.education', 'e')
+                e.slug,
+                er.uuid")
+            ->join('er.education', 'e')
             ->join('e.educationTranslations', 'et')
-            ->where('course.paymentStatus = :paymentStatus')
-            ->setParameter('paymentStatus', EducationRegistration::PAYMENT_STATUS_SUCCESS)
-            ->andWhere('course.user = :user')
+            ->join('et.language', 'l')
+            ->where('er.paymentStatus = :paymentStatus')
+            ->andWhere('e.deletedAt IS NULL')
+            ->andWhere('er.user = :user')
+            ->andWhere('l.locale = :locale')
             ->setParameter('user', $user)
-            ->select("
-                DATE_FORMAT(course.createdAt, '%M %d, %Y') as createdAt,
-                et.title as educationTitle,
-                e.uuid
-            ")
-            ->andWhere('e.deletedAt is NULL');
-
-        $fields = [
-            'course.createdAt'
-        ];
-
-        if (!empty($keyword)) {
-            $orExpr = $queryBuilder->expr()->orX();
-
-            foreach ($fields as $field) {
-                $orExpr->add($queryBuilder->expr()->like($field, ':keyword'));
-            }
-
-            $queryBuilder
-                ->andWhere($orExpr)
-                ->setParameter('keyword', '%' . $keyword . '%');
-        }
-
-        $queryBuilder
-            ->orderBy($column === 'createdAt' ? 'course.' . $column : 'et.' . $column, $dir);
-
-        return $queryBuilder
+            ->setParameter('paymentStatus', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->setParameter('locale', 'ro')
+            ->orderBy('er.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }
-
-    public function getUserCertifications(string $column, string $dir, $keyword, $user): array
+    
+    public function getInvoices($user): array
     {
-        $queryBuilder = $this->createQueryBuilder('er')
-            ->where('er.user = :user')
+        return $this->createQueryBuilder('er')
+            ->select("DATE_FORMAT(er.createdAt, '%M %d, %Y') as createdAt,
+                er.invoiceSeriesName,
+                er.invoiceNumber,
+                et.title AS educationTitle,
+                er.uuid,
+                e.slug")
+            ->join('er.education', 'e')
+            ->join('e.educationTranslations', 'et')
+            ->join('et.language', 'l')
+            ->where('er.paymentStatus = :paymentStatus')
+            ->andWhere('e.deletedAt IS NULL')
+            ->andWhere('er.user = :user')
+            ->andWhere('l.locale = :locale')
             ->setParameter('user', $user)
-            ->andWhere('er.certificateFileName IS NOT NULL')
-            ->andWhere('er.paymentStatus = :status')
-            ->setParameter('status', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->setParameter('paymentStatus', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->setParameter('locale', 'ro')
+            ->orderBy('er.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    
+    public function getCourses($user): array
+    {
+        return $queryBuilder = $this->createQueryBuilder('er')
+            ->select("
+                DATE_FORMAT(e.startDate, '%M %d, %Y') as createdAt,
+                et.title as educationTitle,
+                e.uuid")
+            ->join('er.education', 'e')
+            ->join('e.educationTranslations', 'et')
+            ->join('et.language', 'l')
+            ->where('er.paymentStatus = :paymentStatus')
+            ->andWhere('e.deletedAt IS NULL')
+            ->andWhere('er.user = :user')
+            ->andWhere('l.locale = :locale')
+            ->setParameter('user', $user)
+            ->setParameter('paymentStatus', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->setParameter('locale', 'ro')
+            ->orderBy('e.startDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    
+    public function getUserCertifications($user): array
+    {
+        return $this->createQueryBuilder('er')
             ->select("
                 DATE_FORMAT(er.createdAt, '%M %d, %Y') as createdAt,
+                et.title as educationTitle,
                 er.certificateFileName as certificationName
-            ");
-
-        $fields = [
-            'er.createdAt'
-        ];
-
-        if (!empty($keyword)) {
-            $orExpr = $queryBuilder->expr()->orX();
-
-            foreach ($fields as $field) {
-                $orExpr->add($queryBuilder->expr()->like($field, ':keyword'));
-            }
-
-            $queryBuilder
-                ->andWhere($orExpr)
-                ->setParameter('keyword', '%' . $keyword . '%');
-        }
-
-        $queryBuilder
-            ->orderBy($column === 'createdAt' ? 'er.' . $column : 'et.' . $column, $dir);
-
-        return $queryBuilder
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getContracts(string $column, string $dir, $keyword, $user): array
-    {
-        $queryBuilder = $this->createQueryBuilder('contract')
-            ->join('contract.education', 'education')
-            ->join('education.educationTranslations', 'educationTranslations')
-            ->where('contract.paymentStatus = :paymentStatus')
-            ->setParameter('paymentStatus', EducationRegistration::PAYMENT_STATUS_SUCCESS)
-            ->andWhere('contract.user = :user')
-            ->setParameter('user', $user)
-            ->select("
-                DATE_FORMAT(contract.createdAt, '%M %d, %Y') as createdAt,
-                contract.contractNumber,
-                educationTranslations.title AS educationTitle,
-                education.slug as slug,
-                contract.uuid as uuid
             ")
-            ->andWhere('education.deletedAt is NULL');
-
-        $fields = [
-            'contract.createdAt'
-        ];
-
-        if (!empty($keyword)) {
-            $orExpr = $queryBuilder->expr()->orX();
-
-            foreach ($fields as $field) {
-                $orExpr->add($queryBuilder->expr()->like($field, ':keyword'));
-            }
-
-            $queryBuilder
-                ->andWhere($orExpr)
-                ->setParameter('keyword', '%' . $keyword . '%');
-        }
-
-        $queryBuilder
-            ->orderBy($column === 'createdAt' ? 'contract.' . $column : 'educationTranslations.' . $column, $dir);
-
-        return $queryBuilder
+            ->join('er.education', 'e')
+            ->join('e.educationTranslations', 'et')
+            ->join('et.language', 'l')   
+            ->where('er.user = :user')
+            ->andWhere('e.deletedAt IS NULL')
+            ->andWhere('er.certificateFileName IS NOT NULL')
+            ->andWhere('er.paymentStatus = :status')
+            ->andWhere('l.locale = :locale')
+            ->setParameter('user', $user)
+            ->setParameter('status', EducationRegistration::PAYMENT_STATUS_SUCCESS)
+            ->setParameter('locale', 'ro')
+            ->orderBy('er.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

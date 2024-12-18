@@ -123,6 +123,15 @@
                         </div>
                     </div>
                 </div> 
+                <div class="col-lg-12">
+                    <div class="row mb-6">
+                        <div class="col-md-12">
+                            {{ form_label(form.observations, 'Observations', {'label_attr': {'class': 'form-label fw-semibold fs-6'}}) }}
+                            {{ form_widget(form.observations, {'attr': {'class': 'form-control form-control-solid form-control-lg', 'rows': '5'}}) }}
+                            {{ form_errors(form.observations) }}
+                        </div>
+                    </div>
+                </div> 
             </div>
         </div>
         <!--begin::Card footer-->

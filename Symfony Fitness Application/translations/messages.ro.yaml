@@ -59,6 +59,7 @@ refund:
   fail: "A intervenit o erroare la trimiterea cererii."
   text: 'Formular solicitare retur'
   description: "Completează formularul de mai jos și îți vom răspunde cât de curând posibil!"
+  disclaimer: "Dacă plata inițială a fost efectuată prin transfer bancar este obligatoriu să completați banca și contul bancar. Pentru plățile online, returul se va efectua automat de către procesatorul de plăți în contul bancar din care s-a făcut plata inițial."
   underForm: " <p>Procedura de retur pentru cursurile și workshop-urile Move On cumpărate online.</p>
             <p>
                 În cazul Contractului de formare profesională încheiat la distanță sau în afara spaţiilor Move On, clientul are dreptul de a se retrage în termen de

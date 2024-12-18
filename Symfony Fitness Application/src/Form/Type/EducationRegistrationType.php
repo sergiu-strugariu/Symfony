@@ -88,7 +88,7 @@ class EducationRegistrationType extends AbstractType
                         'minMessage' => 'common.cnp_message'
                     ]),
                     new Regex([
-                        'pattern' => '/^[1-9]\d{12}$/',
+                        'pattern' => '/^[0-9]\d{12}$/',
                         'message' => 'common.custom.cnp'
                     ])
                 ]

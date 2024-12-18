@@ -35,7 +35,7 @@ class MenuItemRepository extends ServiceEntityRepository
                 't.id AS translation_id',
                 't.linkText',
                 't.link',
-                't.description',
+                't.description'
             )
             ->leftJoin('m.menuItemTranslations', 't')
             ->leftJoin('m.menu', 'menu')

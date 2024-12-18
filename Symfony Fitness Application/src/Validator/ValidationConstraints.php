@@ -56,7 +56,7 @@ class ValidationConstraints
                     'minMessage' => $this->translator->trans('common.cnp_message'),
                 ]),
                 new Regex([
-                    'pattern' => '/^[1-9]\d{12}$/',
+                    'pattern' => '/^[0-9]\d{12}$/',
                     'message' => $this->translator->trans('common.custom.cnp')
                 ])
             ],
