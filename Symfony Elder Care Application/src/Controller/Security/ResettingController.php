@@ -116,7 +116,7 @@ class ResettingController extends AbstractController
             ]);
         }
 
-        $this->addFlash('danger', 'Acest token a expirat');
+        $this->addFlash('error', 'Acest token a expirat');
         return $this->redirectToRoute('app_login');
     }
 }

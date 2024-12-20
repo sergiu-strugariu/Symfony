@@ -49,6 +49,7 @@ security:
 
         # Group 4
         - { path: ^/dashboard/cook/menu$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_COOK] }
+        - { path: ^/dashboard/reports/diagnoses-treatments$, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT, ROLE_MEDIC] }
         - { path: ^/dashboard/reports, roles: [ROLE_ADMIN, ROLE_OWNER, ROLE_MANAGEMENT] }
 
         # Group @pacient

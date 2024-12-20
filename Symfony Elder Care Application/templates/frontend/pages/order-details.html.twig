@@ -6,9 +6,11 @@
         <main class="{{ page.classes }}">
             {% include "frontend/common/breadcrumbs.html.twig" %}
             {% include 'frontend/pages/partials/order-details/order-details.html.twig' %}
+
             {% for section in page.pageSections %}
                 {% include 'frontend/pages/partials/order-details/bottom-section.html.twig' ignore missing %}
             {% endfor %}
+
             {% include 'frontend/pages/partials/order-details/modal.html.twig' %}
         </main>
     {% endif %}

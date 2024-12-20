@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MembershipPackageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Uuid;
@@ -14,6 +16,14 @@ use Symfony\Component\Uid\Uuid;
  */
 class MembershipPackage
 {
+    const MONTHLY = 'monthly';
+    const YEARLY = 'yearly';
+
+    const PACKAGE_FREE = 'gratuit';
+    const PACKAGE_SILVER = 'silver-help';
+    const PACKAGE_GOLD = 'gold-help';
+    const PACKAGE_DIAMOND = 'diamond-help';
+
     const MODULE_ADMINISTRATIVE = 'administrativeModule';
     const MODULE_MEDICAL = 'medicalModule';
     const MODULE_PHYSIOTHERAPY = 'physiotherapyModule';
@@ -339,10 +349,22 @@ class MembershipPackage
      */
     private ?\DateTimeInterface $deletedAt = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="membershipPackage")
+     */
+    private $payments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="membershipPackage")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->uuid = Uuid::v4();
         $this->createdAt = new \DateTime();
+        $this->payments = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -588,5 +610,96 @@ class MembershipPackage
         }
 
         return round($this->price, 2);
+    }
+
+    /**
+     * This function calculates the discounted price per month for the yearly plan.
+     * It multiplies the monthly price by 12 to get the yearly price, then applies the discount.
+     *
+     * @return float|null
+     */
+    public function getYearlyPrice(): ?float
+    {
+        // Calculate the yearly price by multiplying the monthly price by 12
+        $yearlyPrice = $this->price * 12;
+
+        // Apply the discount if it's greater than 0
+        if ($this->discount > 0) {
+            $discountedYearlyPrice = $yearlyPrice - ($yearlyPrice * ($this->discount / 100));
+            return round($discountedYearlyPrice, 2);
+        }
+
+        return round($yearlyPrice, 2);
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setMembershipPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getMembershipPackage() === $this) {
+                $payment->setMembershipPackage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setMembershipPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getMembershipPackage() === $this) {
+                $user->setMembershipPackage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getPlans(): array
+    {
+        return [
+            self::MONTHLY => self::MONTHLY,
+            self::YEARLY => self::YEARLY
+        ];
     }
 }

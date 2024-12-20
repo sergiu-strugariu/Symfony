@@ -1,0 +1,63 @@
+{% extends "layout_email.html.twig" %}
+{% set email = settingService.getService('email') %}
+
+{% block content %}
+
+<tr>
+    <td style="padding: 0">
+        <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/intro-package.png')) }}" alt="intro-img" style="width: 100%; max-width: 650px; height: auto; display: block;">
+    </td>
+</tr>
+
+<tr style="background-color: #DCFBFF;">
+    <td style="text-align: center; padding: 35px 20px 35px 20px; max-width: 480px; margin: 0 auto;">
+        <h1 style="font-family: Arial, sans-serif; font-weight: 700; font-size: 34px; line-height: 41px; color: #1D2130; max-width: 485px;">
+            Actualizare comandă
+        </h1>
+        <p style="padding-top: 21px; font-family: Arial, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; color: #1D2130; max-width: 485px;">
+            Buna, {{ user.fullName }},
+        </p>
+        <p style="font-family: Arial, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; color: #1D2130; max-width: 485px;">
+            Îți mulțumim pentru că ne-ai ales pentru promovarea serviciilor tale! Dorim să te informăm că s-au făcut actualizări în legatură cu comanda ta pentru pachetul de promovare [Nume pachet]
+        </p>
+    </td>
+</tr> 
+
+<tr style="background-color: #FFFFFF;">
+    <td style="display: block; padding: 35px 20px 0 20px; max-width: 480px; margin: 0 auto;">
+        <h2 style="padding-bottom: 20px; text-align: start; display: block; max-width: 470px; margin: 0 auto; font-family: Arial, sans-serif; font-size: 26px; font-weight: 700; line-height: 31px; color: #1D2130;">
+            Detalii comandă:
+        </h2>
+
+        <ul style="display: block; list-style: none; max-width: 470px; margin: 0 auto; padding: 0;">
+            <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Număr comandă: [Numarul comenzii]
+            </li>
+            <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Data comenzii: [ZZ/LL/AAAA]
+            </li>
+            <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Produse achiziționate: [Nume pachet]
+            </li>
+            <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Preț: [RON]
+            </li>
+            <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Data inceperii promovarii: [ZZ/LL/AAAA]
+            </li>
+        </ul>
+    </td>
+    <td style="padding: 18px 20px 35px 20px; display: block; display: block; max-width: 470px; margin: 0 auto">
+        <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+            Dacă ai întrebări sau ai nevoie de ajutor pentru a face trecerea la acest pachet, contactează-ne la 
+            <a href="mailto:{{email}}" style="color: #1D2130; text-decoration: underline; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
+                {{email}}
+            </a>
+        </p>
+        <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+            Grăbește-te! Optimizează-ți activitatea și economisește inteligent cu NursingHelp.
+        </p>
+    </td>
+</tr>
+
+{% endblock %}

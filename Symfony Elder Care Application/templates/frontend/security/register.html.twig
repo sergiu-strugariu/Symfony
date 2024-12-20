@@ -52,15 +52,14 @@
                     {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Parola', 'autocomplete': 'off'}}) }}
                     {{ form_errors(form.plainPassword.second) }}
                 </div>
-                <div class="form-group checkbox checkbox-group">
-                    <input type="checkbox" id="terms" name="terms">
-                    <label for="terms">
+                <div class="form-group">
+                    {{ form_widget(form.terms) }}
+                    <label for="{{ form.terms }}">
                         Pentru a continua, te rugăm să confirmi că ești de acord cu
-                        <a href="{{ path('app_terms') }}">
-                            Termenii şi condițiile {{ app_name }}
-                        </a>
+                        <a href="{{ path('app_terms') }}" target="_blank">Termenii şi condițiile</a>.
                     </label>
                 </div>
+
                 <div class="form-action">
                     <input type="submit" class="submit-btn" value="Crează cont"/>
                 </div>

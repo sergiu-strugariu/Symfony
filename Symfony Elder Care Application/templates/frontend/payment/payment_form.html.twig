@@ -1,0 +1,9 @@
+<form id="paymentForm" action="{{ payment_url }}" method="POST">
+    <input type="hidden" name="env_key" value="{{ env_key }}"/>
+    <input type="hidden" name="data" value="{{ data }}"/>
+    <input type="hidden" name="cipher" value="{{ cipher }}"/>
+    <input type="hidden" name="iv" value="{{ iv }}"/>
+</form>
+<script>
+    document.getElementById('paymentForm').submit();
+</script>

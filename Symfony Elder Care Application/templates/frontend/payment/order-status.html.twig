@@ -1,0 +1,63 @@
+{% extends 'layout_frontend.html.twig' %}
+
+{% block title %}Status Plata - {{ payment.status }} {{ parent() }}{% endblock %}
+{% block content %}
+    {% set monthly = constant('App\\Entity\\MembershipPackage::MONTHLY') %}
+    {% set yearly = constant('App\\Entity\\MembershipPackage::YEARLY') %}
+
+    <main class="{{ error ? 'error-page section' : 'order-status' }}">
+        {% if error %}
+            <div class="error-page__container">
+                <div class="inner">
+                    <div class="error-image">
+                        <img src="{{ asset('assets/frontend/images/icons/error-icon.svg') }}" alt="error-icon"/>
+                    </div>
+                    <div class="error-text">
+                        <h2>{{ title }}</h2>
+                        <p>{{ subtitle }}</p>
+                        <div class="button">
+                            <a href="{{ path('app_packages') }}">Înapoi la pachete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="inner ">
+                <div class="image"
+                     data-image="{{ asset('assets/frontend/images/order/order-status-intro.svg') }}"></div>
+                <div class="content section">
+                    <div class="text-area">
+                        <div class="error-image">
+                            <img src="{{ asset('assets/frontend/images/icons/email-succes-icon.svg') }}"
+                                 alt="email-success-icon"
+                            />
+                        </div>
+                        <h1>{{ title }}</h1>
+                        <p>{{ subtitle }}</p>
+                        <div class="purchased-product-details">
+                            <div class="purchased-product-details__item">
+                                <div class="item-name">
+                                    <img src="{{ asset(app_membership_package_path ~ payment.membershipPackage.fileName, 'cloudflare') }}"
+                                         alt="product image"
+                                    />
+                                    <p>{{ payment.membershipPackage.name }}</p>
+                                </div>
+                                <p>
+                                    {{ payment.price }} RON / {{ payment.plan == monthly ? 'lunar' : 'anual' }}
+                                </p>
+                            </div>
+                            <h2>Total achitat: {{ payment.price }} RON</h2>
+                            <ul>
+                                <li>Facturat {{ payment.plan == monthly ? 'lunar' : 'anual' }}</li>
+                                <li>Următoarea plată: 25 noiembrie 2025</li>
+                            </ul>
+                        </div>
+                        <div class="cta-resources">
+                            <a href="#" class="blue-btn">Descarcă factura</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}

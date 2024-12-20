@@ -1,9 +1,39 @@
+{% set packagePlan = app.request.get('packagePlan') %}
+{% set monthly = constant('App\\Entity\\MembershipPackage::MONTHLY') %}
+{% set yearly = constant('App\\Entity\\MembershipPackage::YEARLY') %}
+
 <div class="inner section">
     <h2>Detalii comandă</h2>
-    <form class="order-details-form has-loader" id="orderDetailsForm">
+    <form action="{{ path('app_comand_detail', {'slug': package.slug}) }}" method="post"
+          class="order-details-form has-loader" id="orderDetailsForm">
+        <!--begin::Form message-->
+        <div class="form-message-list form-message"></div>
+        <!--end::Form message-->
+
+        <!--begin::Form backend message-->
+        {% include "frontend/common/alerts.html.twig" %}
+        <!--end::Form backend message-->
+
         <div class="switch-period">
-            <a href="#" data-period="monthly" data-price="{{ package.price }}" data-payment="{{ package.price }}">Lunar</a>
-            <a href="#" class="active" data-period="yearly" data-price="{{ package.price }}" data-payment="{{ package.yearlyPricePerMonth }}">Anual (-20%)</a>
+            <a href="#"
+               class="{{ packagePlan == monthly ? 'active' : '' }}"
+               data-period="lunar"
+               data-price="{{ package.price }}"
+               data-payment="25 decembrie 2025"
+               data-type="{{ monthly }}"
+            >
+                Lunar
+            </a>
+            <a href="#"
+               class="{{ packagePlan == yearly ? 'active' : '' }}"
+               data-period="anual"
+               data-price="{{ package.yearlyPricePerMonth }}"
+               data-payment="25 noiembrie 2026"
+               data-type="{{ yearly }}"
+               data-total="{{ package.yearlyPrice }}">
+                Anual (-{{ package.discount }}%)
+            </a>
+            <input type="hidden" class="plan-type" id="planType" name="planType" value="{{ packagePlan }}"/>
         </div>
         <div class="steps">
             <div class="step">
@@ -13,33 +43,40 @@
                         <img src="{{ asset(app_membership_package_path ~ package.fileName, 'cloudflare') }}" alt="icon">
                         <h4><strong>{{ package.name }}</strong></h4>
                     </div>
-                    <p><strong>{{ package.price }} RON / an</strong></p>
+                    <p>
+                        <strong>
+                            <span class="price"></span> RON / <span class="plan-period"></span>
+                        </strong>
+                    </p>
                 </div>
             </div>
             <div class="step billing-info">
                 <h3>2. Date facturare</h3>
                 {% for orderDetails in app.user.userBillingData %}
                     <div class="step-inner">
-                        <input type="radio" id="billin-2" name="billing" value="{{ orderDetails.uuid }}">
+                        <input type="radio" id="billing" name="billingDetail" value="{{ orderDetails.uuid }}"/>
                         <p><strong>{{ orderDetails.companyName }}</strong></p>
-                        <p>{{ orderDetails.address }}</p>
+                        <p>{{ orderDetails.county.name }}, {{ orderDetails.city.name }}, {{ orderDetails.address }}</p>
                         <a href="#" class="edit-btn" data-index="{{ orderDetails.uuid }}">Editează</a>
                     </div>
                 {% endfor %}
                 <div class="text-center">
-                    <a href="#" class="border-btn add-btn">Adauga date facturare</a>
+                    <a href="#" class="border-btn add-btn">
+                        Adaugă date facturare
+                    </a>
                 </div>
             </div>
             <div class="step">
                 <h3>3. Metoda de plată</h3>
                 <div class="step-inner">
-                    <input type="checkbox" id="paymentMethod" name="paymentMethod" checked>
+                    <input type="checkbox" id="paymentMethod" name="paymentMethod" checked/>
                     <ul>
                         <li>
-                            <img src="{{ asset('assets/frontend/images/icons/visa-logo.svg') }}" alt="visa">
+                            <img src="{{ asset('assets/frontend/images/icons/visa-logo.svg') }}" alt="visa"/>
                         </li>
                         <li>
-                            <img src="{{ asset('assets/frontend/images/icons/mastercard-logo.svg') }}" alt="mastercard">
+                            <img src="{{ asset('assets/frontend/images/icons/mastercard-logo.svg') }}"
+                                 alt="mastercard"/>
                         </li>
                     </ul>
                     <p><strong>Card online</strong></p>
@@ -49,26 +86,37 @@
         </div>
         <div class="checkboxes">
             <div class="group">
-                <input type="checkbox" name="agreeTerms" id="agreeTerms">
-                <label for="agreeTerms">Prin plasarea comenzii, confirm că sunt de acord cu <a href="#">Termenii și Condițiile</a> și că
-                    am luat
-                    la cunoștință <a href="#">Politica de Prelucrare a Datelor Personale</a>.</label>
+                <input type="checkbox" name="terms" id="terms"/>
+                <label for="terms">
+                    Prin plasarea comenzii, confirm că sunt de acord cu
+                    <a href="{{ path('app_terms') }}">
+                        Termenii și Condițiile
+                    </a>
+                    și că am luat la cunoștință
+                    <a href="{{ path('app_privacy_policy') }}">
+                        Politica de Prelucrare a Datelor Personale
+                    </a>.
+                </label>
             </div>
             <div class="group">
-                <input type="checkbox" name="agreeMarketing" id="agreeMarketing">
-                <label for="agreeMarketing">Doresc să primesc comunicări personalizate despre noutăți, funcționalități
-                    și alte
-                    informații.</label>
+                <input type="checkbox" name="agreeMarketing" id="agreeMarketing"/>
+                <label for="agreeMarketing">
+                    Doresc să primesc comunicări personalizate despre noutăți, funcționalități și alte informații.
+                </label>
             </div>
         </div>
         <div class="info">
-            <h4><strong>Total: {{ package.price }} RON</strong></h4>
-            <p>Facturat anual</p>
-            <p>Următoarea plată: 25 noiembrie 2025</p>
+            <h4>
+                <strong>
+                    Total: <span class="price"></span> RON
+                </strong>
+            </h4>
+            <p>Facturat <span class="plan-period"></span></p>
+            <p>Următoarea plată: <span class="next-payment"></span></p>
         </div>
         <div class="form-actions">
-            <a href="#" class="border-btn">Înapoi la pachete</a>
-            <input type="submit" class="blue-btn" value="Continuă către plată">
+            <a href="{{ path('app_packages') }}" class="border-btn">Înapoi la pachete</a>
+            <a href="#" class="blue-btn go-to-payment">Continuă către plată</a>
         </div>
     </form>
 </div>

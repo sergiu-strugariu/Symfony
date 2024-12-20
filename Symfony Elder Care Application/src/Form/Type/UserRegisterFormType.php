@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -91,7 +92,17 @@ class UserRegisterFormType extends AbstractType
                         'minMessage' => 'Parola dvs. trebuie să aibă cel puțin {{ limit }} caractere',
                     ])
                 ]
+            ])
+            ->add('terms', CheckboxType::class, [
+                'required' => true,
+                'mapped' => false,
+                'constraints' => [
+                    new Assert\IsTrue([
+                        'message' => 'Trebuie să fiți de acord cu politica de confidențialitate'
+                    ])
+                ],
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

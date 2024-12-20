@@ -5,11 +5,14 @@ namespace App\Controller\Frontend;
 use App\Entity\County;
 use App\Entity\MembershipPackage;
 use App\Entity\Page;
+use App\Entity\Payment;
 use App\Entity\User;
 use App\Entity\UserBillingData;
+use App\Helper\FormValidatorHelper;
 use App\Helper\MembershipHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Helper\BreadcrumbsHelper;
@@ -97,10 +100,8 @@ class DefaultController extends AbstractController
     /**
      * @Route("/detalii-comanda/pachet/{slug}", name="app_comand_detail")
      */
-    public function comandDetail(EntityManagerInterface $em, BreadcrumbsHelper $helper, $slug): Response
+    public function orderDetail(EntityManagerInterface $em, Request $request, FormValidatorHelper $validatorHelper, $slug): Response
     {
-        // TODO: Update machine name, this for testing redirect
-
         $billingRepository = $em->getRepository(UserBillingData::class);
 
         /** @var User $user */
@@ -125,6 +126,54 @@ class DefaultController extends AbstractController
          * @var UserBillingData $billings
          */
         $billings = $billingRepository->findBy(['user' => $user], ['isFavorite' => 'DESC']);
+
+        // Get method and validate fields
+        if ($request->isMethod('POST')) {
+            // Retrieve form data from request
+            $formData = $request->request->all();
+            $formData['terms'] = $formData['terms'] === 'on';
+
+            // monthly and yearly
+            $packagePlan = $formData['planType'];
+
+            /**
+             * Get billing by @uuid
+             * @var UserBillingData $billing
+             */
+            $billing = $billingRepository->findOneBy(['uuid' => $formData['billingDetail']]);
+
+            /**
+             * Validate fields by @formData
+             * @var FormValidatorHelper $validator
+             */
+            $validate = $validatorHelper->validate($formData);
+
+            // Check errors
+            if ($validate['checkErrors'] || empty($billing) || !in_array($packagePlan, MembershipPackage::getPlans())) {
+                // Set flash message and redirect
+                $this->addFlash('error', 'Toate câmpurile sunt obligatorii.');
+                return $this->redirectToRoute('app_comand_detail', array_filter([
+                    'slug' => $slug,
+                    'packagePlan' => $packagePlan
+                ]));
+            }
+
+            // Insert new payment
+            $payment = new Payment();
+            $payment->setMembershipPackage($package);
+            $payment->setUserBillingData($billing);
+            $payment->setUser($user);
+            $payment->setStatus(Payment::PAYMENT_STATUS_PENDING);
+            $payment->setPrice($packagePlan === MembershipPackage::YEARLY ? $package->getYearlyPrice() : $package->getPrice());
+            $payment->setPlan($packagePlan);
+
+            // Persist and save
+            $em->persist($payment);
+            $em->flush();
+
+            // Redirect to pay
+            return $this->redirectToRoute('app_payment', ['uuid' => $payment->getUuid()]);
+        }
 
         return $this->render('frontend/pages/order-details.html.twig', [
             'page' => $page,
@@ -179,7 +228,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/order-details/{slug}", name="app_order_details")
      */
-    public function orderDetails(EntityManagerInterface $em, BreadcrumbsHelper $helper, $slug): Response
+    public function orderDetails(Request $request, EntityManagerInterface $em, BreadcrumbsHelper $helper, $slug): Response
     {
         $billingRepository = $em->getRepository(UserBillingData::class);
 
@@ -206,11 +255,14 @@ class DefaultController extends AbstractController
          */
         $billings = $billingRepository->findBy(['user' => $user], ['isFavorite' => 'DESC']);
 
+        $packagePlan = $request->get('packagePlan') ?? 'monthly';
+
         return $this->render('frontend/pages/order-details.html.twig', [
             'page' => $page,
             'package' => $package,
             'billings' => $billings,
             'breadcrumbs' => [],
+            'packagePlan' => $packagePlan,
         ]);
     }
 
@@ -221,6 +273,34 @@ class DefaultController extends AbstractController
     {
         /** @var Page $page */
         $page = $em->getRepository(Page::class)->findOneBy(['machineName' => '404']);
+
+        return $this->render('frontend/pages/index.html.twig', [
+            'page' => $page,
+            'breadcrumbs' => []
+        ]);
+    }
+
+    /**
+     * @Route("/payment-error", name="app_payment_error")
+     */
+    public function error(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    {
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'payment-error']);
+
+        return $this->render('frontend/pages/index.html.twig', [
+            'page' => $page,
+            'breadcrumbs' => []
+        ]);
+    }
+
+    /**
+     * @Route("/payment-success", name="app_payment_success")
+     */
+    public function success(EntityManagerInterface $em, BreadcrumbsHelper $helper): Response
+    {
+        /** @var Page $page */
+        $page = $em->getRepository(Page::class)->findOneBy(['machineName' => 'payment-success']);
 
         return $this->render('frontend/pages/index.html.twig', [
             'page' => $page,

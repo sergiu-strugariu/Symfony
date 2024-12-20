@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserBillingDataRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -94,11 +95,17 @@ class UserBillingData
      */
     private $deletedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="userBillingData")
+     */
+    private $payments;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->uuid = Uuid::v4();
         $this->isFavorite = 0;
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -282,6 +289,36 @@ class UserBillingData
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setUserBillingData($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getUserBillingData() === $this) {
+                $payment->setUserBillingData(null);
+            }
+        }
 
         return $this;
     }

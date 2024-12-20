@@ -39,7 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\JoinColumn(name="id_camin", nullable=true)
      */
     private $nursingHome;
-    
+
+    /**
+     * @ORM\ManyToOne(targetEntity=MembershipPackage::class, inversedBy="users")
+     * @ORM\JoinColumn(name="membership_package_id", nullable=true)
+     */
+    private ?MembershipPackage $membershipPackage;
+
     /**
      * @ORM\ManyToOne(targetEntity=City::class)
      * @ORM\JoinColumn(name="city_id", nullable=true)
@@ -124,6 +130,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $photo;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $paymentToken;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $paymentTokenExpirationDate;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private ?bool $membershipCancel;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $membershipExpiresAt;
+
+    /**
      * @ORM\Column(type="string", length=50)
      */
     private $status;
@@ -188,6 +214,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $userBillingData;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="user")
+     */
+    private $payments;
+
     public function __construct()
     {
         $this->pacients = new ArrayCollection();
@@ -195,6 +226,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->pacientDischargesBy = new ArrayCollection();
         $this->nursingHomes = new ArrayCollection();
         $this->userBillingData = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -363,6 +395,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->loginRedirect = $loginRedirect;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->firstName . " " . $this->lastName;
     }
 
     public function getFirstName(): ?string
@@ -871,6 +908,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userBillingData->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getUser() === $this) {
+                $payment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMembershipPackage(): ?MembershipPackage
+    {
+        return $this->membershipPackage;
+    }
+
+    public function setMembershipPackage(?MembershipPackage $membershipPackage): self
+    {
+        $this->membershipPackage = $membershipPackage;
+
+        return $this;
+    }
+
+    public function getPaymentToken(): ?string
+    {
+        return $this->paymentToken;
+    }
+
+    public function setPaymentToken(?string $paymentToken): self
+    {
+        $this->paymentToken = $paymentToken;
+
+        return $this;
+    }
+
+    public function getPaymentTokenExpirationDate(): ?\DateTimeInterface
+    {
+        return $this->paymentTokenExpirationDate;
+    }
+
+    public function setPaymentTokenExpirationDate(?\DateTimeInterface $paymentTokenExpirationDate): self
+    {
+        $this->paymentTokenExpirationDate = $paymentTokenExpirationDate;
+
+        return $this;
+    }
+
+    public function isMembershipCancel(): ?bool
+    {
+        return $this->membershipCancel;
+    }
+
+    public function setMembershipCancel(bool $membershipCancel): self
+    {
+        $this->membershipCancel = $membershipCancel;
+
+        return $this;
+    }
+
+    public function getMembershipExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->membershipExpiresAt;
+    }
+
+    public function setMembershipExpiresAt(?\DateTimeInterface $membershipExpiresAt): self
+    {
+        $this->membershipExpiresAt = $membershipExpiresAt;
 
         return $this;
     }

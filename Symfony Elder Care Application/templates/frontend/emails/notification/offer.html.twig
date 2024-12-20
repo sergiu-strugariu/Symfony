@@ -1,0 +1,77 @@
+{% extends "layout_email.html.twig" %}
+{% set email = settingService.getService('email') %}
+
+{% block content %}
+
+    <tr>
+        <td style="padding: 0">
+            <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/intro-offer.png')) }}" alt="intro-img"
+                 style="width: 100%; max-width: 650px; height: auto; display: block;">
+        </td>
+    </tr>
+
+    <tr style="background-color: #DCFBFF;">
+        <td style="text-align: center; padding: 35px 20px 35px 20px; max-width: 480px; margin: 0 auto;">
+            <h1 style="font-family: Arial, sans-serif; font-weight: 700; font-size: 34px; line-height: 41px; color: #1D2130; max-width: 485px;">
+                Profită de oferta specială! 25% reducere la pachetul Gold Help
+            </h1>
+            <p style="padding-top: 21px; font-family: Arial, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; color: #1D2130; max-width: 485px;">
+                Buna, {{ user.fullName }},
+            </p>
+            <p style="padding-bottom: 20px; font-family: Arial, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; color: #1D2130; max-width: 485px;">
+                Avem o veste excelentă pentru tine! În această perioadă, oferim 25% reducere la pachetul Gold Help.
+                Grăbește-te, oferta este valabilă doar o săptămână, până la 20.12.2024
+            </p>
+            <a href="{{ absolute_url(path('app_homepage')) }}"
+               style="display: block; max-width: 277px; line-height: 66px; margin: 0 auto; font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: #ffffff; background-color: #3366CC; border-radius: 10px; text-decoration: none;">
+                Activează oferta acum
+            </a>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="padding: 0">
+            <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/devices-2.png')) }}" alt="intro-img"
+                 style="width: 100%; max-width: 650px; height: auto; display: block;">
+        </td>
+    </tr>
+
+    <tr style="background-color: #FFFFFF;">
+        <td style="display: block; text-align: center; padding: 35px 20px 0 20px; max-width: 480px; margin: 0 auto;">
+            <h2 style="padding-bottom: 20px; display: block; max-width: 470px; margin: 0 auto; font-family: Arial, sans-serif; font-size: 26px; font-weight: 700; line-height: 31px; color: #1D2130;">
+                Acum este momentul perfect să beneficiezi de:
+            </h2>
+
+            <ul style="display: block; max-width: 470px; margin: 0 auto">
+                <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                    Lorem ipsum dolor sit amet consectetur. Nulla pulvinar orci venenatis vivamus.
+                </li>
+                <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                    Quis suspendisse tortor vestibulum non. Sem sit nisi mi senectus auctor bibendum adipiscing porta.
+                </li>
+                <li style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                    Pulvinar sed risus tempor elementum sollicitudin sed. Viverra.
+                </li>
+            </ul>
+        </td>
+        <td style="padding: 18px 20px 0 20px; display: block; display: block; max-width: 470px; margin: 0 auto">
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Dacă ai întrebări sau ai nevoie de ajutor pentru a face trecerea la acest pachet, contactează-ne la
+                <a href="mailto:{{ email }}"
+                   style="color: #1D2130; text-decoration: underline; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
+                    {{ email }}
+                </a>
+            </p>
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Grăbește-te! Optimizează-ți activitatea și economisește inteligent cu NursingHelp.
+            </p>
+        </td>
+        <td style="padding: 19px 20px 35px 20px; display: block; text-align: center; max-width: 480px; margin: 0 auto;">
+            <a href="{{ absolute_url(path('app_homepage')) }}"
+               style="display: block; max-width: 277px; line-height: 66px; margin: 0 auto; font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: #ffffff; background-color: #3366CC; border-radius: 10px; text-decoration: none;">
+                Activează oferta acum
+            </a>
+        </td>
+    </tr>
+
+{% endblock %}

@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
 
             if (isset($getUser)) {
                 // Set flash message
-                $this->addFlash('danger', 'Adresa de email introdusă este deja folosită. Vă rugăm să folosiți o altă adresă de email sau să vă autentificați cu contul existent');
+                $this->addFlash('error', 'Adresa de email introdusă este deja folosită. Vă rugăm să folosiți o altă adresă de email sau să vă autentificați cu contul existent');
                 return $this->redirectToRoute('app_register', array_filter(['returnUrl' => $returnUrl]));
             }
 
@@ -90,7 +90,7 @@ class SecurityController extends AbstractController
                 ]);
 
             if (!$sent) {
-                $this->addFlash('danger', 'Mesajul nu s-a putut trimite. Încearcă mai târziu.');
+                $this->addFlash('error', 'Mesajul nu s-a putut trimite. Încearcă mai târziu.');
                 return $this->redirectToRoute('app_login', array_filter(['returnUrl' => $returnUrl]));
             }
 
@@ -130,7 +130,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_login', array_filter(['returnUrl' => $returnUrl]));
         }
 
-        $this->addFlash('danger', 'Adresa de email a fost deja verificata, te poți loga.');
+        $this->addFlash('error', 'Adresa de email a fost deja verificata, te poți loga.');
         return $this->redirectToRoute('app_login', array_filter(['returnUrl' => $returnUrl]));
     }
 

@@ -1,0 +1,88 @@
+{% set phone = settingService.getService('phone') %}
+{% set email = settingService.getService('email') %}
+
+<tr>
+    <td style="background: #00496D; padding: 45px">
+        <table>
+            <tbody style="width: 50%; margin: 0 auto; max-width: 156px">
+            <tr>
+                <td style="width: 100%; margin: auto; text-align: center; padding: 0 20px;">
+                    <a href="{{ absolute_url(path('app_homepage')) }}" style="display: block; max-width: 235px;">
+                        <img width="235" height="50" src="{{ absolute_url(asset('assets/frontend/images/email-templates/logo-footer.png')) }}"
+                             alt="logo"
+                             style="max-width: 235px; margin: 0 auto; height: auto; display: block;">
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 24px 20px 0 20px; width: 100%; margin: 0 auto; text-align: center; display: block; max-width: 390px;">
+                    <p style="font-family: Arial, sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff;">
+                        Acest email a fost trimis automat de NursingHelp. Dacă ai întrebări, sau întâmpini dificultăți,
+                        ne poți contacta.
+                    </p>
+                </td>
+                <td style="padding: 0 20px 10px 20px; width: 100%; margin: 0 auto; text-align: center; display: block; max-width: 390px;">
+                    <p style="font-family: Arial, sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff;">
+                        Ești în siguranță cu noi – tratăm datele tale cu cea mai mare confidențialitate. © NursingHelp
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 0 20px 8px 20px; display: flex; justify-content: center; align-items: center; max-width: 480px; margin: 0 auto;">
+                    <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/icon-phone-call.png')) }}" alt="call"
+                         width="24" height="24" style="width: 24px; margin: 0; height: auto; display: block">
+                    <p style="padding-left: 20px; display: inline-block; margin: 0; font-family: Arial, sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff;  width: auto;">
+                        Telefon:
+                        <a style="text-decoration: none; font-family: Arial, sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff;"
+                           href="tel:{{ phone }}">
+                            {{ phone }}
+                        </a>
+                    </p>
+                </td>
+                <td style="padding: 0 20px 20px 20px; display: flex; justify-content: center; align-items: center; max-width: 480px; margin: 0 auto;">
+                    <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/icon-paper-plane.png')) }}" alt="call"
+                         width="24" height="24" style="width: 24px; height: auto; display: block">
+                    <p style="padding-left: 20px; display: inline-block; margin: 0; font-family: Arial, sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff; width: auto;">
+                        Mail:
+                        <a style="text-decoration: none; font-family: Arial, sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff;"
+                           href="mailto:{{ email }}">
+                            {{ email }}
+                        </a>
+                    </p>
+                </td>
+
+            </tr>
+            <tr style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center;">
+                <td style="width: fit-content; margin: 0;">
+                    <a href="{{ absolute_url(path('app_homepage')) }}"
+                       style="display: inline-block; margin: 0; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff;">
+                        Dezabonează-te
+                    </a>
+                </td>
+                <td style="width: fit-content; margin: 0; padding-left: 10px;">
+                    <a href="{{ absolute_url(path('app_homepage')) }}"
+                       style="display: inline-block; margin: 0; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13px; line-height: 15px; color: #ffffff; ">
+                        Vezi emailul în browser
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 45px; margin: 0 5px; display: inline-block">
+                    <a href="{{ absolute_url(path('app_homepage')) }}" target="_blank"
+                       style="display: block; width: 45px; margin: 0">
+                        <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/Facebook-footer.png')) }}" alt="twitter"
+                             width="36" height="36" style="max-width: 36px; height: auto; display: block"/>
+                    </a>
+                </td>
+                <td style="width: 45px; margin: 0 5px; display: inline-block">
+                    <a href="{{ absolute_url(path('app_homepage')) }}" target="_blank"
+                       style="display: block; width: 45px; margin: 0">
+                        <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/linkedin-footer.png')) }}" alt="facebook"
+                             width="36" height="36" style="max-width: 36px; height: auto; display: block"/>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>

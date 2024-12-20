@@ -1,20 +1,59 @@
 {% extends 'layout_email.html.twig' %}
+{% set email = settingService.getService('email') %}
 
 {% block content %}
-    <div class="email-header">
-        <h1>Activare Cont</h1>
-    </div>
-    <div class="email-body">
-        <p>Bună,</p>
-        <p>Mulțumim că ți-ai creat un cont la noi! Pentru a finaliza înregistrarea, te rugăm să activezi contul tău făcând clic pe butonul de mai jos:</p>
-        <p>
-            <a href="{{ activationUrl }}" class="activate-button">Activează Contul</a>
-        </p>
-        <p>Dacă butonul nu funcționează, copiază și lipește următorul link în browserul tău:</p>
-        <p><a href="{{ activationUrl }}">Link de activare</a></p>
-    </div>
-    <div class="footer">
-        <p>Dacă nu ai solicitat crearea acestui cont, te rugăm să ignori acest email.</p>
-        <p>&copy; {{ app_name }}</p>
-    </div>
+    <tr>
+        <td style="padding: 0">
+            <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/intro-confirmation.png')) }}" alt="intro-img" style="width: 100%; max-width: 650px; height: auto; display: block;">
+        </td>
+    </tr>
+
+    <tr style="background-color: #DCFBFF;">
+        <td style="text-align: center; padding: 35px 20px 35px 20px; max-width: 480px; margin: 0 auto;">
+            <h1 style="font-family: Arial, sans-serif; font-weight: 700; font-size: 34px; line-height: 41px; color: #1D2130; max-width: 485px;">
+                Confirmare adresa de email
+            </h1>
+            <p style="padding-top: 21px; font-family: Arial, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; color: #1D2130; max-width: 485px;">
+                Buna, {{ user.fullName }},
+            </p>
+            <p style="padding-bottom: 20px; font-family: Arial, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; color: #1D2130; max-width: 485px;">
+                Îți mulțumim pentru înregistrarea ta pe {{ app_name }}! Pentru a finaliza procesul, te rugăm să confirmi adresa ta de email apăsând pe butonul de mai jos:
+            </p>
+            <a href="{{ activationUrl }}" style="display: block; max-width: 303px; line-height: 66px; margin: 0 auto; font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: #ffffff; background-color: #3366CC; border-radius: 10px; text-decoration: none;">
+                Confirmă adresa de email
+            </a>
+        </td>
+    </tr>
+
+    <tr style="background-color: #FFFFFF;">
+        <td style="padding: 33px 20px 0 20px; display: block; display: block; max-width: 470px; margin: 0 auto">
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Dacă linkul de mai sus nu funcționează, poți copia și lipi următorul link în browserul tău:
+            </p>
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                {{ activationUrl }}
+            </p>
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Această confirmare ne ajută să ne asigurăm că adresa ta de email este corectă și că poți primi notificări importante de la noi.
+            </p>
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Dacă nu ai solicitat această confirmare, te rugăm să ignori acest email.
+            </p>
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Acest email a fost generat automat. Te rugăm să nu răspunzi la el.
+            </p>
+        </td>
+
+        <td style="padding: 20px 20px 33px 20px; display: block; display: block; max-width: 470px; margin: 0 auto">
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Dacă ai întrebări sau ai nevoie de ajutor pentru a face trecerea la acest pachet, contactează-ne la
+                <a href="mailto:{{email}}" style="color: #1D2130; text-decoration: underline; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
+                    {{email}}
+                </a>
+            </p>
+            <p style="text-align: start; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; color: #1D2130;">
+                Grăbește-te! Optimizează-ți activitatea și economisește inteligent cu NursingHelp.
+            </p>
+        </td>
+    </tr>
 {% endblock %}
