@@ -103,12 +103,12 @@ class EducationController extends AbstractController
             if ($form->isValid()) {
                 $recaptcha = $request->get('g-recaptcha-response');
 
-//                if ($helper->captchaVerify($recaptcha)) {
-//                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha'));
-//                    return $this->redirectToRoute('app_education_register', [
-//                        'slug' => $slug
-//                    ]);
-//                }
+                if ($helper->captchaVerify($recaptcha)) {
+                    $this->addFlash('error', $translator->trans('form_register.form_recaptcha'));
+                    return $this->redirectToRoute('app_education_register', [
+                        'slug' => $slug
+                    ]);
+                }
 
                 $existingRegistration = $em->getRepository(EducationRegistration::class)->findOneBy([
                     'user' => $user,
@@ -248,7 +248,9 @@ class EducationController extends AbstractController
                                     $attachments
                             );
 
-                            $this->sendZohoRequest($zohoAPIHelper, $education, $educationRegistration, $paymentMethod);
+                            $gclid = $form->get('zc_gad')->getData();
+
+                            $this->sendZohoRequest($zohoAPIHelper, $education, $educationRegistration, $gclid);
                         }
                     }
 
@@ -319,7 +321,8 @@ class EducationController extends AbstractController
 
                 if (isset($response['code']) && $response['code'] == 200) {
                     if (isset($response['paymentResult']) && isset($response['paymentResult']['url'])) {
-                        $this->sendZohoRequest($zohoAPIHelper, $education, $educationRegistration, $paymentMethod);
+                        $gclid = $form->get('zc_gad')->getData();
+                        $this->sendZohoRequest($zohoAPIHelper, $education, $educationRegistration, $gclid);
                         return new RedirectResponse($response['paymentResult']['url']);
                     }
 
@@ -522,7 +525,7 @@ class EducationController extends AbstractController
         ]);
     }
 
-    private function sendZohoRequest(ZohoAPIHelper $zohoAPIHelper, Education $education, EducationRegistration $educationRegistration, $paymentMethod): void
+    private function sendZohoRequest(ZohoAPIHelper $zohoAPIHelper, Education $education, EducationRegistration $educationRegistration,  $gclid): void
     {
         $educationTranslation = $education->getTranslation($this->getParameter('default_locale'));
         $educationTeamMembers = $education->getTeamMembers();
@@ -559,13 +562,15 @@ class EducationController extends AbstractController
                 'CourseName' => $educationTranslation->getTitle(),
                 'IdCourse' => $education->getId(),
                 'IdZoho' => $education->getZohoCode(),
+                'GCLID' => '',
                 'Instructors' => $instructors,
                 'CourseCity' => $education->getCity()->getName(),
                 'CourseStartDate' => $education->getStartDate()->format('d-m-Y'),
                 'CourseEndDate' => $education->getEndDate()->format('d-m-Y'),
                 'IdEducationPurchase' => $educationRegistration->getId(),
                 'PaymentMethod' => $educationRegistration->getEducationPaymentMethod(),
-                'FormName' => 'educationpurchase'
+                'FormName' => 'educationpurchase',
+                '$gclid' => $gclid
             ]
         ];
 

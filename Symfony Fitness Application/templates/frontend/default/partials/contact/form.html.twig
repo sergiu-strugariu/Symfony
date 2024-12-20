@@ -75,6 +75,8 @@
                 <div id="g-recaptcha" class="g-recaptcha recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
             </div>
 
+            {{ form_widget(form.zc_gad, {'id': 'zc_gad'}) }}
+
             <div class="group group-submit">
                 <input type="submit" value="{{ 'contact.sendButton'|trans }}">
             </div>

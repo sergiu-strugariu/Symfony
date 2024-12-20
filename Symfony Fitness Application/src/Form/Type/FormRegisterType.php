@@ -252,6 +252,9 @@ class FormRegisterType extends AbstractType
             ->add('applePayToken', HiddenType::class, [
                 'mapped' => false
             ])
+            ->add('zc_gad', HiddenType::class, [
+                'mapped' => false
+            ]);
         ;
 
         $builder

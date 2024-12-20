@@ -138,6 +138,8 @@ class DefaultController extends AbstractController
                 return $this->redirectToRoute('app_contact');
             }
 
+            $gclid = $form->get('zc_gad')->getData();
+
             $data = [
                 'data' => [
                     'FirstName' => $form->get('firstName')->getData(),
@@ -146,7 +148,8 @@ class DefaultController extends AbstractController
                     'Phone' => $form->get('phone')->getData(),
                     'County' => $form->get('county')->getData()->getName(),
                     'Message' => $form->get('message')->getData(),
-                    'FormName' => 'lead'
+                    'FormName' => 'lead',
+                    '$gclid' => $gclid
                 ]
             ];
 

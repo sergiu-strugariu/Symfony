@@ -81,6 +81,8 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
+            $gclid = $registerForm->get('zc_gad')->getData();
+
             $data = [
                 'data' => [
                     'FirstName' => $user->getFirstName(),
@@ -90,7 +92,8 @@ class SecurityController extends AbstractController
                     'County' => $user->getCounty()->getName(),
                     'City' => $user->getCity()->getName(),
                     'SubscribeNewsletter' => $user->isNewsletter(),
-                    'FormName' => 'register'
+                    'FormName' => 'register',
+                    '$gclid' => $gclid
                 ]
             ];
 
