@@ -43,6 +43,7 @@ class ResettingController extends AbstractController
                     'Reset password',
                     [
                         'user' => $user,
+                        'pageTitle ' => 'Resetare parola',
                         'resettingUrl' => $this->generateUrl('dashboard_resetting_reset_password', [
                             'token' => $hash
                         ], UrlGeneratorInterface::ABSOLUTE_URL)

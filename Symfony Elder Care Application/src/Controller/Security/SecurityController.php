@@ -83,6 +83,7 @@ class SecurityController extends AbstractController
                 'Activate account',
                 [
                     'user' => $user,
+                    'pageTitle ' => 'Activare cont',
                     'activationUrl' => $this->generateUrl('app_account_confirmation', array_filter([
                         'token' => $hash,
                         'returnUrl' => $returnUrl
