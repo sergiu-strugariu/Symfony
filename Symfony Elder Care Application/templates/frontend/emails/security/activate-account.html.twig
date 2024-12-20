@@ -1,7 +1,8 @@
 {% extends 'layout_email.html.twig' %}
-{% set email = settingService.getService('email') %}
+{% block title %}{{ parent() }} {{ pageTitle }}{% endblock %}
 
 {% block content %}
+    {% set email = settingService.getService('email') %}
     <tr>
         <td style="padding: 0">
             <img src="{{ absolute_url(asset('assets/frontend/images/email-templates/intro-confirmation.png')) }}" alt="intro-img" style="width: 100%; max-width: 650px; height: auto; display: block;">
